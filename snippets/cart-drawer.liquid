@@ -50,17 +50,25 @@
     {% assign progress_percentage = cart.total_price | times: 100 | divided_by: free_shipping_threshold %}
     {% if progress_percentage > 100 %}{% assign progress_percentage = 100 %}{% endif %}
 
-    <div class="tw-px-4 tw-py-3 tw-bg-velox-50 tw-border-b tw-border-velox-100" data-free-shipping-bar>
-      {% if amount_remaining > 0 %}
-        <p class="tw-text-sm tw-text-velox-700 tw-mb-2">
-          {{ 'cart.general.free_shipping_remaining_html' | t: remaining: amount_remaining | money | default: 'Te faltan <strong>' | append: amount_remaining | money | append: '</strong> para envío gratis' }}
-        </p>
-      {% else %}
-        <p class="tw-text-sm tw-text-green-700 tw-font-medium tw-mb-2">
-          {% render 'icon', name: 'check', class: 'tw-w-4 tw-h-4 tw-inline tw-mr-1' %}
-          {{ 'cart.general.free_shipping_achieved' | t | default: '¡Tienes envío gratis!' }}
-        </p>
-      {% endif %}
+    <div
+      class="tw-px-4 tw-py-3 tw-bg-velox-50 tw-border-b tw-border-velox-100"
+      data-free-shipping-bar
+      data-free-shipping-threshold="{{ free_shipping_threshold }}"
+      data-free-shipping-success="{{ 'cart.general.free_shipping_achieved' | t | default: '¡Tienes envío gratis!' }}"
+      data-free-shipping-remaining="{{ 'cart.general.free_shipping_remaining' | t | default: 'Te faltan {amount} para envío gratis' }}"
+    >
+      <p class="tw-text-sm tw-mb-2" data-shipping-message>
+        {% if amount_remaining > 0 %}
+          <span class="tw-text-velox-700">
+            {{ 'cart.general.free_shipping_remaining' | t: amount: amount_remaining | money | default: 'Te faltan ' | append: amount_remaining | money | append: ' para envío gratis' }}
+          </span>
+        {% else %}
+          <span class="tw-text-green-700 tw-font-medium">
+            {% render 'icon', name: 'check', class: 'tw-w-4 tw-h-4 tw-inline tw-mr-1' %}
+            {{ 'cart.general.free_shipping_achieved' | t | default: '¡Tienes envío gratis!' }}
+          </span>
+        {% endif %}
+      </p>
       <div class="tw-w-full tw-h-1.5 tw-bg-velox-200 tw-rounded-full tw-overflow-hidden">
         <div
           class="tw-h-full tw-bg-accent tw-rounded-full tw-transition-all tw-duration-300"
@@ -107,10 +115,10 @@
               {%- comment -%} Price {%- endcomment -%}
               <div class="tw-mt-1">
                 {% if item.original_line_price != item.final_line_price %}
-                  <span class="tw-text-sm tw-font-medium tw-text-accent">{{ item.final_line_price | money }}</span>
+                  <span class="tw-text-sm tw-font-medium tw-text-accent" data-item-price="{{ item.key }}">{{ item.final_line_price | money }}</span>
                   <span class="tw-text-xs tw-text-velox-400 tw-line-through tw-ml-1">{{ item.original_line_price | money }}</span>
                 {% else %}
-                  <span class="tw-text-sm tw-font-medium tw-text-velox-900">{{ item.final_line_price | money }}</span>
+                  <span class="tw-text-sm tw-font-medium tw-text-velox-900" data-item-price="{{ item.key }}">{{ item.final_line_price | money }}</span>
                 {% endif %}
               </div>
 

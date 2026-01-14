@@ -15,6 +15,7 @@
       {{ bg_image | image_url: width: 1920 | image_tag:
         class: 'tw-w-full tw-h-full tw-object-cover tw-object-center',
         loading: 'eager',
+        fetchpriority: 'high',
         sizes: '100vw',
         widths: '750, 1100, 1500, 1920'
       }}

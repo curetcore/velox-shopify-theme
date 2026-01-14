@@ -244,18 +244,100 @@
     });
   }
 
-  function updateCartItem(key, quantity) {
-    fetch('/cart/change.js', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: key, quantity: quantity })
-    })
-      .then(response => response.json())
-      .then(cart => {
-        // Reload page to update cart UI (can be improved with AJAX updates)
-        location.reload();
-      })
-      .catch(err => console.error('Cart update error:', err));
+  async function updateCartItem(key, quantity) {
+    const item = document.querySelector(`[data-cart-item="${key}"]`);
+    if (item) item.classList.add('tw-opacity-50', 'tw-pointer-events-none');
+
+    try {
+      const response = await fetch('/cart/change.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: key, quantity: parseInt(quantity) })
+      });
+
+      if (!response.ok) throw new Error('Update failed');
+      const cart = await response.json();
+
+      // Si carrito vacio, recargar para mostrar empty state
+      if (cart.item_count === 0) {
+        window.location.reload();
+        return;
+      }
+
+      // Si item fue eliminado (quantity 0), remover del DOM
+      if (quantity === 0 && item) {
+        item.classList.add('tw-scale-95', 'tw-opacity-0');
+        setTimeout(() => item.remove(), 200);
+      } else if (item) {
+        item.classList.remove('tw-opacity-50', 'tw-pointer-events-none');
+      }
+
+      // Actualizar UI sin recargar
+      updateCartDrawerUI(cart);
+      updateHeaderCartCount(cart.item_count);
+    } catch (error) {
+      console.error('Cart update error:', error);
+      if (item) item.classList.remove('tw-opacity-50', 'tw-pointer-events-none');
+      window.location.reload(); // Fallback
+    }
+  }
+
+  function updateCartDrawerUI(cart) {
+    // Subtotal
+    const subtotal = document.querySelector('[data-cart-subtotal]');
+    if (subtotal) subtotal.textContent = formatMoney(cart.total_price);
+
+    // Total (si hay descuentos)
+    const total = document.querySelector('[data-cart-total]');
+    if (total) total.textContent = formatMoney(cart.total_price);
+
+    // Actualizar cantidades y precios de cada item
+    cart.items.forEach(cartItem => {
+      const qtyInput = document.querySelector(`[data-quantity-input="${cartItem.key}"]`);
+      if (qtyInput) qtyInput.value = cartItem.quantity;
+
+      const itemPrice = document.querySelector(`[data-item-price="${cartItem.key}"]`);
+      if (itemPrice) itemPrice.textContent = formatMoney(cartItem.final_line_price);
+    });
+
+    // Actualizar free shipping bar
+    updateFreeShippingBar(cart.total_price);
+
+    // Actualizar texto del contador
+    const countText = document.querySelector('[data-cart-count-text]');
+    if (countText) {
+      const itemLabel = cart.item_count === 1 ? 'item' : 'items';
+      countText.textContent = `(${cart.item_count} ${itemLabel})`;
+    }
+  }
+
+  function updateHeaderCartCount(count) {
+    document.querySelectorAll('[data-cart-count]').forEach(el => {
+      el.textContent = count;
+      el.style.display = count > 0 ? '' : 'none';
+    });
+  }
+
+  function updateFreeShippingBar(totalPrice) {
+    const bar = document.querySelector('[data-free-shipping-bar]');
+    if (!bar) return;
+
+    const threshold = parseInt(bar.dataset.freeShippingThreshold) || 200000; // centavos
+    const progress = Math.min((totalPrice / threshold) * 100, 100);
+    const remaining = Math.max(threshold - totalPrice, 0);
+
+    const progressBar = bar.querySelector('[data-shipping-progress]');
+    const message = bar.querySelector('[data-shipping-message]');
+
+    if (progressBar) progressBar.style.width = `${progress}%`;
+    if (message) {
+      if (remaining === 0) {
+        message.textContent = bar.dataset.freeShippingSuccess || 'Free shipping!';
+      } else {
+        const formattedRemaining = formatMoney(remaining);
+        message.textContent = (bar.dataset.freeShippingRemaining || 'Add {amount} for free shipping').replace('{amount}', formattedRemaining);
+      }
+    }
   }
 
   /**
