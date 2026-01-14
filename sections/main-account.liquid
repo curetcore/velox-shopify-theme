@@ -511,6 +511,7 @@
       <div class="velox-orders">
         <h2 class="tw-sr-only">{{ 'customer.orders.title' | t }}</h2>
 
+        {% paginate customer.orders by 10 %}
         {% if customer.orders.size > 0 %}
           <div class="velox-orders__list">
             {% for order in customer.orders %}
@@ -646,6 +647,7 @@
           </div>
 
         {% endif %}
+        {% endpaginate %}
 
       </div>
     </div>
