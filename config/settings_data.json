@@ -1,12 +1,124 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
-  "current": {}
+  "current": {
+    "type_primary_font": "work_sans_n4",
+    "type_secondary_font": "work_sans_n6",
+    "max_page_width": "90rem",
+    "min_page_margin": 20,
+    "background_color": "#FFFFFF",
+    "foreground_color": "#1a1a1a",
+    "accent_color": "#000000",
+    "accent_foreground": "#FFFFFF",
+    "secondary_color": "#f5f5f5",
+    "input_corner_radius": 4,
+    "show_free_shipping_bar": true,
+    "free_shipping_threshold": 2000,
+    "social_facebook_link": "https://facebook.com/veloxshoes",
+    "social_instagram_link": "https://instagram.com/veloxshoes",
+    "social_twitter_link": "https://x.com/veloxshoes",
+    "social_tiktok_link": "https://tiktok.com/@veloxshoes",
+    "social_youtube_link": "",
+    "social_pinterest_link": "https://pinterest.com/veloxshoes",
+    "predictive_search_enabled": true,
+    "predictive_search_results": 6,
+    "show_popular_searches": true,
+    "popular_search_1": "Sneakers",
+    "popular_search_2": "Botas",
+    "popular_search_3": "Sandalias",
+    "popular_search_4": "Ofertas",
+    "sections": {
+      "header": {
+        "type": "header",
+        "settings": {
+          "layout_style": "standard",
+          "color_scheme": "light",
+          "logo_width": 120,
+          "menu": "main-menu",
+          "sticky_header": true,
+          "hide_on_scroll": false,
+          "show_cta": false,
+          "cta_text": "Comprar ahora",
+          "cta_link": "",
+          "show_announcement": true,
+          "announcement_style": "dark",
+          "announcement_text": "Envio gratis en compras mayores a $2,000 MXN | Devoluciones gratuitas 30 dias",
+          "announcement_link": ""
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "blocks": {
+          "menu_1": {
+            "type": "menu",
+            "settings": {
+              "heading": "Tienda",
+              "menu": "main-menu"
+            }
+          },
+          "menu_2": {
+            "type": "menu",
+            "settings": {
+              "heading": "Informacion",
+              "menu": "footer"
+            }
+          },
+          "menu_3": {
+            "type": "menu",
+            "settings": {
+              "heading": "Ayuda",
+              "menu": "footer"
+            }
+          },
+          "menu_4": {
+            "type": "menu",
+            "settings": {
+              "heading": "Legal",
+              "menu": "footer"
+            }
+          }
+        },
+        "block_order": ["menu_1", "menu_2", "menu_3", "menu_4"],
+        "settings": {
+          "layout_style": "columns",
+          "color_scheme": "dark",
+          "show_newsletter": true,
+          "newsletter_heading": "Unete a nuestra comunidad",
+          "newsletter_text": "Suscribete y recibe 10% de descuento en tu primera compra, ademas de ofertas exclusivas y novedades.",
+          "show_social_icons": true,
+          "social_facebook": "https://facebook.com/veloxshoes",
+          "social_instagram": "https://instagram.com/veloxshoes",
+          "social_twitter": "https://x.com/veloxshoes",
+          "social_tiktok": "https://tiktok.com/@veloxshoes",
+          "social_youtube": "",
+          "social_pinterest": "https://pinterest.com/veloxshoes",
+          "show_country_selector": true,
+          "show_payment_icons": true,
+          "show_theme_credit": true
+        }
+      }
+    },
+    "content_for_index": []
+  },
+  "presets": {
+    "Default": {
+      "type_primary_font": "work_sans_n4",
+      "type_secondary_font": "work_sans_n6",
+      "max_page_width": "90rem",
+      "min_page_margin": 20,
+      "background_color": "#FFFFFF",
+      "foreground_color": "#1a1a1a",
+      "accent_color": "#000000",
+      "accent_foreground": "#FFFFFF",
+      "secondary_color": "#f5f5f5",
+      "input_corner_radius": 4,
+      "show_free_shipping_bar": true,
+      "free_shipping_threshold": 2000,
+      "predictive_search_enabled": true,
+      "predictive_search_results": 6,
+      "show_popular_searches": true,
+      "popular_search_1": "Sneakers",
+      "popular_search_2": "Boots",
+      "popular_search_3": "Sandals",
+      "popular_search_4": "Sale"
+    }
+  }
 }
