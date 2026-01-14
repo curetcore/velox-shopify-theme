@@ -1,0 +1,530 @@
+{% comment %}
+  Velox Login Section
+  Formulario de inicio de sesión con diseño profesional.
+  CSS responsivo nativo (no depende de clases Tailwind compiladas).
+{% endcomment %}
+
+{% style %}
+  /* ========== LOGIN BASE STYLES ========== */
+  .velox-login {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 3rem 1.5rem;
+    background-color: #f9fafb;
+  }
+
+  .velox-login--dark {
+    background-color: #111827;
+  }
+
+  /* ========== LOGIN CONTAINER ========== */
+  .velox-login-container {
+    width: 100%;
+    max-width: 24rem;
+    margin: 0 auto;
+  }
+
+  /* ========== LOGIN HEADER ========== */
+  .velox-login-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .velox-login-logo {
+    height: 2.5rem;
+    width: auto;
+    margin: 0 auto 2rem;
+  }
+
+  .velox-login-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: #111827;
+  }
+
+  @media (min-width: 640px) {
+    .velox-login-title {
+      font-size: 1.875rem;
+    }
+  }
+
+  .velox-login--dark .velox-login-title {
+    color: #ffffff;
+  }
+
+  /* ========== LOGIN CARD ========== */
+  .velox-login-card {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  }
+
+  @media (min-width: 640px) {
+    .velox-login-card {
+      padding: 2.5rem;
+    }
+  }
+
+  .velox-login--dark .velox-login-card {
+    background-color: #1f2937;
+  }
+
+  /* ========== FORM STYLES ========== */
+  .velox-login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .velox-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .velox-form-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+  }
+
+  .velox-login--dark .velox-form-label {
+    color: #d1d5db;
+  }
+
+  .velox-form-input {
+    display: block;
+    width: 100%;
+    padding: 0.625rem 0.875rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #111827;
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .velox-form-input:focus {
+    outline: none;
+    border-color: var(--color-accent, #4f46e5);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  }
+
+  .velox-form-input::placeholder {
+    color: #9ca3af;
+  }
+
+  .velox-login--dark .velox-form-input {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+  }
+
+  .velox-login--dark .velox-form-input:focus {
+    border-color: var(--color-accent, #6366f1);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+  }
+
+  .velox-login--dark .velox-form-input::placeholder {
+    color: #6b7280;
+  }
+
+  /* ========== PASSWORD ROW ========== */
+  .velox-form-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .velox-forgot-link {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-accent, #4f46e5);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .velox-forgot-link:hover {
+    color: var(--color-accent-hover, #4338ca);
+  }
+
+  .velox-login--dark .velox-forgot-link {
+    color: #818cf8;
+  }
+
+  .velox-login--dark .velox-forgot-link:hover {
+    color: #a5b4fc;
+  }
+
+  /* ========== SUBMIT BUTTON ========== */
+  .velox-login-submit {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: var(--color-accent, #4f46e5);
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+  }
+
+  .velox-login-submit:hover {
+    background-color: var(--color-accent-hover, #4338ca);
+  }
+
+  .velox-login-submit:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.3);
+  }
+
+  /* ========== REGISTER LINK ========== */
+  .velox-login-footer {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+
+  .velox-login--dark .velox-login-footer {
+    color: #9ca3af;
+  }
+
+  .velox-register-link {
+    font-weight: 600;
+    color: var(--color-accent, #4f46e5);
+    text-decoration: none;
+    margin-left: 0.25rem;
+    transition: color 0.15s ease;
+  }
+
+  .velox-register-link:hover {
+    color: var(--color-accent-hover, #4338ca);
+  }
+
+  .velox-login--dark .velox-register-link {
+    color: #818cf8;
+  }
+
+  .velox-login--dark .velox-register-link:hover {
+    color: #a5b4fc;
+  }
+
+  /* ========== ERROR MESSAGES ========== */
+  .velox-form-errors {
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .velox-login--dark .velox-form-errors {
+    background-color: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.3);
+  }
+
+  .velox-form-errors-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .velox-form-errors-list li {
+    font-size: 0.875rem;
+    color: #dc2626;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .velox-login--dark .velox-form-errors-list li {
+    color: #f87171;
+  }
+
+  .velox-error-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+  }
+
+  /* ========== GUEST CHECKOUT ========== */
+  .velox-guest-checkout {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+    text-align: center;
+  }
+
+  .velox-login--dark .velox-guest-checkout {
+    border-top-color: #374151;
+  }
+
+  .velox-guest-checkout p {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 1rem;
+  }
+
+  .velox-login--dark .velox-guest-checkout p {
+    color: #9ca3af;
+  }
+
+  .velox-guest-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.625rem 1.25rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+
+  .velox-guest-button:hover {
+    background-color: #f9fafb;
+    border-color: #9ca3af;
+  }
+
+  .velox-login--dark .velox-guest-button {
+    color: #d1d5db;
+    background-color: transparent;
+    border-color: #4b5563;
+  }
+
+  .velox-login--dark .velox-guest-button:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: #6b7280;
+  }
+{% endstyle %}
+
+<div class="velox-login{% if section.settings.color_scheme == 'dark' %} velox-login--dark{% endif %}">
+  <div class="velox-login-container">
+    {%- comment -%} Header con logo y título {%- endcomment -%}
+    <div class="velox-login-header">
+      {%- if section.settings.show_logo -%}
+        {%- if shop.brand.logo -%}
+          <img
+            src="{{ shop.brand.logo | image_url: width: 200 }}"
+            alt="{{ shop.name }}"
+            class="velox-login-logo"
+            width="200"
+            height="auto"
+            loading="lazy"
+          >
+        {%- else -%}
+          <a href="{{ routes.root_url }}" style="font-size: 1.5rem; font-weight: 700; color: var(--color-accent, #4f46e5); text-decoration: none;">
+            {{ shop.name }}
+          </a>
+        {%- endif -%}
+      {%- endif -%}
+
+      <h1 class="velox-login-title">{{ 'customer.login.title' | t }}</h1>
+    </div>
+
+    {%- comment -%} Card con formulario {%- endcomment -%}
+    <div class="velox-login-card">
+      {%- comment -%} Mostrar errores si existen {%- endcomment -%}
+      {%- form 'customer_login', novalidate: 'novalidate' -%}
+        {%- if form.errors -%}
+          <div class="velox-form-errors">
+            <ul class="velox-form-errors-list">
+              {%- for field in form.errors -%}
+                <li>
+                  <svg class="velox-error-icon" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd"/>
+                  </svg>
+                  <span>{{ form.errors.messages[field] }}</span>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+
+        <div class="velox-login-form">
+          {%- comment -%} Email {%- endcomment -%}
+          <div class="velox-form-group">
+            <label for="CustomerEmail" class="velox-form-label">
+              {{ 'customer.login.email' | t }}
+            </label>
+            <input
+              type="email"
+              id="CustomerEmail"
+              name="customer[email]"
+              autocomplete="email"
+              autocapitalize="off"
+              autocorrect="off"
+              required
+              class="velox-form-input"
+              {% if form.errors contains 'form' %}
+                aria-invalid="true"
+              {% endif %}
+            >
+          </div>
+
+          {%- comment -%} Password {%- endcomment -%}
+          <div class="velox-form-group">
+            <div class="velox-form-row">
+              <label for="CustomerPassword" class="velox-form-label">
+                {{ 'customer.login.password' | t }}
+              </label>
+              <a href="#recover" class="velox-forgot-link" id="RecoverPassword">
+                {{ 'customer.login.forgot_password' | t }}
+              </a>
+            </div>
+            <input
+              type="password"
+              id="CustomerPassword"
+              name="customer[password]"
+              autocomplete="current-password"
+              required
+              class="velox-form-input"
+            >
+          </div>
+
+          {%- comment -%} Submit {%- endcomment -%}
+          <button type="submit" class="velox-login-submit">
+            {{ 'customer.login.submit' | t }}
+          </button>
+        </div>
+      {%- endform -%}
+
+      {%- comment -%} Recover password form (hidden by default) {%- endcomment -%}
+      <div id="recover" style="display: none;">
+        {%- form 'recover_customer_password' -%}
+          <div class="velox-login-form">
+            <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 1rem;">
+              {{ 'customer.recover_password.subtitle' | t }}
+            </p>
+
+            {%- if form.posted_successfully? -%}
+              <div style="background-color: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 1rem;">
+                <p style="font-size: 0.875rem; color: #059669;">
+                  {{ 'customer.recover_password.success' | t }}
+                </p>
+              </div>
+            {%- endif -%}
+
+            <div class="velox-form-group">
+              <label for="RecoverEmail" class="velox-form-label">
+                {{ 'customer.login.email' | t }}
+              </label>
+              <input
+                type="email"
+                id="RecoverEmail"
+                name="email"
+                autocomplete="email"
+                autocapitalize="off"
+                autocorrect="off"
+                required
+                class="velox-form-input"
+              >
+            </div>
+
+            <button type="submit" class="velox-login-submit">
+              {{ 'customer.recover_password.submit' | t }}
+            </button>
+
+            <button type="button" class="velox-guest-button" id="HideRecoverPasswordLink" style="width: 100%;">
+              {{ 'customer.recover_password.cancel' | t }}
+            </button>
+          </div>
+        {%- endform -%}
+      </div>
+
+      {%- comment -%} Link a registro {%- endcomment -%}
+      <p class="velox-login-footer">
+        {{ 'customer.login.no_account' | t }}
+        <a href="{{ routes.account_register_url }}" class="velox-register-link">
+          {{ 'customer.login.create_account' | t }}
+        </a>
+      </p>
+
+      {%- comment -%} Guest checkout (opcional) {%- endcomment -%}
+      {%- if section.settings.show_guest_checkout and checkout.guest_login -%}
+        <div class="velox-guest-checkout">
+          <p>{{ 'customer.login.guest_title' | t }}</p>
+          <a href="{{ routes.root_url }}/checkout" class="velox-guest-button">
+            {{ 'customer.login.guest_continue' | t }}
+          </a>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const recoverPasswordLink = document.getElementById('RecoverPassword');
+    const hideRecoverPasswordLink = document.getElementById('HideRecoverPasswordLink');
+    const recoverPasswordForm = document.getElementById('recover');
+    const loginForm = recoverPasswordForm ? recoverPasswordForm.previousElementSibling : null;
+
+    if (recoverPasswordLink && recoverPasswordForm && loginForm) {
+      recoverPasswordLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        loginForm.style.display = 'none';
+        recoverPasswordForm.style.display = 'block';
+      });
+    }
+
+    if (hideRecoverPasswordLink && recoverPasswordForm && loginForm) {
+      hideRecoverPasswordLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        recoverPasswordForm.style.display = 'none';
+        loginForm.style.display = 'block';
+      });
+    }
+
+    // Mostrar formulario de recuperación si hay hash #recover
+    if (window.location.hash === '#recover' && recoverPasswordForm && loginForm) {
+      loginForm.style.display = 'none';
+      recoverPasswordForm.style.display = 'block';
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Login",
+  "tag": "section",
+  "class": "section-login",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_logo",
+      "label": "Mostrar logo",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_guest_checkout",
+      "label": "Mostrar opción de guest checkout",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Esquema de color",
+      "options": [
+        { "value": "light", "label": "Claro" },
+        { "value": "dark", "label": "Oscuro" }
+      ],
+      "default": "light"
+    }
+  ]
+}
+{% endschema %}

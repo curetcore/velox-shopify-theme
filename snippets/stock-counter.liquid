@@ -1,0 +1,242 @@
+{% comment %}
+  Velox Stock Counter
+
+  Muestra el estado del inventario de un producto/variante.
+  Incluye indicadores visuales de urgencia y escasez.
+
+  Uso:
+  {% render 'stock-counter',
+    product: product,
+    variant: product.selected_or_first_available_variant,
+    threshold: 10,
+    style: 'badge',
+    show_quantity: true
+  %}
+
+  Parámetros:
+  - product: (requerido) El objeto producto
+  - variant: (opcional) Variante específica, default: primera disponible
+  - threshold: (opcional) Umbral para "low stock", default: 10
+  - style: (opcional) 'badge' | 'bar' | 'text' | 'compact', default: 'badge'
+  - show_quantity: (opcional) Mostrar número exacto, default: true
+  - urgent_threshold: (opcional) Umbral para "urgente", default: 5
+  - class: (opcional) Clases CSS adicionales
+{% endcomment %}
+
+{%- liquid
+  assign variant = variant | default: product.selected_or_first_available_variant
+  assign threshold = threshold | default: 10
+  assign urgent_threshold = urgent_threshold | default: 5
+  assign style = style | default: 'badge'
+  assign show_quantity = show_quantity | default: true
+  assign additional_class = class | default: ''
+
+  # Verificar si el inventario está habilitado
+  if variant.inventory_management == blank
+    assign tracking_enabled = false
+  else
+    assign tracking_enabled = true
+  endif
+
+  # Obtener cantidad disponible
+  assign quantity = variant.inventory_quantity
+  assign policy = variant.inventory_policy
+
+  # Determinar estado del stock
+  if variant.available == false
+    assign stock_status = 'sold_out'
+    assign status_color = 'red'
+    assign urgency_level = 'critical'
+  elsif tracking_enabled == false
+    assign stock_status = 'in_stock'
+    assign status_color = 'green'
+    assign urgency_level = 'normal'
+  elsif quantity <= 0 and policy == 'continue'
+    assign stock_status = 'backorder'
+    assign status_color = 'yellow'
+    assign urgency_level = 'warning'
+  elsif quantity <= urgent_threshold
+    assign stock_status = 'very_low'
+    assign status_color = 'red'
+    assign urgency_level = 'critical'
+  elsif quantity <= threshold
+    assign stock_status = 'low'
+    assign status_color = 'yellow'
+    assign urgency_level = 'warning'
+  else
+    assign stock_status = 'in_stock'
+    assign status_color = 'green'
+    assign urgency_level = 'normal'
+  endif
+
+  # Calcular porcentaje para barra de progreso (asumiendo máximo de threshold * 2)
+  assign max_display = threshold | times: 2
+  if quantity > max_display
+    assign bar_percentage = 100
+  elsif quantity <= 0
+    assign bar_percentage = 0
+  else
+    assign bar_percentage = quantity | times: 100 | divided_by: max_display
+  endif
+
+  # Clases de color según estado
+  case status_color
+    when 'red'
+      assign bg_class = 'tw-bg-red-100'
+      assign text_class = 'tw-text-red-800'
+      assign dot_class = 'tw-bg-red-500'
+      assign bar_bg_class = 'tw-bg-red-500'
+      assign border_class = 'tw-border-red-200'
+    when 'yellow'
+      assign bg_class = 'tw-bg-yellow-100'
+      assign text_class = 'tw-text-yellow-800'
+      assign dot_class = 'tw-bg-yellow-500'
+      assign bar_bg_class = 'tw-bg-yellow-500'
+      assign border_class = 'tw-border-yellow-200'
+    else
+      assign bg_class = 'tw-bg-green-100'
+      assign text_class = 'tw-text-green-800'
+      assign dot_class = 'tw-bg-green-500'
+      assign bar_bg_class = 'tw-bg-green-500'
+      assign border_class = 'tw-border-green-200'
+  endcase
+-%}
+
+{% if style == 'badge' %}
+  {%- comment -%} Estilo badge: Compacto con icono y texto {%- endcomment -%}
+  <div class="tw-inline-flex tw-items-center tw-gap-1.5 tw-rounded-full tw-px-2.5 tw-py-1 tw-text-xs tw-font-medium {{ bg_class }} {{ text_class }} {{ additional_class }}">
+    {%- comment -%} Indicador de punto animado para urgencia {%- endcomment -%}
+    {% if urgency_level == 'critical' %}
+      <span class="tw-relative tw-flex tw-h-2 tw-w-2">
+        <span class="tw-animate-ping tw-absolute tw-inline-flex tw-h-full tw-w-full tw-rounded-full {{ dot_class }} tw-opacity-75"></span>
+        <span class="tw-relative tw-inline-flex tw-rounded-full tw-h-2 tw-w-2 {{ dot_class }}"></span>
+      </span>
+    {% else %}
+      <span class="tw-h-2 tw-w-2 tw-rounded-full {{ dot_class }}"></span>
+    {% endif %}
+
+    {%- comment -%} Texto según estado {%- endcomment -%}
+    {% case stock_status %}
+      {% when 'sold_out' %}
+        {{ 'products.product.sold_out' | t }}
+      {% when 'backorder' %}
+        {{ 'products.stock.backorder' | t }}
+      {% when 'very_low' %}
+        {% if show_quantity %}
+          {{ 'products.stock.only_left' | t: count: quantity }}
+        {% else %}
+          {{ 'products.stock.selling_fast' | t }}
+        {% endif %}
+      {% when 'low' %}
+        {% if show_quantity %}
+          {{ 'products.stock.low_stock_count' | t: count: quantity }}
+        {% else %}
+          {{ 'products.stock.low_stock' | t }}
+        {% endif %}
+      {% else %}
+        {{ 'products.product.in_stock' | t }}
+    {% endcase %}
+  </div>
+
+{% elsif style == 'bar' %}
+  {%- comment -%} Estilo barra: Barra de progreso con texto {%- endcomment -%}
+  <div class="tw-space-y-1.5 {{ additional_class }}">
+    {%- comment -%} Texto de estado {%- endcomment -%}
+    <div class="tw-flex tw-items-center tw-justify-between tw-text-sm">
+      <span class="{{ text_class }} tw-font-medium">
+        {% case stock_status %}
+          {% when 'sold_out' %}
+            {{ 'products.product.sold_out' | t }}
+          {% when 'backorder' %}
+            {{ 'products.stock.backorder' | t }}
+          {% when 'very_low' %}
+            {{ 'products.stock.selling_fast' | t }}
+          {% when 'low' %}
+            {{ 'products.stock.low_stock' | t }}
+          {% else %}
+            {{ 'products.product.in_stock' | t }}
+        {% endcase %}
+      </span>
+      {% if show_quantity and tracking_enabled and stock_status != 'sold_out' %}
+        <span class="tw-text-velox-500">
+          {{ 'products.stock.units_left' | t: count: quantity }}
+        </span>
+      {% endif %}
+    </div>
+
+    {%- comment -%} Barra de progreso {%- endcomment -%}
+    <div class="tw-h-2 tw-w-full tw-overflow-hidden tw-rounded-full tw-bg-velox-100">
+      <div
+        class="tw-h-full tw-rounded-full tw-transition-all tw-duration-500 {{ bar_bg_class }}"
+        style="width: {{ bar_percentage }}%"
+        role="progressbar"
+        aria-valuenow="{{ quantity }}"
+        aria-valuemin="0"
+        aria-valuemax="{{ max_display }}"
+      ></div>
+    </div>
+  </div>
+
+{% elsif style == 'text' %}
+  {%- comment -%} Estilo texto: Solo texto con icono {%- endcomment -%}
+  <div class="tw-flex tw-items-center tw-gap-2 {{ additional_class }}">
+    {% if stock_status == 'sold_out' %}
+      {% render 'icon', name: 'x-circle', class: 'tw-w-5 tw-h-5 tw-text-red-500' %}
+      <span class="tw-text-sm tw-font-medium tw-text-red-600">
+        {{ 'products.product.sold_out' | t }}
+      </span>
+    {% elsif stock_status == 'very_low' or stock_status == 'low' %}
+      {% render 'icon', name: 'exclamation-triangle', class: 'tw-w-5 tw-h-5 ' | append: text_class %}
+      <span class="tw-text-sm {{ text_class }}">
+        {% if show_quantity %}
+          {{ 'products.stock.hurry_only_left' | t: count: quantity }}
+        {% else %}
+          {{ 'products.stock.selling_fast' | t }}
+        {% endif %}
+      </span>
+    {% elsif stock_status == 'backorder' %}
+      {% render 'icon', name: 'clock', class: 'tw-w-5 tw-h-5 tw-text-yellow-500' %}
+      <span class="tw-text-sm tw-text-yellow-700">
+        {{ 'products.stock.backorder' | t }}
+      </span>
+    {% else %}
+      {% render 'icon', name: 'check-circle', class: 'tw-w-5 tw-h-5 tw-text-green-500' %}
+      <span class="tw-text-sm tw-text-green-700">
+        {{ 'products.product.in_stock' | t }}
+      </span>
+    {% endif %}
+  </div>
+
+{% elsif style == 'compact' %}
+  {%- comment -%} Estilo compacto: Solo punto de color con tooltip {%- endcomment -%}
+  <div
+    class="tw-group tw-relative tw-inline-flex tw-items-center {{ additional_class }}"
+    title="{% case stock_status %}{% when 'sold_out' %}{{ 'products.product.sold_out' | t }}{% when 'backorder' %}{{ 'products.stock.backorder' | t }}{% when 'very_low' %}{{ 'products.stock.only_left' | t: count: quantity }}{% when 'low' %}{{ 'products.stock.low_stock' | t }}{% else %}{{ 'products.product.in_stock' | t }}{% endcase %}"
+  >
+    {% if urgency_level == 'critical' %}
+      <span class="tw-relative tw-flex tw-h-3 tw-w-3">
+        <span class="tw-animate-ping tw-absolute tw-inline-flex tw-h-full tw-w-full tw-rounded-full {{ dot_class }} tw-opacity-75"></span>
+        <span class="tw-relative tw-inline-flex tw-rounded-full tw-h-3 tw-w-3 {{ dot_class }}"></span>
+      </span>
+    {% else %}
+      <span class="tw-h-3 tw-w-3 tw-rounded-full {{ dot_class }}"></span>
+    {% endif %}
+
+    {%- comment -%} Tooltip {%- endcomment -%}
+    <div class="tw-invisible tw-absolute tw-bottom-full tw-left-1/2 tw-z-10 tw-mb-2 tw--translate-x-1/2 tw-whitespace-nowrap tw-rounded tw-bg-velox-900 tw-px-2 tw-py-1 tw-text-xs tw-text-white tw-opacity-0 tw-transition-opacity group-hover:tw-visible group-hover:tw-opacity-100">
+      {% case stock_status %}
+        {% when 'sold_out' %}
+          {{ 'products.product.sold_out' | t }}
+        {% when 'backorder' %}
+          {{ 'products.stock.backorder' | t }}
+        {% when 'very_low' %}
+          {{ 'products.stock.only_left' | t: count: quantity }}
+        {% when 'low' %}
+          {{ 'products.stock.low_stock' | t }}
+        {% else %}
+          {{ 'products.product.in_stock' | t }}
+      {% endcase %}
+      <div class="tw-absolute tw-left-1/2 tw-top-full tw--translate-x-1/2 tw-border-4 tw-border-transparent tw-border-t-velox-900"></div>
+    </div>
+  </div>
+{% endif %}

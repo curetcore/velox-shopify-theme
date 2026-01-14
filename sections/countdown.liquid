@@ -1,0 +1,238 @@
+{% comment %}
+  Velox Countdown Section
+  Contador regresivo para ventas, lanzamientos o eventos especiales.
+{% endcomment %}
+
+{% liquid
+  assign end_date = section.settings.end_date
+  assign end_time = section.settings.end_time | default: '00:00'
+  assign datetime = end_date | append: 'T' | append: end_time | append: ':00'
+%}
+
+<section class="tw-py-12 md:tw-py-16 lg:tw-py-20 {% if section.settings.background_style == 'dark' %}tw-bg-velox-900{% elsif section.settings.background_style == 'accent' %}tw-bg-velox-accent{% elsif section.settings.background_style == 'secondary' %}tw-bg-velox-50{% endif %}">
+  <div class="tw-max-w-7xl tw-mx-auto tw-px-4 sm:tw-px-6 lg:tw-px-8">
+    <div class="tw-flex tw-flex-col lg:tw-flex-row tw-items-center tw-justify-between tw-gap-8 lg:tw-gap-12">
+      {%- comment -%} Contenido de texto {%- endcomment -%}
+      <div class="tw-text-center lg:tw-text-left lg:tw-flex-1">
+        {% if section.settings.eyebrow != blank %}
+          <p class="tw-text-sm tw-font-semibold tw-uppercase tw-tracking-wider tw-mb-3 {% if section.settings.background_style == 'dark' or section.settings.background_style == 'accent' %}tw-text-white/80{% else %}tw-text-velox-accent{% endif %}">
+            {{ section.settings.eyebrow }}
+          </p>
+        {% endif %}
+
+        {% if section.settings.title != blank %}
+          <h2 class="tw-text-2xl md:tw-text-3xl lg:tw-text-4xl tw-font-bold {% if section.settings.background_style == 'dark' or section.settings.background_style == 'accent' %}tw-text-white{% else %}tw-text-velox-900{% endif %}">
+            {{ section.settings.title }}
+          </h2>
+        {% endif %}
+
+        {% if section.settings.description != blank %}
+          <p class="tw-mt-4 tw-text-base md:tw-text-lg {% if section.settings.background_style == 'dark' or section.settings.background_style == 'accent' %}tw-text-white/80{% else %}tw-text-velox-600{% endif %}">
+            {{ section.settings.description }}
+          </p>
+        {% endif %}
+
+        {% if section.settings.button_label != blank %}
+          <div class="tw-mt-6">
+            <a
+              href="{{ section.settings.button_link }}"
+              class="tw-btn {% if section.settings.background_style == 'dark' or section.settings.background_style == 'accent' %}tw-bg-white tw-text-velox-900 hover:tw-bg-white/90{% else %}tw-btn-primary{% endif %}"
+            >
+              {{ section.settings.button_label }}
+            </a>
+          </div>
+        {% endif %}
+      </div>
+
+      {%- comment -%} Contador {%- endcomment -%}
+      <div class="velox-countdown lg:tw-flex-1" data-countdown data-end-date="{{ datetime }}">
+        <div class="tw-flex tw-items-center tw-justify-center tw-gap-3 md:tw-gap-4">
+          {%- comment -%} Días {%- endcomment -%}
+          <div class="tw-text-center">
+            <div class="tw-w-16 md:tw-w-20 lg:tw-w-24 tw-h-16 md:tw-h-20 lg:tw-h-24 tw-rounded-xl tw-flex tw-items-center tw-justify-center {% if section.settings.background_style == 'dark' or section.settings.background_style == 'accent' %}tw-bg-white/10{% else %}tw-bg-velox-900{% endif %}">
+              <span class="velox-countdown__days tw-text-2xl md:tw-text-3xl lg:tw-text-4xl tw-font-bold {% if section.settings.background_style == 'dark' or section.settings.background_style == 'accent' %}tw-text-white{% else %}tw-text-white{% endif %}">00</span>
+            </div>
+            <p class="tw-mt-2 tw-text-xs md:tw-text-sm tw-font-medium {% if section.settings.background_style == 'dark' or section.settings.background_style == 'accent' %}tw-text-white/70{% else %}tw-text-velox-500{% endif %}">
+              {{ 'sections.countdown.days' | t | default: 'Días' }}
+            </p>
+          </div>
+
+          <span class="tw-text-2xl md:tw-text-3xl tw-font-bold {% if section.settings.background_style == 'dark' or section.settings.background_style == 'accent' %}tw-text-white/50{% else %}tw-text-velox-300{% endif %}">:</span>
+
+          {%- comment -%} Horas {%- endcomment -%}
+          <div class="tw-text-center">
+            <div class="tw-w-16 md:tw-w-20 lg:tw-w-24 tw-h-16 md:tw-h-20 lg:tw-h-24 tw-rounded-xl tw-flex tw-items-center tw-justify-center {% if section.settings.background_style == 'dark' or section.settings.background_style == 'accent' %}tw-bg-white/10{% else %}tw-bg-velox-900{% endif %}">
+              <span class="velox-countdown__hours tw-text-2xl md:tw-text-3xl lg:tw-text-4xl tw-font-bold {% if section.settings.background_style == 'dark' or section.settings.background_style == 'accent' %}tw-text-white{% else %}tw-text-white{% endif %}">00</span>
+            </div>
+            <p class="tw-mt-2 tw-text-xs md:tw-text-sm tw-font-medium {% if section.settings.background_style == 'dark' or section.settings.background_style == 'accent' %}tw-text-white/70{% else %}tw-text-velox-500{% endif %}">
+              {{ 'sections.countdown.hours' | t | default: 'Horas' }}
+            </p>
+          </div>
+
+          <span class="tw-text-2xl md:tw-text-3xl tw-font-bold {% if section.settings.background_style == 'dark' or section.settings.background_style == 'accent' %}tw-text-white/50{% else %}tw-text-velox-300{% endif %}">:</span>
+
+          {%- comment -%} Minutos {%- endcomment -%}
+          <div class="tw-text-center">
+            <div class="tw-w-16 md:tw-w-20 lg:tw-w-24 tw-h-16 md:tw-h-20 lg:tw-h-24 tw-rounded-xl tw-flex tw-items-center tw-justify-center {% if section.settings.background_style == 'dark' or section.settings.background_style == 'accent' %}tw-bg-white/10{% else %}tw-bg-velox-900{% endif %}">
+              <span class="velox-countdown__minutes tw-text-2xl md:tw-text-3xl lg:tw-text-4xl tw-font-bold {% if section.settings.background_style == 'dark' or section.settings.background_style == 'accent' %}tw-text-white{% else %}tw-text-white{% endif %}">00</span>
+            </div>
+            <p class="tw-mt-2 tw-text-xs md:tw-text-sm tw-font-medium {% if section.settings.background_style == 'dark' or section.settings.background_style == 'accent' %}tw-text-white/70{% else %}tw-text-velox-500{% endif %}">
+              {{ 'sections.countdown.minutes' | t | default: 'Minutos' }}
+            </p>
+          </div>
+
+          <span class="tw-text-2xl md:tw-text-3xl tw-font-bold {% if section.settings.background_style == 'dark' or section.settings.background_style == 'accent' %}tw-text-white/50{% else %}tw-text-velox-300{% endif %}">:</span>
+
+          {%- comment -%} Segundos {%- endcomment -%}
+          <div class="tw-text-center">
+            <div class="tw-w-16 md:tw-w-20 lg:tw-w-24 tw-h-16 md:tw-h-20 lg:tw-h-24 tw-rounded-xl tw-flex tw-items-center tw-justify-center {% if section.settings.background_style == 'dark' or section.settings.background_style == 'accent' %}tw-bg-white/10{% else %}tw-bg-velox-900{% endif %}">
+              <span class="velox-countdown__seconds tw-text-2xl md:tw-text-3xl lg:tw-text-4xl tw-font-bold {% if section.settings.background_style == 'dark' or section.settings.background_style == 'accent' %}tw-text-white{% else %}tw-text-white{% endif %}">00</span>
+            </div>
+            <p class="tw-mt-2 tw-text-xs md:tw-text-sm tw-font-medium {% if section.settings.background_style == 'dark' or section.settings.background_style == 'accent' %}tw-text-white/70{% else %}tw-text-velox-500{% endif %}">
+              {{ 'sections.countdown.seconds' | t | default: 'Segundos' }}
+            </p>
+          </div>
+        </div>
+
+        {%- comment -%} Mensaje cuando termina {%- endcomment -%}
+        <div class="velox-countdown__ended tw-hidden tw-text-center tw-py-8">
+          <p class="tw-text-xl md:tw-text-2xl tw-font-bold {% if section.settings.background_style == 'dark' or section.settings.background_style == 'accent' %}tw-text-white{% else %}tw-text-velox-900{% endif %}">
+            {{ section.settings.ended_message | default: '¡La oferta ha terminado!' }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const countdowns = document.querySelectorAll('[data-countdown]');
+
+    countdowns.forEach(function(countdown) {
+      const endDate = new Date(countdown.dataset.endDate).getTime();
+      const daysEl = countdown.querySelector('.velox-countdown__days');
+      const hoursEl = countdown.querySelector('.velox-countdown__hours');
+      const minutesEl = countdown.querySelector('.velox-countdown__minutes');
+      const secondsEl = countdown.querySelector('.velox-countdown__seconds');
+      const endedEl = countdown.querySelector('.velox-countdown__ended');
+
+      function updateCountdown() {
+        const now = new Date().getTime();
+        const distance = endDate - now;
+
+        if (distance < 0) {
+          // El countdown ha terminado
+          if (endedEl) {
+            endedEl.classList.remove('tw-hidden');
+            endedEl.previousElementSibling.classList.add('tw-hidden');
+          }
+          return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        if (daysEl) daysEl.textContent = String(days).padStart(2, '0');
+        if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
+        if (minutesEl) minutesEl.textContent = String(minutes).padStart(2, '0');
+        if (secondsEl) secondsEl.textContent = String(seconds).padStart(2, '0');
+      }
+
+      // Actualizar inmediatamente y luego cada segundo
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Countdown",
+  "tag": "section",
+  "class": "velox-countdown-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Texto superior",
+      "default": "Oferta especial"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "default": "¡No te lo pierdas!"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Descripción",
+      "default": "Aprovecha hasta 50% de descuento en productos seleccionados."
+    },
+    {
+      "type": "header",
+      "content": "Fecha límite"
+    },
+    {
+      "type": "text",
+      "id": "end_date",
+      "label": "Fecha de finalización",
+      "info": "Formato: YYYY-MM-DD (ej: 2024-12-31)",
+      "placeholder": "2024-12-31"
+    },
+    {
+      "type": "text",
+      "id": "end_time",
+      "label": "Hora de finalización",
+      "info": "Formato: HH:MM en 24h (ej: 23:59)",
+      "default": "23:59"
+    },
+    {
+      "type": "text",
+      "id": "ended_message",
+      "label": "Mensaje al terminar",
+      "default": "¡La oferta ha terminado!"
+    },
+    {
+      "type": "header",
+      "content": "Botón"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Texto del botón",
+      "default": "Ver ofertas"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Enlace del botón"
+    },
+    {
+      "type": "header",
+      "content": "Estilo"
+    },
+    {
+      "type": "select",
+      "id": "background_style",
+      "label": "Estilo de fondo",
+      "options": [
+        { "value": "transparent", "label": "Transparente" },
+        { "value": "secondary", "label": "Secundario" },
+        { "value": "dark", "label": "Oscuro" },
+        { "value": "accent", "label": "Color de acento" }
+      ],
+      "default": "dark"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Countdown",
+      "category": "Hero"
+    }
+  ]
+}
+{% endschema %}

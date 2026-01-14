@@ -1,0 +1,181 @@
+{% comment %}
+  Velox Featured Collection Section
+  Muestra productos de una colección seleccionada en grid.
+{% endcomment %}
+
+<section class="tw-py-12 md:tw-py-16 lg:tw-py-20">
+  <div class="tw-max-w-7xl tw-mx-auto tw-px-4 sm:tw-px-6 lg:tw-px-8">
+    {%- comment -%} Header de la sección {%- endcomment -%}
+    {% if section.settings.title != blank or section.settings.description != blank %}
+      <div class="tw-text-center tw-mb-10">
+        {% if section.settings.title != blank %}
+          <h2 class="tw-text-2xl md:tw-text-3xl lg:tw-text-4xl tw-font-bold tw-text-velox-900">
+            {{ section.settings.title }}
+          </h2>
+        {% endif %}
+
+        {% if section.settings.description != blank %}
+          <p class="tw-mt-4 tw-text-velox-600 tw-max-w-2xl tw-mx-auto">
+            {{ section.settings.description }}
+          </p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {%- comment -%} Grid de productos {%- endcomment -%}
+    {% if section.settings.collection != blank %}
+      {% assign collection = section.settings.collection %}
+      {% assign products_to_show = section.settings.products_to_show | default: 4 %}
+
+      <div class="tw-grid tw-grid-cols-2 md:tw-grid-cols-3 lg:tw-grid-cols-{{ section.settings.columns }} tw-gap-4 md:tw-gap-6 lg:tw-gap-8">
+        {% for product in collection.products limit: products_to_show %}
+          {% render 'product-card',
+            product: product,
+            show_vendor: section.settings.show_vendor,
+            show_quick_view: section.settings.show_quick_view,
+            show_swatches: section.settings.show_swatches,
+            show_second_image: section.settings.show_second_image
+          %}
+        {% endfor %}
+      </div>
+
+      {%- comment -%} Botón ver colección {%- endcomment -%}
+      {% if section.settings.show_view_all and collection.products.size > products_to_show %}
+        <div class="tw-mt-10 tw-text-center">
+          {% render 'button',
+            label: section.settings.button_text | default: 'Ver colección',
+            href: collection.url,
+            style: section.settings.button_style,
+            size: 'lg'
+          %}
+        </div>
+      {% endif %}
+
+    {% else %}
+      {%- comment -%} Placeholder cuando no hay colección seleccionada {%- endcomment -%}
+      <div class="tw-grid tw-grid-cols-2 md:tw-grid-cols-3 lg:tw-grid-cols-4 tw-gap-4 md:tw-gap-6 lg:tw-gap-8">
+        {% for i in (1..4) %}
+          <div class="tw-group tw-relative">
+            <div class="tw-aspect-product tw-w-full tw-bg-velox-100 tw-rounded-lg tw-flex tw-items-center tw-justify-center">
+              {% render 'icon', name: 'eye', class: 'tw-w-12 tw-h-12 tw-text-velox-300' %}
+            </div>
+            <div class="tw-mt-4 tw-space-y-2">
+              <div class="tw-h-4 tw-bg-velox-100 tw-rounded tw-w-3/4"></div>
+              <div class="tw-h-4 tw-bg-velox-100 tw-rounded tw-w-1/2"></div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <p class="tw-text-center tw-text-velox-500 tw-mt-8">
+        Selecciona una colección en el editor del tema para mostrar productos.
+      </p>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured collection",
+  "tag": "section",
+  "class": "velox-featured-collection",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "default": "Productos destacados"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Descripción"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Colección"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4,
+      "label": "Productos a mostrar"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4,
+      "label": "Columnas (desktop)"
+    },
+    {
+      "type": "header",
+      "content": "Opciones de producto"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Mostrar marca",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_swatches",
+      "label": "Mostrar swatches de color",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_second_image",
+      "label": "Mostrar segunda imagen en hover",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_view",
+      "label": "Mostrar botón Quick View",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Botón"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Mostrar botón 'Ver colección'",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Texto del botón",
+      "default": "Ver colección"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Estilo del botón",
+      "options": [
+        { "value": "primary", "label": "Primario" },
+        { "value": "secondary", "label": "Secundario" },
+        { "value": "accent", "label": "Acento" },
+        { "value": "outline", "label": "Outline" }
+      ],
+      "default": "primary"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured collection",
+      "category": "Collection"
+    }
+  ]
+}
+{% endschema %}

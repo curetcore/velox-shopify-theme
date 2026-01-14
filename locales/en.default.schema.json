@@ -26,6 +26,7 @@
     "row": "Row",
     "search": "Search",
     "secondary": "Secondary",
+    "social_media": "Social media",
     "section": "Section",
     "settings": "Settings",
     "sidebar": "Sidebar",
@@ -71,6 +72,6 @@
       "title": "Title",
       "subtitle": "Subtitle",
       "normal": "Normal text"
-    },
+    }
   }
 }

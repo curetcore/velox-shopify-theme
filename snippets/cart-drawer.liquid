@@ -1,0 +1,224 @@
+{% comment %}
+  Velox Cart Drawer
+  Carrito lateral con items y totales.
+
+  Uso:
+  {% render 'cart-drawer' %}
+{% endcomment %}
+
+{%- comment -%} Overlay {%- endcomment -%}
+<div
+  id="cart-overlay"
+  class="tw-fixed tw-inset-0 tw-bg-black/50 tw-z-40 tw-opacity-0 tw-invisible tw-transition-all tw-duration-300"
+  data-cart-overlay
+  aria-hidden="true"
+></div>
+
+{%- comment -%} Cart drawer {%- endcomment -%}
+<div
+  id="cart-drawer"
+  class="tw-fixed tw-inset-y-0 tw-right-0 tw-w-full tw-max-w-md tw-bg-white tw-z-50 tw-transform tw-translate-x-full tw-transition-transform tw-duration-300 tw-ease-in-out tw-flex tw-flex-col"
+  data-cart-drawer
+  role="dialog"
+  aria-modal="true"
+  aria-label="{{ 'cart.general.title' | t | default: 'Carrito' }}"
+>
+  {%- comment -%} Header {%- endcomment -%}
+  <div class="tw-flex tw-items-center tw-justify-between tw-px-4 tw-py-4 tw-border-b tw-border-velox-100">
+    <h2 class="tw-text-lg tw-font-semibold tw-text-velox-900">
+      {{ 'cart.general.title' | t | default: 'Carrito' }}
+      <span class="tw-text-velox-500 tw-font-normal" data-cart-count-text>
+        ({{ cart.item_count }} {{ cart.item_count | pluralize: 'item', 'items' }})
+      </span>
+    </h2>
+    <button
+      type="button"
+      class="tw-p-2 tw--mr-2 tw-text-velox-500 hover:tw-text-velox-900 tw-transition-colors"
+      data-cart-close
+      aria-label="{{ 'general.accessibility.close' | t | default: 'Cerrar' }}"
+    >
+      {% render 'icon', name: 'x', class: 'tw-w-6 tw-h-6' %}
+    </button>
+  </div>
+
+  {%- comment -%} Free shipping progress {%- endcomment -%}
+  {% assign free_shipping_threshold = settings.free_shipping_threshold | default: 2000 | times: 100 %}
+  {% assign show_free_shipping = settings.show_free_shipping_bar | default: true %}
+
+  {% if show_free_shipping and free_shipping_threshold > 0 %}
+    {% assign amount_remaining = free_shipping_threshold | minus: cart.total_price %}
+    {% assign progress_percentage = cart.total_price | times: 100 | divided_by: free_shipping_threshold %}
+    {% if progress_percentage > 100 %}{% assign progress_percentage = 100 %}{% endif %}
+
+    <div class="tw-px-4 tw-py-3 tw-bg-velox-50 tw-border-b tw-border-velox-100" data-free-shipping-bar>
+      {% if amount_remaining > 0 %}
+        <p class="tw-text-sm tw-text-velox-700 tw-mb-2">
+          {{ 'cart.general.free_shipping_remaining_html' | t: remaining: amount_remaining | money | default: 'Te faltan <strong>' | append: amount_remaining | money | append: '</strong> para envío gratis' }}
+        </p>
+      {% else %}
+        <p class="tw-text-sm tw-text-green-700 tw-font-medium tw-mb-2">
+          {% render 'icon', name: 'check', class: 'tw-w-4 tw-h-4 tw-inline tw-mr-1' %}
+          {{ 'cart.general.free_shipping_achieved' | t | default: '¡Tienes envío gratis!' }}
+        </p>
+      {% endif %}
+      <div class="tw-w-full tw-h-1.5 tw-bg-velox-200 tw-rounded-full tw-overflow-hidden">
+        <div
+          class="tw-h-full tw-bg-accent tw-rounded-full tw-transition-all tw-duration-300"
+          style="width: {{ progress_percentage }}%;"
+          data-shipping-progress
+        ></div>
+      </div>
+    </div>
+  {% endif %}
+
+  {%- comment -%} Cart items {%- endcomment -%}
+  <div class="tw-flex-1 tw-overflow-y-auto tw-px-4 tw-py-4" data-cart-items>
+    {% if cart.item_count > 0 %}
+      <ul class="tw-space-y-4">
+        {% for item in cart.items %}
+          <li class="tw-flex tw-gap-4" data-cart-item="{{ item.key }}">
+            {%- comment -%} Product image {%- endcomment -%}
+            <a href="{{ item.url }}" class="tw-w-20 tw-h-24 tw-bg-velox-100 tw-rounded-md tw-overflow-hidden tw-flex-shrink-0">
+              {% if item.image %}
+                {{ item.image | image_url: width: 160 | image_tag:
+                  class: 'tw-w-full tw-h-full tw-object-cover',
+                  alt: item.title,
+                  loading: 'lazy'
+                }}
+              {% else %}
+                <div class="tw-w-full tw-h-full tw-flex tw-items-center tw-justify-center">
+                  {% render 'icon', name: 'eye', class: 'tw-w-8 tw-h-8 tw-text-velox-300' %}
+                </div>
+              {% endif %}
+            </a>
+
+            {%- comment -%} Product details {%- endcomment -%}
+            <div class="tw-flex-1 tw-min-w-0">
+              <a href="{{ item.url }}" class="tw-text-sm tw-font-medium tw-text-velox-900 hover:tw-underline tw-line-clamp-2">
+                {{ item.product.title }}
+              </a>
+
+              {% if item.variant.title != 'Default Title' %}
+                <p class="tw-text-xs tw-text-velox-500 tw-mt-0.5">
+                  {{ item.variant.title }}
+                </p>
+              {% endif %}
+
+              {%- comment -%} Price {%- endcomment -%}
+              <div class="tw-mt-1">
+                {% if item.original_line_price != item.final_line_price %}
+                  <span class="tw-text-sm tw-font-medium tw-text-accent">{{ item.final_line_price | money }}</span>
+                  <span class="tw-text-xs tw-text-velox-400 tw-line-through tw-ml-1">{{ item.original_line_price | money }}</span>
+                {% else %}
+                  <span class="tw-text-sm tw-font-medium tw-text-velox-900">{{ item.final_line_price | money }}</span>
+                {% endif %}
+              </div>
+
+              {%- comment -%} Quantity controls {%- endcomment -%}
+              <div class="tw-flex tw-items-center tw-gap-3 tw-mt-2">
+                <div class="tw-flex tw-items-center tw-border tw-border-velox-200 tw-rounded-md">
+                  <button
+                    type="button"
+                    class="tw-p-1.5 tw-text-velox-500 hover:tw-text-velox-900 tw-transition-colors disabled:tw-opacity-50"
+                    data-quantity-minus="{{ item.key }}"
+                    aria-label="{{ 'cart.general.decrease' | t | default: 'Disminuir cantidad' }}"
+                    {% if item.quantity <= 1 %}disabled{% endif %}
+                  >
+                    {% render 'icon', name: 'minus', class: 'tw-w-4 tw-h-4' %}
+                  </button>
+                  <input
+                    type="number"
+                    value="{{ item.quantity }}"
+                    min="1"
+                    class="tw-w-10 tw-text-center tw-text-sm tw-border-0 focus:tw-outline-none focus:tw-ring-0"
+                    data-quantity-input="{{ item.key }}"
+                    aria-label="{{ 'cart.general.quantity' | t | default: 'Cantidad' }}"
+                  >
+                  <button
+                    type="button"
+                    class="tw-p-1.5 tw-text-velox-500 hover:tw-text-velox-900 tw-transition-colors"
+                    data-quantity-plus="{{ item.key }}"
+                    aria-label="{{ 'cart.general.increase' | t | default: 'Aumentar cantidad' }}"
+                  >
+                    {% render 'icon', name: 'plus', class: 'tw-w-4 tw-h-4' %}
+                  </button>
+                </div>
+
+                <button
+                  type="button"
+                  class="tw-text-velox-400 hover:tw-text-red-500 tw-transition-colors"
+                  data-remove-item="{{ item.key }}"
+                  aria-label="{{ 'cart.general.remove' | t | default: 'Eliminar' }}"
+                >
+                  {% render 'icon', name: 'trash', class: 'tw-w-4 tw-h-4' %}
+                </button>
+              </div>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      {%- comment -%} Empty cart {%- endcomment -%}
+      <div class="tw-flex tw-flex-col tw-items-center tw-justify-center tw-py-12 tw-text-center" data-cart-empty>
+        {% render 'icon', name: 'cart', class: 'tw-w-16 tw-h-16 tw-text-velox-200 tw-mb-4' %}
+        <p class="tw-text-velox-500 tw-mb-4">
+          {{ 'cart.general.empty' | t | default: 'Tu carrito está vacío' }}
+        </p>
+        <button
+          type="button"
+          class="tw-btn tw-btn-primary"
+          data-cart-close
+        >
+          {{ 'cart.general.continue_shopping' | t | default: 'Seguir comprando' }}
+        </button>
+      </div>
+    {% endif %}
+  </div>
+
+  {%- comment -%} Footer con totales y checkout {%- endcomment -%}
+  {% if cart.item_count > 0 %}
+    <div class="tw-border-t tw-border-velox-100 tw-px-4 tw-py-4 tw-space-y-4 tw-bg-white" data-cart-footer>
+      {%- comment -%} Cart note {%- endcomment -%}
+      <details class="tw-group">
+        <summary class="tw-flex tw-items-center tw-justify-between tw-cursor-pointer tw-text-sm tw-text-velox-600 hover:tw-text-velox-900">
+          {{ 'cart.general.note' | t | default: 'Añadir nota al pedido' }}
+          {% render 'icon', name: 'chevron-down', class: 'tw-w-4 tw-h-4 tw-transition-transform group-open:tw-rotate-180' %}
+        </summary>
+        <textarea
+          name="note"
+          class="tw-mt-2 tw-w-full tw-px-3 tw-py-2 tw-text-sm tw-border tw-border-velox-200 tw-rounded-md focus:tw-outline-none focus:tw-ring-1 focus:tw-ring-velox-900"
+          rows="2"
+          placeholder="{{ 'cart.general.note_placeholder' | t | default: 'Instrucciones especiales...' }}"
+          data-cart-note
+        >{{ cart.note }}</textarea>
+      </details>
+
+      {%- comment -%} Subtotal {%- endcomment -%}
+      <div class="tw-flex tw-items-center tw-justify-between tw-text-base">
+        <span class="tw-text-velox-600">{{ 'cart.general.subtotal' | t | default: 'Subtotal' }}</span>
+        <span class="tw-font-semibold tw-text-velox-900" data-cart-subtotal>{{ cart.total_price | money }}</span>
+      </div>
+
+      <p class="tw-text-xs tw-text-velox-500">
+        {{ 'cart.general.shipping_at_checkout' | t | default: 'Impuestos y envío calculados en el checkout' }}
+      </p>
+
+      {%- comment -%} Checkout button {%- endcomment -%}
+      <a
+        href="{{ routes.cart_url }}"
+        class="tw-btn tw-btn-accent tw-w-full tw-text-center"
+      >
+        {{ 'cart.general.checkout' | t | default: 'Finalizar compra' }}
+      </a>
+
+      {%- comment -%} Continue shopping {%- endcomment -%}
+      <button
+        type="button"
+        class="tw-w-full tw-text-center tw-text-sm tw-text-velox-600 hover:tw-text-velox-900 tw-underline tw-underline-offset-2"
+        data-cart-close
+      >
+        {{ 'cart.general.continue_shopping' | t | default: 'Seguir comprando' }}
+      </button>
+    </div>
+  {% endif %}
+</div>

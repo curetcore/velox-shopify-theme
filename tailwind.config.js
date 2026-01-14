@@ -74,8 +74,32 @@ module.exports = {
     'tw-grid',
     'tw-opacity-0',
     'tw-opacity-100',
+    // Colores
     {
       pattern: /tw-(bg|text|border)-(velox|accent)-(50|100|200|300|400|500|600|700|800|900|950)/,
     },
+    // Grid responsive - clases directas
+    'tw-grid-cols-1', 'tw-grid-cols-2', 'tw-grid-cols-3', 'tw-grid-cols-4',
+    'sm:tw-grid-cols-1', 'sm:tw-grid-cols-2', 'sm:tw-grid-cols-3', 'sm:tw-grid-cols-4',
+    'md:tw-grid-cols-1', 'md:tw-grid-cols-2', 'md:tw-grid-cols-3', 'md:tw-grid-cols-4',
+    'lg:tw-grid-cols-1', 'lg:tw-grid-cols-2', 'lg:tw-grid-cols-3', 'lg:tw-grid-cols-4', 'lg:tw-grid-cols-5', 'lg:tw-grid-cols-6',
+    // Gap responsive
+    'tw-gap-4', 'tw-gap-6', 'tw-gap-8', 'tw-gap-10', 'tw-gap-12', 'tw-gap-16',
+    'md:tw-gap-8', 'md:tw-gap-10', 'md:tw-gap-12',
+    'lg:tw-gap-8', 'lg:tw-gap-10', 'lg:tw-gap-12', 'lg:tw-gap-16',
+    // Flex responsive
+    'lg:tw-flex', 'lg:tw-hidden', 'md:tw-flex', 'md:tw-hidden',
+    'lg:tw-flex-row', 'lg:tw-justify-between', 'lg:tw-items-start', 'lg:tw-items-center',
+    // Width responsive
+    'lg:tw-w-1/3', 'lg:tw-w-2/3', 'lg:tw-w-1/4', 'lg:tw-w-3/4', 'lg:tw-w-auto', 'lg:tw-max-w-sm', 'lg:tw-max-w-md',
+    'md:tw-w-1/2', 'md:tw-w-1/3', 'md:tw-w-2/3',
+    // Margin/Padding responsive
+    'lg:tw-mt-0', 'lg:tw-mb-0', 'lg:tw-pt-0', 'lg:tw-pb-0',
+    'md:tw-mt-0', 'md:tw-mb-0', 'md:tw-pt-0', 'md:tw-pb-0',
+    // Padding
+    'tw-py-12', 'tw-py-16', 'tw-py-20', 'md:tw-py-16', 'md:tw-py-20', 'lg:tw-py-16', 'lg:tw-py-20',
+    'tw-px-4', 'tw-px-6', 'tw-px-8', 'sm:tw-px-6', 'lg:tw-px-8',
+    // Flex shrink
+    'lg:tw-flex-shrink-0', 'lg:tw-flex-1',
   ],
 }

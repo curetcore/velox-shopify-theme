@@ -1,0 +1,193 @@
+{% comment %}
+  Velox Rich Text Section
+  Sección de contenido de texto centrado.
+{% endcomment %}
+
+<section class="tw-py-12 md:tw-py-16 lg:tw-py-20 {% if section.settings.background_color == 'secondary' %}tw-bg-velox-50{% endif %}">
+  <div class="tw-max-w-{{ section.settings.content_width }} tw-mx-auto tw-px-4 sm:tw-px-6 lg:tw-px-8 tw-text-{{ section.settings.text_alignment }}">
+    {% for block in section.blocks %}
+      {% case block.type %}
+        {% when 'eyebrow' %}
+          <p class="tw-text-sm tw-font-semibold tw-uppercase tw-tracking-wider tw-text-velox-accent tw-mb-3" {{ block.shopify_attributes }}>
+            {{ block.settings.text }}
+          </p>
+
+        {% when 'heading' %}
+          <{{ block.settings.heading_tag }} class="{% if block.settings.heading_size == 'large' %}tw-text-3xl md:tw-text-4xl lg:tw-text-5xl{% elsif block.settings.heading_size == 'medium' %}tw-text-2xl md:tw-text-3xl lg:tw-text-4xl{% else %}tw-text-xl md:tw-text-2xl lg:tw-text-3xl{% endif %} tw-font-bold tw-text-velox-900" {{ block.shopify_attributes }}>
+            {{ block.settings.text }}
+          </{{ block.settings.heading_tag }}>
+
+        {% when 'text' %}
+          <div class="tw-mt-4 tw-text-velox-600 tw-prose tw-prose-velox {% if section.settings.text_alignment == 'center' %}tw-mx-auto{% endif %} tw-max-w-3xl" {{ block.shopify_attributes }}>
+            {{ block.settings.text }}
+          </div>
+
+        {% when 'button' %}
+          <div class="tw-mt-8" {{ block.shopify_attributes }}>
+            {% render 'button',
+              label: block.settings.text,
+              href: block.settings.link,
+              style: block.settings.style,
+              size: 'lg'
+            %}
+          </div>
+
+        {% when 'divider' %}
+          <hr class="tw-my-8 tw-border-velox-200 tw-max-w-xs {% if section.settings.text_alignment == 'center' %}tw-mx-auto{% elsif section.settings.text_alignment == 'right' %}tw-ml-auto{% endif %}" {{ block.shopify_attributes }}>
+
+      {% endcase %}
+    {% endfor %}
+
+    {% if section.blocks.size == 0 %}
+      <p class="tw-text-velox-500">Agrega bloques de contenido usando el editor del tema.</p>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Rich text",
+  "tag": "section",
+  "class": "velox-rich-text",
+  "settings": [
+    {
+      "type": "select",
+      "id": "content_width",
+      "label": "Ancho del contenido",
+      "options": [
+        { "value": "2xl", "label": "Estrecho" },
+        { "value": "4xl", "label": "Medio" },
+        { "value": "6xl", "label": "Ancho" }
+      ],
+      "default": "4xl"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Alineación del texto",
+      "options": [
+        { "value": "left", "label": "Izquierda" },
+        { "value": "center", "label": "Centro" },
+        { "value": "right", "label": "Derecha" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "background_color",
+      "label": "Color de fondo",
+      "options": [
+        { "value": "transparent", "label": "Transparente" },
+        { "value": "secondary", "label": "Secundario" }
+      ],
+      "default": "transparent"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "eyebrow",
+      "name": "Texto superior",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texto",
+          "default": "Nuestra historia"
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "name": "Título",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texto",
+          "default": "Pasión por el calzado"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "label": "Tamaño",
+          "options": [
+            { "value": "small", "label": "Pequeño" },
+            { "value": "medium", "label": "Mediano" },
+            { "value": "large", "label": "Grande" }
+          ],
+          "default": "large"
+        },
+        {
+          "type": "select",
+          "id": "heading_tag",
+          "label": "Etiqueta HTML",
+          "options": [
+            { "value": "h1", "label": "H1" },
+            { "value": "h2", "label": "H2" },
+            { "value": "h3", "label": "H3" },
+            { "value": "p", "label": "Párrafo" }
+          ],
+          "default": "h2"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Texto",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Contenido",
+          "default": "<p>Desde 2020, nos dedicamos a crear calzado que combina estilo, comodidad y sostenibilidad. Cada par cuenta una historia de artesanía y dedicación.</p>"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "Botón",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texto",
+          "default": "Conocer más"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Enlace"
+        },
+        {
+          "type": "select",
+          "id": "style",
+          "label": "Estilo",
+          "options": [
+            { "value": "primary", "label": "Primario" },
+            { "value": "secondary", "label": "Secundario" },
+            { "value": "accent", "label": "Acento" },
+            { "value": "outline", "label": "Outline" }
+          ],
+          "default": "primary"
+        }
+      ]
+    },
+    {
+      "type": "divider",
+      "name": "Separador"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Rich text",
+      "category": "Text",
+      "blocks": [
+        { "type": "eyebrow", "settings": { "text": "Nuestra historia" } },
+        { "type": "heading", "settings": { "text": "Pasión por el calzado" } },
+        { "type": "text" },
+        { "type": "button", "settings": { "text": "Conocer más" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

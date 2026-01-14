@@ -1,57 +1,598 @@
-<footer>
-  <div class="footer__copyright">
-    &copy;
-    {{ 'now' | date: '%Y' }}
-    {{ shop.name | link_to: routes.root_url }}, {{ powered_by_link }}
-  </div>
+{% comment %}
+  Velox Footer Section
+  Footer ecommerce profesional con CSS custom para layout responsive.
+{% endcomment %}
 
-  <div class="footer__links">
-    {% for link in section.settings.menu.links %}
-      {{ link.title | link_to: link.url }}
-    {% endfor %}
-  </div>
+{% style %}
+  /* ===========================================
+     ESTILOS BASE FOOTER
+     =========================================== */
 
-  <div class="footer__payment">
-    {% if section.settings.show_payment_icons %}
-      {% for type in shop.enabled_payment_types %}
-        {{ type | payment_type_svg_tag }}
-      {% endfor %}
-    {% endif %}
-  </div>
-</footer>
+  /* Esquemas de color */
+  .velox-footer--dark {
+    background-color: #0f172a; /* velox-900 */
+  }
+  .velox-footer--dark .velox-footer-heading { color: #ffffff; }
+  .velox-footer--dark .velox-footer-link { color: #94a3b8; }
+  .velox-footer--dark .velox-footer-link:hover { color: #ffffff; }
+  .velox-footer--dark .velox-footer-text { color: #64748b; }
+  .velox-footer--dark .velox-footer-border { border-color: #1e293b; }
 
-{% stylesheet %}
-  footer {
+  .velox-footer--light {
+    background-color: #f8fafc; /* velox-50 */
+  }
+  .velox-footer--light .velox-footer-heading { color: #0f172a; }
+  .velox-footer--light .velox-footer-link { color: #475569; }
+  .velox-footer--light .velox-footer-link:hover { color: #0f172a; }
+  .velox-footer--light .velox-footer-text { color: #64748b; }
+  .velox-footer--light .velox-footer-border { border-color: #e2e8f0; }
+
+  .velox-footer--brand {
+    background-color: var(--color-accent, #dc2626);
+  }
+  .velox-footer--brand .velox-footer-heading { color: #ffffff; }
+  .velox-footer--brand .velox-footer-link { color: rgba(255,255,255,0.8); }
+  .velox-footer--brand .velox-footer-link:hover { color: #ffffff; }
+  .velox-footer--brand .velox-footer-text { color: rgba(255,255,255,0.7); }
+  .velox-footer--brand .velox-footer-border { border-color: rgba(255,255,255,0.2); }
+
+  /* ===========================================
+     ESTILO: COLUMNS (con newsletter)
+     =========================================== */
+  .velox-footer--columns .velox-footer-grid {
+    display: block;
+  }
+  .velox-footer--columns .velox-footer-nav {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+  .velox-footer--columns .velox-footer-newsletter {
+    margin-top: 3rem;
+  }
+  @media (min-width: 990px) {
+    .velox-footer--columns .velox-footer-grid {
+      display: flex;
+      justify-content: space-between;
+      gap: 4rem;
+    }
+    .velox-footer--columns .velox-footer-nav {
+      flex: 1;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+    }
+    .velox-footer--columns .velox-footer-newsletter {
+      margin-top: 0;
+      width: 320px;
+      flex-shrink: 0;
+    }
+  }
+
+  /* ===========================================
+     ESTILO: COLUMNS SIMPLE (sin newsletter)
+     =========================================== */
+  .velox-footer--columns_simple .velox-footer-nav {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+  @media (min-width: 990px) {
+    .velox-footer--columns_simple .velox-footer-nav {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 3rem;
+    }
+  }
+
+  /* ===========================================
+     ESTILO: SIMPLE (centrado)
+     =========================================== */
+  .velox-footer--simple .velox-footer-content {
+    text-align: center;
+  }
+  .velox-footer--simple .velox-footer-nav-inline {
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem 2rem;
+  }
+  .velox-footer--simple .velox-footer-social {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
     margin-top: 2rem;
   }
-  footer a {
-    text-decoration: none;
-    color: var(--color-foreground);
+  .velox-footer--simple .velox-footer-logo {
+    margin-bottom: 2rem;
   }
-  footer .footer__links,
-  footer .footer__payment {
+
+  /* ===========================================
+     ESTILO: MINIMAL
+     =========================================== */
+  .velox-footer--minimal .velox-footer-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    text-align: center;
+  }
+  @media (min-width: 990px) {
+    .velox-footer--minimal .velox-footer-row {
+      flex-direction: row;
+      justify-content: space-between;
+      text-align: left;
+    }
+  }
+  .velox-footer--minimal .velox-footer-nav-inline {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem 1.5rem;
+  }
+  @media (min-width: 990px) {
+    .velox-footer--minimal .velox-footer-nav-inline {
+      justify-content: flex-start;
+    }
+  }
+  .velox-footer--minimal .velox-footer-social {
     display: flex;
     gap: 1rem;
   }
-{% endstylesheet %}
+
+  /* ===========================================
+     COMPONENTES COMUNES
+     =========================================== */
+  .velox-footer-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  @media (min-width: 990px) {
+    .velox-footer-bottom {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+{% endstyle %}
+
+{%- liquid
+  assign layout_style = section.settings.layout_style | default: 'columns'
+  assign color_scheme = section.settings.color_scheme | default: 'dark'
+-%}
+
+<footer aria-labelledby="footer-heading" class="velox-footer--{{ layout_style }} velox-footer--{{ color_scheme }}">
+  <h2 id="footer-heading" class="tw-sr-only">{{ 'general.footer.title' | t }}</h2>
+
+  <div class="tw-mx-auto tw-max-w-7xl tw-px-4 tw-py-16">
+
+    {%- comment -%} ===============================================
+        ESTILO: COLUMNS / COLUMNS_SIMPLE
+        =============================================== {%- endcomment -%}
+    {% if layout_style == 'columns' or layout_style == 'columns_simple' %}
+    <div class="velox-footer-grid">
+      <nav class="velox-footer-nav" aria-label="Footer navigation">
+        {% if section.blocks.size > 0 %}
+          {% for block in section.blocks %}
+            <div {{ block.shopify_attributes }}>
+              {% if block.settings.heading != blank %}
+                <h3 class="velox-footer-heading tw-text-sm tw-font-semibold tw-uppercase tw-tracking-wider">
+                  {{ block.settings.heading }}
+                </h3>
+              {% endif %}
+              {% assign menu = block.settings.menu %}
+              {% if menu != blank and linklists[menu].links.size > 0 %}
+                <ul role="list" class="tw-mt-4 tw-space-y-3">
+                  {% for link in linklists[menu].links %}
+                    <li>
+                      <a href="{{ link.url }}" class="velox-footer-link tw-text-sm tw-transition-colors">
+                        {{ link.title }}
+                      </a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% else %}
+                <ul role="list" class="tw-mt-4 tw-space-y-3">
+                  <li><span class="velox-footer-text tw-text-sm">Link 1</span></li>
+                  <li><span class="velox-footer-text tw-text-sm">Link 2</span></li>
+                  <li><span class="velox-footer-text tw-text-sm">Link 3</span></li>
+                </ul>
+              {% endif %}
+            </div>
+          {% endfor %}
+        {% else %}
+          {%- comment -%} Placeholder - 4 columnas {%- endcomment -%}
+          <div>
+            <h3 class="velox-footer-heading tw-text-sm tw-font-semibold tw-uppercase tw-tracking-wider">Tienda</h3>
+            <ul role="list" class="tw-mt-4 tw-space-y-3">
+              <li><a href="/collections/all" class="velox-footer-link tw-text-sm tw-transition-colors">Todos los productos</a></li>
+              <li><a href="/collections" class="velox-footer-link tw-text-sm tw-transition-colors">Colecciones</a></li>
+              <li><a href="/pages/new" class="velox-footer-link tw-text-sm tw-transition-colors">Novedades</a></li>
+              <li><a href="/collections/sale" class="velox-footer-link tw-text-sm tw-transition-colors">Ofertas</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="velox-footer-heading tw-text-sm tw-font-semibold tw-uppercase tw-tracking-wider">Empresa</h3>
+            <ul role="list" class="tw-mt-4 tw-space-y-3">
+              <li><a href="/pages/about" class="velox-footer-link tw-text-sm tw-transition-colors">Sobre nosotros</a></li>
+              <li><a href="/pages/contact" class="velox-footer-link tw-text-sm tw-transition-colors">Contacto</a></li>
+              <li><a href="/blogs/news" class="velox-footer-link tw-text-sm tw-transition-colors">Blog</a></li>
+              <li><a href="/pages/careers" class="velox-footer-link tw-text-sm tw-transition-colors">Empleos</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="velox-footer-heading tw-text-sm tw-font-semibold tw-uppercase tw-tracking-wider">Cuenta</h3>
+            <ul role="list" class="tw-mt-4 tw-space-y-3">
+              <li><a href="/account" class="velox-footer-link tw-text-sm tw-transition-colors">Mi cuenta</a></li>
+              <li><a href="/account/orders" class="velox-footer-link tw-text-sm tw-transition-colors">Mis pedidos</a></li>
+              <li><a href="/cart" class="velox-footer-link tw-text-sm tw-transition-colors">Carrito</a></li>
+              <li><a href="/pages/wishlist" class="velox-footer-link tw-text-sm tw-transition-colors">Favoritos</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="velox-footer-heading tw-text-sm tw-font-semibold tw-uppercase tw-tracking-wider">Legal</h3>
+            <ul role="list" class="tw-mt-4 tw-space-y-3">
+              <li><a href="/policies/privacy-policy" class="velox-footer-link tw-text-sm tw-transition-colors">Privacidad</a></li>
+              <li><a href="/policies/terms-of-service" class="velox-footer-link tw-text-sm tw-transition-colors">Terminos</a></li>
+              <li><a href="/policies/refund-policy" class="velox-footer-link tw-text-sm tw-transition-colors">Devoluciones</a></li>
+              <li><a href="/policies/shipping-policy" class="velox-footer-link tw-text-sm tw-transition-colors">Envios</a></li>
+            </ul>
+          </div>
+        {% endif %}
+      </nav>
+
+      {%- comment -%} Newsletter (solo para layout columns) {%- endcomment -%}
+      {% if section.settings.show_newsletter and layout_style == 'columns' %}
+        <div class="velox-footer-newsletter">
+          <h3 class="velox-footer-heading tw-text-sm tw-font-semibold tw-uppercase tw-tracking-wider">
+            {{ section.settings.newsletter_heading }}
+          </h3>
+          {% if section.settings.newsletter_text != blank %}
+            <p class="velox-footer-link tw-mt-4 tw-text-sm">
+              {{ section.settings.newsletter_text }}
+            </p>
+          {% endif %}
+
+          {% form 'customer', class: 'tw-mt-4' %}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <div class="tw-flex tw-gap-0">
+              <label for="footer-email" class="tw-sr-only">{{ 'general.newsletter.email_placeholder' | t }}</label>
+              <input
+                type="email"
+                name="contact[email]"
+                id="footer-email"
+                autocomplete="email"
+                required
+                placeholder="{{ 'general.newsletter.email_placeholder' | t }}"
+                class="tw-flex-1 tw-min-w-0 tw-rounded-l-md tw-border-0 tw-bg-white tw-px-4 tw-py-2.5 tw-text-sm tw-text-velox-900 tw-placeholder-velox-500 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-inset focus:tw-ring-velox-accent"
+              >
+              <button
+                type="submit"
+                class="tw-rounded-r-md tw-bg-velox-700 tw-px-4 tw-py-2.5 tw-text-sm tw-font-semibold tw-text-white hover:tw-bg-velox-600 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-velox-accent tw-transition-colors"
+              >
+                {{ 'general.newsletter.submit' | t }}
+              </button>
+            </div>
+          {% endform %}
+
+          {% if form.errors %}
+            <p class="tw-mt-2 tw-text-sm tw-text-red-400">
+              {{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}
+            </p>
+          {% endif %}
+          {% if form.posted_successfully? %}
+            <p class="tw-mt-2 tw-text-sm tw-text-green-400">
+              {{ 'general.newsletter.confirmation' | t }}
+            </p>
+          {% endif %}
+
+          {%- comment -%} Social icons debajo del newsletter {%- endcomment -%}
+          {% if section.settings.show_social_icons %}
+            <div class="tw-mt-6 tw-flex tw-gap-4">
+              {% render 'footer-social-icons', section: section %}
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+    {% endif %}
+    {%- comment -%} FIN ESTILO COLUMNS {%- endcomment -%}
+
+    {%- comment -%} ===============================================
+        ESTILO: SIMPLE (centrado)
+        =============================================== {%- endcomment -%}
+    {% if layout_style == 'simple' %}
+    <div class="velox-footer-content">
+      {%- comment -%} Logo opcional {%- endcomment -%}
+      {% if section.settings.logo != blank %}
+        <div class="velox-footer-logo tw-flex tw-justify-center">
+          {{ section.settings.logo | image_url: width: 200 | image_tag: class: 'tw-h-12 tw-w-auto', loading: 'lazy' }}
+        </div>
+      {% endif %}
+
+      {%- comment -%} Navegacion inline {%- endcomment -%}
+      <nav class="velox-footer-nav-inline" aria-label="Footer navigation">
+        {% if section.blocks.size > 0 %}
+          {% for block in section.blocks %}
+            {% assign menu = block.settings.menu %}
+            {% if menu != blank and linklists[menu].links.size > 0 %}
+              {% for link in linklists[menu].links %}
+                <a href="{{ link.url }}" class="velox-footer-link tw-text-sm tw-transition-colors">
+                  {{ link.title }}
+                </a>
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+        {% else %}
+          <a href="/collections/all" class="velox-footer-link tw-text-sm tw-transition-colors">Tienda</a>
+          <a href="/pages/about" class="velox-footer-link tw-text-sm tw-transition-colors">Nosotros</a>
+          <a href="/pages/contact" class="velox-footer-link tw-text-sm tw-transition-colors">Contacto</a>
+          <a href="/policies/privacy-policy" class="velox-footer-link tw-text-sm tw-transition-colors">Privacidad</a>
+          <a href="/policies/terms-of-service" class="velox-footer-link tw-text-sm tw-transition-colors">Terminos</a>
+        {% endif %}
+      </nav>
+
+      {%- comment -%} Redes sociales centradas {%- endcomment -%}
+      {% if section.settings.show_social_icons %}
+        <div class="velox-footer-social">
+          {% render 'footer-social-icons', section: section %}
+        </div>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    {%- comment -%} ===============================================
+        ESTILO: MINIMAL
+        =============================================== {%- endcomment -%}
+    {% if layout_style == 'minimal' %}
+    <div class="velox-footer-row">
+      {%- comment -%} Copyright a la izquierda {%- endcomment -%}
+      <p class="velox-footer-text tw-text-sm">
+        &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}
+      </p>
+
+      {%- comment -%} Navegacion inline al centro {%- endcomment -%}
+      <nav class="velox-footer-nav-inline" aria-label="Footer navigation">
+        {% if section.blocks.size > 0 %}
+          {% for block in section.blocks %}
+            {% assign menu = block.settings.menu %}
+            {% if menu != blank and linklists[menu].links.size > 0 %}
+              {% for link in linklists[menu].links limit: 4 %}
+                <a href="{{ link.url }}" class="velox-footer-link tw-text-sm tw-transition-colors">
+                  {{ link.title }}
+                </a>
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+        {% else %}
+          <a href="/policies/privacy-policy" class="velox-footer-link tw-text-sm tw-transition-colors">Privacidad</a>
+          <a href="/policies/terms-of-service" class="velox-footer-link tw-text-sm tw-transition-colors">Terminos</a>
+          <a href="/pages/contact" class="velox-footer-link tw-text-sm tw-transition-colors">Contacto</a>
+        {% endif %}
+      </nav>
+
+      {%- comment -%} Redes sociales a la derecha {%- endcomment -%}
+      {% if section.settings.show_social_icons %}
+        <div class="velox-footer-social">
+          {% render 'footer-social-icons', section: section %}
+        </div>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    {%- comment -%} Payment icons + Country selector (para columns/columns_simple) {%- endcomment -%}
+    {% if layout_style == 'columns' or layout_style == 'columns_simple' %}
+      {% if section.settings.show_country_selector or section.settings.show_payment_icons %}
+        <div class="velox-footer-border tw-border-t tw-mt-12 tw-pt-8">
+          <div class="velox-footer-bottom">
+            {%- comment -%} Country selector {%- endcomment -%}
+            {% if section.settings.show_country_selector and localization.available_countries.size > 1 %}
+              <div class="tw-relative">
+                {% form 'localization', id: 'FooterCountryForm' %}
+                  <label for="FooterCountrySelector" class="tw-sr-only">{{ 'general.currency.label' | t }}</label>
+                  <select
+                    id="FooterCountrySelector"
+                    name="country_code"
+                    class="tw-appearance-none tw-rounded-md tw-border tw-py-2 tw-pl-3 tw-pr-10 tw-text-sm tw-cursor-pointer velox-footer-link"
+                    onchange="this.form.submit()"
+                  >
+                    {% for country in localization.available_countries %}
+                      <option value="{{ country.iso_code }}" {% if country.iso_code == localization.country.iso_code %}selected{% endif %}>
+                        {{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})
+                      </option>
+                    {% endfor %}
+                  </select>
+                  <svg class="tw-pointer-events-none tw-absolute tw-right-3 tw-top-1/2 tw--translate-y-1/2 tw-h-4 tw-w-4 velox-footer-link" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                {% endform %}
+              </div>
+            {% endif %}
+
+            {%- comment -%} Payment icons {%- endcomment -%}
+            {% if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 %}
+              <div class="tw-flex tw-flex-wrap tw-items-center tw-justify-center tw-gap-3">
+                {% for type in shop.enabled_payment_types %}
+                  {{ type | payment_type_svg_tag: class: 'tw-h-8 tw-w-auto tw-opacity-60 hover:tw-opacity-100 tw-transition-opacity' }}
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {%- comment -%} Copyright (solo para columns, columns_simple y simple) {%- endcomment -%}
+    {% unless layout_style == 'minimal' %}
+      <div class="velox-footer-border tw-border-t tw-mt-8 tw-pt-8 tw-text-center">
+        <p class="velox-footer-text tw-text-sm">
+          &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. {{ 'general.footer.copyright' | t }}
+        </p>
+        {% if section.settings.show_theme_credit %}
+          <p class="tw-mt-2 tw-text-xs velox-footer-text">
+            {{ 'general.footer.theme_credit' | t }}
+            <a href="https://www.instagram.com/_ronaldopaulino/" class="velox-footer-link tw-transition-colors" target="_blank" rel="noopener noreferrer">
+              Ronaldo Paulino
+            </a>
+          </p>
+        {% endif %}
+      </div>
+    {% endunless %}
+  </div>
+</footer>
 
 {% schema %}
 {
-  "name": "t:general.footer",
+  "name": "Footer",
+  "tag": "section",
+  "class": "velox-footer",
+  "max_blocks": 4,
   "settings": [
     {
-      "type": "link_list",
-      "id": "menu",
-      "label": "t:labels.menu"
+      "type": "header",
+      "content": "Estilo"
+    },
+    {
+      "type": "select",
+      "id": "layout_style",
+      "label": "Estilo del footer",
+      "options": [
+        { "value": "columns", "label": "4 columnas con newsletter" },
+        { "value": "columns_simple", "label": "4 columnas simple" },
+        { "value": "simple", "label": "Simple centrado" },
+        { "value": "minimal", "label": "Minimalista" }
+      ],
+      "default": "columns",
+      "info": "Elige el estilo de presentacion del footer"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Esquema de colores",
+      "options": [
+        { "value": "dark", "label": "Oscuro" },
+        { "value": "light", "label": "Claro" },
+        { "value": "brand", "label": "Color de marca" }
+      ],
+      "default": "dark"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo (estilo simple)",
+      "info": "Se muestra solo en el estilo Simple centrado"
+    },
+    {
+      "type": "header",
+      "content": "Newsletter"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "default": true,
+      "label": "Mostrar newsletter"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "default": "Newsletter",
+      "label": "Titulo"
+    },
+    {
+      "type": "textarea",
+      "id": "newsletter_text",
+      "default": "Recibe ofertas exclusivas y novedades directamente en tu email.",
+      "label": "Descripcion"
+    },
+    {
+      "type": "header",
+      "content": "Redes sociales"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social_icons",
+      "default": true,
+      "label": "Mostrar iconos sociales"
+    },
+    {
+      "type": "url",
+      "id": "social_facebook",
+      "label": "Facebook"
+    },
+    {
+      "type": "url",
+      "id": "social_instagram",
+      "label": "Instagram"
+    },
+    {
+      "type": "url",
+      "id": "social_twitter",
+      "label": "X (Twitter)"
+    },
+    {
+      "type": "url",
+      "id": "social_tiktok",
+      "label": "TikTok"
+    },
+    {
+      "type": "url",
+      "id": "social_youtube",
+      "label": "YouTube"
+    },
+    {
+      "type": "url",
+      "id": "social_pinterest",
+      "label": "Pinterest"
+    },
+    {
+      "type": "header",
+      "content": "Configuracion"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_country_selector",
+      "default": true,
+      "label": "Mostrar selector de pais"
     },
     {
       "type": "checkbox",
       "id": "show_payment_icons",
-      "label": "t:labels.show_payment_icons",
-      "default": true
+      "default": true,
+      "label": "Mostrar iconos de pago"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_theme_credit",
+      "default": true,
+      "label": "Mostrar credito del tema"
     }
-  ]
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Columna de menu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "default": "Enlaces",
+          "label": "Titulo"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu",
+          "default": "footer"
+        }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      { "type": "menu", "settings": { "heading": "Tienda", "menu": "main-menu" } },
+      { "type": "menu", "settings": { "heading": "Empresa", "menu": "footer" } },
+      { "type": "menu", "settings": { "heading": "Cuenta", "menu": "footer" } },
+      { "type": "menu", "settings": { "heading": "Legal", "menu": "footer" } }
+    ]
+  }
 }
 {% endschema %}

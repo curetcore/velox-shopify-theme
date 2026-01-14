@@ -1,0 +1,182 @@
+{% comment %}
+  Velox Collection List Section
+  Grid de colecciones con imagen y título.
+{% endcomment %}
+
+<section class="tw-py-12 md:tw-py-16 lg:tw-py-20">
+  <div class="tw-max-w-7xl tw-mx-auto tw-px-4 sm:tw-px-6 lg:tw-px-8">
+    {%- comment -%} Header de la sección {%- endcomment -%}
+    {% if section.settings.title != blank or section.settings.description != blank %}
+      <div class="tw-text-center tw-mb-10">
+        {% if section.settings.title != blank %}
+          <h2 class="tw-text-2xl md:tw-text-3xl lg:tw-text-4xl tw-font-bold tw-text-velox-900">
+            {{ section.settings.title }}
+          </h2>
+        {% endif %}
+
+        {% if section.settings.description != blank %}
+          <p class="tw-mt-4 tw-text-velox-600 tw-max-w-2xl tw-mx-auto">
+            {{ section.settings.description }}
+          </p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {%- comment -%} Grid de colecciones {%- endcomment -%}
+    {% if section.blocks.size > 0 %}
+      <div class="tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 lg:tw-grid-cols-{{ section.settings.columns }} tw-gap-4 md:tw-gap-6">
+        {% for block in section.blocks %}
+          {% assign collection = block.settings.collection %}
+          <a href="{{ collection.url | default: '#' }}"
+             class="tw-group tw-relative tw-block tw-overflow-hidden tw-rounded-lg tw-aspect-[4/5]"
+             {{ block.shopify_attributes }}>
+            {%- comment -%} Imagen {%- endcomment -%}
+            {% if block.settings.image != blank %}
+              {{ block.settings.image | image_url: width: 800 | image_tag:
+                class: 'tw-absolute tw-inset-0 tw-w-full tw-h-full tw-object-cover tw-object-center tw-transition-transform tw-duration-500 group-hover:tw-scale-105',
+                loading: 'lazy',
+                sizes: '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw',
+                widths: '400, 600, 800'
+              }}
+            {% elsif collection.featured_image %}
+              {{ collection.featured_image | image_url: width: 800 | image_tag:
+                class: 'tw-absolute tw-inset-0 tw-w-full tw-h-full tw-object-cover tw-object-center tw-transition-transform tw-duration-500 group-hover:tw-scale-105',
+                loading: 'lazy',
+                sizes: '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw',
+                widths: '400, 600, 800'
+              }}
+            {% else %}
+              <div class="tw-absolute tw-inset-0 tw-bg-velox-100 tw-flex tw-items-center tw-justify-center">
+                {% render 'icon', name: 'rectangle-group', class: 'tw-w-16 tw-h-16 tw-text-velox-300' %}
+              </div>
+            {% endif %}
+
+            {%- comment -%} Overlay gradiente {%- endcomment -%}
+            <div class="tw-absolute tw-inset-0 tw-bg-gradient-to-t tw-from-velox-900/70 tw-via-transparent tw-to-transparent"></div>
+
+            {%- comment -%} Contenido {%- endcomment -%}
+            <div class="tw-absolute tw-inset-x-0 tw-bottom-0 tw-p-6">
+              <h3 class="tw-text-xl md:tw-text-2xl tw-font-bold tw-text-white">
+                {{ block.settings.title | default: collection.title | default: 'Colección' }}
+              </h3>
+
+              {% if section.settings.show_product_count and collection %}
+                <p class="tw-mt-1 tw-text-white/80 tw-text-sm">
+                  {{ collection.products_count }} {{ collection.products_count | pluralize: 'producto', 'productos' }}
+                </p>
+              {% endif %}
+
+              {% if section.settings.show_button %}
+                <span class="tw-inline-flex tw-items-center tw-mt-3 tw-text-white tw-text-sm tw-font-medium group-hover:tw-underline tw-underline-offset-4">
+                  {{ section.settings.button_text | default: 'Explorar' }}
+                  {% render 'icon', name: 'arrow-right', class: 'tw-w-4 tw-h-4 tw-ml-2 tw-transition-transform group-hover:tw-translate-x-1' %}
+                </span>
+              {% endif %}
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+    {% else %}
+      {%- comment -%} Placeholder {%- endcomment -%}
+      <div class="tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 lg:tw-grid-cols-3 tw-gap-4 md:tw-gap-6">
+        {% for i in (1..3) %}
+          <div class="tw-relative tw-overflow-hidden tw-rounded-lg tw-aspect-[4/5] tw-bg-velox-100 tw-flex tw-items-center tw-justify-center">
+            {% render 'icon', name: 'rectangle-group', class: 'tw-w-16 tw-h-16 tw-text-velox-300' %}
+          </div>
+        {% endfor %}
+      </div>
+      <p class="tw-text-center tw-text-velox-500 tw-mt-8">
+        Agrega colecciones usando el editor del tema.
+      </p>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection list",
+  "tag": "section",
+  "class": "velox-collection-list",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "default": "Explora nuestras colecciones"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Descripción"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3,
+      "label": "Columnas (desktop)"
+    },
+    {
+      "type": "header",
+      "content": "Opciones"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_count",
+      "label": "Mostrar cantidad de productos",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_button",
+      "label": "Mostrar botón",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Texto del botón",
+      "default": "Explorar"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Colección",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Colección"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Imagen personalizada",
+          "info": "Opcional. Si no se selecciona, se usa la imagen de la colección."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Título personalizado",
+          "info": "Opcional. Si no se escribe, se usa el título de la colección."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection list",
+      "category": "Collection",
+      "blocks": [
+        { "type": "collection" },
+        { "type": "collection" },
+        { "type": "collection" }
+      ]
+    }
+  ]
+}
+{% endschema %}

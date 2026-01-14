@@ -1,0 +1,417 @@
+{% comment %}
+  Velox Slideshow Section
+  Carrusel de imágenes hero con autoplay y navegación.
+{% endcomment %}
+
+{% liquid
+  assign slide_count = section.blocks.size
+  assign autoplay = section.settings.autoplay
+  assign autoplay_speed = section.settings.autoplay_speed | times: 1000
+  assign show_arrows = section.settings.show_arrows
+  assign show_dots = section.settings.show_dots
+  assign slide_height = section.settings.slide_height
+%}
+
+<section
+  class="velox-slideshow tw-relative tw-overflow-hidden"
+  data-slideshow
+  data-autoplay="{{ autoplay }}"
+  data-speed="{{ autoplay_speed }}"
+  aria-label="{{ 'sections.slideshow.aria_label' | t | default: 'Slideshow' }}"
+>
+  {%- comment -%} Slides container {%- endcomment -%}
+  <div class="velox-slideshow__slides tw-relative {% case slide_height %}{% when 'small' %}tw-h-[50vh] md:tw-h-[60vh]{% when 'medium' %}tw-h-[60vh] md:tw-h-[70vh]{% when 'large' %}tw-h-[70vh] md:tw-h-[80vh]{% when 'full' %}tw-h-screen{% endcase %}">
+    {% if section.blocks.size > 0 %}
+      {% for block in section.blocks %}
+        <div
+          class="velox-slideshow__slide tw-absolute tw-inset-0 tw-transition-opacity tw-duration-700 {% if forloop.first %}tw-opacity-100 tw-z-10{% else %}tw-opacity-0 tw-z-0{% endif %}"
+          data-slide-index="{{ forloop.index0 }}"
+          {{ block.shopify_attributes }}
+        >
+          {%- comment -%} Imagen de fondo {%- endcomment -%}
+          {% if block.settings.image != blank %}
+            {{ block.settings.image | image_url: width: 2000 | image_tag:
+              class: 'tw-w-full tw-h-full tw-object-cover',
+              loading: forloop.first | default: 'eager',
+              fetchpriority: forloop.first | default: 'high',
+              sizes: '100vw',
+              widths: '750, 1100, 1500, 1920, 2000'
+            }}
+          {% else %}
+            <div class="tw-w-full tw-h-full tw-bg-velox-200"></div>
+          {% endif %}
+
+          {%- comment -%} Overlay {%- endcomment -%}
+          {% if block.settings.overlay_opacity > 0 %}
+            <div
+              class="tw-absolute tw-inset-0 tw-bg-velox-900"
+              style="opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};"
+            ></div>
+          {% endif %}
+
+          {%- comment -%} Contenido del slide {%- endcomment -%}
+          <div class="tw-absolute tw-inset-0 tw-flex tw-items-center tw-justify-center">
+            <div class="tw-max-w-4xl tw-mx-auto tw-px-4 sm:tw-px-6 lg:tw-px-8 tw-text-center">
+              {% if block.settings.subheading != blank %}
+                <p class="tw-text-sm sm:tw-text-base tw-font-semibold tw-uppercase tw-tracking-wider tw-mb-4 {% if block.settings.text_color == 'light' %}tw-text-white/80{% else %}tw-text-velox-600{% endif %}">
+                  {{ block.settings.subheading }}
+                </p>
+              {% endif %}
+
+              {% if block.settings.heading != blank %}
+                <h2 class="tw-text-3xl sm:tw-text-4xl md:tw-text-5xl lg:tw-text-6xl tw-font-bold tw-leading-tight {% if block.settings.text_color == 'light' %}tw-text-white{% else %}tw-text-velox-900{% endif %}">
+                  {{ block.settings.heading }}
+                </h2>
+              {% endif %}
+
+              {% if block.settings.text != blank %}
+                <p class="tw-mt-4 tw-text-base sm:tw-text-lg md:tw-text-xl tw-max-w-2xl tw-mx-auto {% if block.settings.text_color == 'light' %}tw-text-white/90{% else %}tw-text-velox-600{% endif %}">
+                  {{ block.settings.text }}
+                </p>
+              {% endif %}
+
+              {%- comment -%} Botones {%- endcomment -%}
+              {% if block.settings.button_label != blank %}
+                <div class="tw-mt-8 tw-flex tw-flex-col sm:tw-flex-row tw-items-center tw-justify-center tw-gap-4">
+                  <a
+                    href="{{ block.settings.button_link }}"
+                    class="tw-btn {% if block.settings.text_color == 'light' %}tw-bg-white tw-text-velox-900 hover:tw-bg-white/90{% else %}tw-btn-primary{% endif %}"
+                  >
+                    {{ block.settings.button_label }}
+                  </a>
+
+                  {% if block.settings.button_label_2 != blank %}
+                    <a
+                      href="{{ block.settings.button_link_2 }}"
+                      class="tw-btn {% if block.settings.text_color == 'light' %}tw-border-white tw-text-white hover:tw-bg-white hover:tw-text-velox-900{% else %}tw-btn-outline{% endif %}"
+                    >
+                      {{ block.settings.button_label_2 }}
+                    </a>
+                  {% endif %}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      {%- comment -%} Placeholder {%- endcomment -%}
+      <div class="tw-w-full tw-h-full tw-bg-velox-200 tw-flex tw-items-center tw-justify-center">
+        <div class="tw-text-center tw-p-8">
+          <div class="tw-w-16 tw-h-16 tw-mx-auto tw-mb-4 tw-rounded-full tw-bg-velox-300 tw-flex tw-items-center tw-justify-center">
+            {% render 'icon', name: 'eye', class: 'tw-w-8 tw-h-8 tw-text-velox-500' %}
+          </div>
+          <p class="tw-text-velox-600 tw-text-lg">{{ 'sections.slideshow.placeholder' | t | default: 'Agrega slides usando el editor del tema' }}</p>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+  {% if slide_count > 1 %}
+    {%- comment -%} Flechas de navegación {%- endcomment -%}
+    {% if show_arrows %}
+      <button
+        type="button"
+        class="velox-slideshow__arrow velox-slideshow__arrow--prev tw-absolute tw-left-4 tw-top-1/2 tw--translate-y-1/2 tw-z-20 tw-w-12 tw-h-12 tw-rounded-full tw-bg-white/80 tw-backdrop-blur-sm tw-flex tw-items-center tw-justify-center tw-shadow-lg tw-transition-all hover:tw-bg-white hover:tw-scale-110 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-velox-accent"
+        data-slideshow-prev
+        aria-label="{{ 'sections.slideshow.previous' | t | default: 'Previous slide' }}"
+      >
+        {% render 'icon', name: 'chevron-left', class: 'tw-w-6 tw-h-6 tw-text-velox-900' %}
+      </button>
+
+      <button
+        type="button"
+        class="velox-slideshow__arrow velox-slideshow__arrow--next tw-absolute tw-right-4 tw-top-1/2 tw--translate-y-1/2 tw-z-20 tw-w-12 tw-h-12 tw-rounded-full tw-bg-white/80 tw-backdrop-blur-sm tw-flex tw-items-center tw-justify-center tw-shadow-lg tw-transition-all hover:tw-bg-white hover:tw-scale-110 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-velox-accent"
+        data-slideshow-next
+        aria-label="{{ 'sections.slideshow.next' | t | default: 'Next slide' }}"
+      >
+        {% render 'icon', name: 'chevron-right', class: 'tw-w-6 tw-h-6 tw-text-velox-900' %}
+      </button>
+    {% endif %}
+
+    {%- comment -%} Indicadores de posición (dots) {%- endcomment -%}
+    {% if show_dots %}
+      <div class="velox-slideshow__dots tw-absolute tw-bottom-6 tw-left-1/2 tw--translate-x-1/2 tw-z-20 tw-flex tw-items-center tw-gap-2">
+        {% for block in section.blocks %}
+          <button
+            type="button"
+            class="velox-slideshow__dot tw-w-3 tw-h-3 tw-rounded-full tw-transition-all focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-white {% if forloop.first %}tw-bg-white{% else %}tw-bg-white/50 hover:tw-bg-white/70{% endif %}"
+            data-slideshow-dot="{{ forloop.index0 }}"
+            aria-label="{{ 'sections.slideshow.go_to_slide' | t: number: forloop.index | default: 'Go to slide' }} {{ forloop.index }}"
+            {% if forloop.first %}aria-current="true"{% endif %}
+          ></button>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endif %}
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const slideshows = document.querySelectorAll('[data-slideshow]');
+
+    slideshows.forEach(function(slideshow) {
+      const slides = slideshow.querySelectorAll('[data-slide-index]');
+      const dots = slideshow.querySelectorAll('[data-slideshow-dot]');
+      const prevBtn = slideshow.querySelector('[data-slideshow-prev]');
+      const nextBtn = slideshow.querySelector('[data-slideshow-next]');
+
+      if (slides.length <= 1) return;
+
+      let currentIndex = 0;
+      let autoplayInterval = null;
+      const autoplay = slideshow.dataset.autoplay === 'true';
+      const speed = parseInt(slideshow.dataset.speed) || 5000;
+
+      function goToSlide(index) {
+        slides.forEach(function(slide, i) {
+          if (i === index) {
+            slide.classList.remove('tw-opacity-0', 'tw-z-0');
+            slide.classList.add('tw-opacity-100', 'tw-z-10');
+          } else {
+            slide.classList.remove('tw-opacity-100', 'tw-z-10');
+            slide.classList.add('tw-opacity-0', 'tw-z-0');
+          }
+        });
+
+        dots.forEach(function(dot, i) {
+          if (i === index) {
+            dot.classList.remove('tw-bg-white/50');
+            dot.classList.add('tw-bg-white');
+            dot.setAttribute('aria-current', 'true');
+          } else {
+            dot.classList.remove('tw-bg-white');
+            dot.classList.add('tw-bg-white/50');
+            dot.removeAttribute('aria-current');
+          }
+        });
+
+        currentIndex = index;
+      }
+
+      function nextSlide() {
+        const nextIndex = (currentIndex + 1) % slides.length;
+        goToSlide(nextIndex);
+      }
+
+      function prevSlide() {
+        const prevIndex = (currentIndex - 1 + slides.length) % slides.length;
+        goToSlide(prevIndex);
+      }
+
+      function startAutoplay() {
+        if (autoplay && !autoplayInterval) {
+          autoplayInterval = setInterval(nextSlide, speed);
+        }
+      }
+
+      function stopAutoplay() {
+        if (autoplayInterval) {
+          clearInterval(autoplayInterval);
+          autoplayInterval = null;
+        }
+      }
+
+      // Event listeners
+      if (prevBtn) {
+        prevBtn.addEventListener('click', function() {
+          stopAutoplay();
+          prevSlide();
+          startAutoplay();
+        });
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener('click', function() {
+          stopAutoplay();
+          nextSlide();
+          startAutoplay();
+        });
+      }
+
+      dots.forEach(function(dot) {
+        dot.addEventListener('click', function() {
+          stopAutoplay();
+          goToSlide(parseInt(dot.dataset.slideshowDot));
+          startAutoplay();
+        });
+      });
+
+      // Pausar autoplay al hacer hover
+      slideshow.addEventListener('mouseenter', stopAutoplay);
+      slideshow.addEventListener('mouseleave', startAutoplay);
+
+      // Iniciar autoplay
+      startAutoplay();
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Slideshow",
+  "tag": "section",
+  "class": "velox-slideshow-section full-width",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "select",
+      "id": "slide_height",
+      "label": "Altura del slide",
+      "options": [
+        { "value": "small", "label": "Pequeño (50-60vh)" },
+        { "value": "medium", "label": "Mediano (60-70vh)" },
+        { "value": "large", "label": "Grande (70-80vh)" },
+        { "value": "full", "label": "Pantalla completa" }
+      ],
+      "default": "large"
+    },
+    {
+      "type": "header",
+      "content": "Autoplay"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "label": "Velocidad de autoplay",
+      "default": 5
+    },
+    {
+      "type": "header",
+      "content": "Navegación"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Mostrar flechas",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dots",
+      "label": "Mostrar indicadores",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Imagen"
+        },
+        {
+          "type": "range",
+          "id": "overlay_opacity",
+          "min": 0,
+          "max": 80,
+          "step": 10,
+          "unit": "%",
+          "label": "Opacidad del overlay",
+          "default": 30
+        },
+        {
+          "type": "header",
+          "content": "Contenido"
+        },
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Subtítulo",
+          "default": "Nueva colección"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Título",
+          "default": "Descubre tu estilo"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Texto",
+          "default": "Explora nuestra última colección de calzado diseñado para destacar."
+        },
+        {
+          "type": "select",
+          "id": "text_color",
+          "label": "Color del texto",
+          "options": [
+            { "value": "light", "label": "Claro (para fondos oscuros)" },
+            { "value": "dark", "label": "Oscuro (para fondos claros)" }
+          ],
+          "default": "light"
+        },
+        {
+          "type": "header",
+          "content": "Botón principal"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Texto del botón",
+          "default": "Ver colección"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Enlace del botón"
+        },
+        {
+          "type": "header",
+          "content": "Botón secundario"
+        },
+        {
+          "type": "text",
+          "id": "button_label_2",
+          "label": "Texto del botón"
+        },
+        {
+          "type": "url",
+          "id": "button_link_2",
+          "label": "Enlace del botón"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Slideshow",
+      "category": "Hero",
+      "blocks": [
+        {
+          "type": "slide",
+          "settings": {
+            "subheading": "Nueva temporada",
+            "heading": "Colección Primavera 2024",
+            "text": "Descubre los estilos más frescos de la temporada.",
+            "button_label": "Comprar ahora"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "subheading": "Edición limitada",
+            "heading": "Diseños exclusivos",
+            "text": "Piezas únicas que no encontrarás en otro lugar.",
+            "button_label": "Ver más"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

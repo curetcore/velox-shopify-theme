@@ -1,0 +1,943 @@
+{% comment %}
+  Velox Theme - Customer Addresses Page
+  Fase 8: Cuenta de cliente
+  Adaptado de Tailwind Plus: application-ui/form-layouts/two-column
+
+  Features:
+  - Lista de direcciones existentes
+  - Formulario para agregar/editar direcciones
+  - Marcar dirección por defecto
+  - Eliminar direcciones
+  - Soporte dark mode
+{% endcomment %}
+
+{% style %}
+  /* ========== ADDRESSES BASE STYLES ========== */
+  .velox-addresses {
+    background-color: #ffffff;
+    min-height: 100vh;
+  }
+
+  .velox-addresses--dark {
+    background-color: #111827;
+  }
+
+  .velox-addresses__wrapper {
+    padding: 3rem 1rem;
+  }
+
+  .velox-addresses__container {
+    max-width: 42rem;
+    margin: 0 auto;
+  }
+
+  /* ========== HEADER ========== */
+  .velox-addresses__header {
+    margin-bottom: 2rem;
+  }
+
+  .velox-addresses__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--color-accent, #4f46e5);
+    text-decoration: none;
+    margin-bottom: 1.5rem;
+  }
+
+  .velox-addresses__back:hover {
+    text-decoration: underline;
+  }
+
+  .velox-addresses__back svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .velox-addresses__title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 0.5rem 0;
+    line-height: 1.2;
+  }
+
+  .velox-addresses--dark .velox-addresses__title {
+    color: #ffffff;
+  }
+
+  .velox-addresses__subtitle {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin: 0;
+  }
+
+  .velox-addresses--dark .velox-addresses__subtitle {
+    color: #9ca3af;
+  }
+
+  /* ========== ADDRESS LIST ========== */
+  .velox-address-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .velox-address-card {
+    background-color: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    padding: 1.25rem;
+    position: relative;
+  }
+
+  .velox-addresses--dark .velox-address-card {
+    background-color: #1f2937;
+    border-color: #374151;
+  }
+
+  .velox-address-card--default {
+    border-color: var(--color-accent, #4f46e5);
+    border-width: 2px;
+  }
+
+  .velox-address-card__badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-accent, #4f46e5);
+    background-color: rgba(79, 70, 229, 0.1);
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+  }
+
+  .velox-addresses--dark .velox-address-card__badge {
+    background-color: rgba(79, 70, 229, 0.2);
+    color: #818cf8;
+  }
+
+  .velox-address-card__content {
+    font-size: 0.875rem;
+    color: #374151;
+    line-height: 1.6;
+    font-style: normal;
+    margin: 0;
+  }
+
+  .velox-addresses--dark .velox-address-card__content {
+    color: #d1d5db;
+  }
+
+  .velox-address-card__content span {
+    display: block;
+  }
+
+  .velox-address-card__name {
+    font-weight: 500;
+    color: #111827;
+    margin-bottom: 0.25rem;
+  }
+
+  .velox-addresses--dark .velox-address-card__name {
+    color: #f3f4f6;
+  }
+
+  .velox-address-card__actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  .velox-addresses--dark .velox-address-card__actions {
+    border-color: #374151;
+  }
+
+  .velox-address-card__btn {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-accent, #4f46e5);
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .velox-address-card__btn:hover {
+    text-decoration: underline;
+  }
+
+  .velox-address-card__btn--delete {
+    color: #dc2626;
+  }
+
+  /* ========== ADD BUTTON ========== */
+  .velox-addresses__add-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: var(--color-accent, #4f46e5);
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+    margin-bottom: 2rem;
+  }
+
+  .velox-addresses__add-btn:hover {
+    background-color: var(--color-accent-hover, #4338ca);
+  }
+
+  .velox-addresses__add-btn svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  /* ========== ADDRESS FORM ========== */
+  .velox-address-form {
+    background-color: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    display: none;
+  }
+
+  .velox-address-form.is-active {
+    display: block;
+  }
+
+  .velox-addresses--dark .velox-address-form {
+    background-color: #1f2937;
+    border-color: #374151;
+  }
+
+  .velox-address-form__title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 1.5rem 0;
+  }
+
+  .velox-addresses--dark .velox-address-form__title {
+    color: #f3f4f6;
+  }
+
+  .velox-address-form__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .velox-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  .velox-form-group--full {
+    grid-column: 1 / -1;
+  }
+
+  .velox-form-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+  }
+
+  .velox-addresses--dark .velox-form-label {
+    color: #d1d5db;
+  }
+
+  .velox-form-input,
+  .velox-form-select {
+    display: block;
+    width: 100%;
+    padding: 0.625rem 0.875rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #111827;
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .velox-form-input:focus,
+  .velox-form-select:focus {
+    outline: none;
+    border-color: var(--color-accent, #4f46e5);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  }
+
+  .velox-addresses--dark .velox-form-input,
+  .velox-addresses--dark .velox-form-select {
+    background-color: #374151;
+    border-color: #4b5563;
+    color: #ffffff;
+  }
+
+  .velox-form-checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .velox-form-checkbox {
+    width: 1rem;
+    height: 1rem;
+    accent-color: var(--color-accent, #4f46e5);
+  }
+
+  .velox-form-checkbox-label {
+    font-size: 0.875rem;
+    color: #374151;
+  }
+
+  .velox-addresses--dark .velox-form-checkbox-label {
+    color: #d1d5db;
+  }
+
+  .velox-address-form__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  .velox-addresses--dark .velox-address-form__actions {
+    border-color: #374151;
+  }
+
+  .velox-btn-cancel {
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
+
+  .velox-btn-cancel:hover {
+    color: #111827;
+  }
+
+  .velox-addresses--dark .velox-btn-cancel {
+    color: #9ca3af;
+  }
+
+  .velox-addresses--dark .velox-btn-cancel:hover {
+    color: #d1d5db;
+  }
+
+  .velox-btn-submit {
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: var(--color-accent, #4f46e5);
+    border: none;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+  }
+
+  .velox-btn-submit:hover {
+    background-color: var(--color-accent-hover, #4338ca);
+  }
+
+  /* ========== EMPTY STATE ========== */
+  .velox-addresses__empty {
+    text-align: center;
+    padding: 3rem 1rem;
+    background-color: #f9fafb;
+    border-radius: 0.5rem;
+  }
+
+  .velox-addresses--dark .velox-addresses__empty {
+    background-color: #1f2937;
+  }
+
+  .velox-addresses__empty-icon {
+    width: 3rem;
+    height: 3rem;
+    margin: 0 auto 1rem;
+    color: #9ca3af;
+  }
+
+  .velox-addresses__empty-title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #111827;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .velox-addresses--dark .velox-addresses__empty-title {
+    color: #f3f4f6;
+  }
+
+  .velox-addresses__empty-text {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin: 0;
+  }
+
+  .velox-addresses--dark .velox-addresses__empty-text {
+    color: #9ca3af;
+  }
+
+  /* ========== RESPONSIVE ========== */
+  @media (min-width: 640px) {
+    .velox-addresses__wrapper {
+      padding: 4rem 1.5rem;
+    }
+
+    .velox-addresses__title {
+      font-size: 1.875rem;
+    }
+
+    .velox-address-list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .velox-address-form {
+      padding: 2rem;
+    }
+
+    .velox-address-form__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem 1rem;
+    }
+  }
+{% endstyle %}
+
+<div class="velox-addresses{% if section.settings.color_scheme == 'dark' %} velox-addresses--dark{% endif %}">
+  <div class="velox-addresses__wrapper">
+    <div class="velox-addresses__container">
+
+      {%- comment -%} Back link {%- endcomment -%}
+      <a href="{{ routes.account_url }}" class="velox-addresses__back">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+        </svg>
+        {{ 'customer.addresses.back_to_account' | t | default: 'Back to account' }}
+      </a>
+
+      {%- comment -%} Header {%- endcomment -%}
+      <div class="velox-addresses__header">
+        <h1 class="velox-addresses__title">
+          {{ 'customer.addresses.title' | t | default: 'Your addresses' }}
+        </h1>
+        <p class="velox-addresses__subtitle">
+          {{ 'customer.addresses.subtitle' | t | default: 'Manage your shipping and billing addresses.' }}
+        </p>
+      </div>
+
+      {%- comment -%} Add new address button {%- endcomment -%}
+      <button type="button" class="velox-addresses__add-btn" data-address-toggle="new">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+        </svg>
+        {{ 'customer.addresses.add_new' | t | default: 'Add new address' }}
+      </button>
+
+      {%- comment -%} New address form {%- endcomment -%}
+      <div class="velox-address-form" id="AddressFormNew" data-address-form="new">
+        <h2 class="velox-address-form__title">
+          {{ 'customer.addresses.add_new' | t | default: 'Add new address' }}
+        </h2>
+
+        {% form 'customer_address', customer.new_address %}
+          <div class="velox-address-form__grid">
+            <div class="velox-form-group">
+              <label for="AddressFirstNameNew" class="velox-form-label">
+                {{ 'customer.addresses.first_name' | t | default: 'First name' }}
+              </label>
+              <input
+                type="text"
+                id="AddressFirstNameNew"
+                name="address[first_name]"
+                class="velox-form-input"
+                autocomplete="given-name"
+              >
+            </div>
+
+            <div class="velox-form-group">
+              <label for="AddressLastNameNew" class="velox-form-label">
+                {{ 'customer.addresses.last_name' | t | default: 'Last name' }}
+              </label>
+              <input
+                type="text"
+                id="AddressLastNameNew"
+                name="address[last_name]"
+                class="velox-form-input"
+                autocomplete="family-name"
+              >
+            </div>
+
+            <div class="velox-form-group velox-form-group--full">
+              <label for="AddressCompanyNew" class="velox-form-label">
+                {{ 'customer.addresses.company' | t | default: 'Company' }}
+              </label>
+              <input
+                type="text"
+                id="AddressCompanyNew"
+                name="address[company]"
+                class="velox-form-input"
+                autocomplete="organization"
+              >
+            </div>
+
+            <div class="velox-form-group velox-form-group--full">
+              <label for="AddressAddress1New" class="velox-form-label">
+                {{ 'customer.addresses.address1' | t | default: 'Address' }}
+              </label>
+              <input
+                type="text"
+                id="AddressAddress1New"
+                name="address[address1]"
+                class="velox-form-input"
+                autocomplete="address-line1"
+              >
+            </div>
+
+            <div class="velox-form-group velox-form-group--full">
+              <label for="AddressAddress2New" class="velox-form-label">
+                {{ 'customer.addresses.address2' | t | default: 'Apartment, suite, etc.' }}
+              </label>
+              <input
+                type="text"
+                id="AddressAddress2New"
+                name="address[address2]"
+                class="velox-form-input"
+                autocomplete="address-line2"
+              >
+            </div>
+
+            <div class="velox-form-group">
+              <label for="AddressCityNew" class="velox-form-label">
+                {{ 'customer.addresses.city' | t | default: 'City' }}
+              </label>
+              <input
+                type="text"
+                id="AddressCityNew"
+                name="address[city]"
+                class="velox-form-input"
+                autocomplete="address-level2"
+              >
+            </div>
+
+            <div class="velox-form-group">
+              <label for="AddressCountryNew" class="velox-form-label">
+                {{ 'customer.addresses.country' | t | default: 'Country/Region' }}
+              </label>
+              <select
+                id="AddressCountryNew"
+                name="address[country]"
+                class="velox-form-select"
+                data-address-country-select
+                data-form-id="new"
+                autocomplete="country"
+              >
+                {{ all_country_option_tags }}
+              </select>
+            </div>
+
+            <div class="velox-form-group">
+              <label for="AddressProvinceNew" class="velox-form-label">
+                {{ 'customer.addresses.province' | t | default: 'State/Province' }}
+              </label>
+              <select
+                id="AddressProvinceNew"
+                name="address[province]"
+                class="velox-form-select"
+                data-address-province-select
+                data-form-id="new"
+                autocomplete="address-level1"
+              >
+              </select>
+            </div>
+
+            <div class="velox-form-group">
+              <label for="AddressZipNew" class="velox-form-label">
+                {{ 'customer.addresses.zip' | t | default: 'Postal/ZIP code' }}
+              </label>
+              <input
+                type="text"
+                id="AddressZipNew"
+                name="address[zip]"
+                class="velox-form-input"
+                autocomplete="postal-code"
+              >
+            </div>
+
+            <div class="velox-form-group">
+              <label for="AddressPhoneNew" class="velox-form-label">
+                {{ 'customer.addresses.phone' | t | default: 'Phone' }}
+              </label>
+              <input
+                type="tel"
+                id="AddressPhoneNew"
+                name="address[phone]"
+                class="velox-form-input"
+                autocomplete="tel"
+              >
+            </div>
+
+            <div class="velox-form-group velox-form-group--full">
+              <div class="velox-form-checkbox-group">
+                <input
+                  type="checkbox"
+                  id="AddressDefaultNew"
+                  name="address[default]"
+                  value="1"
+                  class="velox-form-checkbox"
+                >
+                <label for="AddressDefaultNew" class="velox-form-checkbox-label">
+                  {{ 'customer.addresses.set_default' | t | default: 'Set as default address' }}
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="velox-address-form__actions">
+            <button type="button" class="velox-btn-cancel" data-address-cancel="new">
+              {{ 'customer.addresses.cancel' | t | default: 'Cancel' }}
+            </button>
+            <button type="submit" class="velox-btn-submit">
+              {{ 'customer.addresses.add' | t | default: 'Add address' }}
+            </button>
+          </div>
+        {% endform %}
+      </div>
+
+      {%- comment -%} Existing addresses {%- endcomment -%}
+      {% if customer.addresses.size > 0 %}
+        <div class="velox-address-list">
+          {% for address in customer.addresses %}
+            <div class="velox-address-card{% if address == customer.default_address %} velox-address-card--default{% endif %}">
+              {% if address == customer.default_address %}
+                <span class="velox-address-card__badge">
+                  {{ 'customer.addresses.default' | t | default: 'Default' }}
+                </span>
+              {% endif %}
+
+              <address class="velox-address-card__content">
+                <span class="velox-address-card__name">{{ address.name }}</span>
+                {% if address.company != blank %}<span>{{ address.company }}</span>{% endif %}
+                <span>{{ address.address1 }}</span>
+                {% if address.address2 != blank %}<span>{{ address.address2 }}</span>{% endif %}
+                <span>{{ address.city }}{% if address.province_code %}, {{ address.province_code }}{% endif %} {{ address.zip }}</span>
+                <span>{{ address.country }}</span>
+                {% if address.phone != blank %}<span>{{ address.phone }}</span>{% endif %}
+              </address>
+
+              <div class="velox-address-card__actions">
+                <button type="button" class="velox-address-card__btn" data-address-toggle="{{ address.id }}">
+                  {{ 'customer.addresses.edit' | t | default: 'Edit' }}
+                </button>
+                <button
+                  type="button"
+                  class="velox-address-card__btn velox-address-card__btn--delete"
+                  data-address-delete="{{ address.id }}"
+                  data-confirm-message="{{ 'customer.addresses.delete_confirm' | t | default: 'Are you sure you want to delete this address?' }}"
+                >
+                  {{ 'customer.addresses.delete' | t | default: 'Delete' }}
+                </button>
+              </div>
+
+              {%- comment -%} Edit form for this address {%- endcomment -%}
+              <div class="velox-address-form" id="AddressForm{{ address.id }}" data-address-form="{{ address.id }}" style="margin-top: 1rem;">
+                <h3 class="velox-address-form__title">
+                  {{ 'customer.addresses.edit_address' | t | default: 'Edit address' }}
+                </h3>
+
+                {% form 'customer_address', address %}
+                  <div class="velox-address-form__grid">
+                    <div class="velox-form-group">
+                      <label for="AddressFirstName{{ address.id }}" class="velox-form-label">
+                        {{ 'customer.addresses.first_name' | t | default: 'First name' }}
+                      </label>
+                      <input
+                        type="text"
+                        id="AddressFirstName{{ address.id }}"
+                        name="address[first_name]"
+                        class="velox-form-input"
+                        value="{{ address.first_name }}"
+                        autocomplete="given-name"
+                      >
+                    </div>
+
+                    <div class="velox-form-group">
+                      <label for="AddressLastName{{ address.id }}" class="velox-form-label">
+                        {{ 'customer.addresses.last_name' | t | default: 'Last name' }}
+                      </label>
+                      <input
+                        type="text"
+                        id="AddressLastName{{ address.id }}"
+                        name="address[last_name]"
+                        class="velox-form-input"
+                        value="{{ address.last_name }}"
+                        autocomplete="family-name"
+                      >
+                    </div>
+
+                    <div class="velox-form-group velox-form-group--full">
+                      <label for="AddressCompany{{ address.id }}" class="velox-form-label">
+                        {{ 'customer.addresses.company' | t | default: 'Company' }}
+                      </label>
+                      <input
+                        type="text"
+                        id="AddressCompany{{ address.id }}"
+                        name="address[company]"
+                        class="velox-form-input"
+                        value="{{ address.company }}"
+                        autocomplete="organization"
+                      >
+                    </div>
+
+                    <div class="velox-form-group velox-form-group--full">
+                      <label for="AddressAddress1{{ address.id }}" class="velox-form-label">
+                        {{ 'customer.addresses.address1' | t | default: 'Address' }}
+                      </label>
+                      <input
+                        type="text"
+                        id="AddressAddress1{{ address.id }}"
+                        name="address[address1]"
+                        class="velox-form-input"
+                        value="{{ address.address1 }}"
+                        autocomplete="address-line1"
+                      >
+                    </div>
+
+                    <div class="velox-form-group velox-form-group--full">
+                      <label for="AddressAddress2{{ address.id }}" class="velox-form-label">
+                        {{ 'customer.addresses.address2' | t | default: 'Apartment, suite, etc.' }}
+                      </label>
+                      <input
+                        type="text"
+                        id="AddressAddress2{{ address.id }}"
+                        name="address[address2]"
+                        class="velox-form-input"
+                        value="{{ address.address2 }}"
+                        autocomplete="address-line2"
+                      >
+                    </div>
+
+                    <div class="velox-form-group">
+                      <label for="AddressCity{{ address.id }}" class="velox-form-label">
+                        {{ 'customer.addresses.city' | t | default: 'City' }}
+                      </label>
+                      <input
+                        type="text"
+                        id="AddressCity{{ address.id }}"
+                        name="address[city]"
+                        class="velox-form-input"
+                        value="{{ address.city }}"
+                        autocomplete="address-level2"
+                      >
+                    </div>
+
+                    <div class="velox-form-group">
+                      <label for="AddressCountry{{ address.id }}" class="velox-form-label">
+                        {{ 'customer.addresses.country' | t | default: 'Country/Region' }}
+                      </label>
+                      <select
+                        id="AddressCountry{{ address.id }}"
+                        name="address[country]"
+                        class="velox-form-select"
+                        data-address-country-select
+                        data-form-id="{{ address.id }}"
+                        data-default="{{ address.country }}"
+                        autocomplete="country"
+                      >
+                        {{ all_country_option_tags }}
+                      </select>
+                    </div>
+
+                    <div class="velox-form-group">
+                      <label for="AddressProvince{{ address.id }}" class="velox-form-label">
+                        {{ 'customer.addresses.province' | t | default: 'State/Province' }}
+                      </label>
+                      <select
+                        id="AddressProvince{{ address.id }}"
+                        name="address[province]"
+                        class="velox-form-select"
+                        data-address-province-select
+                        data-form-id="{{ address.id }}"
+                        data-default="{{ address.province }}"
+                        autocomplete="address-level1"
+                      >
+                      </select>
+                    </div>
+
+                    <div class="velox-form-group">
+                      <label for="AddressZip{{ address.id }}" class="velox-form-label">
+                        {{ 'customer.addresses.zip' | t | default: 'Postal/ZIP code' }}
+                      </label>
+                      <input
+                        type="text"
+                        id="AddressZip{{ address.id }}"
+                        name="address[zip]"
+                        class="velox-form-input"
+                        value="{{ address.zip }}"
+                        autocomplete="postal-code"
+                      >
+                    </div>
+
+                    <div class="velox-form-group">
+                      <label for="AddressPhone{{ address.id }}" class="velox-form-label">
+                        {{ 'customer.addresses.phone' | t | default: 'Phone' }}
+                      </label>
+                      <input
+                        type="tel"
+                        id="AddressPhone{{ address.id }}"
+                        name="address[phone]"
+                        class="velox-form-input"
+                        value="{{ address.phone }}"
+                        autocomplete="tel"
+                      >
+                    </div>
+
+                    <div class="velox-form-group velox-form-group--full">
+                      <div class="velox-form-checkbox-group">
+                        <input
+                          type="checkbox"
+                          id="AddressDefault{{ address.id }}"
+                          name="address[default]"
+                          value="1"
+                          class="velox-form-checkbox"
+                          {% if address == customer.default_address %}checked{% endif %}
+                        >
+                        <label for="AddressDefault{{ address.id }}" class="velox-form-checkbox-label">
+                          {{ 'customer.addresses.set_default' | t | default: 'Set as default address' }}
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="velox-address-form__actions">
+                    <button type="button" class="velox-btn-cancel" data-address-cancel="{{ address.id }}">
+                      {{ 'customer.addresses.cancel' | t | default: 'Cancel' }}
+                    </button>
+                    <button type="submit" class="velox-btn-submit">
+                      {{ 'customer.addresses.update' | t | default: 'Update address' }}
+                    </button>
+                  </div>
+                {% endform %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="velox-addresses__empty">
+          <svg class="velox-addresses__empty-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+          </svg>
+          <h3 class="velox-addresses__empty-title">
+            {{ 'customer.addresses.no_addresses' | t | default: 'No addresses yet' }}
+          </h3>
+          <p class="velox-addresses__empty-text">
+            {{ 'customer.addresses.no_addresses_message' | t | default: 'Add a shipping address to get started.' }}
+          </p>
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Toggle address forms
+    document.querySelectorAll('[data-address-toggle]').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const formId = this.getAttribute('data-address-toggle');
+        const form = document.querySelector('[data-address-form="' + formId + '"]');
+        if (form) {
+          form.classList.toggle('is-active');
+        }
+      });
+    });
+
+    // Cancel buttons
+    document.querySelectorAll('[data-address-cancel]').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const formId = this.getAttribute('data-address-cancel');
+        const form = document.querySelector('[data-address-form="' + formId + '"]');
+        if (form) {
+          form.classList.remove('is-active');
+        }
+      });
+    });
+
+    // Delete buttons
+    document.querySelectorAll('[data-address-delete]').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const confirmMessage = this.getAttribute('data-confirm-message');
+        if (confirm(confirmMessage)) {
+          const addressId = this.getAttribute('data-address-delete');
+          Shopify.postLink('/account/addresses/' + addressId, {
+            parameters: { _method: 'delete' }
+          });
+        }
+      });
+    });
+
+    // Country/Province selectors
+    if (typeof Shopify !== 'undefined' && Shopify.CountryProvinceSelector) {
+      document.querySelectorAll('[data-address-country-select]').forEach(function(select) {
+        const formId = select.getAttribute('data-form-id');
+        const provinceSelect = document.querySelector('[data-address-province-select][data-form-id="' + formId + '"]');
+        if (provinceSelect) {
+          new Shopify.CountryProvinceSelector(
+            select.id,
+            provinceSelect.id,
+            { hideElement: provinceSelect.parentElement }
+          );
+        }
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Customer addresses",
+  "tag": "section",
+  "class": "section-addresses",
+  "settings": [
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "options": [
+        {
+          "value": "light",
+          "label": "Light"
+        },
+        {
+          "value": "dark",
+          "label": "Dark"
+        }
+      ],
+      "default": "light"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,44 @@
+{% comment %}
+  Velox Header Actions Snippet
+  Botones de búsqueda, cuenta y carrito reutilizables.
+  Uso: {% render 'header-actions', color_scheme: color_scheme %}
+{% endcomment %}
+
+{%- comment -%} Search button {%- endcomment -%}
+<button
+  type="button"
+  class="velox-header-icon tw-p-2 tw-transition-colors"
+  data-search-open
+  aria-label="{{ 'general.search.search' | t | default: 'Buscar' }}"
+>
+  {% render 'icon', name: 'search', class: 'tw-w-5 tw-h-5' %}
+</button>
+
+{%- comment -%} Account (desktop) {%- endcomment -%}
+{% if shop.customer_accounts_enabled %}
+  <a
+    href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}"
+    class="velox-header-icon tw-hidden lg:tw-block tw-p-2 tw-transition-colors"
+    aria-label="{{ 'customer.account.title' | t | default: 'Cuenta' }}"
+  >
+    {% render 'icon', name: 'user', class: 'tw-w-5 tw-h-5' %}
+  </a>
+{% endif %}
+
+{%- comment -%} Cart button {%- endcomment -%}
+<button
+  type="button"
+  class="velox-header-icon tw-relative tw-p-2 tw-transition-colors"
+  data-cart-open
+  aria-label="{{ 'cart.general.title' | t | default: 'Carrito' }}"
+>
+  {% render 'icon', name: 'cart', class: 'tw-w-5 tw-h-5' %}
+
+  {%- comment -%} Cart count badge {%- endcomment -%}
+  <span
+    class="tw-absolute tw--top-0.5 tw--right-0.5 tw-flex tw-h-5 tw-w-5 tw-items-center tw-justify-center tw-rounded-full tw-bg-accent tw-text-xs tw-font-medium tw-text-white {% if cart.item_count == 0 %}tw-hidden{% endif %}"
+    data-cart-count
+  >
+    {{ cart.item_count }}
+  </span>
+</button>

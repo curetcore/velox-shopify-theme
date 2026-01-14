@@ -1,0 +1,20 @@
+{% comment %}
+  Velox Header Logo Snippet
+  Logo reutilizable para diferentes layouts de header.
+  Uso: {% render 'header-logo', logo: logo, logo_width: logo_width %}
+{% endcomment %}
+
+<a href="{{ routes.root_url }}" class="tw-flex tw-items-center">
+  {% if logo %}
+    {{ logo | image_url: width: logo_width | image_tag:
+      class: 'tw-h-8 lg:tw-h-10 tw-w-auto',
+      alt: shop.name,
+      loading: 'eager',
+      widths: '80, 120, 160, 200, 240'
+    }}
+  {% else %}
+    <span class="velox-header-logo tw-text-xl lg:tw-text-2xl tw-font-bold">
+      {{ shop.name }}
+    </span>
+  {% endif %}
+</a>

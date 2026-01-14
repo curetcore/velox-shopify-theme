@@ -1,0 +1,330 @@
+{% comment %}
+  Velox Blog Posts Preview Section
+
+  Muestra artículos recientes de un blog seleccionado.
+  Ideal para homepage o páginas de landing.
+{% endcomment %}
+
+{%- liquid
+  assign blog_ref = section.settings.blog
+  assign posts_to_show = section.settings.posts_to_show
+  assign heading = section.settings.heading
+  assign subheading = section.settings.subheading
+  assign show_author = section.settings.show_author
+  assign show_date = section.settings.show_date
+  assign show_tags = section.settings.show_tags
+  assign show_excerpt = section.settings.show_excerpt
+  assign show_image = section.settings.show_image
+  assign show_view_all = section.settings.show_view_all
+  assign bg_color = section.settings.background_color
+  assign layout = section.settings.layout
+
+  # Background color classes
+  case bg_color
+    when 'dark'
+      assign bg_class = 'tw-bg-velox-900'
+      assign text_class = 'tw-text-white'
+      assign text_muted_class = 'tw-text-velox-400'
+      assign card_bg = 'tw-bg-velox-800'
+      assign tag_bg = 'tw-bg-velox-800/60 hover:tw-bg-velox-800'
+      assign border_class = 'tw-border-velox-700'
+    when 'light'
+      assign bg_class = 'tw-bg-velox-50'
+      assign text_class = 'tw-text-velox-900'
+      assign text_muted_class = 'tw-text-velox-600'
+      assign card_bg = 'tw-bg-white'
+      assign tag_bg = 'tw-bg-velox-100 hover:tw-bg-velox-200'
+      assign border_class = 'tw-border-velox-200'
+    else
+      assign bg_class = 'tw-bg-white'
+      assign text_class = 'tw-text-velox-900'
+      assign text_muted_class = 'tw-text-velox-600'
+      assign card_bg = 'tw-bg-velox-50'
+      assign tag_bg = 'tw-bg-velox-100 hover:tw-bg-velox-200'
+      assign border_class = 'tw-border-velox-200'
+  endcase
+
+  # Grid columns based on layout
+  case layout
+    when 'two-column'
+      assign grid_class = 'lg:tw-grid-cols-2'
+    when 'four-column'
+      assign grid_class = 'sm:tw-grid-cols-2 lg:tw-grid-cols-4'
+    else
+      assign grid_class = 'lg:tw-grid-cols-3'
+  endcase
+-%}
+
+<section
+  class="{{ bg_class }}"
+  style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;"
+  {{ section.shopify_attributes }}
+>
+  <div class="tw-mx-auto tw-max-w-7xl tw-px-4 sm:tw-px-6 lg:tw-px-8">
+    {%- comment -%} Header {%- endcomment -%}
+    <div class="tw-mx-auto tw-max-w-2xl lg:tw-mx-0">
+      {% if heading != blank %}
+        <h2 class="tw-text-3xl tw-font-bold tw-tracking-tight {{ text_class }} sm:tw-text-4xl">
+          {{ heading }}
+        </h2>
+      {% endif %}
+
+      {% if subheading != blank %}
+        <p class="tw-mt-2 tw-text-lg {{ text_muted_class }}">
+          {{ subheading }}
+        </p>
+      {% endif %}
+    </div>
+
+    {%- comment -%} Articles Grid {%- endcomment -%}
+    {% if blog_ref != blank %}
+      {% assign blog = blogs[blog_ref] %}
+      {% if blog.articles.size > 0 %}
+        <div class="tw-mx-auto tw-mt-10 tw-grid tw-max-w-2xl tw-grid-cols-1 tw-gap-x-8 tw-gap-y-16 tw-border-t {{ border_class }} tw-pt-10 sm:tw-mt-16 sm:tw-pt-16 lg:tw-mx-0 lg:tw-max-w-none {{ grid_class }}">
+          {% for article in blog.articles limit: posts_to_show %}
+            <article class="tw-flex tw-max-w-xl tw-flex-col tw-items-start tw-justify-between">
+              {%- comment -%} Image {%- endcomment -%}
+              {% if show_image and article.image %}
+                <a href="{{ article.url }}" class="tw-relative tw-mb-4 tw-block tw-w-full tw-overflow-hidden tw-rounded-lg">
+                  <div class="tw-aspect-[16/9]">
+                    <img
+                      src="{{ article.image | image_url: width: 600 }}"
+                      alt="{{ article.image.alt | escape }}"
+                      class="tw-size-full tw-object-cover tw-transition-transform tw-duration-300 hover:tw-scale-105"
+                      loading="lazy"
+                      width="{{ article.image.width }}"
+                      height="{{ article.image.height }}"
+                    >
+                  </div>
+                </a>
+              {% endif %}
+
+              {%- comment -%} Meta: date and tags {%- endcomment -%}
+              <div class="tw-flex tw-flex-wrap tw-items-center tw-gap-x-4 tw-gap-y-2 tw-text-xs">
+                {% if show_date %}
+                  <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}" class="{{ text_muted_class }}">
+                    {{ article.published_at | date: format: 'abbreviated_date' }}
+                  </time>
+                {% endif %}
+
+                {% if show_tags and article.tags.size > 0 %}
+                  {% for tag in article.tags limit: 1 %}
+                    <a
+                      href="{{ blog.url }}/tagged/{{ tag | handle }}"
+                      class="tw-relative tw-z-10 tw-rounded-full tw-px-3 tw-py-1.5 tw-font-medium {{ text_muted_class }} {{ tag_bg }} tw-transition-colors"
+                    >
+                      {{ tag }}
+                    </a>
+                  {% endfor %}
+                {% endif %}
+              </div>
+
+              {%- comment -%} Title and excerpt {%- endcomment -%}
+              <div class="tw-group tw-relative tw-grow">
+                <h3 class="tw-mt-3 tw-text-lg tw-font-semibold tw-leading-6 {{ text_class }} group-hover:tw-opacity-80 tw-transition-opacity">
+                  <a href="{{ article.url }}">
+                    <span class="tw-absolute tw-inset-0"></span>
+                    {{ article.title }}
+                  </a>
+                </h3>
+
+                {% if show_excerpt and article.excerpt_or_content != blank %}
+                  <p class="tw-mt-5 tw-line-clamp-3 tw-text-sm tw-leading-6 {{ text_muted_class }}">
+                    {{ article.excerpt_or_content | strip_html | truncate: 160 }}
+                  </p>
+                {% endif %}
+              </div>
+
+              {%- comment -%} Author {%- endcomment -%}
+              {% if show_author %}
+                <div class="tw-relative tw-mt-8 tw-flex tw-items-center tw-gap-x-4 tw-justify-self-end">
+                  {%- comment -%} Avatar con DiceBear Croodles {%- endcomment -%}
+                  <img
+                    src="https://api.dicebear.com/7.x/croodles/svg?seed={{ article.author | handle }}"
+                    alt="{{ article.author }}"
+                    class="tw-size-10 tw-rounded-full {{ card_bg }}"
+                  >
+                  <div class="tw-text-sm tw-leading-6">
+                    <p class="tw-font-semibold {{ text_class }}">
+                      {{ article.author }}
+                    </p>
+                    {% if show_date %}
+                      <p class="{{ text_muted_class }}">
+                        {{ article.published_at | date: format: 'abbreviated_date' }}
+                      </p>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endif %}
+            </article>
+          {% endfor %}
+        </div>
+
+        {%- comment -%} View all link {%- endcomment -%}
+        {% if show_view_all %}
+          <div class="tw-mt-12 tw-text-center">
+            <a
+              href="{{ blog.url }}"
+              class="tw-inline-flex tw-items-center tw-gap-2 tw-font-semibold tw-text-velox-accent hover:tw-text-velox-accent/80 tw-transition-colors"
+            >
+              {{ 'blog.back_to_blog' | t }}
+              {% render 'icon', name: 'arrow-right', class: 'tw-w-4 tw-h-4' %}
+            </a>
+          </div>
+        {% endif %}
+
+      {% else %}
+        {%- comment -%} Empty state {%- endcomment -%}
+        <div class="tw-mt-10 tw-text-center tw-py-12 {{ text_muted_class }}">
+          <p>{{ 'blog.no_articles' | t }}</p>
+        </div>
+      {% endif %}
+    {% else %}
+      {%- comment -%} No blog selected {%- endcomment -%}
+      <div class="tw-mt-10 tw-text-center tw-py-12 {{ text_muted_class }}">
+        <p>{{ 'sections.blog_preview.select_blog' | t }}</p>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Blog posts preview",
+  "tag": "section",
+  "class": "section-blog-preview",
+  "settings": [
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog"
+    },
+    {
+      "type": "range",
+      "id": "posts_to_show",
+      "label": "Artículos a mostrar",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "header",
+      "content": "Contenido"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titulo",
+      "default": "Del blog"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subtitulo",
+      "default": "Las últimas noticias y consejos de nuestro equipo"
+    },
+    {
+      "type": "header",
+      "content": "Diseño"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Columnas",
+      "options": [
+        { "value": "two-column", "label": "2 columnas" },
+        { "value": "three-column", "label": "3 columnas" },
+        { "value": "four-column", "label": "4 columnas" }
+      ],
+      "default": "three-column"
+    },
+    {
+      "type": "select",
+      "id": "background_color",
+      "label": "Color de fondo",
+      "options": [
+        { "value": "white", "label": "Blanco" },
+        { "value": "light", "label": "Gris claro" },
+        { "value": "dark", "label": "Oscuro" }
+      ],
+      "default": "white"
+    },
+    {
+      "type": "header",
+      "content": "Mostrar/ocultar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "label": "Mostrar imagen",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "label": "Mostrar fecha",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "label": "Mostrar autor",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tags",
+      "label": "Mostrar etiquetas",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_excerpt",
+      "label": "Mostrar extracto",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Mostrar enlace 'Ver todo'",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Espaciado"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding superior",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding inferior",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blog posts preview",
+      "settings": {
+        "heading": "Del blog",
+        "subheading": "Las últimas noticias y consejos de nuestro equipo",
+        "posts_to_show": 3,
+        "layout": "three-column"
+      }
+    }
+  ]
+}
+{% endschema %}

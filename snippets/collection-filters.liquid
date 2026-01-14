@@ -1,0 +1,262 @@
+{% comment %}
+  Velox Collection Filters Snippet
+  Filtros de colección usando Shopify Storefront Filtering API.
+
+  Uso:
+  {% render 'collection-filters', results: collection, enable_filtering: true, filter_type: 'sidebar' %}
+
+  filter_type: sidebar, horizontal, drawer
+{% endcomment %}
+
+{% liquid
+  assign filter_type = filter_type | default: 'sidebar'
+%}
+
+{% if enable_filtering and results.filters != empty %}
+  <form data-filter-form>
+    {% for filter in results.filters %}
+      {% case filter.type %}
+
+        {%- comment -%} ==================== LIST FILTER ==================== {%- endcomment -%}
+        {% when 'list' %}
+          <details
+            class="velox-filter-group tw-border-b tw-border-velox-200 tw-pb-4 tw-mb-4"
+            {% unless forloop.index > 3 %}open{% endunless %}
+          >
+            <summary class="tw-flex tw-items-center tw-justify-between tw-cursor-pointer tw-py-2 tw-font-medium tw-text-velox-900">
+              {{ filter.label }}
+              <span class="tw-transition-transform" data-filter-chevron>
+                {% render 'icon', name: 'chevron-down', class: 'tw-w-5 tw-h-5' %}
+              </span>
+            </summary>
+
+            <div class="tw-mt-3 tw-space-y-2">
+              {% for value in filter.values %}
+                <label class="tw-flex tw-items-center tw-gap-3 tw-cursor-pointer tw-group">
+                  <input
+                    type="checkbox"
+                    name="{{ value.param_name }}"
+                    value="{{ value.value }}"
+                    {% if value.active %}checked{% endif %}
+                    {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                    class="tw-w-4 tw-h-4 tw-rounded tw-border-velox-300 tw-text-accent focus:tw-ring-accent"
+                    data-filter-checkbox
+                  >
+                  <span class="tw-text-sm tw-text-velox-700 group-hover:tw-text-velox-900 {% if value.count == 0 and value.active == false %}tw-text-velox-400{% endif %}">
+                    {{ value.label }}
+                  </span>
+                  <span class="tw-text-xs tw-text-velox-400">({{ value.count }})</span>
+                </label>
+              {% endfor %}
+            </div>
+          </details>
+
+        {%- comment -%} ==================== BOOLEAN FILTER ==================== {%- endcomment -%}
+        {% when 'boolean' %}
+          <div class="velox-filter-group tw-border-b tw-border-velox-200 tw-pb-4 tw-mb-4">
+            <label class="tw-flex tw-items-center tw-gap-3 tw-cursor-pointer">
+              <input
+                type="checkbox"
+                name="{{ filter.param_name }}"
+                value="1"
+                {% if filter.active_values.size > 0 %}checked{% endif %}
+                class="tw-w-4 tw-h-4 tw-rounded tw-border-velox-300 tw-text-accent focus:tw-ring-accent"
+                data-filter-checkbox
+              >
+              <span class="tw-font-medium tw-text-velox-900">{{ filter.label }}</span>
+            </label>
+          </div>
+
+        {%- comment -%} ==================== PRICE RANGE FILTER ==================== {%- endcomment -%}
+        {% when 'price_range' %}
+          {% liquid
+            assign min_value = filter.min_value.value | default: 0 | money_without_currency | replace: ',', ''
+            assign max_value = filter.max_value.value | default: filter.range_max | money_without_currency | replace: ',', ''
+            assign range_max = filter.range_max | money_without_currency | replace: ',', ''
+          %}
+
+          <details
+            class="velox-filter-group tw-border-b tw-border-velox-200 tw-pb-4 tw-mb-4"
+            open
+          >
+            <summary class="tw-flex tw-items-center tw-justify-between tw-cursor-pointer tw-py-2 tw-font-medium tw-text-velox-900">
+              {{ filter.label }}
+              <span class="tw-transition-transform" data-filter-chevron>
+                {% render 'icon', name: 'chevron-down', class: 'tw-w-5 tw-h-5' %}
+              </span>
+            </summary>
+
+            <div class="tw-mt-3">
+              <div class="tw-flex tw-items-center tw-gap-2">
+                {%- comment -%} Min price {%- endcomment -%}
+                <div class="tw-flex-1">
+                  <label for="{{ filter.param_name }}-min" class="tw-sr-only">
+                    {{ 'collections.filtering.from' | t | default: 'Desde' }}
+                  </label>
+                  <div class="tw-relative">
+                    <span class="tw-absolute tw-left-3 tw-top-1/2 tw--translate-y-1/2 tw-text-velox-500 tw-text-sm">
+                      {{ cart.currency.symbol }}
+                    </span>
+                    <input
+                      type="number"
+                      id="{{ filter.param_name }}-min"
+                      name="{{ filter.min_value.param_name }}"
+                      value="{{ min_value }}"
+                      min="0"
+                      max="{{ range_max }}"
+                      class="tw-w-full tw-pl-8 tw-pr-3 tw-py-2 tw-border tw-border-velox-200 tw-rounded-lg tw-text-sm focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-accent focus:tw-border-transparent"
+                      placeholder="{{ 'collections.filtering.from' | t | default: 'Min' }}"
+                      data-filter-price-min
+                    >
+                  </div>
+                </div>
+
+                <span class="tw-text-velox-400">-</span>
+
+                {%- comment -%} Max price {%- endcomment -%}
+                <div class="tw-flex-1">
+                  <label for="{{ filter.param_name }}-max" class="tw-sr-only">
+                    {{ 'collections.filtering.to' | t | default: 'Hasta' }}
+                  </label>
+                  <div class="tw-relative">
+                    <span class="tw-absolute tw-left-3 tw-top-1/2 tw--translate-y-1/2 tw-text-velox-500 tw-text-sm">
+                      {{ cart.currency.symbol }}
+                    </span>
+                    <input
+                      type="number"
+                      id="{{ filter.param_name }}-max"
+                      name="{{ filter.max_value.param_name }}"
+                      value="{{ max_value }}"
+                      min="0"
+                      max="{{ range_max }}"
+                      class="tw-w-full tw-pl-8 tw-pr-3 tw-py-2 tw-border tw-border-velox-200 tw-rounded-lg tw-text-sm focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-accent focus:tw-border-transparent"
+                      placeholder="{{ 'collections.filtering.to' | t | default: 'Max' }}"
+                      data-filter-price-max
+                    >
+                  </div>
+                </div>
+              </div>
+
+              {%- comment -%} Price range slider (visual aid) {%- endcomment -%}
+              <div class="tw-mt-3 tw-px-1">
+                <div class="tw-h-1 tw-bg-velox-200 tw-rounded-full tw-relative">
+                  <div
+                    class="tw-absolute tw-h-full tw-bg-accent tw-rounded-full"
+                    style="left: {{ min_value | divided_by: range_max | times: 100 }}%; right: {{ 100 | minus: max_value | divided_by: range_max | times: 100 }}%;"
+                    data-price-range-fill
+                  ></div>
+                </div>
+                <div class="tw-flex tw-justify-between tw-mt-1 tw-text-xs tw-text-velox-400">
+                  <span>{{ 0 | money }}</span>
+                  <span>{{ filter.range_max | money }}</span>
+                </div>
+              </div>
+            </div>
+          </details>
+
+      {% endcase %}
+    {% endfor %}
+
+    {%- comment -%} Apply button for sidebar/horizontal {%- endcomment -%}
+    {% if filter_type != 'drawer' %}
+      <noscript>
+        <button
+          type="submit"
+          class="tw-w-full tw-py-3 tw-bg-accent tw-text-white tw-rounded-lg tw-font-medium hover:tw-bg-accent/90 tw-transition-colors"
+        >
+          {{ 'collections.filtering.apply' | t | default: 'Aplicar filtros' }}
+        </button>
+      </noscript>
+    {% endif %}
+  </form>
+
+  {%- comment -%} JavaScript for auto-submit on change {%- endcomment -%}
+  <script>
+    (function() {
+      const filterForm = document.querySelector('[data-filter-form]');
+      if (!filterForm) return;
+
+      // Debounce function for price inputs
+      function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+          const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+          };
+          clearTimeout(timeout);
+          timeout = setTimeout(later, wait);
+        };
+      }
+
+      // Build filter URL
+      function buildFilterUrl() {
+        const formData = new FormData(filterForm);
+        const params = new URLSearchParams();
+
+        for (const [key, value] of formData.entries()) {
+          if (value) {
+            params.append(key, value);
+          }
+        }
+
+        // Preserve sort_by if present
+        const currentUrl = new URL(window.location.href);
+        const sortBy = currentUrl.searchParams.get('sort_by');
+        if (sortBy) {
+          params.set('sort_by', sortBy);
+        }
+
+        return window.location.pathname + '?' + params.toString();
+      }
+
+      // Submit filters
+      function submitFilters() {
+        window.location.href = buildFilterUrl();
+      }
+
+      // Checkbox change
+      const checkboxes = filterForm.querySelectorAll('[data-filter-checkbox]');
+      checkboxes.forEach(function(checkbox) {
+        checkbox.addEventListener('change', submitFilters);
+      });
+
+      // Price inputs with debounce
+      const priceInputs = filterForm.querySelectorAll('[data-filter-price-min], [data-filter-price-max]');
+      const debouncedSubmit = debounce(submitFilters, 800);
+      priceInputs.forEach(function(input) {
+        input.addEventListener('input', debouncedSubmit);
+        input.addEventListener('change', submitFilters);
+      });
+
+      // Details toggle animation
+      const details = filterForm.querySelectorAll('details');
+      details.forEach(function(detail) {
+        const summary = detail.querySelector('summary');
+        const chevron = detail.querySelector('[data-filter-chevron]');
+
+        if (summary && chevron) {
+          detail.addEventListener('toggle', function() {
+            if (detail.open) {
+              chevron.style.transform = 'rotate(180deg)';
+            } else {
+              chevron.style.transform = 'rotate(0deg)';
+            }
+          });
+
+          // Set initial state
+          if (detail.open && chevron) {
+            chevron.style.transform = 'rotate(180deg)';
+          }
+        }
+      });
+    })();
+  </script>
+{% else %}
+  {%- comment -%} No filters available {%- endcomment -%}
+  {% if enable_filtering %}
+    <p class="tw-text-sm tw-text-velox-500 tw-italic">
+      {{ 'collections.filtering.no_filters' | t | default: 'No hay filtros disponibles para esta colección.' }}
+    </p>
+  {% endif %}
+{% endif %}

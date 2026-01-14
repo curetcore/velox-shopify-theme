@@ -1,0 +1,118 @@
+{% comment %}
+  Velox Newsletter Popup Section
+
+  Sección wrapper para el popup de newsletter.
+  Se agrega al header-group para cargar en todas las páginas.
+{% endcomment %}
+
+{% render 'newsletter-popup', section: section %}
+
+{% schema %}
+{
+  "name": "Newsletter popup",
+  "tag": "section",
+  "class": "section-newsletter-popup",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_popup",
+      "label": "Activar popup",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Contenido"
+    },
+    {
+      "type": "image_picker",
+      "id": "popup_image",
+      "label": "Imagen (opcional)"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titulo",
+      "default": "Únete a nuestra lista"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subtitulo",
+      "default": "Suscríbete para recibir ofertas exclusivas y novedades."
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Placeholder del email",
+      "default": "Introduce tu email"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Texto del boton",
+      "default": "Suscribirme"
+    },
+    {
+      "type": "text",
+      "id": "dismiss_text",
+      "label": "Texto de cerrar",
+      "default": "No, gracias"
+    },
+    {
+      "type": "text",
+      "id": "privacy_note",
+      "label": "Nota de privacidad",
+      "default": "Al suscribirte, aceptas recibir emails de marketing."
+    },
+    {
+      "type": "header",
+      "content": "Descuento"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_discount",
+      "label": "Mostrar incentivo de descuento",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "discount_amount",
+      "label": "Cantidad de descuento",
+      "default": "10%",
+      "info": "Ejemplo: 10%, $5, 15% OFF"
+    },
+    {
+      "type": "text",
+      "id": "discount_code",
+      "label": "Codigo de descuento",
+      "default": "WELCOME10",
+      "info": "Se muestra después de suscribirse"
+    },
+    {
+      "type": "header",
+      "content": "Comportamiento"
+    },
+    {
+      "type": "range",
+      "id": "show_delay",
+      "label": "Retraso antes de mostrar (segundos)",
+      "min": 1,
+      "max": 60,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "show_on_exit",
+      "label": "Mostrar al intentar salir (exit intent)",
+      "default": false,
+      "info": "Solo en desktop. Muestra el popup cuando el cursor sale de la ventana."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter popup"
+    }
+  ]
+}
+{% endschema %}

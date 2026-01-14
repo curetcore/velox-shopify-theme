@@ -1,18 +1,68 @@
 {% style %}
-  {% # Loads all font variantions with display: swap %}
+  {% comment %}
+    Velox Theme CSS Variables
+    Centraliza todos los tokens de diseño del tema.
+  {% endcomment %}
+
+  {% # Primary font with all variants %}
   {{ settings.type_primary_font | font_face: font_display: 'swap' }}
   {{ settings.type_primary_font | font_modify: 'weight', 'bold' | font_face: font_display: 'swap' }}
   {{ settings.type_primary_font | font_modify: 'weight', 'bold' | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
   {{ settings.type_primary_font | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
 
+  {% # Secondary font %}
+  {% if settings.type_secondary_font %}
+    {{ settings.type_secondary_font | font_face: font_display: 'swap' }}
+    {{ settings.type_secondary_font | font_modify: 'weight', 'bold' | font_face: font_display: 'swap' }}
+  {% endif %}
+
   :root {
+    {% comment %} Typography {% endcomment %}
     --font-primary--family: {{ settings.type_primary_font.family }}, {{ settings.type_primary_font.fallback_families }};
     --font-primary--style: {{ settings.type_primary_font.style }};
     --font-primary--weight: {{ settings.type_primary_font.weight }};
+    {% if settings.type_secondary_font %}
+      --font-secondary--family: {{ settings.type_secondary_font.family }}, {{ settings.type_secondary_font.fallback_families }};
+      --font-secondary--style: {{ settings.type_secondary_font.style }};
+      --font-secondary--weight: {{ settings.type_secondary_font.weight }};
+    {% endif %}
+
+    {% comment %} Layout {% endcomment %}
     --page-width: {{ settings.max_page_width }};
     --page-margin: {{ settings.min_page_margin }}px;
+    --style-border-radius-inputs: {{ settings.input_corner_radius }}px;
+
+    {% comment %} Colors - Base {% endcomment %}
     --color-background: {{ settings.background_color }};
     --color-foreground: {{ settings.foreground_color }};
-    --style-border-radius-inputs: {{ settings.input_corner_radius }}px;
+    --color-secondary: {{ settings.secondary_color | default: '#F5F5F5' }};
+
+    {% comment %} Colors - Accent (customizable via theme editor) {% endcomment %}
+    --color-accent: {{ settings.accent_color | default: '#000000' }};
+    --color-accent-foreground: {{ settings.accent_foreground | default: '#FFFFFF' }};
+
+    {% comment %} Cart settings - exposed for JS {% endcomment %}
+    --free-shipping-threshold: {{ settings.free_shipping_threshold | default: 2000 }};
+  }
+
+  {% comment %}
+    Custom utility classes that use CSS variables
+    These work with Tailwind's arbitrary value syntax: bg-[var(--color-accent)]
+  {% endcomment %}
+  .tw-btn-accent {
+    background-color: var(--color-accent);
+    color: var(--color-accent-foreground);
+  }
+  .tw-btn-accent:hover {
+    opacity: 0.9;
+  }
+  .tw-bg-accent {
+    background-color: var(--color-accent);
+  }
+  .tw-text-accent {
+    color: var(--color-accent);
+  }
+  .tw-border-accent {
+    border-color: var(--color-accent);
   }
 {% endstyle %}

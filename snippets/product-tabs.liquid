@@ -1,0 +1,385 @@
+{% comment %}
+  Product Tabs Snippet
+  Sistema de tabs para mostrar información del producto.
+
+  Features:
+  - Tabs con underline (desktop)
+  - Select dropdown (móvil)
+  - Soporte para contenido dinámico via blocks
+  - Tabs predefinidos: descripción, detalles, envío, reviews
+
+  Uso:
+    {% render 'product-tabs',
+      product: product,
+      blocks: section.blocks,
+      tab_style: 'underline'
+    %}
+
+  Estilos disponibles:
+    - underline: línea bajo tab activo
+    - pills: pills/botones
+    - full-width: tabs distribuidos al ancho completo
+{% endcomment %}
+
+{%- liquid
+  assign tab_style = tab_style | default: 'underline'
+  assign show_description = show_description | default: true
+
+  # Generar lista de tabs disponibles
+  assign tab_list = ''
+  assign tab_count = 0
+
+  # Tab de descripción (siempre primero si hay descripción)
+  if show_description and product.description != blank
+    assign tab_count = tab_count | plus: 1
+    if tab_list != ''
+      assign tab_list = tab_list | append: ','
+    endif
+    assign tab_list = tab_list | append: 'description'
+  endif
+
+  # Tabs de blocks
+  for block in blocks
+    if block.type == 'tab'
+      assign tab_count = tab_count | plus: 1
+      if tab_list != ''
+        assign tab_list = tab_list | append: ','
+      endif
+      assign tab_list = tab_list | append: block.id
+    endif
+  endfor
+-%}
+
+{% if tab_count > 0 %}
+  <div class="velox-product-tabs" data-product-tabs>
+    {%- comment -%} Mobile: Select dropdown {%- endcomment -%}
+    <div class="tw-grid tw-grid-cols-1 sm:tw-hidden">
+      <select
+        aria-label="{{ 'products.product.select_tab' | t | default: 'Seleccionar sección' }}"
+        class="velox-tabs-select tw-col-start-1 tw-row-start-1 tw-w-full tw-appearance-none tw-rounded-md tw-bg-white tw-py-2.5 tw-pr-10 tw-pl-3 tw-text-base tw-text-velox-900 tw-outline tw-outline-1 tw--outline-offset-1 tw-outline-velox-200 focus:tw-outline-2 focus:tw--outline-offset-2 focus:tw-outline-velox-accent"
+        data-tab-select
+      >
+        {% if show_description and product.description != blank %}
+          <option value="description" selected>
+            {{ 'products.product.description' | t | default: 'Descripción' }}
+          </option>
+        {% endif %}
+
+        {% for block in blocks %}
+          {% if block.type == 'tab' %}
+            <option value="{{ block.id }}" {% if show_description == false and forloop.first %}selected{% endif %}>
+              {{ block.settings.title }}
+            </option>
+          {% endif %}
+        {% endfor %}
+      </select>
+      <span class="tw-pointer-events-none tw-col-start-1 tw-row-start-1 tw-mr-2 tw-self-center tw-justify-self-end">
+        {% render 'icon', name: 'chevron-down', class: 'tw-w-5 tw-h-5 tw-text-velox-400' %}
+      </span>
+    </div>
+
+    {%- comment -%} Desktop: Tabs {%- endcomment -%}
+    <div class="tw-hidden sm:tw-block">
+      <div class="{% if tab_style == 'underline' or tab_style == 'full-width' %}tw-border-b tw-border-velox-200{% endif %}">
+        <nav
+          aria-label="{{ 'products.product.product_information' | t | default: 'Información del producto' }}"
+          class="tw--mb-px tw-flex {% if tab_style == 'full-width' %}tw-justify-between{% else %}tw-space-x-8{% endif %}"
+          role="tablist"
+        >
+          {% if show_description and product.description != blank %}
+            <button
+              type="button"
+              role="tab"
+              aria-selected="true"
+              aria-controls="panel-description"
+              id="tab-description"
+              data-tab-button="description"
+              class="velox-tab-button active {% if tab_style == 'pills' %}velox-tab-button--pill{% endif %}"
+            >
+              {{ 'products.product.description' | t | default: 'Descripción' }}
+            </button>
+          {% endif %}
+
+          {% for block in blocks %}
+            {% if block.type == 'tab' %}
+              <button
+                type="button"
+                role="tab"
+                aria-selected="{% if show_description == false and forloop.first %}true{% else %}false{% endif %}"
+                aria-controls="panel-{{ block.id }}"
+                id="tab-{{ block.id }}"
+                data-tab-button="{{ block.id }}"
+                class="velox-tab-button {% if show_description == false and forloop.first %}active{% endif %} {% if tab_style == 'pills' %}velox-tab-button--pill{% endif %}"
+                {{ block.shopify_attributes }}
+              >
+                {% if block.settings.icon != blank %}
+                  {% render 'icon', name: block.settings.icon, class: 'tw-w-4 tw-h-4 tw-mr-2' %}
+                {% endif %}
+                {{ block.settings.title }}
+              </button>
+            {% endif %}
+          {% endfor %}
+        </nav>
+      </div>
+    </div>
+
+    {%- comment -%} Tab panels {%- endcomment -%}
+    <div class="velox-tab-panels tw-mt-6">
+      {% if show_description and product.description != blank %}
+        <div
+          role="tabpanel"
+          id="panel-description"
+          aria-labelledby="tab-description"
+          data-tab-panel="description"
+          class="velox-tab-panel active"
+        >
+          <div class="velox-prose tw-prose tw-prose-velox tw-max-w-none">
+            {{ product.description }}
+          </div>
+        </div>
+      {% endif %}
+
+      {% for block in blocks %}
+        {% if block.type == 'tab' %}
+          <div
+            role="tabpanel"
+            id="panel-{{ block.id }}"
+            aria-labelledby="tab-{{ block.id }}"
+            data-tab-panel="{{ block.id }}"
+            class="velox-tab-panel {% if show_description == false and forloop.first %}active{% endif %}"
+            {{ block.shopify_attributes }}
+          >
+            <div class="velox-prose tw-prose tw-prose-velox tw-max-w-none">
+              {{ block.settings.content }}
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
+
+{% style %}
+  /* ========================================
+     PRODUCT TABS STYLES
+     ======================================== */
+
+  .velox-product-tabs {
+    margin-top: 2rem;
+  }
+
+  /* Tab buttons - Underline style */
+  .velox-tab-button {
+    position: relative;
+    padding: 0.75rem 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-foreground-muted, #6b7280);
+    border-bottom: 2px solid transparent;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .velox-tab-button:hover {
+    color: var(--color-foreground, #111827);
+    border-bottom-color: var(--color-border, #e5e7eb);
+  }
+
+  .velox-tab-button.active {
+    color: var(--color-accent, #000);
+    border-bottom-color: var(--color-accent, #000);
+  }
+
+  /* Tab buttons - Pill style */
+  .velox-tab-button--pill {
+    border-bottom: none;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    margin-right: 0.5rem;
+  }
+
+  .velox-tab-button--pill:hover {
+    background-color: var(--color-secondary, #f3f4f6);
+  }
+
+  .velox-tab-button--pill.active {
+    background-color: var(--color-accent, #000);
+    color: white;
+  }
+
+  /* Tab panels */
+  .velox-tab-panel {
+    display: none;
+    animation: veloxFadeIn 0.3s ease-out;
+  }
+
+  .velox-tab-panel.active {
+    display: block;
+  }
+
+  @keyframes veloxFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Prose styles for tab content */
+  .velox-prose {
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--color-foreground-muted, #374151);
+  }
+
+  .velox-prose h2,
+  .velox-prose h3,
+  .velox-prose h4 {
+    color: var(--color-foreground, #111827);
+    font-weight: 600;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+  }
+
+  .velox-prose h2 { font-size: 1.25rem; }
+  .velox-prose h3 { font-size: 1.125rem; }
+  .velox-prose h4 { font-size: 1rem; }
+
+  .velox-prose p {
+    margin-bottom: 1em;
+  }
+
+  .velox-prose ul,
+  .velox-prose ol {
+    margin-bottom: 1em;
+    padding-left: 1.5em;
+  }
+
+  .velox-prose li {
+    margin-bottom: 0.25em;
+  }
+
+  .velox-prose ul li {
+    list-style-type: disc;
+  }
+
+  .velox-prose ol li {
+    list-style-type: decimal;
+  }
+
+  .velox-prose a {
+    color: var(--color-accent, #000);
+    text-decoration: underline;
+  }
+
+  .velox-prose a:hover {
+    opacity: 0.8;
+  }
+
+  .velox-prose table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1em;
+  }
+
+  .velox-prose th,
+  .velox-prose td {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--color-border, #e5e7eb);
+    text-align: left;
+  }
+
+  .velox-prose th {
+    background: var(--color-secondary, #f3f4f6);
+    font-weight: 600;
+  }
+
+  .velox-prose img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.5rem;
+    margin: 1em 0;
+  }
+
+  /* Mobile select */
+  .velox-tabs-select {
+    font-weight: 500;
+  }
+{% endstyle %}
+
+<script>
+  (function() {
+    document.addEventListener('DOMContentLoaded', function() {
+      const tabContainers = document.querySelectorAll('[data-product-tabs]');
+
+      tabContainers.forEach(container => {
+        const buttons = container.querySelectorAll('[data-tab-button]');
+        const panels = container.querySelectorAll('[data-tab-panel]');
+        const select = container.querySelector('[data-tab-select]');
+
+        function switchTab(tabId) {
+          // Update buttons
+          buttons.forEach(btn => {
+            const isActive = btn.dataset.tabButton === tabId;
+            btn.classList.toggle('active', isActive);
+            btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+          });
+
+          // Update panels
+          panels.forEach(panel => {
+            const isActive = panel.dataset.tabPanel === tabId;
+            panel.classList.toggle('active', isActive);
+          });
+
+          // Update select
+          if (select) {
+            select.value = tabId;
+          }
+        }
+
+        // Button click handlers
+        buttons.forEach(btn => {
+          btn.addEventListener('click', function() {
+            switchTab(this.dataset.tabButton);
+          });
+        });
+
+        // Select change handler (mobile)
+        if (select) {
+          select.addEventListener('change', function() {
+            switchTab(this.value);
+          });
+        }
+
+        // Keyboard navigation
+        buttons.forEach((btn, index) => {
+          btn.addEventListener('keydown', function(e) {
+            let newIndex;
+            if (e.key === 'ArrowRight') {
+              newIndex = (index + 1) % buttons.length;
+            } else if (e.key === 'ArrowLeft') {
+              newIndex = (index - 1 + buttons.length) % buttons.length;
+            } else if (e.key === 'Home') {
+              newIndex = 0;
+            } else if (e.key === 'End') {
+              newIndex = buttons.length - 1;
+            }
+
+            if (newIndex !== undefined) {
+              e.preventDefault();
+              buttons[newIndex].focus();
+              switchTab(buttons[newIndex].dataset.tabButton);
+            }
+          });
+        });
+      });
+    });
+  })();
+</script>

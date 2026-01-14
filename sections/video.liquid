@@ -1,0 +1,199 @@
+{% comment %}
+  Velox Video Section
+  Sección de video con soporte para YouTube, Vimeo y videos externos.
+{% endcomment %}
+
+{% liquid
+  assign video_url = section.settings.video_url
+  assign video_type = 'external'
+
+  if video_url contains 'youtube.com' or video_url contains 'youtu.be'
+    assign video_type = 'youtube'
+    if video_url contains 'youtu.be'
+      assign video_id = video_url | split: '/' | last
+    else
+      assign video_id = video_url | split: 'v=' | last | split: '&' | first
+    endif
+  elsif video_url contains 'vimeo.com'
+    assign video_type = 'vimeo'
+    assign video_id = video_url | split: '/' | last
+  endif
+%}
+
+<section class="tw-py-12 md:tw-py-16 lg:tw-py-20 {% if section.settings.full_width %}full-width{% endif %} {% if section.settings.background_color == 'dark' %}tw-bg-velox-900{% endif %}">
+  <div class="{% unless section.settings.full_width %}tw-max-w-7xl tw-mx-auto tw-px-4 sm:tw-px-6 lg:tw-px-8{% endunless %}">
+    {%- comment -%} Header de la sección {%- endcomment -%}
+    {% if section.settings.title != blank or section.settings.description != blank %}
+      <div class="tw-text-center tw-mb-10 {% if section.settings.full_width %}tw-px-4{% endif %}">
+        {% if section.settings.title != blank %}
+          <h2 class="tw-text-2xl md:tw-text-3xl lg:tw-text-4xl tw-font-bold {% if section.settings.background_color == 'dark' %}tw-text-white{% else %}tw-text-velox-900{% endif %}">
+            {{ section.settings.title }}
+          </h2>
+        {% endif %}
+
+        {% if section.settings.description != blank %}
+          <p class="tw-mt-4 {% if section.settings.background_color == 'dark' %}tw-text-white/80{% else %}tw-text-velox-600{% endif %} tw-max-w-2xl tw-mx-auto">
+            {{ section.settings.description }}
+          </p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {%- comment -%} Video container {%- endcomment -%}
+    <div class="tw-relative {% unless section.settings.full_width %}tw-rounded-xl tw-overflow-hidden{% endunless %} tw-aspect-video tw-bg-velox-900">
+      {% if section.settings.cover_image != blank %}
+        {%- comment -%} Cover image con botón de play {%- endcomment -%}
+        <div class="velox-video-cover tw-absolute tw-inset-0 tw-cursor-pointer tw-group"
+             data-video-type="{{ video_type }}"
+             data-video-id="{{ video_id }}"
+             data-video-url="{{ video_url }}">
+          {{ section.settings.cover_image | image_url: width: 1920 | image_tag:
+            class: 'tw-w-full tw-h-full tw-object-cover',
+            loading: 'lazy',
+            sizes: '100vw',
+            widths: '750, 1100, 1500, 1920'
+          }}
+
+          {%- comment -%} Overlay {%- endcomment -%}
+          <div class="tw-absolute tw-inset-0 tw-bg-velox-900/30 tw-transition-opacity group-hover:tw-bg-velox-900/40"></div>
+
+          {%- comment -%} Play button {%- endcomment -%}
+          <div class="tw-absolute tw-inset-0 tw-flex tw-items-center tw-justify-center">
+            <div class="tw-w-20 tw-h-20 tw-rounded-full tw-bg-white tw-flex tw-items-center tw-justify-center tw-shadow-lg tw-transition-transform group-hover:tw-scale-110">
+              {% render 'icon', name: 'play', class: 'tw-w-8 tw-h-8 tw-text-velox-900 tw-ml-1' %}
+            </div>
+          </div>
+        </div>
+
+        {%- comment -%} Video iframe (hidden until play) {%- endcomment -%}
+        <div class="velox-video-player tw-hidden tw-absolute tw-inset-0">
+          {% if video_type == 'youtube' %}
+            <iframe class="tw-w-full tw-h-full"
+                    data-src="https://www.youtube.com/embed/{{ video_id }}?autoplay=1&rel=0"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+          {% elsif video_type == 'vimeo' %}
+            <iframe class="tw-w-full tw-h-full"
+                    data-src="https://player.vimeo.com/video/{{ video_id }}?autoplay=1"
+                    frameborder="0"
+                    allow="autoplay; fullscreen; picture-in-picture"
+                    allowfullscreen></iframe>
+          {% else %}
+            <video class="tw-w-full tw-h-full tw-object-cover" controls>
+              <source src="{{ video_url }}" type="video/mp4">
+            </video>
+          {% endif %}
+        </div>
+
+      {% else %}
+        {%- comment -%} Video directo sin cover {%- endcomment -%}
+        {% if video_type == 'youtube' %}
+          <iframe class="tw-w-full tw-h-full"
+                  src="https://www.youtube.com/embed/{{ video_id }}?rel=0"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                  loading="lazy"></iframe>
+        {% elsif video_type == 'vimeo' %}
+          <iframe class="tw-w-full tw-h-full"
+                  src="https://player.vimeo.com/video/{{ video_id }}"
+                  frameborder="0"
+                  allow="autoplay; fullscreen; picture-in-picture"
+                  allowfullscreen
+                  loading="lazy"></iframe>
+        {% elsif video_url != blank %}
+          <video class="tw-w-full tw-h-full tw-object-cover" controls>
+            <source src="{{ video_url }}" type="video/mp4">
+          </video>
+        {% else %}
+          <div class="tw-absolute tw-inset-0 tw-flex tw-items-center tw-justify-center tw-bg-velox-100">
+            {% render 'icon', name: 'play', class: 'tw-w-16 tw-h-16 tw-text-velox-300' %}
+          </div>
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.velox-video-cover').forEach(function(cover) {
+      cover.addEventListener('click', function() {
+        const container = cover.closest('.tw-aspect-video');
+        const player = container.querySelector('.velox-video-player');
+        const iframe = player.querySelector('iframe');
+
+        if (iframe && iframe.dataset.src) {
+          iframe.src = iframe.dataset.src;
+        }
+
+        cover.classList.add('tw-hidden');
+        player.classList.remove('tw-hidden');
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Video",
+  "tag": "section",
+  "class": "velox-video",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Descripción"
+    },
+    {
+      "type": "header",
+      "content": "Video"
+    },
+    {
+      "type": "text",
+      "id": "video_url",
+      "label": "URL del video",
+      "info": "Soporta YouTube, Vimeo o URL directa de video (mp4)",
+      "placeholder": "https://www.youtube.com/watch?v=..."
+    },
+    {
+      "type": "image_picker",
+      "id": "cover_image",
+      "label": "Imagen de portada",
+      "info": "Se muestra antes de reproducir el video. Mejora el rendimiento de carga."
+    },
+    {
+      "type": "header",
+      "content": "Estilo"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Ancho completo",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "background_color",
+      "label": "Color de fondo",
+      "options": [
+        { "value": "transparent", "label": "Transparente" },
+        { "value": "dark", "label": "Oscuro" }
+      ],
+      "default": "transparent"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Video",
+      "category": "Video"
+    }
+  ]
+}
+{% endschema %}

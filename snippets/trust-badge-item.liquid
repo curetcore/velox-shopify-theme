@@ -1,0 +1,113 @@
+{% comment %}
+  Velox Trust Badge Item
+
+  Uso:
+  {% render 'trust-badge-item',
+    block: block,
+    icon_style: 'circle',
+    text_class: 'tw-text-velox-900',
+    text_muted_class: 'tw-text-velox-500',
+    layout: 'vertical'
+  %}
+{% endcomment %}
+
+{%- liquid
+  assign icon_name = block.settings.icon | default: 'truck'
+  assign title = block.settings.title
+  assign description = block.settings.description
+  assign link = block.settings.link
+  assign icon_style = icon_style | default: 'default'
+  assign layout = layout | default: 'vertical'
+  assign text_class = text_class | default: 'tw-text-velox-900'
+  assign text_muted_class = text_muted_class | default: 'tw-text-velox-500'
+
+  # Icon wrapper classes
+  case icon_style
+    when 'circle'
+      assign icon_wrapper_class = 'tw-w-12 tw-h-12 tw-rounded-full tw-bg-velox-accent/10 tw-flex tw-items-center tw-justify-center'
+      assign icon_class = 'tw-w-6 tw-h-6 tw-text-velox-accent'
+    when 'square'
+      assign icon_wrapper_class = 'tw-w-12 tw-h-12 tw-rounded-lg tw-bg-velox-accent/10 tw-flex tw-items-center tw-justify-center'
+      assign icon_class = 'tw-w-6 tw-h-6 tw-text-velox-accent'
+    else
+      assign icon_wrapper_class = ''
+      assign icon_class = 'tw-w-10 tw-h-10 tw-text-velox-accent'
+  endcase
+-%}
+
+<div {{ block.shopify_attributes }}>
+  {% if link != blank %}
+    <a href="{{ link }}" class="tw-block hover:tw-opacity-80 tw-transition-opacity">
+  {% endif %}
+
+  {% case layout %}
+    {% when 'vertical' %}
+      {%- comment -%} Layout Vertical (centrado) {%- endcomment -%}
+      <div class="tw-flex tw-flex-col tw-items-center tw-text-center">
+        {% if icon_wrapper_class != blank %}
+          <div class="{{ icon_wrapper_class }}">
+            {% render 'icon', name: icon_name, class: icon_class %}
+          </div>
+        {% else %}
+          {% render 'icon', name: icon_name, class: icon_class %}
+        {% endif %}
+
+        {% if title != blank %}
+          <h3 class="tw-mt-4 tw-text-sm tw-font-semibold {{ text_class }}">
+            {{ title }}
+          </h3>
+        {% endif %}
+
+        {% if description != blank %}
+          <p class="tw-mt-1 tw-text-sm {{ text_muted_class }}">
+            {{ description }}
+          </p>
+        {% endif %}
+      </div>
+
+    {% when 'horizontal' %}
+      {%- comment -%} Layout Horizontal {%- endcomment -%}
+      <div class="tw-flex tw-items-center tw-gap-4">
+        {% if icon_wrapper_class != blank %}
+          <div class="{{ icon_wrapper_class }} tw-shrink-0">
+            {% render 'icon', name: icon_name, class: icon_class %}
+          </div>
+        {% else %}
+          <div class="tw-shrink-0">
+            {% render 'icon', name: icon_name, class: icon_class %}
+          </div>
+        {% endif %}
+
+        <div>
+          {% if title != blank %}
+            <h3 class="tw-text-sm tw-font-semibold {{ text_class }}">
+              {{ title }}
+            </h3>
+          {% endif %}
+
+          {% if description != blank %}
+            <p class="tw-text-sm {{ text_muted_class }}">
+              {{ description }}
+            </p>
+          {% endif %}
+        </div>
+      </div>
+
+    {% when 'compact' %}
+      {%- comment -%} Layout Compacto (solo icono y título) {%- endcomment -%}
+      <div class="tw-flex tw-items-center tw-gap-2">
+        {% render 'icon', name: icon_name, class: 'tw-w-5 tw-h-5 tw-text-velox-accent tw-shrink-0' %}
+
+        {% if title != blank %}
+          <span class="tw-text-sm tw-font-medium {{ text_class }} tw-whitespace-nowrap">
+            {{ title }}
+          </span>
+        {% endif %}
+      </div>
+
+  {% endcase %}
+
+  {% if link != blank %}
+    </a>
+  {% endif %}
+</div>

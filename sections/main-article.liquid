@@ -1,0 +1,958 @@
+{% comment %}
+  Velox Theme - Article Page
+  Fase 9: Páginas de contenido
+
+  Features:
+  - Imagen hero opcional
+  - Metadata: autor, fecha, tiempo de lectura
+  - Contenido con tipografía optimizada
+  - Tags del artículo
+  - Navegación anterior/siguiente
+  - Sección de comentarios
+  - Soporte dark mode
+
+  Adaptado de Tailwind Plus: content-sections/centered
+{% endcomment %}
+
+{% style %}
+  /* ========== ARTICLE BASE STYLES ========== */
+  .velox-article {
+    background-color: #ffffff;
+  }
+
+  .velox-article--dark {
+    background-color: #111827;
+  }
+
+  /* ========== HERO IMAGE ========== */
+  .velox-article__hero {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 21 / 9;
+    overflow: hidden;
+    background-color: #f3f4f6;
+  }
+
+  .velox-article--dark .velox-article__hero {
+    background-color: #1f2937;
+  }
+
+  .velox-article__hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* ========== ARTICLE CONTAINER ========== */
+  .velox-article__container {
+    max-width: 48rem;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .velox-article__container {
+      padding: 4rem 2rem;
+    }
+  }
+
+  /* ========== HEADER ========== */
+  .velox-article__header {
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .velox-article--dark .velox-article__header {
+    border-bottom-color: #374151;
+  }
+
+  .velox-article__title {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.25;
+    color: #111827;
+    margin: 0 0 1.5rem 0;
+  }
+
+  @media (min-width: 640px) {
+    .velox-article__title {
+      font-size: 2.5rem;
+    }
+  }
+
+  .velox-article--dark .velox-article__title {
+    color: #ffffff;
+  }
+
+  /* ========== ARTICLE META ========== */
+  .velox-article__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .velox-article__author {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .velox-article__author-avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 9999px;
+    object-fit: cover;
+    background-color: #e5e7eb;
+  }
+
+  .velox-article--dark .velox-article__author-avatar {
+    background-color: #374151;
+  }
+
+  .velox-article__author-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #111827;
+    margin: 0;
+  }
+
+  .velox-article--dark .velox-article__author-name {
+    color: #ffffff;
+  }
+
+  .velox-article__date {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin: 0;
+  }
+
+  .velox-article--dark .velox-article__date {
+    color: #9ca3af;
+  }
+
+  .velox-article__meta-divider {
+    width: 1px;
+    height: 1.25rem;
+    background-color: #d1d5db;
+  }
+
+  .velox-article--dark .velox-article__meta-divider {
+    background-color: #4b5563;
+  }
+
+  .velox-article__reading-time {
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+
+  .velox-article--dark .velox-article__reading-time {
+    color: #9ca3af;
+  }
+
+  /* ========== ARTICLE CONTENT ========== */
+  .velox-article__content {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: #374151;
+  }
+
+  .velox-article--dark .velox-article__content {
+    color: #d1d5db;
+  }
+
+  .velox-article__content h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 2.5rem 0 1rem;
+  }
+
+  .velox-article--dark .velox-article__content h2 {
+    color: #ffffff;
+  }
+
+  .velox-article__content h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #111827;
+    margin: 2rem 0 0.75rem;
+  }
+
+  .velox-article--dark .velox-article__content h3 {
+    color: #ffffff;
+  }
+
+  .velox-article__content p {
+    margin: 0 0 1.5rem;
+  }
+
+  .velox-article__content a {
+    color: var(--color-accent, #4f46e5);
+    text-decoration: underline;
+  }
+
+  .velox-article__content a:hover {
+    color: var(--color-accent-hover, #4338ca);
+  }
+
+  .velox-article__content ul,
+  .velox-article__content ol {
+    margin: 0 0 1.5rem;
+    padding-left: 1.5rem;
+  }
+
+  .velox-article__content li {
+    margin-bottom: 0.5rem;
+  }
+
+  .velox-article__content blockquote {
+    border-left: 4px solid var(--color-accent, #4f46e5);
+    padding-left: 1.5rem;
+    margin: 2rem 0;
+    font-style: italic;
+    color: #6b7280;
+  }
+
+  .velox-article--dark .velox-article__content blockquote {
+    color: #9ca3af;
+  }
+
+  .velox-article__content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.75rem;
+    margin: 2rem 0;
+  }
+
+  .velox-article__content pre {
+    background-color: #1f2937;
+    color: #e5e7eb;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    font-size: 0.875rem;
+    margin: 1.5rem 0;
+  }
+
+  .velox-article__content code {
+    background-color: #f3f4f6;
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+    font-size: 0.875em;
+  }
+
+  .velox-article--dark .velox-article__content code {
+    background-color: #374151;
+  }
+
+  .velox-article__content pre code {
+    background-color: transparent;
+    padding: 0;
+  }
+
+  /* ========== TAGS ========== */
+  .velox-article__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  .velox-article--dark .velox-article__tags {
+    border-top-color: #374151;
+  }
+
+  .velox-article__tag {
+    display: inline-block;
+    padding: 0.375rem 0.875rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #6b7280;
+    background-color: #f3f4f6;
+    border-radius: 9999px;
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+
+  .velox-article__tag:hover {
+    background-color: #e5e7eb;
+    color: #374151;
+  }
+
+  .velox-article--dark .velox-article__tag {
+    color: #d1d5db;
+    background-color: #374151;
+  }
+
+  .velox-article--dark .velox-article__tag:hover {
+    background-color: #4b5563;
+    color: #ffffff;
+  }
+
+  /* ========== SHARE BUTTONS ========== */
+  .velox-article__share {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .velox-article__share-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+  }
+
+  .velox-article--dark .velox-article__share-label {
+    color: #d1d5db;
+  }
+
+  .velox-article__share-buttons {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .velox-article__share-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    color: #6b7280;
+    background-color: #f3f4f6;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+
+  .velox-article__share-button:hover {
+    color: #ffffff;
+    background-color: var(--color-accent, #4f46e5);
+  }
+
+  .velox-article--dark .velox-article__share-button {
+    color: #9ca3af;
+    background-color: #374151;
+  }
+
+  .velox-article--dark .velox-article__share-button:hover {
+    color: #ffffff;
+    background-color: var(--color-accent, #6366f1);
+  }
+
+  .velox-article__share-button svg {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  /* ========== NAVIGATION ========== */
+  .velox-article__nav {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  @media (min-width: 640px) {
+    .velox-article__nav {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .velox-article--dark .velox-article__nav {
+    border-top-color: #374151;
+  }
+
+  .velox-article__nav-link {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    background-color: #f9fafb;
+    border-radius: 0.75rem;
+    text-decoration: none;
+    transition: background-color 0.15s ease;
+  }
+
+  .velox-article__nav-link:hover {
+    background-color: #f3f4f6;
+  }
+
+  .velox-article--dark .velox-article__nav-link {
+    background-color: #1f2937;
+  }
+
+  .velox-article--dark .velox-article__nav-link:hover {
+    background-color: #374151;
+  }
+
+  .velox-article__nav-link--next {
+    text-align: right;
+  }
+
+  .velox-article__nav-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+  }
+
+  .velox-article--dark .velox-article__nav-label {
+    color: #9ca3af;
+  }
+
+  .velox-article__nav-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #111827;
+    line-height: 1.5;
+  }
+
+  .velox-article--dark .velox-article__nav-title {
+    color: #ffffff;
+  }
+
+  /* ========== COMMENTS ========== */
+  .velox-article__comments {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  .velox-article--dark .velox-article__comments {
+    border-top-color: #374151;
+  }
+
+  .velox-article__comments-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 1.5rem 0;
+  }
+
+  .velox-article--dark .velox-article__comments-title {
+    color: #ffffff;
+  }
+
+  .velox-comment {
+    padding: 1.5rem 0;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .velox-article--dark .velox-comment {
+    border-bottom-color: #374151;
+  }
+
+  .velox-comment__header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .velox-comment__avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 9999px;
+    background-color: #e5e7eb;
+  }
+
+  .velox-article--dark .velox-comment__avatar {
+    background-color: #374151;
+  }
+
+  .velox-comment__author {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #111827;
+    margin: 0;
+  }
+
+  .velox-article--dark .velox-comment__author {
+    color: #ffffff;
+  }
+
+  .velox-comment__date {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin: 0;
+  }
+
+  .velox-article--dark .velox-comment__date {
+    color: #9ca3af;
+  }
+
+  .velox-comment__body {
+    font-size: 0.875rem;
+    line-height: 1.625;
+    color: #374151;
+    margin: 0;
+  }
+
+  .velox-article--dark .velox-comment__body {
+    color: #d1d5db;
+  }
+
+  /* ========== COMMENT FORM ========== */
+  .velox-comment-form {
+    margin-top: 2rem;
+  }
+
+  .velox-comment-form__title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 1rem 0;
+  }
+
+  .velox-article--dark .velox-comment-form__title {
+    color: #ffffff;
+  }
+
+  .velox-comment-form__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .velox-comment-form__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .velox-comment-form__group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  .velox-comment-form__group--full {
+    grid-column: 1 / -1;
+  }
+
+  .velox-comment-form__label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+  }
+
+  .velox-article--dark .velox-comment-form__label {
+    color: #d1d5db;
+  }
+
+  .velox-comment-form__input,
+  .velox-comment-form__textarea {
+    padding: 0.625rem 0.875rem;
+    font-size: 1rem;
+    color: #111827;
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .velox-comment-form__input:focus,
+  .velox-comment-form__textarea:focus {
+    outline: none;
+    border-color: var(--color-accent, #4f46e5);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  }
+
+  .velox-article--dark .velox-comment-form__input,
+  .velox-article--dark .velox-comment-form__textarea {
+    background-color: #1f2937;
+    border-color: #374151;
+    color: #ffffff;
+  }
+
+  .velox-comment-form__textarea {
+    min-height: 8rem;
+    resize: vertical;
+  }
+
+  .velox-comment-form__submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: var(--color-accent, #4f46e5);
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+    margin-top: 1rem;
+  }
+
+  .velox-comment-form__submit:hover {
+    background-color: var(--color-accent-hover, #4338ca);
+  }
+{% endstyle %}
+
+<article class="velox-article{% if section.settings.color_scheme == 'dark' %} velox-article--dark{% endif %}">
+
+  {%- comment -%} Hero image {%- endcomment -%}
+  {% if section.settings.show_hero_image and article.image %}
+    <div class="velox-article__hero">
+      <img
+        src="{{ article.image | image_url: width: 1920 }}"
+        srcset="{{ article.image | image_url: width: 960 }} 960w,
+                {{ article.image | image_url: width: 1280 }} 1280w,
+                {{ article.image | image_url: width: 1920 }} 1920w"
+        sizes="100vw"
+        alt="{{ article.image.alt | default: article.title | escape }}"
+        class="velox-article__hero-image"
+        loading="eager"
+        fetchpriority="high"
+      >
+    </div>
+  {% endif %}
+
+  <div class="velox-article__container">
+
+    {%- comment -%} Header {%- endcomment -%}
+    <header class="velox-article__header">
+      {%- comment -%} Breadcrumb {%- endcomment -%}
+      {% render 'breadcrumbs', style: section.settings.breadcrumb_style | default: 'chevrons' %}
+
+      <h1 class="velox-article__title">{{ article.title }}</h1>
+
+      {%- comment -%} Meta {%- endcomment -%}
+      <div class="velox-article__meta">
+        {% if section.settings.show_author %}
+          <div class="velox-article__author">
+            {% if article.user.image %}
+              <img
+                src="{{ article.user.image | image_url: width: 80 }}"
+                alt="{{ article.author }}"
+                class="velox-article__author-avatar"
+                width="40"
+                height="40"
+              >
+            {% else %}
+              <img
+                src="https://api.dicebear.com/7.x/croodles/svg?seed={{ article.author | handle }}"
+                alt="{{ article.author }}"
+                class="velox-article__author-avatar"
+                width="40"
+                height="40"
+              >
+            {% endif %}
+            <p class="velox-article__author-name">{{ article.author }}</p>
+          </div>
+          <span class="velox-article__meta-divider"></span>
+        {% endif %}
+
+        {% if section.settings.show_date %}
+          <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}" class="velox-article__date">
+            {{ article.published_at | date: format: 'date' }}
+          </time>
+        {% endif %}
+
+        {% if section.settings.show_reading_time %}
+          <span class="velox-article__meta-divider"></span>
+          <span class="velox-article__reading-time">
+            {% assign words = article.content | strip_html | split: ' ' | size %}
+            {% assign minutes = words | divided_by: 200 | plus: 1 %}
+            {{ minutes }} {{ 'blog.reading_time' | t }}
+          </span>
+        {% endif %}
+      </div>
+    </header>
+
+    {%- comment -%} Content {%- endcomment -%}
+    <div class="velox-article__content">
+      {{ article.content }}
+    </div>
+
+    {%- comment -%} Tags {%- endcomment -%}
+    {% if article.tags.size > 0 and section.settings.show_tags %}
+      <div class="velox-article__tags">
+        {% for tag in article.tags %}
+          <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="velox-article__tag">
+            {{ tag }}
+          </a>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {%- comment -%} Share buttons {%- endcomment -%}
+    {% if section.settings.show_share %}
+      <div class="velox-article__share">
+        <span class="velox-article__share-label">{{ 'blog.share' | t }}</span>
+        <div class="velox-article__share-buttons">
+          {%- comment -%} Twitter/X {%- endcomment -%}
+          <a
+            href="https://twitter.com/intent/tweet?text={{ article.title | url_encode }}&url={{ shop.url }}{{ article.url }}"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="velox-article__share-button"
+            aria-label="Share on Twitter"
+          >
+            <svg fill="currentColor" viewBox="0 0 24 24">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+          </a>
+          {%- comment -%} Facebook {%- endcomment -%}
+          <a
+            href="https://www.facebook.com/sharer/sharer.php?u={{ shop.url }}{{ article.url }}"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="velox-article__share-button"
+            aria-label="Share on Facebook"
+          >
+            <svg fill="currentColor" viewBox="0 0 24 24">
+              <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd"/>
+            </svg>
+          </a>
+          {%- comment -%} LinkedIn {%- endcomment -%}
+          <a
+            href="https://www.linkedin.com/shareArticle?mini=true&url={{ shop.url }}{{ article.url }}&title={{ article.title | url_encode }}"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="velox-article__share-button"
+            aria-label="Share on LinkedIn"
+          >
+            <svg fill="currentColor" viewBox="0 0 24 24">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+          </a>
+          {%- comment -%} Email {%- endcomment -%}
+          <a
+            href="mailto:?subject={{ article.title | url_encode }}&body={{ shop.url }}{{ article.url }}"
+            class="velox-article__share-button"
+            aria-label="Share via Email"
+          >
+            <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    {% endif %}
+
+    {%- comment -%} Navigation - Previous/Next {%- endcomment -%}
+    {% if section.settings.show_navigation %}
+      {% if blog.previous_article or blog.next_article %}
+        <nav class="velox-article__nav" aria-label="Article navigation">
+          {% if blog.previous_article %}
+            <a href="{{ blog.previous_article }}" class="velox-article__nav-link">
+              <span class="velox-article__nav-label">{{ 'blog.previous_article' | t }}</span>
+              <span class="velox-article__nav-title">{{ blog.previous_article.title }}</span>
+            </a>
+          {% else %}
+            <div></div>
+          {% endif %}
+
+          {% if blog.next_article %}
+            <a href="{{ blog.next_article }}" class="velox-article__nav-link velox-article__nav-link--next">
+              <span class="velox-article__nav-label">{{ 'blog.next_article' | t }}</span>
+              <span class="velox-article__nav-title">{{ blog.next_article.title }}</span>
+            </a>
+          {% endif %}
+        </nav>
+      {% endif %}
+    {% endif %}
+
+    {%- comment -%} Comments section {%- endcomment -%}
+    {% if blog.comments_enabled? and section.settings.show_comments %}
+      <section class="velox-article__comments" id="comments">
+        <h2 class="velox-article__comments-title">
+          {{ 'blog.comments' | t }} ({{ article.comments_count }})
+        </h2>
+
+        {%- comment -%} Existing comments {%- endcomment -%}
+        {% if article.comments.size > 0 %}
+          {% paginate article.comments by 10 %}
+            {% for comment in article.comments %}
+              <div class="velox-comment">
+                <div class="velox-comment__header">
+                  <img
+                    src="https://api.dicebear.com/7.x/croodles/svg?seed={{ comment.author | handle }}"
+                    alt="{{ comment.author }}"
+                    class="velox-comment__avatar"
+                    width="40"
+                    height="40"
+                  >
+                  <div>
+                    <p class="velox-comment__author">{{ comment.author }}</p>
+                    <p class="velox-comment__date">{{ comment.created_at | date: format: 'date' }}</p>
+                  </div>
+                </div>
+                <p class="velox-comment__body">{{ comment.content }}</p>
+              </div>
+            {% endfor %}
+          {% endpaginate %}
+        {% endif %}
+
+        {%- comment -%} Comment form {%- endcomment -%}
+        {% form 'new_comment', article %}
+          <div class="velox-comment-form">
+            <h3 class="velox-comment-form__title">{{ 'blog.comment_form_title' | t }}</h3>
+
+            {% if form.errors %}
+              <div style="background-color: #fef2f2; border: 1px solid #fecaca; border-radius: 0.5rem; padding: 1rem; margin-bottom: 1rem;">
+                {{ form.errors | default_errors }}
+              </div>
+            {% endif %}
+
+            {% if form.posted_successfully? %}
+              <div style="background-color: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 1rem;">
+                <p style="margin: 0; color: #059669; font-size: 0.875rem;">
+                  {% if blog.moderated? %}
+                    {{ 'blog.comment_form_success_moderated' | t }}
+                  {% else %}
+                    {{ 'blog.comment_form_success' | t }}
+                  {% endif %}
+                </p>
+              </div>
+            {% endif %}
+
+            <div class="velox-comment-form__grid">
+              <div class="velox-comment-form__group">
+                <label for="CommentAuthor" class="velox-comment-form__label">
+                  {{ 'blog.comment_form_name' | t }}
+                </label>
+                <input
+                  type="text"
+                  name="comment[author]"
+                  id="CommentAuthor"
+                  class="velox-comment-form__input"
+                  required
+                  value="{{ form.author }}"
+                >
+              </div>
+
+              <div class="velox-comment-form__group">
+                <label for="CommentEmail" class="velox-comment-form__label">
+                  {{ 'blog.comment_form_email' | t }}
+                </label>
+                <input
+                  type="email"
+                  name="comment[email]"
+                  id="CommentEmail"
+                  class="velox-comment-form__input"
+                  required
+                  value="{{ form.email }}"
+                >
+              </div>
+
+              <div class="velox-comment-form__group velox-comment-form__group--full">
+                <label for="CommentBody" class="velox-comment-form__label">
+                  {{ 'blog.comment_form_body' | t }}
+                </label>
+                <textarea
+                  name="comment[body]"
+                  id="CommentBody"
+                  class="velox-comment-form__textarea"
+                  required
+                >{{ form.body }}</textarea>
+              </div>
+            </div>
+
+            <button type="submit" class="velox-comment-form__submit">
+              {{ 'blog.comment_form_submit' | t }}
+            </button>
+          </div>
+        {% endform %}
+      </section>
+    {% endif %}
+
+  </div>
+</article>
+
+{% schema %}
+{
+  "name": "Article",
+  "tag": "section",
+  "class": "section-article",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_hero_image",
+      "label": "Show hero image",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "breadcrumb_style",
+      "label": "Breadcrumb style",
+      "options": [
+        { "value": "chevrons", "label": "Chevrons >" },
+        { "value": "slashes", "label": "Slashes /" },
+        { "value": "arrows", "label": "Arrows →" }
+      ],
+      "default": "chevrons"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "label": "Show author",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "label": "Show date",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_reading_time",
+      "label": "Show reading time",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tags",
+      "label": "Show tags",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_share",
+      "label": "Show share buttons",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_navigation",
+      "label": "Show previous/next navigation",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_comments",
+      "label": "Show comments",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "options": [
+        {
+          "value": "light",
+          "label": "Light"
+        },
+        {
+          "value": "dark",
+          "label": "Dark"
+        }
+      ],
+      "default": "light"
+    }
+  ]
+}
+{% endschema %}

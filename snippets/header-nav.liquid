@@ -1,0 +1,49 @@
+{% comment %}
+  Velox Header Navigation Snippet
+  Navegación principal reutilizable para diferentes layouts.
+  Uso: {% render 'header-nav', menu: main_menu, color_scheme: color_scheme %}
+{% endcomment %}
+
+{% if menu != blank %}
+  {% for link in linklists[menu].links %}
+    {% if link.links != blank %}
+      {%- comment -%} Link con submenú {%- endcomment -%}
+      <div class="tw-relative tw-group" data-dropdown>
+        <button
+          type="button"
+          class="velox-header-text tw-flex tw-items-center tw-gap-1 tw-text-sm tw-font-medium tw-transition-colors"
+          aria-expanded="false"
+          aria-haspopup="true"
+        >
+          {{ link.title }}
+          {% render 'icon', name: 'chevron-down', class: 'tw-w-4 tw-h-4 tw-transition-transform group-hover:tw-rotate-180' %}
+        </button>
+
+        {%- comment -%} Dropdown menu {%- endcomment -%}
+        <div
+          class="tw-absolute tw-left-0 tw-top-full tw-pt-2 tw-opacity-0 tw-invisible group-hover:tw-opacity-100 group-hover:tw-visible tw-transition-all tw-duration-200"
+          data-dropdown-content
+        >
+          <div class="velox-dropdown-bg tw-bg-white tw-rounded-lg tw-shadow-lg tw-ring-1 tw-ring-black/5 tw-py-2 tw-min-w-[200px]">
+            {% for child_link in link.links %}
+              <a
+                href="{{ child_link.url }}"
+                class="velox-dropdown-item tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-velox-700 hover:tw-bg-velox-50 hover:tw-text-velox-900 tw-transition-colors"
+              >
+                {{ child_link.title }}
+              </a>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    {% else %}
+      {%- comment -%} Link simple {%- endcomment -%}
+      <a
+        href="{{ link.url }}"
+        class="velox-header-text tw-text-sm tw-font-medium tw-transition-colors {% if link.active %}tw-underline tw-underline-offset-4{% endif %}"
+      >
+        {{ link.title }}
+      </a>
+    {% endif %}
+  {% endfor %}
+{% endif %}

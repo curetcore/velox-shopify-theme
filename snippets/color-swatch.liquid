@@ -1,0 +1,186 @@
+{% comment %}
+  Color Swatch Snippet
+  Renderiza un swatch de color con mapeo de nombres a CSS colors.
+
+  Uso:
+    {% render 'color-swatch',
+      value: 'Negro',
+      option_name: 'Color',
+      is_selected: true,
+      product: product
+    %}
+
+  Soporta:
+  - Nombres en español e inglés
+  - Colores CSS estándar
+  - Imágenes de swatch para patrones (via metafields)
+  - Tamaños: small (1.5rem), medium (2rem), large (2.5rem)
+{% endcomment %}
+
+{%- liquid
+  assign color_handle = value | handleize
+  assign swatch_size = swatch_size | default: 'medium'
+
+  # Mapeo de nombres de colores a valores CSS
+  # Español
+  case color_handle
+    when 'negro'
+      assign css_color = '#000000'
+    when 'blanco'
+      assign css_color = '#ffffff'
+    when 'rojo'
+      assign css_color = '#dc2626'
+    when 'azul'
+      assign css_color = '#2563eb'
+    when 'verde'
+      assign css_color = '#16a34a'
+    when 'amarillo'
+      assign css_color = '#eab308'
+    when 'naranja'
+      assign css_color = '#ea580c'
+    when 'rosa'
+      assign css_color = '#ec4899'
+    when 'morado' or 'violeta'
+      assign css_color = '#9333ea'
+    when 'gris'
+      assign css_color = '#6b7280'
+    when 'marron' or 'cafe'
+      assign css_color = '#78350f'
+    when 'beige'
+      assign css_color = '#d4c4a8'
+    when 'crema'
+      assign css_color = '#fffdd0'
+    when 'dorado' or 'oro'
+      assign css_color = '#d4af37'
+    when 'plateado' or 'plata'
+      assign css_color = '#c0c0c0'
+    when 'celeste'
+      assign css_color = '#87ceeb'
+    when 'turquesa'
+      assign css_color = '#40e0d0'
+    when 'coral'
+      assign css_color = '#ff7f50'
+    when 'salmon'
+      assign css_color = '#fa8072'
+    when 'lila'
+      assign css_color = '#c8a2c8'
+    when 'lavanda'
+      assign css_color = '#e6e6fa'
+    when 'menta'
+      assign css_color = '#98ff98'
+    when 'oliva'
+      assign css_color = '#808000'
+    when 'vino' or 'burdeos'
+      assign css_color = '#722f37'
+    when 'navy' or 'marino' or 'azul-marino'
+      assign css_color = '#000080'
+    when 'kaki' or 'khaki'
+      assign css_color = '#c3b091'
+    when 'terracota'
+      assign css_color = '#e2725b'
+    # Inglés
+    when 'black'
+      assign css_color = '#000000'
+    when 'white'
+      assign css_color = '#ffffff'
+    when 'red'
+      assign css_color = '#dc2626'
+    when 'blue'
+      assign css_color = '#2563eb'
+    when 'green'
+      assign css_color = '#16a34a'
+    when 'yellow'
+      assign css_color = '#eab308'
+    when 'orange'
+      assign css_color = '#ea580c'
+    when 'pink'
+      assign css_color = '#ec4899'
+    when 'purple' or 'violet'
+      assign css_color = '#9333ea'
+    when 'gray' or 'grey'
+      assign css_color = '#6b7280'
+    when 'brown'
+      assign css_color = '#78350f'
+    when 'gold'
+      assign css_color = '#d4af37'
+    when 'silver'
+      assign css_color = '#c0c0c0'
+    when 'tan'
+      assign css_color = '#d2b48c'
+    when 'ivory'
+      assign css_color = '#fffff0'
+    when 'charcoal'
+      assign css_color = '#36454f'
+    when 'burgundy'
+      assign css_color = '#800020'
+    when 'teal'
+      assign css_color = '#008080'
+    when 'mint'
+      assign css_color = '#98ff98'
+    when 'olive'
+      assign css_color = '#808000'
+    when 'heather-grey' or 'heather-gray'
+      assign css_color = '#9ca3af'
+    when 'light-blue'
+      assign css_color = '#93c5fd'
+    when 'dark-blue'
+      assign css_color = '#1e3a8a'
+    when 'light-green'
+      assign css_color = '#86efac'
+    when 'dark-green'
+      assign css_color = '#166534'
+    when 'hot-pink'
+      assign css_color = '#ff69b4'
+    when 'baby-blue'
+      assign css_color = '#89cff0'
+    when 'nude'
+      assign css_color = '#e3bc9a'
+    when 'camel'
+      assign css_color = '#c19a6b'
+    # Multicolor o patrones
+    when 'multicolor' or 'multi'
+      assign is_multicolor = true
+    else
+      # Fallback: intentar usar el valor como color CSS
+      assign css_color = value | downcase
+  endcase
+
+  # Verificar si hay una imagen de swatch en metafields
+  assign swatch_image = nil
+  if product.metafields.swatches[color_handle] != blank
+    assign swatch_image = product.metafields.swatches[color_handle]
+  endif
+
+  # Clase de tamaño
+  case swatch_size
+    when 'small'
+      assign size_class = 'velox-swatch--sm'
+    when 'large'
+      assign size_class = 'velox-swatch--lg'
+    else
+      assign size_class = ''
+  endcase
+-%}
+
+<button
+  type="button"
+  class="velox-color-swatch {{ size_class }} {% if is_selected %}selected{% endif %}"
+  {% if swatch_image != blank %}
+    style="background-image: url('{{ swatch_image | image_url: width: 80 }}'); background-size: cover;"
+  {% elsif is_multicolor %}
+    style="background: conic-gradient(#ff0000, #ff8000, #ffff00, #00ff00, #00ffff, #0000ff, #8000ff, #ff0080, #ff0000);"
+  {% else %}
+    style="background-color: {{ css_color }};"
+  {% endif %}
+  data-option-value="{{ value }}"
+  data-option-name="{{ option_name }}"
+  aria-label="{{ value }}"
+  title="{{ value }}"
+>
+  <span class="tw-sr-only">{{ value }}</span>
+  {% if is_selected %}
+    <span class="velox-swatch__check {% if css_color == '#ffffff' or css_color == '#fffff0' or css_color == '#fffdd0' %}velox-swatch__check--dark{% endif %}">
+      {% render 'icon', name: 'check', class: 'tw-w-3 tw-h-3' %}
+    </span>
+  {% endif %}
+</button>

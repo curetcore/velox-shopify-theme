@@ -1,47 +1,777 @@
 {% comment %}
-  This section is used in the collection template to render collection page
-  listing all products within a collection.
+  Velox Collection Section
+  Sistema multi-estilo para página de colección.
 
-  https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
+  Estilos de header: banner, minimal, overlay
+  Estilos de grid: grid_4, grid_3, grid_2, list
+  Filtros: sidebar, horizontal, drawer
 {% endcomment %}
 
-<h1>{{ collection.title }}</h1>
+{% liquid
+  # Settings
+  assign header_style = section.settings.header_style
+  assign filter_style = section.settings.filter_style
+  assign grid_style = section.settings.grid_style
+  assign products_per_page = section.settings.products_per_page
+  assign show_vendor = section.settings.show_vendor
+  assign show_quick_view = section.settings.show_quick_view
+  assign show_swatches = section.settings.show_swatches
+  assign show_second_image = section.settings.show_second_image
+  assign enable_sorting = section.settings.enable_sorting
+  assign enable_filtering = section.settings.enable_filtering
+  assign color_scheme = section.settings.color_scheme
 
-<div class="collection-products">
-  {% paginate collection.products by 20 %}
-    {% for product in collection.products %}
-      <div class="collection-product">
-        {% if product.featured_image %}
-          {% render 'image',
-            class: 'collection-product__image',
-            image: product.featured_image,
-            url: product.url,
-            width: 400,
-            height: 400,
-            crop: 'center'
-          %}
+  # Grid columns
+  case grid_style
+    when 'grid_4'
+      assign grid_class = 'velox-grid-4'
+    when 'grid_3'
+      assign grid_class = 'velox-grid-3'
+    when 'grid_2'
+      assign grid_class = 'velox-grid-2'
+    when 'list'
+      assign grid_class = 'velox-grid-list'
+    else
+      assign grid_class = 'velox-grid-4'
+  endcase
+%}
+
+{%- comment -%} Estilos CSS {%- endcomment -%}
+{% style %}
+  /* Collection Header Styles */
+  .velox-collection-header--banner {
+    position: relative;
+    padding: 3rem 0;
+    background-color: var(--color-secondary, #f9fafb);
+  }
+
+  .velox-collection-header--overlay {
+    position: relative;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .velox-collection-header--overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.6));
+    z-index: 1;
+  }
+
+  .velox-collection-header--overlay .velox-collection-content {
+    position: relative;
+    z-index: 2;
+    color: white;
+    text-align: center;
+  }
+
+  .velox-collection-header--minimal {
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--color-border, #e5e7eb);
+  }
+
+  /* Grid Styles */
+  .velox-collection-grid {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .velox-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .velox-grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .velox-grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .velox-grid-list {
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 640px) {
+    .velox-grid-4 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .velox-grid-3 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .velox-grid-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .velox-grid-4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .velox-grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* Filter Styles */
+  .velox-filter-sidebar {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .velox-collection-layout--sidebar {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2rem;
+    }
+
+    .velox-filter-sidebar {
+      display: block;
+    }
+  }
+
+  .velox-filter-horizontal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--color-border, #e5e7eb);
+  }
+
+  .velox-filter-drawer {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: none;
+  }
+
+  .velox-filter-drawer.is-active {
+    display: block;
+  }
+
+  /* Color schemes */
+  .velox-collection--light {
+    --collection-bg: var(--color-background, #ffffff);
+    --collection-text: var(--color-foreground, #111827);
+  }
+
+  .velox-collection--dark {
+    --collection-bg: #111827;
+    --collection-text: #ffffff;
+  }
+
+  /* Active filter tags */
+  .velox-active-filter {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.75rem;
+    background-color: var(--color-secondary, #f3f4f6);
+    border-radius: 9999px;
+    font-size: 0.875rem;
+  }
+
+  /* Pagination */
+  .velox-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 3rem;
+  }
+
+  .velox-pagination a,
+  .velox-pagination span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.5rem;
+    height: 2.5rem;
+    padding: 0 0.75rem;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+  }
+
+  .velox-pagination a {
+    background-color: var(--color-secondary, #f3f4f6);
+    transition: background-color 0.2s;
+  }
+
+  .velox-pagination a:hover {
+    background-color: var(--color-accent, #6366f1);
+    color: white;
+  }
+
+  .velox-pagination .is-current {
+    background-color: var(--color-accent, #6366f1);
+    color: white;
+  }
+{% endstyle %}
+
+<div
+  class="velox-collection velox-collection--{{ color_scheme }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="collection"
+>
+  {%- comment -%} ==================== COLLECTION HEADER ==================== {%- endcomment -%}
+
+  {% case header_style %}
+    {% when 'banner' %}
+      <header class="velox-collection-header velox-collection-header--banner">
+        <div class="tw-container tw-mx-auto tw-px-4">
+          <div class="velox-collection-content tw-max-w-3xl">
+            {% if collection.image %}
+              <div class="tw-absolute tw-inset-0 tw-opacity-10">
+                {{ collection.image | image_url: width: 1920 | image_tag: class: 'tw-w-full tw-h-full tw-object-cover' }}
+              </div>
+            {% endif %}
+            <h1 class="tw-text-3xl lg:tw-text-4xl tw-font-bold tw-text-velox-900 tw-mb-2">
+              {{ collection.title }}
+            </h1>
+            {% if collection.description != blank %}
+              <div class="tw-text-velox-600 tw-prose tw-prose-sm tw-max-w-none">
+                {{ collection.description }}
+              </div>
+            {% endif %}
+            <p class="tw-mt-4 tw-text-sm tw-text-velox-500">
+              {{ 'collections.general.items_count' | t: count: collection.products_count | default: collection.products_count | append: ' productos' }}
+            </p>
+          </div>
+        </div>
+      </header>
+
+    {% when 'overlay' %}
+      <header class="velox-collection-header velox-collection-header--overlay">
+        {% if collection.image %}
+          <div class="tw-absolute tw-inset-0">
+            {{ collection.image | image_url: width: 1920 | image_tag: class: 'tw-w-full tw-h-full tw-object-cover' }}
+          </div>
+        {% else %}
+          <div class="tw-absolute tw-inset-0 tw-bg-velox-900"></div>
         {% endif %}
-        <div class="collection-product__content">
-          <p>{{ product.title | escape | link_to: product.url }}</p>
-          <p>{{ product.price | money }}</p>
+        <div class="velox-collection-content tw-container tw-mx-auto tw-px-4 tw-py-16">
+          <h1 class="tw-text-3xl lg:tw-text-5xl tw-font-bold tw-mb-4">
+            {{ collection.title }}
+          </h1>
+          {% if collection.description != blank %}
+            <div class="tw-text-white/80 tw-max-w-2xl tw-mx-auto">
+              {{ collection.description | strip_html | truncate: 200 }}
+            </div>
+          {% endif %}
+        </div>
+      </header>
+
+    {% when 'minimal' %}
+      <header class="velox-collection-header velox-collection-header--minimal">
+        <div class="tw-container tw-mx-auto tw-px-4">
+          {% render 'breadcrumbs', style: section.settings.breadcrumb_style | default: 'chevrons' %}
+          <h1 class="tw-text-2xl lg:tw-text-3xl tw-font-bold tw-text-velox-900">
+            {{ collection.title }}
+          </h1>
+        </div>
+      </header>
+
+    {% else %}
+      {%- comment -%} Default: banner {%- endcomment -%}
+      <header class="velox-collection-header velox-collection-header--banner">
+        <div class="tw-container tw-mx-auto tw-px-4">
+          <h1 class="tw-text-3xl lg:tw-text-4xl tw-font-bold tw-text-velox-900">
+            {{ collection.title }}
+          </h1>
+        </div>
+      </header>
+  {% endcase %}
+
+  {%- comment -%} ==================== MAIN CONTENT ==================== {%- endcomment -%}
+
+  <div class="tw-container tw-mx-auto tw-px-4 tw-py-8">
+    {% paginate collection.products by products_per_page %}
+
+      {%- comment -%} Layout con sidebar o sin sidebar {%- endcomment -%}
+      <div class="{% if filter_style == 'sidebar' and enable_filtering %}velox-collection-layout--sidebar{% endif %}">
+
+        {%- comment -%} ==================== SIDEBAR FILTERS ==================== {%- endcomment -%}
+        {% if filter_style == 'sidebar' and enable_filtering %}
+          <aside class="velox-filter-sidebar">
+            {% render 'collection-filters',
+              results: collection,
+              enable_filtering: enable_filtering,
+              filter_type: 'sidebar'
+            %}
+          </aside>
+        {% endif %}
+
+        {%- comment -%} ==================== PRODUCTS AREA ==================== {%- endcomment -%}
+        <div class="velox-collection-products">
+
+          {%- comment -%} Toolbar: Filters + Sort {%- endcomment -%}
+          <div class="tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-4 tw-mb-6">
+
+            {%- comment -%} Left: Filter button (mobile) + Count {%- endcomment -%}
+            <div class="tw-flex tw-items-center tw-gap-4">
+              {% if enable_filtering %}
+                <button
+                  type="button"
+                  class="lg:tw-hidden tw-flex tw-items-center tw-gap-2 tw-px-4 tw-py-2 tw-border tw-border-velox-200 tw-rounded-lg tw-text-sm tw-font-medium hover:tw-bg-velox-50 tw-transition-colors"
+                  data-filter-toggle
+                  aria-expanded="false"
+                  aria-controls="filter-drawer"
+                >
+                  {% render 'icon', name: 'adjustments-horizontal', class: 'tw-w-5 tw-h-5' %}
+                  {{ 'collections.filtering.filter' | t | default: 'Filtrar' }}
+                </button>
+              {% endif %}
+
+              <p class="tw-text-sm tw-text-velox-500">
+                {{ 'collections.general.items_count' | t: count: collection.products_count | default: collection.products_count | append: ' productos' }}
+              </p>
+            </div>
+
+            {%- comment -%} Right: Grid toggle + Sort {%- endcomment -%}
+            <div class="tw-flex tw-items-center tw-gap-4">
+              {%- comment -%} Grid/List toggle {%- endcomment -%}
+              <div class="tw-hidden sm:tw-flex tw-items-center tw-gap-1 tw-border tw-border-velox-200 tw-rounded-lg tw-p-1">
+                <button
+                  type="button"
+                  class="tw-p-1.5 tw-rounded {% if grid_style != 'list' %}tw-bg-velox-100{% endif %}"
+                  data-grid-toggle="grid"
+                  aria-label="{{ 'collections.general.grid_view' | t | default: 'Vista en cuadrícula' }}"
+                >
+                  {% render 'icon', name: 'squares-2x2', class: 'tw-w-5 tw-h-5' %}
+                </button>
+                <button
+                  type="button"
+                  class="tw-p-1.5 tw-rounded {% if grid_style == 'list' %}tw-bg-velox-100{% endif %}"
+                  data-grid-toggle="list"
+                  aria-label="{{ 'collections.general.list_view' | t | default: 'Vista en lista' }}"
+                >
+                  {% render 'icon', name: 'bars-3', class: 'tw-w-5 tw-h-5' %}
+                </button>
+              </div>
+
+              {%- comment -%} Sort dropdown {%- endcomment -%}
+              {% if enable_sorting %}
+                <div class="tw-relative" data-sort-dropdown>
+                  <label for="sort-by" class="tw-sr-only">
+                    {{ 'collections.sorting.title' | t | default: 'Ordenar por' }}
+                  </label>
+                  <select
+                    id="sort-by"
+                    name="sort_by"
+                    class="tw-appearance-none tw-bg-white tw-border tw-border-velox-200 tw-rounded-lg tw-py-2 tw-pl-4 tw-pr-10 tw-text-sm tw-font-medium tw-cursor-pointer hover:tw-border-velox-300 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-accent focus:tw-border-transparent"
+                    data-sort-select
+                  >
+                    {% for option in collection.sort_options %}
+                      <option
+                        value="{{ option.value }}"
+                        {% if collection.sort_by == option.value %}selected{% endif %}
+                      >
+                        {{ option.name }}
+                      </option>
+                    {% endfor %}
+                  </select>
+                  <div class="tw-absolute tw-inset-y-0 tw-right-0 tw-flex tw-items-center tw-pr-3 tw-pointer-events-none">
+                    {% render 'icon', name: 'chevron-down', class: 'tw-w-4 tw-h-4 tw-text-velox-400' %}
+                  </div>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+
+          {%- comment -%} Horizontal filters {%- endcomment -%}
+          {% if filter_style == 'horizontal' and enable_filtering %}
+            {% render 'collection-filters',
+              results: collection,
+              enable_filtering: enable_filtering,
+              filter_type: 'horizontal'
+            %}
+          {% endif %}
+
+          {%- comment -%} Active filters display {%- endcomment -%}
+          {% if collection.filters != empty %}
+            {% assign has_active_filters = false %}
+            {% for filter in collection.filters %}
+              {% if filter.active_values.size > 0 %}
+                {% assign has_active_filters = true %}
+                {% break %}
+              {% endif %}
+            {% endfor %}
+
+            {% if has_active_filters %}
+              <div class="tw-flex tw-flex-wrap tw-items-center tw-gap-2 tw-mb-6">
+                <span class="tw-text-sm tw-text-velox-500">
+                  {{ 'collections.filtering.active_filters' | t | default: 'Filtros activos:' }}
+                </span>
+                {% for filter in collection.filters %}
+                  {% for value in filter.active_values %}
+                    <a
+                      href="{{ value.url_to_remove }}"
+                      class="velox-active-filter hover:tw-bg-velox-200 tw-transition-colors"
+                    >
+                      {{ value.label }}
+                      {% render 'icon', name: 'x-mark', class: 'tw-w-4 tw-h-4' %}
+                    </a>
+                  {% endfor %}
+                {% endfor %}
+                <a
+                  href="{{ collection.url }}"
+                  class="tw-text-sm tw-text-accent hover:tw-underline"
+                >
+                  {{ 'collections.filtering.clear_all' | t | default: 'Limpiar todo' }}
+                </a>
+              </div>
+            {% endif %}
+          {% endif %}
+
+          {%- comment -%} ==================== PRODUCT GRID ==================== {%- endcomment -%}
+          {% if collection.products.size > 0 %}
+            <div class="velox-collection-grid {{ grid_class }}" data-products-grid>
+              {% for product in collection.products %}
+                {% render 'product-card',
+                  product: product,
+                  show_vendor: show_vendor,
+                  show_quick_view: show_quick_view,
+                  show_swatches: show_swatches,
+                  show_second_image: show_second_image
+                %}
+              {% endfor %}
+            </div>
+
+            {%- comment -%} ==================== PAGINATION ==================== {%- endcomment -%}
+            {% if paginate.pages > 1 %}
+              <nav class="velox-pagination" role="navigation" aria-label="Pagination">
+                {% if paginate.previous %}
+                  <a href="{{ paginate.previous.url }}" aria-label="{{ 'general.pagination.previous' | t | default: 'Anterior' }}">
+                    {% render 'icon', name: 'chevron-left', class: 'tw-w-5 tw-h-5' %}
+                  </a>
+                {% endif %}
+
+                {% for part in paginate.parts %}
+                  {% if part.is_link %}
+                    <a href="{{ part.url }}">{{ part.title }}</a>
+                  {% else %}
+                    {% if part.title == paginate.current_page %}
+                      <span class="is-current" aria-current="page">{{ part.title }}</span>
+                    {% else %}
+                      <span>{{ part.title }}</span>
+                    {% endif %}
+                  {% endif %}
+                {% endfor %}
+
+                {% if paginate.next %}
+                  <a href="{{ paginate.next.url }}" aria-label="{{ 'general.pagination.next' | t | default: 'Siguiente' }}">
+                    {% render 'icon', name: 'chevron-right', class: 'tw-w-5 tw-h-5' %}
+                  </a>
+                {% endif %}
+              </nav>
+            {% endif %}
+
+          {% else %}
+            {%- comment -%} ==================== EMPTY STATE ==================== {%- endcomment -%}
+            <div class="tw-text-center tw-py-16">
+              <div class="tw-inline-flex tw-items-center tw-justify-center tw-w-16 tw-h-16 tw-bg-velox-100 tw-rounded-full tw-mb-4">
+                {% render 'icon', name: 'shopping-bag', class: 'tw-w-8 tw-h-8 tw-text-velox-400' %}
+              </div>
+              <h2 class="tw-text-xl tw-font-semibold tw-text-velox-900 tw-mb-2">
+                {{ 'collections.general.no_products' | t | default: 'No hay productos' }}
+              </h2>
+              <p class="tw-text-velox-500 tw-mb-6">
+                {% if collection.filters != empty %}
+                  {{ 'collections.general.no_products_filters' | t | default: 'Intenta ajustar los filtros para encontrar lo que buscas.' }}
+                {% else %}
+                  {{ 'collections.general.no_products_message' | t | default: 'Esta colección no tiene productos aún.' }}
+                {% endif %}
+              </p>
+              {% if collection.filters != empty %}
+                <a
+                  href="{{ collection.url }}"
+                  class="tw-inline-flex tw-items-center tw-gap-2 tw-px-6 tw-py-3 tw-bg-accent tw-text-white tw-rounded-lg tw-font-medium hover:tw-bg-accent/90 tw-transition-colors"
+                >
+                  {{ 'collections.filtering.clear_filters' | t | default: 'Limpiar filtros' }}
+                </a>
+              {% endif %}
+            </div>
+          {% endif %}
+
         </div>
       </div>
-    {% endfor %}
 
-    {{ paginate | default_pagination }}
-  {% endpaginate %}
+    {% endpaginate %}
+  </div>
+
+  {%- comment -%} ==================== FILTER DRAWER (Mobile) ==================== {%- endcomment -%}
+  {% if enable_filtering %}
+    <div class="velox-filter-drawer" id="filter-drawer" data-filter-drawer aria-hidden="true">
+      {%- comment -%} Overlay {%- endcomment -%}
+      <div class="tw-absolute tw-inset-0 tw-bg-black/50" data-filter-overlay></div>
+
+      {%- comment -%} Drawer content {%- endcomment -%}
+      <div class="tw-absolute tw-inset-y-0 tw-left-0 tw-w-full tw-max-w-sm tw-bg-white tw-shadow-xl tw-transform tw-translate-x-0">
+        <div class="tw-flex tw-items-center tw-justify-between tw-p-4 tw-border-b tw-border-velox-200">
+          <h2 class="tw-text-lg tw-font-semibold tw-text-velox-900">
+            {{ 'collections.filtering.filter' | t | default: 'Filtrar' }}
+          </h2>
+          <button
+            type="button"
+            class="tw-p-2 tw-rounded-lg hover:tw-bg-velox-100 tw-transition-colors"
+            data-filter-close
+            aria-label="{{ 'general.close' | t | default: 'Cerrar' }}"
+          >
+            {% render 'icon', name: 'x-mark', class: 'tw-w-6 tw-h-6' %}
+          </button>
+        </div>
+
+        <div class="tw-overflow-y-auto tw-h-[calc(100%-140px)] tw-p-4">
+          {% render 'collection-filters',
+            results: collection,
+            enable_filtering: enable_filtering,
+            filter_type: 'drawer'
+          %}
+        </div>
+
+        <div class="tw-absolute tw-bottom-0 tw-left-0 tw-right-0 tw-p-4 tw-bg-white tw-border-t tw-border-velox-200">
+          <div class="tw-flex tw-gap-3">
+            <a
+              href="{{ collection.url }}"
+              class="tw-flex-1 tw-py-3 tw-text-center tw-border tw-border-velox-200 tw-rounded-lg tw-font-medium hover:tw-bg-velox-50 tw-transition-colors"
+            >
+              {{ 'collections.filtering.clear_all' | t | default: 'Limpiar' }}
+            </a>
+            <button
+              type="button"
+              class="tw-flex-1 tw-py-3 tw-text-center tw-bg-accent tw-text-white tw-rounded-lg tw-font-medium hover:tw-bg-accent/90 tw-transition-colors"
+              data-filter-close
+            >
+              {{ 'collections.filtering.apply' | t | default: 'Aplicar' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
 </div>
 
-{% stylesheet %}
-  .collection-products {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
-  }
-{% endstylesheet %}
+{%- comment -%} ==================== JAVASCRIPT ==================== {%- endcomment -%}
+<script>
+  (function() {
+    const section = document.querySelector('[data-section-id="{{ section.id }}"]');
+    if (!section) return;
+
+    // Sort select
+    const sortSelect = section.querySelector('[data-sort-select]');
+    if (sortSelect) {
+      sortSelect.addEventListener('change', function() {
+        const url = new URL(window.location.href);
+        url.searchParams.set('sort_by', this.value);
+        window.location.href = url.toString();
+      });
+    }
+
+    // Filter drawer toggle
+    const filterToggle = section.querySelector('[data-filter-toggle]');
+    const filterDrawer = section.querySelector('[data-filter-drawer]');
+    const filterClose = section.querySelectorAll('[data-filter-close]');
+    const filterOverlay = section.querySelector('[data-filter-overlay]');
+
+    if (filterToggle && filterDrawer) {
+      filterToggle.addEventListener('click', function() {
+        filterDrawer.classList.add('is-active');
+        filterDrawer.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      });
+
+      const closeDrawer = function() {
+        filterDrawer.classList.remove('is-active');
+        filterDrawer.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      };
+
+      filterClose.forEach(function(btn) {
+        btn.addEventListener('click', closeDrawer);
+      });
+
+      if (filterOverlay) {
+        filterOverlay.addEventListener('click', closeDrawer);
+      }
+    }
+
+    // Grid toggle (visual only, saves preference)
+    const gridToggles = section.querySelectorAll('[data-grid-toggle]');
+    const productsGrid = section.querySelector('[data-products-grid]');
+
+    gridToggles.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const view = this.dataset.gridToggle;
+
+        // Update active state
+        gridToggles.forEach(function(b) {
+          b.classList.remove('tw-bg-velox-100');
+        });
+        this.classList.add('tw-bg-velox-100');
+
+        // Update grid class
+        if (productsGrid) {
+          productsGrid.classList.remove('velox-grid-4', 'velox-grid-3', 'velox-grid-2', 'velox-grid-list');
+          if (view === 'list') {
+            productsGrid.classList.add('velox-grid-list');
+          } else {
+            productsGrid.classList.add('velox-grid-{{ grid_style }}');
+          }
+        }
+
+        // Save preference
+        localStorage.setItem('velox-grid-view', view);
+      });
+    });
+
+    // Restore grid preference
+    const savedView = localStorage.getItem('velox-grid-view');
+    if (savedView && productsGrid) {
+      const targetBtn = section.querySelector('[data-grid-toggle="' + savedView + '"]');
+      if (targetBtn) {
+        targetBtn.click();
+      }
+    }
+  })();
+</script>
 
 {% schema %}
 {
-  "name": "t:general.collection",
-  "settings": []
+  "name": "t:sections.collection.name",
+  "tag": "section",
+  "class": "section-collection",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Header de colección"
+    },
+    {
+      "type": "select",
+      "id": "header_style",
+      "label": "Estilo de header",
+      "options": [
+        { "value": "banner", "label": "Banner con fondo" },
+        { "value": "overlay", "label": "Overlay con imagen" },
+        { "value": "minimal", "label": "Mínimo con breadcrumbs" }
+      ],
+      "default": "banner"
+    },
+    {
+      "type": "select",
+      "id": "breadcrumb_style",
+      "label": "Estilo de breadcrumbs",
+      "info": "Solo aplica al estilo 'Mínimo con breadcrumbs'",
+      "options": [
+        { "value": "chevrons", "label": "Chevrons >" },
+        { "value": "slashes", "label": "Slashes /" },
+        { "value": "arrows", "label": "Flechas →" }
+      ],
+      "default": "chevrons"
+    },
+    {
+      "type": "header",
+      "content": "Grid de productos"
+    },
+    {
+      "type": "select",
+      "id": "grid_style",
+      "label": "Columnas del grid",
+      "options": [
+        { "value": "grid_4", "label": "4 columnas" },
+        { "value": "grid_3", "label": "3 columnas" },
+        { "value": "grid_2", "label": "2 columnas" },
+        { "value": "list", "label": "Lista" }
+      ],
+      "default": "grid_4"
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Productos por página",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Tarjetas de producto"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Mostrar marca/vendor",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_view",
+      "label": "Mostrar vista rápida",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_swatches",
+      "label": "Mostrar swatches de color",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_second_image",
+      "label": "Mostrar segunda imagen en hover",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Filtros y ordenamiento"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "label": "Habilitar filtros",
+      "default": true,
+      "info": "Configura los filtros en Productos > Colecciones > Filtros de colección"
+    },
+    {
+      "type": "select",
+      "id": "filter_style",
+      "label": "Estilo de filtros",
+      "options": [
+        { "value": "sidebar", "label": "Barra lateral (desktop)" },
+        { "value": "horizontal", "label": "Horizontal" },
+        { "value": "drawer", "label": "Solo drawer (mobile)" }
+      ],
+      "default": "sidebar"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "label": "Habilitar ordenamiento",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Esquema de colores"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Esquema de colores",
+      "options": [
+        { "value": "light", "label": "Claro" },
+        { "value": "dark", "label": "Oscuro" }
+      ],
+      "default": "light"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Colección",
+      "category": "Collection"
+    }
+  ]
 }
 {% endschema %}

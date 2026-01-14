@@ -35,5 +35,17 @@
     {{ content_for_layout }}
 
     {% sections 'footer-group' %}
+
+    {% # Velox Theme - Main JavaScript %}
+    <script src="{{ 'velox.js' | asset_url }}" defer></script>
+
+    {% # Quick View Modal %}
+    {% render 'quick-view' %}
+
+    {% # Cart Drawer %}
+    {% render 'cart-drawer' %}
+
+    {% # Newsletter Popup %}
+    {% section 'newsletter-popup' %}
   </body>
 </html>

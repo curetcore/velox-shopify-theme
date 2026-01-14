@@ -19,6 +19,12 @@
         "id": "type_primary_font",
         "default": "work_sans_n4",
         "label": "t:general.primary"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_secondary_font",
+        "default": "work_sans_n6",
+        "label": "t:general.secondary"
       }
     ]
   },
@@ -57,6 +63,10 @@
     "name": "t:general.colors",
     "settings": [
       {
+        "type": "header",
+        "content": "t:general.primary"
+      },
+      {
         "type": "color",
         "id": "background_color",
         "default": "#FFFFFF",
@@ -69,6 +79,35 @@
         "label": "t:labels.foreground"
       },
       {
+        "type": "header",
+        "content": "Accent"
+      },
+      {
+        "type": "color",
+        "id": "accent_color",
+        "default": "#000000",
+        "label": "Accent color",
+        "info": "Color principal para botones, enlaces y elementos destacados"
+      },
+      {
+        "type": "color",
+        "id": "accent_foreground",
+        "default": "#FFFFFF",
+        "label": "Accent foreground",
+        "info": "Color del texto sobre elementos accent"
+      },
+      {
+        "type": "header",
+        "content": "t:general.secondary"
+      },
+      {
+        "type": "color",
+        "id": "secondary_color",
+        "default": "#F5F5F5",
+        "label": "Secondary color",
+        "info": "Color para fondos secundarios y elementos sutiles"
+      },
+      {
         "type": "range",
         "id": "input_corner_radius",
         "min": 0,
@@ -77,6 +116,131 @@
         "unit": "px",
         "label": "t:labels.input_corner_radius",
         "default": 4
+      }
+    ]
+  },
+  {
+    "name": "t:general.cart",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Free shipping"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_free_shipping_bar",
+        "default": true,
+        "label": "Show free shipping progress bar"
+      },
+      {
+        "type": "number",
+        "id": "free_shipping_threshold",
+        "default": 2000,
+        "label": "Free shipping threshold",
+        "info": "Amount in your store's currency. Set to 0 to disable."
+      }
+    ]
+  },
+  {
+    "name": "t:general.social_media",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Social media links"
+      },
+      {
+        "type": "url",
+        "id": "social_facebook_link",
+        "label": "Facebook",
+        "info": "https://facebook.com/yourstore"
+      },
+      {
+        "type": "url",
+        "id": "social_instagram_link",
+        "label": "Instagram",
+        "info": "https://instagram.com/yourstore"
+      },
+      {
+        "type": "url",
+        "id": "social_twitter_link",
+        "label": "X (Twitter)",
+        "info": "https://x.com/yourstore"
+      },
+      {
+        "type": "url",
+        "id": "social_tiktok_link",
+        "label": "TikTok",
+        "info": "https://tiktok.com/@yourstore"
+      },
+      {
+        "type": "url",
+        "id": "social_youtube_link",
+        "label": "YouTube",
+        "info": "https://youtube.com/@yourstore"
+      },
+      {
+        "type": "url",
+        "id": "social_pinterest_link",
+        "label": "Pinterest",
+        "info": "https://pinterest.com/yourstore"
+      }
+    ]
+  },
+  {
+    "name": "t:general.search",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Predictive search"
+      },
+      {
+        "type": "checkbox",
+        "id": "predictive_search_enabled",
+        "default": true,
+        "label": "Enable predictive search"
+      },
+      {
+        "type": "range",
+        "id": "predictive_search_results",
+        "min": 3,
+        "max": 10,
+        "step": 1,
+        "default": 6,
+        "label": "Maximum results to show"
+      },
+      {
+        "type": "header",
+        "content": "Popular searches"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_popular_searches",
+        "default": true,
+        "label": "Show popular searches"
+      },
+      {
+        "type": "text",
+        "id": "popular_search_1",
+        "default": "Sneakers",
+        "label": "Popular search 1"
+      },
+      {
+        "type": "text",
+        "id": "popular_search_2",
+        "default": "Boots",
+        "label": "Popular search 2"
+      },
+      {
+        "type": "text",
+        "id": "popular_search_3",
+        "default": "Sandals",
+        "label": "Popular search 3"
+      },
+      {
+        "type": "text",
+        "id": "popular_search_4",
+        "default": "Sale",
+        "label": "Popular search 4"
       }
     ]
   }

@@ -1,0 +1,12 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-order",
+      "settings": {
+        "color_scheme": "light",
+        "show_hero": false
+      }
+    }
+  },
+  "order": ["main"]
+}

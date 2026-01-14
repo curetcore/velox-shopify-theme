@@ -1,0 +1,389 @@
+{% comment %}
+  Velox Mega Menu Snippet
+  Navegación con mega menu para categorías principales.
+  Soporta:
+  - Links simples (sin submenú)
+  - Dropdowns simples (1 nivel)
+  - Mega menus (2+ niveles con columnas)
+
+  Uso: {% render 'header-mega-menu', menu: main_menu, color_scheme: color_scheme, mega_menu_items: section.blocks %}
+{% endcomment %}
+
+{% style %}
+  /* ========================================
+     MEGA MENU STYLES
+     ======================================== */
+
+  .velox-megamenu {
+    position: static;
+  }
+
+  .velox-megamenu__trigger {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: color 0.2s;
+    padding: 0.5rem 0;
+  }
+
+  .velox-megamenu__trigger-icon {
+    width: 1rem;
+    height: 1rem;
+    transition: transform 0.2s;
+  }
+
+  .velox-megamenu:hover .velox-megamenu__trigger-icon,
+  .velox-megamenu:focus-within .velox-megamenu__trigger-icon {
+    transform: rotate(180deg);
+  }
+
+  /* Mega menu panel */
+  .velox-megamenu__panel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-0.5rem);
+    transition: opacity 0.2s, visibility 0.2s, transform 0.2s;
+    z-index: 50;
+  }
+
+  .velox-megamenu:hover .velox-megamenu__panel,
+  .velox-megamenu:focus-within .velox-megamenu__panel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .velox-megamenu__content {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 1.5rem 2rem;
+    background: #ffffff;
+    border-radius: 0 0 1rem 1rem;
+    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Dark scheme */
+  .velox-header--dark .velox-megamenu__content {
+    background: #1e293b;
+  }
+
+  /* Columns layout */
+  .velox-megamenu__columns {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 2rem;
+  }
+
+  .velox-megamenu__column {
+    min-width: 0;
+  }
+
+  .velox-megamenu__column-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .velox-header--dark .velox-megamenu__column-title {
+    color: #ffffff;
+    border-bottom-color: #334155;
+  }
+
+  .velox-megamenu__links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .velox-megamenu__link {
+    display: block;
+    padding: 0.375rem 0;
+    font-size: 0.875rem;
+    color: #64748b;
+    transition: color 0.15s;
+  }
+
+  .velox-megamenu__link:hover {
+    color: #0f172a;
+  }
+
+  .velox-header--dark .velox-megamenu__link {
+    color: #94a3b8;
+  }
+
+  .velox-header--dark .velox-megamenu__link:hover {
+    color: #ffffff;
+  }
+
+  /* Featured/promo section */
+  .velox-megamenu__featured {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .velox-megamenu__featured-card {
+    position: relative;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    aspect-ratio: 16/9;
+  }
+
+  .velox-megamenu__featured-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .velox-megamenu__featured-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1rem;
+  }
+
+  .velox-megamenu__featured-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 0.25rem;
+  }
+
+  .velox-megamenu__featured-cta {
+    font-size: 0.875rem;
+    color: rgba(255,255,255,0.9);
+  }
+
+  /* Simple dropdown (fallback for links with 1 level) */
+  .velox-dropdown {
+    position: relative;
+  }
+
+  .velox-dropdown__panel {
+    position: absolute;
+    left: 0;
+    top: 100%;
+    padding-top: 0.5rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s, visibility 0.2s;
+    z-index: 50;
+  }
+
+  .velox-dropdown:hover .velox-dropdown__panel,
+  .velox-dropdown:focus-within .velox-dropdown__panel {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .velox-dropdown__content {
+    background: #ffffff;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.15);
+    padding: 0.5rem 0;
+    min-width: 200px;
+  }
+
+  .velox-header--dark .velox-dropdown__content {
+    background: #1e293b;
+  }
+
+  .velox-dropdown__link {
+    display: block;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    color: #475569;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .velox-dropdown__link:hover {
+    background: #f1f5f9;
+    color: #0f172a;
+  }
+
+  .velox-header--dark .velox-dropdown__link {
+    color: #cbd5e1;
+  }
+
+  .velox-header--dark .velox-dropdown__link:hover {
+    background: #334155;
+    color: #ffffff;
+  }
+
+  /* View all link */
+  .velox-megamenu__view-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e2e8f0;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-accent, #dc2626);
+  }
+
+  .velox-megamenu__view-all:hover {
+    text-decoration: underline;
+  }
+
+  .velox-header--dark .velox-megamenu__view-all {
+    border-top-color: #334155;
+  }
+{% endstyle %}
+
+{% if menu != blank %}
+  {%- assign menu_links = linklists[menu].links -%}
+
+  {% for link in menu_links %}
+    {%- liquid
+      assign has_children = false
+      assign has_grandchildren = false
+      assign child_count = link.links | size
+
+      if child_count > 0
+        assign has_children = true
+        for child in link.links
+          if child.links.size > 0
+            assign has_grandchildren = true
+            break
+          endif
+        endfor
+      endif
+
+      assign is_mega = false
+      if has_grandchildren or child_count > 5
+        assign is_mega = true
+      endif
+    -%}
+
+    {% if has_children == false %}
+      {%- comment -%} Link simple sin hijos {%- endcomment -%}
+      <a
+        href="{{ link.url }}"
+        class="velox-header-text tw-text-sm tw-font-medium tw-transition-colors tw-py-2 {% if link.active %}tw-underline tw-underline-offset-4{% endif %}"
+      >
+        {{ link.title }}
+      </a>
+
+    {% elsif is_mega %}
+      {%- comment -%} Mega menu para categorías grandes {%- endcomment -%}
+      <div class="velox-megamenu">
+        <button
+          type="button"
+          class="velox-megamenu__trigger velox-header-text"
+          aria-expanded="false"
+          aria-haspopup="true"
+        >
+          {{ link.title }}
+          {% render 'icon', name: 'chevron-down', class: 'velox-megamenu__trigger-icon' %}
+        </button>
+
+        <div class="velox-megamenu__panel">
+          <div class="velox-megamenu__content">
+            <div class="velox-megamenu__columns">
+              {%- comment -%} Columnas de categorías {%- endcomment -%}
+              {% for child_link in link.links %}
+                <div class="velox-megamenu__column">
+                  {% if child_link.links.size > 0 %}
+                    {%- comment -%} Columna con título y sub-links {%- endcomment -%}
+                    <h3 class="velox-megamenu__column-title">
+                      <a href="{{ child_link.url }}" class="hover:tw-underline">
+                        {{ child_link.title }}
+                      </a>
+                    </h3>
+                    <ul class="velox-megamenu__links">
+                      {% for grandchild_link in child_link.links %}
+                        <li>
+                          <a href="{{ grandchild_link.url }}" class="velox-megamenu__link">
+                            {{ grandchild_link.title }}
+                          </a>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  {% else %}
+                    {%- comment -%} Link directo como categoría {%- endcomment -%}
+                    <a href="{{ child_link.url }}" class="velox-megamenu__column-title tw-block hover:tw-underline">
+                      {{ child_link.title }}
+                    </a>
+                  {% endif %}
+                </div>
+              {% endfor %}
+
+              {%- comment -%} Featured/Promo area - buscar bloque configurado {%- endcomment -%}
+              {% for block in mega_menu_items %}
+                {% if block.settings.menu_item == link.title %}
+                  <div class="velox-megamenu__featured" {{ block.shopify_attributes }}>
+                    {% if block.settings.featured_image != blank %}
+                      <a href="{{ block.settings.featured_link }}" class="velox-megamenu__featured-card">
+                        <img
+                          src="{{ block.settings.featured_image | image_url: width: 400 }}"
+                          alt="{{ block.settings.featured_title | escape }}"
+                          class="velox-megamenu__featured-image"
+                          loading="lazy"
+                          width="400"
+                          height="225"
+                        >
+                        <div class="velox-megamenu__featured-overlay">
+                          {% if block.settings.featured_title != blank %}
+                            <span class="velox-megamenu__featured-title">{{ block.settings.featured_title }}</span>
+                          {% endif %}
+                          {% if block.settings.featured_cta != blank %}
+                            <span class="velox-megamenu__featured-cta">{{ block.settings.featured_cta }} →</span>
+                          {% endif %}
+                        </div>
+                      </a>
+                    {% endif %}
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+
+            {%- comment -%} View all link {%- endcomment -%}
+            <a href="{{ link.url }}" class="velox-megamenu__view-all">
+              {{ 'general.navigation.view_all' | t: category: link.title | default: 'Ver todo' }}
+              {% render 'icon', name: 'arrow-right', class: 'tw-w-4 tw-h-4' %}
+            </a>
+          </div>
+        </div>
+      </div>
+
+    {% else %}
+      {%- comment -%} Dropdown simple para pocos items {%- endcomment -%}
+      <div class="velox-dropdown">
+        <button
+          type="button"
+          class="velox-megamenu__trigger velox-header-text"
+          aria-expanded="false"
+          aria-haspopup="true"
+        >
+          {{ link.title }}
+          {% render 'icon', name: 'chevron-down', class: 'velox-megamenu__trigger-icon' %}
+        </button>
+
+        <div class="velox-dropdown__panel">
+          <div class="velox-dropdown__content">
+            {% for child_link in link.links %}
+              <a href="{{ child_link.url }}" class="velox-dropdown__link">
+                {{ child_link.title }}
+              </a>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  {% endfor %}
+{% endif %}

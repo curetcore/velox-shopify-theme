@@ -1,0 +1,593 @@
+{% comment %}
+  Velox Theme - Blog Listing Page
+  Fase 9: Páginas de contenido
+
+  Features:
+  - Grid de artículos responsive (1/2/3 columnas)
+  - Imagen destacada con lazy loading
+  - Tags de categoría
+  - Autor con avatar
+  - Paginación
+  - Soporte dark mode
+
+  Adaptado de Tailwind Plus: blog-sections/three-column-with-images
+{% endcomment %}
+
+{% style %}
+  /* ========== BLOG BASE STYLES ========== */
+  .velox-blog {
+    padding: 4rem 1.5rem;
+    background-color: #ffffff;
+  }
+
+  .velox-blog--dark {
+    background-color: #111827;
+  }
+
+  .velox-blog__container {
+    max-width: 80rem;
+    margin: 0 auto;
+  }
+
+  /* ========== HEADER ========== */
+  .velox-blog__header {
+    max-width: 42rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .velox-blog__title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: #111827;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .velox-blog--dark .velox-blog__title {
+    color: #ffffff;
+  }
+
+  .velox-blog__description {
+    font-size: 1.125rem;
+    line-height: 1.75;
+    color: #6b7280;
+    margin: 0;
+  }
+
+  .velox-blog--dark .velox-blog__description {
+    color: #9ca3af;
+  }
+
+  /* ========== ARTICLES GRID ========== */
+  .velox-blog__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  .velox-blog--dark .velox-blog__grid {
+    border-top-color: #374151;
+  }
+
+  @media (min-width: 640px) {
+    .velox-blog {
+      padding: 6rem 2rem;
+    }
+
+    .velox-blog__title {
+      font-size: 3rem;
+    }
+
+    .velox-blog__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem 2rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .velox-blog__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* ========== ARTICLE CARD ========== */
+  .velox-article-card {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .velox-article-card__image-wrapper {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    background-color: #f3f4f6;
+    margin-bottom: 1rem;
+  }
+
+  .velox-blog--dark .velox-article-card__image-wrapper {
+    background-color: #1f2937;
+  }
+
+  .velox-article-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .velox-article-card:hover .velox-article-card__image {
+    transform: scale(1.05);
+  }
+
+  /* ========== ARTICLE META ========== */
+  .velox-article-card__meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .velox-article-card__date {
+    color: #6b7280;
+  }
+
+  .velox-blog--dark .velox-article-card__date {
+    color: #9ca3af;
+  }
+
+  .velox-article-card__tag {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #6b7280;
+    background-color: #f3f4f6;
+    border-radius: 9999px;
+    text-decoration: none;
+    transition: background-color 0.15s ease;
+  }
+
+  .velox-article-card__tag:hover {
+    background-color: #e5e7eb;
+  }
+
+  .velox-blog--dark .velox-article-card__tag {
+    color: #d1d5db;
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .velox-blog--dark .velox-article-card__tag:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+
+  /* ========== ARTICLE CONTENT ========== */
+  .velox-article-card__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .velox-article-card__title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.5;
+    color: #111827;
+    margin: 0 0 0.75rem 0;
+  }
+
+  .velox-article-card__title a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .velox-article-card__title a:hover {
+    color: var(--color-accent, #4f46e5);
+  }
+
+  .velox-blog--dark .velox-article-card__title {
+    color: #ffffff;
+  }
+
+  .velox-blog--dark .velox-article-card__title a:hover {
+    color: #a5b4fc;
+  }
+
+  .velox-article-card__excerpt {
+    font-size: 0.875rem;
+    line-height: 1.625;
+    color: #6b7280;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .velox-blog--dark .velox-article-card__excerpt {
+    color: #9ca3af;
+  }
+
+  /* ========== AUTHOR ========== */
+  .velox-article-card__author {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+
+  .velox-article-card__author-avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 9999px;
+    object-fit: cover;
+    background-color: #e5e7eb;
+  }
+
+  .velox-blog--dark .velox-article-card__author-avatar {
+    background-color: #374151;
+  }
+
+  .velox-article-card__author-info {
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .velox-article-card__author-name {
+    font-weight: 600;
+    color: #111827;
+    margin: 0;
+  }
+
+  .velox-blog--dark .velox-article-card__author-name {
+    color: #ffffff;
+  }
+
+  .velox-article-card__author-role {
+    color: #6b7280;
+    margin: 0;
+  }
+
+  .velox-blog--dark .velox-article-card__author-role {
+    color: #9ca3af;
+  }
+
+  /* ========== EMPTY STATE ========== */
+  .velox-blog__empty {
+    text-align: center;
+    padding: 4rem 1rem;
+  }
+
+  .velox-blog__empty-icon {
+    width: 4rem;
+    height: 4rem;
+    margin: 0 auto 1.5rem;
+    color: #d1d5db;
+  }
+
+  .velox-blog--dark .velox-blog__empty-icon {
+    color: #4b5563;
+  }
+
+  .velox-blog__empty-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .velox-blog--dark .velox-blog__empty-title {
+    color: #ffffff;
+  }
+
+  .velox-blog__empty-text {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin: 0;
+  }
+
+  .velox-blog--dark .velox-blog__empty-text {
+    color: #9ca3af;
+  }
+
+  /* ========== PAGINATION ========== */
+  .velox-blog__pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  .velox-blog--dark .velox-blog__pagination {
+    border-top-color: #374151;
+  }
+
+  .velox-blog__pagination-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.5rem;
+    height: 2.5rem;
+    padding: 0 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+
+  .velox-blog__pagination-link:hover {
+    background-color: #f9fafb;
+    border-color: #9ca3af;
+  }
+
+  .velox-blog__pagination-link--active {
+    color: #ffffff;
+    background-color: var(--color-accent, #4f46e5);
+    border-color: var(--color-accent, #4f46e5);
+  }
+
+  .velox-blog__pagination-link--active:hover {
+    background-color: var(--color-accent-hover, #4338ca);
+    border-color: var(--color-accent-hover, #4338ca);
+  }
+
+  .velox-blog__pagination-link--disabled {
+    color: #9ca3af;
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  .velox-blog--dark .velox-blog__pagination-link {
+    color: #d1d5db;
+    background-color: #1f2937;
+    border-color: #374151;
+  }
+
+  .velox-blog--dark .velox-blog__pagination-link:hover {
+    background-color: #374151;
+    border-color: #4b5563;
+  }
+
+  .velox-blog__pagination-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+{% endstyle %}
+
+<div class="velox-blog{% if section.settings.color_scheme == 'dark' %} velox-blog--dark{% endif %}">
+  <div class="velox-blog__container">
+
+    {%- comment -%} Header {%- endcomment -%}
+    <header class="velox-blog__header">
+      <h1 class="velox-blog__title">{{ blog.title }}</h1>
+      {% if section.settings.show_description and blog.metafields.custom.description %}
+        <p class="velox-blog__description">{{ blog.metafields.custom.description }}</p>
+      {% endif %}
+    </header>
+
+    {%- comment -%} Articles grid {%- endcomment -%}
+    {% if blog.articles.size > 0 %}
+      <div class="velox-blog__grid">
+        {% paginate blog.articles by section.settings.articles_per_page %}
+          {% for article in blog.articles %}
+            <article class="velox-article-card">
+              {%- comment -%} Image {%- endcomment -%}
+              {% if article.image %}
+                <a href="{{ article.url }}" class="velox-article-card__image-wrapper">
+                  <img
+                    src="{{ article.image | image_url: width: 800 }}"
+                    srcset="{{ article.image | image_url: width: 400 }} 400w,
+                            {{ article.image | image_url: width: 600 }} 600w,
+                            {{ article.image | image_url: width: 800 }} 800w"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    alt="{{ article.image.alt | default: article.title | escape }}"
+                    class="velox-article-card__image"
+                    loading="lazy"
+                    width="800"
+                    height="450"
+                  >
+                </a>
+              {% endif %}
+
+              {%- comment -%} Meta: date and tags {%- endcomment -%}
+              <div class="velox-article-card__meta">
+                <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}" class="velox-article-card__date">
+                  {{ article.published_at | date: format: 'abbreviated_date' }}
+                </time>
+                {% if article.tags.size > 0 and section.settings.show_tags %}
+                  <a href="{{ blog.url }}/tagged/{{ article.tags.first | handle }}" class="velox-article-card__tag">
+                    {{ article.tags.first }}
+                  </a>
+                {% endif %}
+              </div>
+
+              {%- comment -%} Content {%- endcomment -%}
+              <div class="velox-article-card__content">
+                <h2 class="velox-article-card__title">
+                  <a href="{{ article.url }}">{{ article.title }}</a>
+                </h2>
+                {% if section.settings.show_excerpt %}
+                  <p class="velox-article-card__excerpt">
+                    {{ article.excerpt_or_content | strip_html | truncate: 160 }}
+                  </p>
+                {% endif %}
+              </div>
+
+              {%- comment -%} Author {%- endcomment -%}
+              {% if section.settings.show_author %}
+                <div class="velox-article-card__author">
+                  {% if article.user.image %}
+                    <img
+                      src="{{ article.user.image | image_url: width: 80 }}"
+                      alt="{{ article.author }}"
+                      class="velox-article-card__author-avatar"
+                      width="40"
+                      height="40"
+                      loading="lazy"
+                    >
+                  {% else %}
+                    <img
+                      src="https://api.dicebear.com/7.x/croodles/svg?seed={{ article.author | handle }}"
+                      alt="{{ article.author }}"
+                      class="velox-article-card__author-avatar"
+                      width="40"
+                      height="40"
+                      loading="lazy"
+                    >
+                  {% endif %}
+                  <div class="velox-article-card__author-info">
+                    <p class="velox-article-card__author-name">{{ article.author }}</p>
+                    {% if section.settings.show_reading_time %}
+                      <p class="velox-article-card__author-role">
+                        {{ article.content | strip_html | split: ' ' | size | divided_by: 200 | plus: 1 }} {{ 'blog.reading_time' | t }}
+                      </p>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endif %}
+            </article>
+          {% endfor %}
+
+          {%- comment -%} Pagination {%- endcomment -%}
+          {% if paginate.pages > 1 %}
+            <nav class="velox-blog__pagination" aria-label="{{ 'general.pagination.label' | t }}">
+              {%- comment -%} Previous {%- endcomment -%}
+              {% if paginate.previous %}
+                <a href="{{ paginate.previous.url }}" class="velox-blog__pagination-link" aria-label="{{ 'general.pagination.previous' | t }}">
+                  <svg class="velox-blog__pagination-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                  </svg>
+                </a>
+              {% else %}
+                <span class="velox-blog__pagination-link velox-blog__pagination-link--disabled">
+                  <svg class="velox-blog__pagination-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                  </svg>
+                </span>
+              {% endif %}
+
+              {%- comment -%} Page numbers {%- endcomment -%}
+              {% for part in paginate.parts %}
+                {% if part.is_link %}
+                  <a href="{{ part.url }}" class="velox-blog__pagination-link{% if paginate.current_page == part.title %} velox-blog__pagination-link--active{% endif %}">
+                    {{ part.title }}
+                  </a>
+                {% else %}
+                  {% if part.title == paginate.current_page %}
+                    <span class="velox-blog__pagination-link velox-blog__pagination-link--active">
+                      {{ part.title }}
+                    </span>
+                  {% else %}
+                    <span class="velox-blog__pagination-link">{{ part.title }}</span>
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+
+              {%- comment -%} Next {%- endcomment -%}
+              {% if paginate.next %}
+                <a href="{{ paginate.next.url }}" class="velox-blog__pagination-link" aria-label="{{ 'general.pagination.next' | t }}">
+                  <svg class="velox-blog__pagination-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                  </svg>
+                </a>
+              {% else %}
+                <span class="velox-blog__pagination-link velox-blog__pagination-link--disabled">
+                  <svg class="velox-blog__pagination-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                  </svg>
+                </span>
+              {% endif %}
+            </nav>
+          {% endif %}
+        {% endpaginate %}
+      </div>
+
+    {% else %}
+      {%- comment -%} Empty state {%- endcomment -%}
+      <div class="velox-blog__empty">
+        <svg class="velox-blog__empty-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" />
+        </svg>
+        <h2 class="velox-blog__empty-title">{{ 'blog.no_articles' | t }}</h2>
+        <p class="velox-blog__empty-text">{{ 'blog.no_articles_message' | t }}</p>
+      </div>
+    {% endif %}
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Blog",
+  "tag": "section",
+  "class": "section-blog",
+  "settings": [
+    {
+      "type": "range",
+      "id": "articles_per_page",
+      "label": "Articles per page",
+      "min": 3,
+      "max": 24,
+      "step": 3,
+      "default": 9
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show blog description",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tags",
+      "label": "Show article tags",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_excerpt",
+      "label": "Show article excerpt",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "label": "Show author",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_reading_time",
+      "label": "Show reading time",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "options": [
+        {
+          "value": "light",
+          "label": "Light"
+        },
+        {
+          "value": "dark",
+          "label": "Dark"
+        }
+      ],
+      "default": "light"
+    }
+  ]
+}
+{% endschema %}

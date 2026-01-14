@@ -1,0 +1,255 @@
+{% comment %}
+  Velox Breadcrumbs Snippet
+  Navegación de migas de pan para todas las páginas del tema.
+
+  Uso: {% render 'breadcrumbs' %}
+  Opciones:
+    - style: 'chevrons' (default), 'slashes', 'arrows'
+    - show_home_icon: true/false (default: true)
+    - color_scheme: 'light' (default), 'dark'
+{% endcomment %}
+
+{%- liquid
+  assign style = style | default: 'chevrons'
+  assign show_home_icon = show_home_icon | default: true
+  assign color_scheme = color_scheme | default: 'light'
+-%}
+
+{% style %}
+  /* ========================================
+     BREADCRUMBS STYLES
+     ======================================== */
+
+  .velox-breadcrumbs {
+    padding: 1rem 0;
+  }
+
+  .velox-breadcrumbs__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 0.875rem;
+  }
+
+  .velox-breadcrumbs__item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .velox-breadcrumbs__separator {
+    color: #94a3b8;
+  }
+
+  .velox-breadcrumbs__separator svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  /* Light scheme */
+  .velox-breadcrumbs--light .velox-breadcrumbs__link {
+    color: #64748b;
+    transition: color 0.15s;
+  }
+
+  .velox-breadcrumbs--light .velox-breadcrumbs__link:hover {
+    color: #0f172a;
+  }
+
+  .velox-breadcrumbs--light .velox-breadcrumbs__current {
+    color: #334155;
+    font-weight: 500;
+  }
+
+  .velox-breadcrumbs--light .velox-breadcrumbs__home-icon {
+    color: #64748b;
+  }
+
+  .velox-breadcrumbs--light .velox-breadcrumbs__home-icon:hover {
+    color: #0f172a;
+  }
+
+  /* Dark scheme */
+  .velox-breadcrumbs--dark .velox-breadcrumbs__link {
+    color: #94a3b8;
+    transition: color 0.15s;
+  }
+
+  .velox-breadcrumbs--dark .velox-breadcrumbs__link:hover {
+    color: #ffffff;
+  }
+
+  .velox-breadcrumbs--dark .velox-breadcrumbs__current {
+    color: #e2e8f0;
+    font-weight: 500;
+  }
+
+  .velox-breadcrumbs--dark .velox-breadcrumbs__separator {
+    color: #475569;
+  }
+
+  .velox-breadcrumbs--dark .velox-breadcrumbs__home-icon {
+    color: #94a3b8;
+  }
+
+  .velox-breadcrumbs--dark .velox-breadcrumbs__home-icon:hover {
+    color: #ffffff;
+  }
+{% endstyle %}
+
+{%- comment -%} Construir array de breadcrumbs {%- endcomment -%}
+{%- liquid
+  assign crumbs = ''
+-%}
+
+<nav aria-label="Breadcrumb" class="velox-breadcrumbs velox-breadcrumbs--{{ color_scheme }}">
+  <ol role="list" class="velox-breadcrumbs__list">
+    {%- comment -%} Home {%- endcomment -%}
+    <li class="velox-breadcrumbs__item">
+      {% if show_home_icon %}
+        <a href="{{ routes.root_url }}" class="velox-breadcrumbs__home-icon" aria-label="{{ 'general.breadcrumbs.home' | t | default: 'Inicio' }}">
+          {% render 'icon', name: 'home', class: 'tw-w-5 tw-h-5' %}
+        </a>
+      {% else %}
+        <a href="{{ routes.root_url }}" class="velox-breadcrumbs__link">
+          {{ 'general.breadcrumbs.home' | t | default: 'Inicio' }}
+        </a>
+      {% endif %}
+    </li>
+
+    {%- comment -%} Contenido según el tipo de página {%- endcomment -%}
+    {% case template.name %}
+
+      {% when 'product' %}
+        {%- comment -%} Producto: Home > Colección > Producto {%- endcomment -%}
+        {% if product.collections.size > 0 %}
+          {%- assign main_collection = product.collections | first -%}
+          <li class="velox-breadcrumbs__item">
+            {% render 'breadcrumbs-separator', style: style %}
+            <a href="{{ main_collection.url }}" class="velox-breadcrumbs__link">
+              {{ main_collection.title }}
+            </a>
+          </li>
+        {% endif %}
+        <li class="velox-breadcrumbs__item">
+          {% render 'breadcrumbs-separator', style: style %}
+          <span class="velox-breadcrumbs__current" aria-current="page">
+            {{ product.title }}
+          </span>
+        </li>
+
+      {% when 'collection' %}
+        {%- comment -%} Colección: Home > Colección {%- endcomment -%}
+        <li class="velox-breadcrumbs__item">
+          {% render 'breadcrumbs-separator', style: style %}
+          <span class="velox-breadcrumbs__current" aria-current="page">
+            {{ collection.title }}
+          </span>
+        </li>
+
+      {% when 'blog' %}
+        {%- comment -%} Blog: Home > Blog {%- endcomment -%}
+        <li class="velox-breadcrumbs__item">
+          {% render 'breadcrumbs-separator', style: style %}
+          <span class="velox-breadcrumbs__current" aria-current="page">
+            {{ blog.title }}
+          </span>
+        </li>
+
+      {% when 'article' %}
+        {%- comment -%} Artículo: Home > Blog > Artículo {%- endcomment -%}
+        <li class="velox-breadcrumbs__item">
+          {% render 'breadcrumbs-separator', style: style %}
+          <a href="{{ blog.url }}" class="velox-breadcrumbs__link">
+            {{ blog.title }}
+          </a>
+        </li>
+        <li class="velox-breadcrumbs__item">
+          {% render 'breadcrumbs-separator', style: style %}
+          <span class="velox-breadcrumbs__current" aria-current="page">
+            {{ article.title }}
+          </span>
+        </li>
+
+      {% when 'page' %}
+        {%- comment -%} Página: Home > Página {%- endcomment -%}
+        <li class="velox-breadcrumbs__item">
+          {% render 'breadcrumbs-separator', style: style %}
+          <span class="velox-breadcrumbs__current" aria-current="page">
+            {{ page.title }}
+          </span>
+        </li>
+
+      {% when 'list-collections' %}
+        {%- comment -%} Lista de colecciones: Home > Colecciones {%- endcomment -%}
+        <li class="velox-breadcrumbs__item">
+          {% render 'breadcrumbs-separator', style: style %}
+          <span class="velox-breadcrumbs__current" aria-current="page">
+            {{ 'collections.title' | t | default: 'Colecciones' }}
+          </span>
+        </li>
+
+      {% when 'cart' %}
+        {%- comment -%} Carrito: Home > Carrito {%- endcomment -%}
+        <li class="velox-breadcrumbs__item">
+          {% render 'breadcrumbs-separator', style: style %}
+          <span class="velox-breadcrumbs__current" aria-current="page">
+            {{ 'cart.general.title' | t | default: 'Carrito' }}
+          </span>
+        </li>
+
+      {% when 'search' %}
+        {%- comment -%} Búsqueda: Home > Búsqueda {%- endcomment -%}
+        <li class="velox-breadcrumbs__item">
+          {% render 'breadcrumbs-separator', style: style %}
+          <span class="velox-breadcrumbs__current" aria-current="page">
+            {{ 'search.title' | t | default: 'Búsqueda' }}
+          </span>
+        </li>
+
+      {% when 'customers/account' %}
+        {%- comment -%} Cuenta: Home > Mi cuenta {%- endcomment -%}
+        <li class="velox-breadcrumbs__item">
+          {% render 'breadcrumbs-separator', style: style %}
+          <span class="velox-breadcrumbs__current" aria-current="page">
+            {{ 'customer.account.title' | t | default: 'Mi cuenta' }}
+          </span>
+        </li>
+
+      {% when 'customers/order' %}
+        {%- comment -%} Pedido: Home > Mi cuenta > Pedido {%- endcomment -%}
+        <li class="velox-breadcrumbs__item">
+          {% render 'breadcrumbs-separator', style: style %}
+          <a href="{{ routes.account_url }}" class="velox-breadcrumbs__link">
+            {{ 'customer.account.title' | t | default: 'Mi cuenta' }}
+          </a>
+        </li>
+        <li class="velox-breadcrumbs__item">
+          {% render 'breadcrumbs-separator', style: style %}
+          <span class="velox-breadcrumbs__current" aria-current="page">
+            {{ 'customer.order.title' | t: name: order.name | default: order.name }}
+          </span>
+        </li>
+
+      {% when 'customers/addresses' %}
+        {%- comment -%} Direcciones: Home > Mi cuenta > Direcciones {%- endcomment -%}
+        <li class="velox-breadcrumbs__item">
+          {% render 'breadcrumbs-separator', style: style %}
+          <a href="{{ routes.account_url }}" class="velox-breadcrumbs__link">
+            {{ 'customer.account.title' | t | default: 'Mi cuenta' }}
+          </a>
+        </li>
+        <li class="velox-breadcrumbs__item">
+          {% render 'breadcrumbs-separator', style: style %}
+          <span class="velox-breadcrumbs__current" aria-current="page">
+            {{ 'customer.addresses.title' | t | default: 'Direcciones' }}
+          </span>
+        </li>
+
+    {% endcase %}
+  </ol>
+</nav>

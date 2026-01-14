@@ -1,0 +1,419 @@
+{% comment %}
+  Velox Theme - Customer Register Page
+  Fase 8: Cuenta de cliente
+
+  Features:
+  - Formulario de registro con nombre, email, password
+  - Soporte dark mode
+  - Error handling
+  - Link a login
+{% endcomment %}
+
+{% style %}
+  /* ========== REGISTER BASE STYLES ========== */
+  .velox-register {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 3rem 1.5rem;
+    background-color: #f9fafb;
+  }
+
+  .velox-register--dark {
+    background-color: #111827;
+  }
+
+  .velox-register__container {
+    width: 100%;
+    max-width: 28rem;
+    margin: 0 auto;
+  }
+
+  /* ========== HEADER ========== */
+  .velox-register__header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .velox-register__logo {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+  }
+
+  .velox-register__logo img {
+    height: 2.5rem;
+    width: auto;
+  }
+
+  .velox-register__title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 0.5rem 0;
+    line-height: 1.2;
+  }
+
+  .velox-register--dark .velox-register__title {
+    color: #ffffff;
+  }
+
+  .velox-register__subtitle {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin: 0;
+  }
+
+  .velox-register--dark .velox-register__subtitle {
+    color: #9ca3af;
+  }
+
+  .velox-register__subtitle a {
+    color: var(--color-accent, #4f46e5);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .velox-register__subtitle a:hover {
+    text-decoration: underline;
+  }
+
+  /* ========== FORM CARD ========== */
+  .velox-register__card {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  }
+
+  .velox-register--dark .velox-register__card {
+    background-color: #1f2937;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  }
+
+  /* ========== FORM ELEMENTS ========== */
+  .velox-register__form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .velox-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  .velox-form-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .velox-form-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+  }
+
+  .velox-register--dark .velox-form-label {
+    color: #d1d5db;
+  }
+
+  .velox-form-input {
+    display: block;
+    width: 100%;
+    padding: 0.625rem 0.875rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #111827;
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .velox-form-input:focus {
+    outline: none;
+    border-color: var(--color-accent, #4f46e5);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  }
+
+  .velox-form-input::placeholder {
+    color: #9ca3af;
+  }
+
+  .velox-register--dark .velox-form-input {
+    background-color: #374151;
+    border-color: #4b5563;
+    color: #ffffff;
+  }
+
+  .velox-register--dark .velox-form-input::placeholder {
+    color: #6b7280;
+  }
+
+  /* ========== SUBMIT BUTTON ========== */
+  .velox-register__submit {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: var(--color-accent, #4f46e5);
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+    margin-top: 0.5rem;
+  }
+
+  .velox-register__submit:hover {
+    background-color: var(--color-accent-hover, #4338ca);
+  }
+
+  .velox-register__submit:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.3);
+  }
+
+  /* ========== ERROR MESSAGES ========== */
+  .velox-register__errors {
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .velox-register--dark .velox-register__errors {
+    background-color: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.3);
+  }
+
+  .velox-register__errors ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .velox-register__errors li {
+    font-size: 0.875rem;
+    color: #dc2626;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .velox-register--dark .velox-register__errors li {
+    color: #f87171;
+  }
+
+  .velox-register__errors li + li {
+    margin-top: 0.5rem;
+  }
+
+  .velox-register__errors svg {
+    flex-shrink: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: 0.125rem;
+  }
+
+  /* ========== FOOTER ========== */
+  .velox-register__footer {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+
+  .velox-register--dark .velox-register__footer {
+    color: #9ca3af;
+  }
+
+  .velox-register__footer a {
+    color: var(--color-accent, #4f46e5);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .velox-register__footer a:hover {
+    text-decoration: underline;
+  }
+
+  /* ========== RESPONSIVE ========== */
+  @media (min-width: 640px) {
+    .velox-register {
+      padding: 4rem 2rem;
+    }
+
+    .velox-register__card {
+      padding: 2.5rem;
+    }
+
+    .velox-register__title {
+      font-size: 1.875rem;
+    }
+
+    .velox-form-row {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+{% endstyle %}
+
+<div class="velox-register{% if section.settings.color_scheme == 'dark' %} velox-register--dark{% endif %}">
+  <div class="velox-register__container">
+
+    {%- comment -%} Header con logo y título {%- endcomment -%}
+    <div class="velox-register__header">
+      {% if section.settings.show_logo and shop.brand.logo %}
+        <a href="{{ routes.root_url }}" class="velox-register__logo">
+          {{ shop.brand.logo | image_url: width: 200 | image_tag: alt: shop.name }}
+        </a>
+      {% endif %}
+
+      <h1 class="velox-register__title">{{ 'customer.register.title' | t }}</h1>
+      <p class="velox-register__subtitle">
+        {{ 'customer.register.have_account' | t | default: 'Already have an account?' }}
+        <a href="{{ routes.account_login_url }}">{{ 'customer.login.title' | t }}</a>
+      </p>
+    </div>
+
+    {%- comment -%} Card con formulario {%- endcomment -%}
+    <div class="velox-register__card">
+
+      {%- comment -%} Mostrar errores si existen {%- endcomment -%}
+      {% if form.errors %}
+        <div class="velox-register__errors" role="alert">
+          <ul>
+            {% for error in form.errors %}
+              <li>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
+                </svg>
+                <span>{{ form.errors.messages[error] }}</span>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
+      {%- comment -%} Formulario de registro {%- endcomment -%}
+      {% form 'create_customer', class: 'velox-register__form' %}
+
+        {%- comment -%} Nombre y Apellido en una fila {%- endcomment -%}
+        <div class="velox-form-row">
+          <div class="velox-form-group">
+            <label for="RegisterForm-FirstName" class="velox-form-label">
+              {{ 'customer.register.first_name' | t | default: 'First name' }}
+            </label>
+            <input
+              type="text"
+              name="customer[first_name]"
+              id="RegisterForm-FirstName"
+              class="velox-form-input"
+              autocomplete="given-name"
+              placeholder="{{ 'customer.register.first_name' | t | default: 'First name' }}"
+            >
+          </div>
+
+          <div class="velox-form-group">
+            <label for="RegisterForm-LastName" class="velox-form-label">
+              {{ 'customer.register.last_name' | t | default: 'Last name' }}
+            </label>
+            <input
+              type="text"
+              name="customer[last_name]"
+              id="RegisterForm-LastName"
+              class="velox-form-input"
+              autocomplete="family-name"
+              placeholder="{{ 'customer.register.last_name' | t | default: 'Last name' }}"
+            >
+          </div>
+        </div>
+
+        {%- comment -%} Email {%- endcomment -%}
+        <div class="velox-form-group">
+          <label for="RegisterForm-Email" class="velox-form-label">
+            {{ 'customer.login.email' | t }}
+          </label>
+          <input
+            type="email"
+            name="customer[email]"
+            id="RegisterForm-Email"
+            class="velox-form-input"
+            autocomplete="email"
+            autocapitalize="off"
+            autocorrect="off"
+            required
+            placeholder="{{ 'customer.login.email' | t }}"
+          >
+        </div>
+
+        {%- comment -%} Password {%- endcomment -%}
+        <div class="velox-form-group">
+          <label for="RegisterForm-Password" class="velox-form-label">
+            {{ 'customer.login.password' | t }}
+          </label>
+          <input
+            type="password"
+            name="customer[password]"
+            id="RegisterForm-Password"
+            class="velox-form-input"
+            autocomplete="new-password"
+            required
+            placeholder="{{ 'customer.login.password' | t }}"
+          >
+        </div>
+
+        {%- comment -%} Botón de registro {%- endcomment -%}
+        <button type="submit" class="velox-register__submit">
+          {{ 'customer.register.submit' | t | default: 'Create account' }}
+        </button>
+
+      {% endform %}
+    </div>
+
+    {%- comment -%} Footer con link a login {%- endcomment -%}
+    <div class="velox-register__footer">
+      {{ 'customer.register.have_account' | t | default: 'Already have an account?' }}
+      <a href="{{ routes.account_login_url }}">{{ 'customer.login.title' | t }}</a>
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Customer register",
+  "tag": "section",
+  "class": "section-register",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_logo",
+      "label": "Show logo",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "options": [
+        {
+          "value": "light",
+          "label": "Light"
+        },
+        {
+          "value": "dark",
+          "label": "Dark"
+        }
+      ],
+      "default": "light"
+    }
+  ]
+}
+{% endschema %}

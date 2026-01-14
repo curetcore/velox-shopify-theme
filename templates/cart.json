@@ -11,7 +11,15 @@
   "sections": {
     "main": {
       "type": "cart",
-      "settings": {}
+      "settings": {
+        "layout_style": "two_column",
+        "show_free_shipping": true,
+        "free_shipping_threshold": 100,
+        "show_cart_note": true,
+        "show_continue_shopping": true,
+        "show_payment_icons": true,
+        "color_scheme": "light"
+      }
     }
   },
   "order": [

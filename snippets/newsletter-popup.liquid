@@ -1,0 +1,299 @@
+{% comment %}
+  Velox Newsletter Popup
+
+  Popup de newsletter que aparece después de un tiempo configurable.
+  Usa localStorage para no mostrar de nuevo después de cerrar o suscribirse.
+{% endcomment %}
+
+{%- liquid
+  assign popup_enabled = section.settings.enable_popup
+  assign show_delay = section.settings.show_delay | default: 5
+  assign show_on_exit = section.settings.show_on_exit
+  assign show_discount = section.settings.show_discount
+  assign discount_code = section.settings.discount_code
+  assign discount_amount = section.settings.discount_amount
+-%}
+
+{% if popup_enabled %}
+<div
+  id="NewsletterPopup"
+  class="tw-fixed tw-inset-0 tw-z-50 tw-hidden"
+  data-newsletter-popup
+  data-delay="{{ show_delay }}"
+  data-exit-intent="{{ show_on_exit }}"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="newsletter-popup-title"
+>
+  {%- comment -%} Backdrop {%- endcomment -%}
+  <div
+    class="tw-fixed tw-inset-0 tw-bg-velox-900/60 tw-backdrop-blur-sm tw-transition-opacity tw-duration-300"
+    data-popup-backdrop
+  ></div>
+
+  {%- comment -%} Modal {%- endcomment -%}
+  <div class="tw-fixed tw-inset-0 tw-z-10 tw-overflow-y-auto">
+    <div class="tw-flex tw-min-h-full tw-items-center tw-justify-center tw-p-4 sm:tw-p-6">
+      <div
+        class="tw-relative tw-w-full tw-max-w-md tw-transform tw-overflow-hidden tw-rounded-2xl tw-bg-white tw-shadow-xl tw-transition-all tw-duration-300 tw-scale-95 tw-opacity-0"
+        data-popup-panel
+      >
+        {%- comment -%} Close button {%- endcomment -%}
+        <button
+          type="button"
+          class="tw-absolute tw-top-4 tw-right-4 tw-p-1 tw-text-velox-400 hover:tw-text-velox-600 tw-transition-colors tw-z-10"
+          data-popup-close
+          aria-label="{{ 'general.close' | t }}"
+        >
+          {% render 'icon', name: 'x-mark', class: 'tw-w-6 tw-h-6' %}
+        </button>
+
+        {%- comment -%} Content {%- endcomment -%}
+        <div class="tw-p-6 sm:tw-p-8">
+          {%- comment -%} Imagen opcional {%- endcomment -%}
+          {% if section.settings.popup_image != blank %}
+            <div class="tw-mb-6 tw--mx-6 sm:tw--mx-8 tw--mt-6 sm:tw--mt-8">
+              {% render 'image',
+                image: section.settings.popup_image,
+                aspect: 'video',
+                width: 500,
+                class: 'tw-w-full tw-object-cover'
+              %}
+            </div>
+          {% endif %}
+
+          {%- comment -%} Discount badge {%- endcomment -%}
+          {% if show_discount and discount_amount != blank %}
+            <div class="tw-mb-4 tw-text-center">
+              <span class="tw-inline-flex tw-items-center tw-gap-1 tw-px-3 tw-py-1 tw-text-sm tw-font-medium tw-text-velox-accent tw-bg-velox-accent/10 tw-rounded-full">
+                {% render 'icon', name: 'tag', class: 'tw-w-4 tw-h-4' %}
+                {{ discount_amount }} {{ 'newsletter.discount_off' | t | default: 'de descuento' }}
+              </span>
+            </div>
+          {% endif %}
+
+          {%- comment -%} Título {%- endcomment -%}
+          <h2
+            id="newsletter-popup-title"
+            class="tw-text-2xl tw-font-bold tw-text-velox-900 tw-text-center"
+          >
+            {{ section.settings.heading | default: 'Únete a nuestra lista' }}
+          </h2>
+
+          {%- comment -%} Subtítulo {%- endcomment -%}
+          {% if section.settings.subheading != blank %}
+            <p class="tw-mt-2 tw-text-center tw-text-velox-600">
+              {{ section.settings.subheading }}
+            </p>
+          {% endif %}
+
+          {%- comment -%} Form {%- endcomment -%}
+          {% form 'customer', id: 'NewsletterPopupForm', class: 'tw-mt-6' %}
+            <input type="hidden" name="contact[tags]" value="newsletter,popup">
+
+            {%- comment -%} Success state {%- endcomment -%}
+            {% if form.posted_successfully? %}
+              <div class="tw-text-center tw-py-6" data-popup-success>
+                <div class="tw-mx-auto tw-w-12 tw-h-12 tw-rounded-full tw-bg-green-100 tw-flex tw-items-center tw-justify-center tw-mb-4">
+                  {% render 'icon', name: 'check', class: 'tw-w-6 tw-h-6 tw-text-green-600' %}
+                </div>
+                <h3 class="tw-text-lg tw-font-medium tw-text-velox-900">
+                  {{ 'general.newsletter.confirmation' | t }}
+                </h3>
+                {% if show_discount and discount_code != blank %}
+                  <div class="tw-mt-4 tw-p-3 tw-bg-velox-50 tw-rounded-lg">
+                    <p class="tw-text-sm tw-text-velox-600 tw-mb-2">
+                      {{ 'newsletter.your_code' | t | default: 'Tu código de descuento:' }}
+                    </p>
+                    <div class="tw-flex tw-items-center tw-justify-center tw-gap-2">
+                      <code class="tw-text-lg tw-font-bold tw-text-velox-900 tw-tracking-wider">
+                        {{ discount_code }}
+                      </code>
+                      <button
+                        type="button"
+                        class="tw-p-1 tw-text-velox-500 hover:tw-text-velox-700 tw-transition-colors"
+                        data-copy-code="{{ discount_code }}"
+                        aria-label="{{ 'gift_card.copy_code' | t }}"
+                      >
+                        {% render 'icon', name: 'clipboard', class: 'tw-w-5 tw-h-5' %}
+                      </button>
+                    </div>
+                  </div>
+                {% endif %}
+              </div>
+            {% else %}
+              {%- comment -%} Error state {%- endcomment -%}
+              {% if form.errors %}
+                <div class="tw-mb-4 tw-p-3 tw-bg-red-50 tw-text-red-700 tw-text-sm tw-rounded-lg">
+                  {{ form.errors | default_errors }}
+                </div>
+              {% endif %}
+
+              {%- comment -%} Email input {%- endcomment -%}
+              <div class="tw-space-y-4">
+                <div>
+                  <label for="newsletter-popup-email" class="tw-sr-only">
+                    {{ 'general.newsletter.email_placeholder' | t }}
+                  </label>
+                  <input
+                    type="email"
+                    id="newsletter-popup-email"
+                    name="contact[email]"
+                    required
+                    autocomplete="email"
+                    placeholder="{{ section.settings.email_placeholder | default: 'Introduce tu email' }}"
+                    class="tw-w-full tw-px-4 tw-py-3 tw-text-base tw-border tw-border-velox-200 tw-rounded-lg focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-velox-accent focus:tw-border-transparent tw-transition-all"
+                  >
+                </div>
+
+                {%- comment -%} Submit button {%- endcomment -%}
+                <button
+                  type="submit"
+                  class="tw-w-full tw-px-4 tw-py-3 tw-bg-velox-accent tw-text-white tw-font-medium tw-rounded-lg hover:tw-bg-velox-accent/90 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-velox-accent focus:tw-ring-offset-2 tw-transition-all tw-flex tw-items-center tw-justify-center tw-gap-2"
+                >
+                  {{ section.settings.button_text | default: 'Suscribirme' }}
+                </button>
+              </div>
+
+              {%- comment -%} Privacy note {%- endcomment -%}
+              {% if section.settings.privacy_note != blank %}
+                <p class="tw-mt-4 tw-text-xs tw-text-center tw-text-velox-500">
+                  {{ section.settings.privacy_note }}
+                </p>
+              {% endif %}
+            {% endif %}
+          {% endform %}
+
+          {%- comment -%} No thanks link {%- endcomment -%}
+          <button
+            type="button"
+            class="tw-mt-4 tw-w-full tw-text-center tw-text-sm tw-text-velox-500 hover:tw-text-velox-700 tw-transition-colors"
+            data-popup-dismiss
+          >
+            {{ section.settings.dismiss_text | default: 'No, gracias' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    const popup = document.getElementById('NewsletterPopup');
+    if (!popup) return;
+
+    const STORAGE_KEY = 'velox_newsletter_popup';
+    const backdrop = popup.querySelector('[data-popup-backdrop]');
+    const panel = popup.querySelector('[data-popup-panel]');
+    const closeBtn = popup.querySelector('[data-popup-close]');
+    const dismissBtn = popup.querySelector('[data-popup-dismiss]');
+    const copyBtn = popup.querySelector('[data-copy-code]');
+    const delay = parseInt(popup.dataset.delay) * 1000 || 5000;
+    const exitIntent = popup.dataset.exitIntent === 'true';
+
+    // Check if already shown
+    function shouldShow() {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (!stored) return true;
+
+      try {
+        const data = JSON.parse(stored);
+        // Show again after 7 days if just dismissed
+        if (data.dismissed && !data.subscribed) {
+          const daysSince = (Date.now() - data.timestamp) / (1000 * 60 * 60 * 24);
+          return daysSince > 7;
+        }
+        // Never show if subscribed
+        return !data.subscribed;
+      } catch {
+        return true;
+      }
+    }
+
+    function open() {
+      if (!shouldShow()) return;
+
+      popup.classList.remove('tw-hidden');
+      // Trigger animation
+      requestAnimationFrame(() => {
+        backdrop.classList.add('tw-opacity-100');
+        panel.classList.remove('tw-scale-95', 'tw-opacity-0');
+        panel.classList.add('tw-scale-100', 'tw-opacity-100');
+      });
+      document.body.style.overflow = 'hidden';
+    }
+
+    function close(subscribed = false) {
+      backdrop.classList.remove('tw-opacity-100');
+      panel.classList.add('tw-scale-95', 'tw-opacity-0');
+      panel.classList.remove('tw-scale-100', 'tw-opacity-100');
+
+      setTimeout(() => {
+        popup.classList.add('tw-hidden');
+        document.body.style.overflow = '';
+      }, 300);
+
+      // Save state
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        dismissed: !subscribed,
+        subscribed: subscribed,
+        timestamp: Date.now()
+      }));
+    }
+
+    // Close handlers
+    if (closeBtn) closeBtn.addEventListener('click', () => close(false));
+    if (dismissBtn) dismissBtn.addEventListener('click', () => close(false));
+    if (backdrop) backdrop.addEventListener('click', () => close(false));
+
+    // Copy discount code
+    if (copyBtn) {
+      copyBtn.addEventListener('click', function() {
+        const code = this.dataset.copyCode;
+        navigator.clipboard.writeText(code).then(() => {
+          // Visual feedback
+          const originalIcon = this.innerHTML;
+          this.innerHTML = '{% render "icon", name: "check", class: "tw-w-5 tw-h-5 tw-text-green-600" %}';
+          setTimeout(() => this.innerHTML = originalIcon, 2000);
+        });
+      });
+    }
+
+    // Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !popup.classList.contains('tw-hidden')) {
+        close(false);
+      }
+    });
+
+    // Check for successful submission
+    const successElement = popup.querySelector('[data-popup-success]');
+    if (successElement) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        subscribed: true,
+        timestamp: Date.now()
+      }));
+      open();
+      return;
+    }
+
+    // Show popup after delay
+    if (shouldShow()) {
+      setTimeout(open, delay);
+    }
+
+    // Exit intent (desktop only)
+    if (exitIntent && shouldShow()) {
+      let triggered = false;
+      document.addEventListener('mouseout', (e) => {
+        if (triggered) return;
+        if (e.clientY < 10 && e.relatedTarget === null) {
+          triggered = true;
+          open();
+        }
+      });
+    }
+  })();
+</script>
+{% endif %}

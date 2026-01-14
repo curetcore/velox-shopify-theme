@@ -1,0 +1,681 @@
+{% comment %}
+  Quick View Modal Snippet
+  Modal para vista rápida de productos sin salir de la página.
+
+  Features:
+  - Carga de producto via AJAX
+  - Selector de variantes
+  - Agregar al carrito sin recargar
+  - Animaciones de entrada/salida
+  - Accesibilidad completa
+
+  Uso:
+    {% render 'quick-view' %}
+
+  El modal se controla via JavaScript y data attributes.
+{% endcomment %}
+
+{%- comment -%} Quick View Modal - Se renderiza una vez en el layout {%- endcomment -%}
+<div
+  id="velox-quick-view"
+  class="velox-quick-view tw-fixed tw-inset-0 tw-z-50 tw-hidden"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="quick-view-title"
+  data-quick-view-modal
+>
+  {%- comment -%} Backdrop {%- endcomment -%}
+  <div
+    class="velox-quick-view__backdrop tw-fixed tw-inset-0 tw-bg-velox-900/75 tw-transition-opacity tw-duration-300 tw-opacity-0"
+    data-quick-view-backdrop
+  ></div>
+
+  {%- comment -%} Modal container {%- endcomment -%}
+  <div class="tw-fixed tw-inset-0 tw-z-10 tw-w-screen tw-overflow-y-auto">
+    <div class="tw-flex tw-min-h-full tw-items-stretch tw-justify-center tw-text-center md:tw-items-center md:tw-px-2 lg:tw-px-4">
+      {%- comment -%} Modal panel {%- endcomment -%}
+      <div
+        class="velox-quick-view__panel tw-flex tw-w-full tw-transform tw-text-left tw-transition-all tw-duration-300 tw-translate-y-4 tw-opacity-0 md:tw-my-8 md:tw-max-w-2xl md:tw-px-4 lg:tw-max-w-4xl"
+        data-quick-view-panel
+      >
+        <div class="tw-relative tw-flex tw-w-full tw-items-center tw-overflow-hidden tw-bg-white tw-px-4 tw-pt-14 tw-pb-8 tw-shadow-2xl tw-rounded-lg sm:tw-px-6 sm:tw-pt-8 md:tw-p-6 lg:tw-p-8">
+          {%- comment -%} Close button {%- endcomment -%}
+          <button
+            type="button"
+            class="tw-absolute tw-top-4 tw-right-4 tw-text-velox-400 hover:tw-text-velox-500 tw-z-10 sm:tw-top-8 sm:tw-right-6 md:tw-top-6 md:tw-right-6 lg:tw-top-8 lg:tw-right-8"
+            data-quick-view-close
+            aria-label="{{ 'general.accessibility.close' | t | default: 'Cerrar' }}"
+          >
+            {% render 'icon', name: 'x-mark', class: 'tw-w-6 tw-h-6' %}
+          </button>
+
+          {%- comment -%} Loading state {%- endcomment -%}
+          <div class="velox-quick-view__loading tw-absolute tw-inset-0 tw-flex tw-items-center tw-justify-center tw-bg-white tw-z-20" data-quick-view-loading>
+            <div class="tw-animate-spin tw-rounded-full tw-h-12 tw-w-12 tw-border-4 tw-border-velox-200 tw-border-t-velox-accent"></div>
+          </div>
+
+          {%- comment -%} Product content - populated via JS {%- endcomment -%}
+          <div class="velox-quick-view__content tw-w-full tw-opacity-0 tw-transition-opacity tw-duration-300" data-quick-view-content>
+            <div class="tw-grid tw-w-full tw-grid-cols-1 tw-items-start tw-gap-x-6 tw-gap-y-8 sm:tw-grid-cols-12 lg:tw-items-center lg:tw-gap-x-8">
+              {%- comment -%} Product image {%- endcomment -%}
+              <div class="tw-aspect-square tw-w-full tw-rounded-lg tw-bg-velox-100 tw-overflow-hidden sm:tw-col-span-4 lg:tw-col-span-5">
+                <img
+                  src=""
+                  alt=""
+                  class="tw-w-full tw-h-full tw-object-cover"
+                  data-quick-view-image
+                >
+              </div>
+
+              {%- comment -%} Product info {%- endcomment -%}
+              <div class="sm:tw-col-span-8 lg:tw-col-span-7">
+                {%- comment -%} Title {%- endcomment -%}
+                <h2 id="quick-view-title" class="tw-text-xl tw-font-medium tw-text-velox-900 sm:tw-pr-12" data-quick-view-title></h2>
+
+                {%- comment -%} Vendor {%- endcomment -%}
+                <p class="tw-text-sm tw-text-velox-500 tw-mt-1" data-quick-view-vendor></p>
+
+                {%- comment -%} Price {%- endcomment -%}
+                <div class="tw-mt-3" data-quick-view-price></div>
+
+                {%- comment -%} Short description {%- endcomment -%}
+                <div class="tw-mt-4 tw-text-sm tw-text-velox-600 tw-line-clamp-3" data-quick-view-description></div>
+
+                {%- comment -%} Variants form {%- endcomment -%}
+                <form class="tw-mt-6" data-quick-view-form>
+                  {%- comment -%} Variant options will be injected here {%- endcomment -%}
+                  <div data-quick-view-options></div>
+
+                  {%- comment -%} Quantity {%- endcomment -%}
+                  <div class="tw-mt-6">
+                    <label class="tw-text-sm tw-font-medium tw-text-velox-900">
+                      {{ 'products.product.quantity' | t | default: 'Cantidad' }}
+                    </label>
+                    <div class="tw-mt-2 tw-flex tw-items-center tw-gap-2">
+                      <button
+                        type="button"
+                        class="tw-w-10 tw-h-10 tw-rounded-md tw-border tw-border-velox-300 tw-flex tw-items-center tw-justify-center hover:tw-bg-velox-50"
+                        data-quick-view-quantity-minus
+                      >
+                        {% render 'icon', name: 'minus', class: 'tw-w-4 tw-h-4' %}
+                      </button>
+                      <input
+                        type="number"
+                        name="quantity"
+                        value="1"
+                        min="1"
+                        class="tw-w-16 tw-h-10 tw-text-center tw-border tw-border-velox-300 tw-rounded-md focus:tw-ring-2 focus:tw-ring-velox-accent focus:tw-border-velox-accent"
+                        data-quick-view-quantity
+                      >
+                      <button
+                        type="button"
+                        class="tw-w-10 tw-h-10 tw-rounded-md tw-border tw-border-velox-300 tw-flex tw-items-center tw-justify-center hover:tw-bg-velox-50"
+                        data-quick-view-quantity-plus
+                      >
+                        {% render 'icon', name: 'plus', class: 'tw-w-4 tw-h-4' %}
+                      </button>
+                    </div>
+                  </div>
+
+                  {%- comment -%} Hidden variant ID input {%- endcomment -%}
+                  <input type="hidden" name="id" value="" data-quick-view-variant-id>
+
+                  {%- comment -%} Add to cart button {%- endcomment -%}
+                  <button
+                    type="submit"
+                    class="tw-mt-6 tw-flex tw-w-full tw-items-center tw-justify-center tw-rounded-md tw-border tw-border-transparent tw-bg-velox-accent tw-px-8 tw-py-3 tw-text-base tw-font-medium tw-text-white hover:tw-opacity-90 focus:tw-ring-2 focus:tw-ring-velox-accent focus:tw-ring-offset-2 tw-transition-all disabled:tw-opacity-50 disabled:tw-cursor-not-allowed"
+                    data-quick-view-add-to-cart
+                  >
+                    <span data-quick-view-add-text>{{ 'products.product.add_to_cart' | t | default: 'Agregar al carrito' }}</span>
+                    <span class="tw-hidden tw-animate-spin tw-ml-2" data-quick-view-add-loading>
+                      {% render 'icon', name: 'arrow-path', class: 'tw-w-5 tw-h-5' %}
+                    </span>
+                  </button>
+                </form>
+
+                {%- comment -%} View full details link {%- endcomment -%}
+                <p class="tw-mt-6 tw-text-center">
+                  <a
+                    href=""
+                    class="tw-font-medium tw-text-velox-accent hover:tw-opacity-80"
+                    data-quick-view-link
+                  >
+                    {{ 'products.product.view_details' | t | default: 'Ver todos los detalles' }}
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% style %}
+  /* ========================================
+     QUICK VIEW MODAL STYLES
+     ======================================== */
+
+  .velox-quick-view {
+    pointer-events: none;
+  }
+
+  .velox-quick-view.active {
+    pointer-events: auto;
+  }
+
+  .velox-quick-view.active .velox-quick-view__backdrop {
+    opacity: 1;
+  }
+
+  .velox-quick-view.active .velox-quick-view__panel {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  .velox-quick-view__loading.hidden {
+    display: none;
+  }
+
+  .velox-quick-view__content.loaded {
+    opacity: 1;
+  }
+
+  /* Variant option styles */
+  .velox-qv-option {
+    margin-top: 1rem;
+  }
+
+  .velox-qv-option__label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-foreground, #111827);
+    margin-bottom: 0.5rem;
+  }
+
+  .velox-qv-option__values {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .velox-qv-option__value {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.5rem;
+    height: 2.5rem;
+    padding: 0 0.75rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.375rem;
+    background: white;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .velox-qv-option__value:hover {
+    border-color: var(--color-foreground-muted, #6b7280);
+  }
+
+  .velox-qv-option__value.selected {
+    border-color: var(--color-accent, #000);
+    background-color: var(--color-accent, #000);
+    color: white;
+  }
+
+  .velox-qv-option__value.unavailable {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .velox-qv-option__value.unavailable::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: currentColor;
+    transform: rotate(-45deg);
+  }
+
+  /* Color swatch in quick view */
+  .velox-qv-color-swatch {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .velox-qv-color-swatch:hover {
+    outline-color: var(--color-foreground-muted, #6b7280);
+  }
+
+  .velox-qv-color-swatch.selected {
+    outline-color: var(--color-accent, #000);
+  }
+
+  /* Success message */
+  .velox-qv-success {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    z-index: 30;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+  }
+
+  .velox-qv-success.show {
+    opacity: 1;
+    visibility: visible;
+  }
+{% endstyle %}
+
+<script>
+  (function() {
+    document.addEventListener('DOMContentLoaded', initQuickView);
+
+    function initQuickView() {
+      const modal = document.querySelector('[data-quick-view-modal]');
+      if (!modal) return;
+
+      const backdrop = modal.querySelector('[data-quick-view-backdrop]');
+      const panel = modal.querySelector('[data-quick-view-panel]');
+      const closeBtn = modal.querySelector('[data-quick-view-close]');
+      const loading = modal.querySelector('[data-quick-view-loading]');
+      const content = modal.querySelector('[data-quick-view-content]');
+      const form = modal.querySelector('[data-quick-view-form]');
+
+      // Elements to populate
+      const imageEl = modal.querySelector('[data-quick-view-image]');
+      const titleEl = modal.querySelector('[data-quick-view-title]');
+      const vendorEl = modal.querySelector('[data-quick-view-vendor]');
+      const priceEl = modal.querySelector('[data-quick-view-price]');
+      const descriptionEl = modal.querySelector('[data-quick-view-description]');
+      const optionsEl = modal.querySelector('[data-quick-view-options]');
+      const variantIdEl = modal.querySelector('[data-quick-view-variant-id]');
+      const linkEl = modal.querySelector('[data-quick-view-link]');
+      const quantityInput = modal.querySelector('[data-quick-view-quantity]');
+      const addToCartBtn = modal.querySelector('[data-quick-view-add-to-cart]');
+      const addText = modal.querySelector('[data-quick-view-add-text]');
+      const addLoading = modal.querySelector('[data-quick-view-add-loading]');
+
+      let currentProduct = null;
+      let currentVariant = null;
+
+      // Open modal
+      function openModal(productHandle) {
+        modal.classList.remove('tw-hidden');
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+
+        // Show loading
+        loading.classList.remove('hidden');
+        content.classList.remove('loaded');
+
+        // Fetch product data
+        fetchProduct(productHandle);
+
+        // Focus trap
+        setTimeout(() => closeBtn.focus(), 100);
+      }
+
+      // Close modal
+      function closeModal() {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+
+        setTimeout(() => {
+          modal.classList.add('tw-hidden');
+          resetModal();
+        }, 300);
+      }
+
+      // Reset modal state
+      function resetModal() {
+        loading.classList.remove('hidden');
+        content.classList.remove('loaded');
+        optionsEl.innerHTML = '';
+        currentProduct = null;
+        currentVariant = null;
+        quantityInput.value = 1;
+      }
+
+      // Fetch product data
+      async function fetchProduct(handle) {
+        try {
+          const response = await fetch(`/products/${handle}.js`);
+          if (!response.ok) throw new Error('Product not found');
+
+          const product = await response.json();
+          currentProduct = product;
+
+          renderProduct(product);
+
+          loading.classList.add('hidden');
+          content.classList.add('loaded');
+        } catch (error) {
+          console.error('Quick view error:', error);
+          closeModal();
+        }
+      }
+
+      // Render product in modal
+      function renderProduct(product) {
+        // Image
+        const featuredImage = product.featured_image || product.images[0];
+        if (featuredImage) {
+          imageEl.src = featuredImage.replace(/(\.[^.]+)$/, '_600x$1');
+          imageEl.alt = product.title;
+        }
+
+        // Title
+        titleEl.textContent = product.title;
+
+        // Vendor
+        if (product.vendor) {
+          vendorEl.textContent = product.vendor;
+          vendorEl.classList.remove('tw-hidden');
+        } else {
+          vendorEl.classList.add('tw-hidden');
+        }
+
+        // Description (strip HTML)
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = product.description;
+        descriptionEl.textContent = tempDiv.textContent.substring(0, 200) + '...';
+
+        // Link
+        linkEl.href = product.url;
+
+        // Set first variant
+        currentVariant = product.variants[0];
+        variantIdEl.value = currentVariant.id;
+        updatePrice();
+
+        // Render options
+        renderOptions(product);
+      }
+
+      // Render variant options
+      function renderOptions(product) {
+        optionsEl.innerHTML = '';
+
+        if (product.options.length === 1 && product.options[0] === 'Title') {
+          return; // No real options
+        }
+
+        product.options.forEach((optionName, optionIndex) => {
+          const optionDiv = document.createElement('div');
+          optionDiv.className = 'velox-qv-option';
+
+          const label = document.createElement('span');
+          label.className = 'velox-qv-option__label';
+          label.textContent = optionName;
+          optionDiv.appendChild(label);
+
+          const valuesDiv = document.createElement('div');
+          valuesDiv.className = 'velox-qv-option__values';
+
+          // Get unique values for this option
+          const values = [...new Set(product.variants.map(v => v.options[optionIndex]))];
+
+          const isColor = optionName.toLowerCase().includes('color') || optionName.toLowerCase().includes('colour');
+
+          values.forEach(value => {
+            if (isColor) {
+              const swatch = document.createElement('button');
+              swatch.type = 'button';
+              swatch.className = 'velox-qv-color-swatch';
+              swatch.setAttribute('aria-label', value);
+              swatch.dataset.optionIndex = optionIndex;
+              swatch.dataset.optionValue = value;
+              swatch.style.backgroundColor = getColorFromName(value);
+
+              if (currentVariant.options[optionIndex] === value) {
+                swatch.classList.add('selected');
+              }
+
+              swatch.addEventListener('click', () => selectOption(optionIndex, value));
+              valuesDiv.appendChild(swatch);
+            } else {
+              const btn = document.createElement('button');
+              btn.type = 'button';
+              btn.className = 'velox-qv-option__value';
+              btn.textContent = value;
+              btn.dataset.optionIndex = optionIndex;
+              btn.dataset.optionValue = value;
+
+              if (currentVariant.options[optionIndex] === value) {
+                btn.classList.add('selected');
+              }
+
+              btn.addEventListener('click', () => selectOption(optionIndex, value));
+              valuesDiv.appendChild(btn);
+            }
+          });
+
+          optionDiv.appendChild(valuesDiv);
+          optionsEl.appendChild(optionDiv);
+        });
+      }
+
+      // Select option value
+      function selectOption(optionIndex, value) {
+        // Update selected values
+        const currentOptions = [...currentVariant.options];
+        currentOptions[optionIndex] = value;
+
+        // Find matching variant
+        const newVariant = currentProduct.variants.find(v =>
+          v.options.every((opt, i) => opt === currentOptions[i])
+        );
+
+        if (newVariant) {
+          currentVariant = newVariant;
+          variantIdEl.value = newVariant.id;
+
+          // Update image if variant has one
+          if (newVariant.featured_image) {
+            imageEl.src = newVariant.featured_image.src.replace(/(\.[^.]+)$/, '_600x$1');
+          }
+
+          updatePrice();
+          updateOptionButtons();
+        }
+      }
+
+      // Update option button states
+      function updateOptionButtons() {
+        const buttons = optionsEl.querySelectorAll('[data-option-value]');
+        buttons.forEach(btn => {
+          const index = parseInt(btn.dataset.optionIndex);
+          const value = btn.dataset.optionValue;
+          btn.classList.toggle('selected', currentVariant.options[index] === value);
+        });
+      }
+
+      // Update price display
+      function updatePrice() {
+        if (!currentVariant) return;
+
+        let html = '';
+        const price = formatMoney(currentVariant.price);
+
+        if (currentVariant.compare_at_price && currentVariant.compare_at_price > currentVariant.price) {
+          html = `
+            <span class="tw-text-xl tw-font-bold tw-text-red-600">${price}</span>
+            <span class="tw-ml-2 tw-text-base tw-text-velox-400 tw-line-through">${formatMoney(currentVariant.compare_at_price)}</span>
+          `;
+        } else {
+          html = `<span class="tw-text-xl tw-font-bold tw-text-velox-900">${price}</span>`;
+        }
+
+        priceEl.innerHTML = html;
+
+        // Update add to cart button
+        if (currentVariant.available) {
+          addToCartBtn.disabled = false;
+          addText.textContent = '{{ "products.product.add_to_cart" | t | default: "Agregar al carrito" }}';
+        } else {
+          addToCartBtn.disabled = true;
+          addText.textContent = '{{ "products.product.sold_out" | t | default: "Agotado" }}';
+        }
+      }
+
+      // Format money
+      function formatMoney(cents) {
+        return (cents / 100).toLocaleString('{{ localization.language.iso_code | default: "es" }}', {
+          style: 'currency',
+          currency: '{{ cart.currency.iso_code | default: "USD" }}'
+        });
+      }
+
+      // Get color from name
+      function getColorFromName(name) {
+        const colors = {
+          'negro': '#000000', 'black': '#000000',
+          'blanco': '#ffffff', 'white': '#ffffff',
+          'rojo': '#ef4444', 'red': '#ef4444',
+          'azul': '#3b82f6', 'blue': '#3b82f6',
+          'verde': '#22c55e', 'green': '#22c55e',
+          'amarillo': '#eab308', 'yellow': '#eab308',
+          'naranja': '#f97316', 'orange': '#f97316',
+          'rosa': '#ec4899', 'pink': '#ec4899',
+          'morado': '#a855f7', 'purple': '#a855f7',
+          'gris': '#6b7280', 'gray': '#6b7280', 'grey': '#6b7280',
+          'beige': '#d4b896', 'cream': '#fffdd0',
+          'navy': '#1e3a5f', 'brown': '#8b4513', 'cafe': '#8b4513',
+          'burgundy': '#722f37', 'olive': '#808000',
+          'teal': '#008080', 'coral': '#ff7f50',
+          'gold': '#ffd700', 'silver': '#c0c0c0'
+        };
+        return colors[name.toLowerCase()] || '#cccccc';
+      }
+
+      // Quantity buttons
+      const minusBtn = modal.querySelector('[data-quick-view-quantity-minus]');
+      const plusBtn = modal.querySelector('[data-quick-view-quantity-plus]');
+
+      if (minusBtn) {
+        minusBtn.addEventListener('click', () => {
+          const val = parseInt(quantityInput.value) || 1;
+          if (val > 1) quantityInput.value = val - 1;
+        });
+      }
+
+      if (plusBtn) {
+        plusBtn.addEventListener('click', () => {
+          const val = parseInt(quantityInput.value) || 1;
+          quantityInput.value = val + 1;
+        });
+      }
+
+      // Form submit - Add to cart
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        if (!currentVariant || !currentVariant.available) return;
+
+        // Show loading
+        addText.classList.add('tw-hidden');
+        addLoading.classList.remove('tw-hidden');
+        addToCartBtn.disabled = true;
+
+        try {
+          const formData = {
+            id: variantIdEl.value,
+            quantity: parseInt(quantityInput.value) || 1
+          };
+
+          const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+          });
+
+          if (!response.ok) throw new Error('Add to cart failed');
+
+          // Update cart count
+          const cartResponse = await fetch('/cart.js');
+          const cart = await cartResponse.json();
+
+          const cartCountEl = document.querySelector('[data-cart-count]');
+          if (cartCountEl) {
+            cartCountEl.textContent = cart.item_count;
+            cartCountEl.classList.remove('tw-hidden');
+          }
+
+          // Show success and close
+          addText.textContent = '{{ "products.product.added_to_cart" | t | default: "Agregado" }}';
+          addText.classList.remove('tw-hidden');
+          addLoading.classList.add('tw-hidden');
+
+          // Open cart drawer if exists
+          const cartDrawer = document.querySelector('[data-cart-drawer]');
+          if (cartDrawer && typeof window.openCartDrawer === 'function') {
+            setTimeout(() => {
+              closeModal();
+              window.openCartDrawer();
+            }, 500);
+          } else {
+            setTimeout(closeModal, 1000);
+          }
+
+        } catch (error) {
+          console.error('Add to cart error:', error);
+          addText.textContent = '{{ "general.cart.error" | t | default: "Error" }}';
+          addText.classList.remove('tw-hidden');
+          addLoading.classList.add('tw-hidden');
+          addToCartBtn.disabled = false;
+
+          setTimeout(() => {
+            addText.textContent = '{{ "products.product.add_to_cart" | t | default: "Agregar al carrito" }}';
+          }, 2000);
+        }
+      });
+
+      // Close button
+      closeBtn.addEventListener('click', closeModal);
+
+      // Backdrop click
+      backdrop.addEventListener('click', closeModal);
+
+      // Escape key
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+          closeModal();
+        }
+      });
+
+      // Global event listener for quick view triggers
+      document.addEventListener('click', function(e) {
+        const trigger = e.target.closest('[data-quick-view-trigger]');
+        if (trigger) {
+          e.preventDefault();
+          const handle = trigger.dataset.productHandle;
+          if (handle) {
+            openModal(handle);
+          }
+        }
+      });
+
+      // Expose to global scope
+      window.openQuickView = openModal;
+      window.closeQuickView = closeModal;
+    }
+  })();
+</script>

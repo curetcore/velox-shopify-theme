@@ -1,0 +1,88 @@
+{% comment %}
+  Velox 404 Content Snippet
+
+  Contenido principal de la página 404.
+  Usado por sections/404.liquid
+
+  Parámetros:
+  - show_code: Mostrar código de error 404
+  - text_class: Clase de texto principal
+  - text_muted_class: Clase de texto secundario
+  - code_class: Clase para el código 404
+  - show_search: Mostrar campo de búsqueda
+  - input_bg: Clase de fondo para inputs
+  - input_border: Clase de borde para inputs
+  - input_text: Clase de texto para inputs
+  - show_contact: Mostrar enlace de contacto
+  - section: Objeto section para acceder a settings
+{% endcomment %}
+
+{%- liquid
+  assign heading = section.settings.heading | default: '404.title' | t
+  assign description = section.settings.description | default: '404.not_found' | t
+  assign button_text = section.settings.button_text | default: '404.back_to_shopping' | t
+  assign button_link = section.settings.button_link | default: routes.root_url
+-%}
+
+{%- comment -%} Código de error {%- endcomment -%}
+{% if show_code %}
+  <p class="tw-text-8xl tw-font-bold {{ code_class }} sm:tw-text-9xl">
+    404
+  </p>
+{% endif %}
+
+{%- comment -%} Título {%- endcomment -%}
+<h1 class="tw-mt-4 tw-text-3xl tw-font-bold tw-tracking-tight {{ text_class }} sm:tw-text-5xl">
+  {{ heading }}
+</h1>
+
+{%- comment -%} Descripción {%- endcomment -%}
+<p class="tw-mt-4 tw-text-base tw-leading-7 {{ text_muted_class }} sm:tw-mt-6 sm:tw-text-lg sm:tw-leading-8">
+  {{ description }}
+</p>
+
+{%- comment -%} Campo de búsqueda {%- endcomment -%}
+{% if show_search %}
+  <div class="tw-mt-8 tw-w-full tw-max-w-md tw-mx-auto lg:tw-mx-0">
+    <form action="{{ routes.search_url }}" method="get" class="tw-relative">
+      <label for="404-search" class="tw-sr-only">{{ 'general.search.search' | t }}</label>
+      <input
+        type="search"
+        id="404-search"
+        name="q"
+        placeholder="{{ 'search.placeholder' | t }}"
+        class="tw-block tw-w-full tw-rounded-lg tw-py-3 tw-pl-4 tw-pr-12 tw-text-sm {{ input_bg }} {{ input_border }} {{ input_text }} tw-border tw-placeholder-velox-400 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-velox-accent focus:tw-ring-offset-2"
+      >
+      <button
+        type="submit"
+        class="tw-absolute tw-right-3 tw-top-1/2 tw--translate-y-1/2 {{ text_muted_class }} hover:tw-text-velox-accent tw-transition-colors"
+        aria-label="{{ 'general.search.search' | t }}"
+      >
+        {% render 'icon', name: 'search', class: 'tw-h-5 tw-w-5' %}
+      </button>
+    </form>
+  </div>
+{% endif %}
+
+{%- comment -%} Botones de acción {%- endcomment -%}
+<div class="tw-mt-10 tw-flex tw-flex-col tw-items-center tw-gap-4 sm:tw-flex-row sm:tw-justify-center lg:tw-justify-start">
+  {%- comment -%} Botón principal {%- endcomment -%}
+  <a
+    href="{{ button_link }}"
+    class="tw-inline-flex tw-items-center tw-gap-2 tw-rounded-lg tw-bg-velox-accent tw-px-6 tw-py-3 tw-text-sm tw-font-semibold tw-text-white tw-shadow-sm tw-transition-all hover:tw-bg-velox-accent/90 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-velox-accent focus:tw-ring-offset-2 active:tw-scale-[0.98]"
+  >
+    {% render 'icon', name: 'arrow-left', class: 'tw-h-4 tw-w-4' %}
+    {{ button_text }}
+  </a>
+
+  {%- comment -%} Enlace de contacto {%- endcomment -%}
+  {% if show_contact %}
+    <a
+      href="{{ routes.root_url }}pages/contact"
+      class="tw-inline-flex tw-items-center tw-gap-2 tw-text-sm tw-font-semibold {{ text_class }} tw-transition-colors hover:tw-text-velox-accent"
+    >
+      {{ 'pages.contact.title' | t }}
+      {% render 'icon', name: 'arrow-right', class: 'tw-h-4 tw-w-4' %}
+    </a>
+  {% endif %}
+</div>

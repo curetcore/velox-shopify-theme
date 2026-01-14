@@ -1,0 +1,29 @@
+{% comment %}
+  Breadcrumbs Separator
+  Separador entre elementos del breadcrumb.
+
+  Uso: {% render 'breadcrumbs-separator', style: 'chevrons' %}
+  Estilos: 'chevrons', 'slashes', 'arrows'
+{% endcomment %}
+
+{%- liquid
+  assign style = style | default: 'chevrons'
+-%}
+
+<span class="velox-breadcrumbs__separator" aria-hidden="true">
+  {% case style %}
+    {% when 'chevrons' %}
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+      </svg>
+
+    {% when 'slashes' %}
+      <span class="tw-text-lg">/</span>
+
+    {% when 'arrows' %}
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+      </svg>
+
+  {% endcase %}
+</span>

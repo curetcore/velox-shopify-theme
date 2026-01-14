@@ -1,0 +1,238 @@
+{% comment %}
+  Velox Logo List Section
+  Muestra logos de marcas/partners con opción de scroll infinito.
+{% endcomment %}
+
+{% liquid
+  assign columns = section.settings.columns
+  assign enable_marquee = section.settings.enable_marquee
+%}
+
+<section class="tw-py-12 md:tw-py-16 {% if section.settings.background_color == 'secondary' %}tw-bg-velox-50{% endif %}">
+  <div class="tw-max-w-7xl tw-mx-auto tw-px-4 sm:tw-px-6 lg:tw-px-8">
+    {%- comment -%} Header de la sección {%- endcomment -%}
+    {% if section.settings.title != blank or section.settings.description != blank %}
+      <div class="tw-text-center tw-mb-10">
+        {% if section.settings.title != blank %}
+          <h2 class="tw-text-lg md:tw-text-xl tw-font-semibold tw-text-velox-600">
+            {{ section.settings.title }}
+          </h2>
+        {% endif %}
+
+        {% if section.settings.description != blank %}
+          <p class="tw-mt-2 tw-text-sm tw-text-velox-500">
+            {{ section.settings.description }}
+          </p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {%- comment -%} Logos grid o marquee {%- endcomment -%}
+    {% if section.blocks.size > 0 %}
+      {% if enable_marquee %}
+        {%- comment -%} Marquee animado {%- endcomment -%}
+        <div class="velox-logo-marquee tw-overflow-hidden tw-relative">
+          {%- comment -%} Gradientes de fade {%- endcomment -%}
+          <div class="tw-absolute tw-left-0 tw-top-0 tw-bottom-0 tw-w-16 tw-bg-gradient-to-r tw-from-white tw-to-transparent tw-z-10 {% if section.settings.background_color == 'secondary' %}tw-from-velox-50{% endif %}"></div>
+          <div class="tw-absolute tw-right-0 tw-top-0 tw-bottom-0 tw-w-16 tw-bg-gradient-to-l tw-from-white tw-to-transparent tw-z-10 {% if section.settings.background_color == 'secondary' %}tw-from-velox-50{% endif %}"></div>
+
+          <div class="velox-logo-marquee__track tw-flex tw-items-center tw-gap-12" style="animation: marquee {{ section.settings.marquee_speed }}s linear infinite;">
+            {%- comment -%} Primera copia {%- endcomment -%}
+            {% for block in section.blocks %}
+              <div class="velox-logo-marquee__item tw-flex-shrink-0" {{ block.shopify_attributes }}>
+                {% if block.settings.link != blank %}
+                  <a href="{{ block.settings.link }}" class="tw-block" {% if block.settings.open_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+                {% endif %}
+
+                {% if block.settings.logo != blank %}
+                  {{ block.settings.logo | image_url: width: 300 | image_tag:
+                    class: 'tw-h-8 md:tw-h-10 tw-w-auto tw-object-contain tw-grayscale tw-opacity-60 hover:tw-grayscale-0 hover:tw-opacity-100 tw-transition-all tw-duration-300',
+                    loading: 'lazy'
+                  }}
+                {% else %}
+                  <div class="tw-h-10 tw-w-32 tw-bg-velox-200 tw-rounded"></div>
+                {% endif %}
+
+                {% if block.settings.link != blank %}
+                  </a>
+                {% endif %}
+              </div>
+            {% endfor %}
+
+            {%- comment -%} Segunda copia para loop infinito {%- endcomment -%}
+            {% for block in section.blocks %}
+              <div class="velox-logo-marquee__item tw-flex-shrink-0" aria-hidden="true">
+                {% if block.settings.link != blank %}
+                  <a href="{{ block.settings.link }}" class="tw-block" tabindex="-1" {% if block.settings.open_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+                {% endif %}
+
+                {% if block.settings.logo != blank %}
+                  {{ block.settings.logo | image_url: width: 300 | image_tag:
+                    class: 'tw-h-8 md:tw-h-10 tw-w-auto tw-object-contain tw-grayscale tw-opacity-60 hover:tw-grayscale-0 hover:tw-opacity-100 tw-transition-all tw-duration-300',
+                    loading: 'lazy'
+                  }}
+                {% else %}
+                  <div class="tw-h-10 tw-w-32 tw-bg-velox-200 tw-rounded"></div>
+                {% endif %}
+
+                {% if block.settings.link != blank %}
+                  </a>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% else %}
+        {%- comment -%} Grid estático {%- endcomment -%}
+        <div class="tw-grid tw-grid-cols-2 md:tw-grid-cols-{{ columns }} tw-gap-8 tw-items-center tw-justify-items-center">
+          {% for block in section.blocks %}
+            <div class="tw-flex tw-items-center tw-justify-center" {{ block.shopify_attributes }}>
+              {% if block.settings.link != blank %}
+                <a href="{{ block.settings.link }}" class="tw-block" {% if block.settings.open_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+              {% endif %}
+
+              {% if block.settings.logo != blank %}
+                {{ block.settings.logo | image_url: width: 300 | image_tag:
+                  class: 'tw-h-10 md:tw-h-12 tw-w-auto tw-object-contain tw-grayscale tw-opacity-60 hover:tw-grayscale-0 hover:tw-opacity-100 tw-transition-all tw-duration-300',
+                  loading: 'lazy'
+                }}
+              {% else %}
+                <div class="tw-h-12 tw-w-32 tw-bg-velox-200 tw-rounded"></div>
+              {% endif %}
+
+              {% if block.settings.link != blank %}
+                </a>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% else %}
+      {%- comment -%} Placeholder {%- endcomment -%}
+      <div class="tw-grid tw-grid-cols-2 md:tw-grid-cols-5 tw-gap-8 tw-items-center tw-justify-items-center">
+        {% for i in (1..5) %}
+          <div class="tw-h-10 tw-w-28 tw-bg-velox-200 tw-rounded"></div>
+        {% endfor %}
+      </div>
+      <p class="tw-text-center tw-text-velox-500 tw-mt-6 tw-text-sm">
+        Agrega logos usando el editor del tema.
+      </p>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  .velox-logo-marquee:hover .velox-logo-marquee__track {
+    animation-play-state: paused;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Logo list",
+  "tag": "section",
+  "class": "velox-logo-list",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "default": "Marcas que confían en nosotros"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Descripción"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_marquee",
+      "label": "Habilitar animación marquee",
+      "default": false,
+      "info": "Los logos se desplazan automáticamente de derecha a izquierda"
+    },
+    {
+      "type": "range",
+      "id": "marquee_speed",
+      "min": 20,
+      "max": 60,
+      "step": 5,
+      "unit": "s",
+      "label": "Velocidad del marquee",
+      "default": 30,
+      "info": "Solo aplica si el marquee está habilitado"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "min": 3,
+      "max": 6,
+      "step": 1,
+      "default": 5,
+      "label": "Columnas (grid estático)",
+      "info": "Solo aplica si el marquee está deshabilitado"
+    },
+    {
+      "type": "select",
+      "id": "background_color",
+      "label": "Color de fondo",
+      "options": [
+        { "value": "transparent", "label": "Transparente" },
+        { "value": "secondary", "label": "Secundario" }
+      ],
+      "default": "transparent"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "logo",
+      "name": "Logo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Logo"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Enlace"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_new_tab",
+          "label": "Abrir en nueva pestaña",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Logo list",
+      "category": "Social",
+      "blocks": [
+        { "type": "logo" },
+        { "type": "logo" },
+        { "type": "logo" },
+        { "type": "logo" },
+        { "type": "logo" }
+      ]
+    }
+  ]
+}
+{% endschema %}

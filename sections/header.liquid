@@ -1,65 +1,696 @@
-<header>
-  <h2 class="header__title">
-    {{ shop.name | link_to: routes.root_url }}
-  </h2>
+{% comment %}
+  Velox Header Section
+  Navegación principal con menú responsive, búsqueda y carrito.
+  Sistema multi-estilo: 4 layouts y 3 esquemas de color.
+{% endcomment %}
 
-  <div class="header__menu">
-    {% for link in section.settings.menu.links %}
-      {{ link.title | link_to: link.url }}
-    {% endfor %}
-  </div>
+{%- liquid
+  assign logo = section.settings.logo
+  assign logo_width = section.settings.logo_width | default: 120
+  assign sticky_header = section.settings.sticky_header
+  assign show_announcement = section.settings.show_announcement
+  assign announcement_text = section.settings.announcement_text
+  assign main_menu = section.settings.menu
+  assign layout_style = section.settings.layout_style | default: 'standard'
+  assign color_scheme = section.settings.color_scheme | default: 'light'
+  assign show_cta = section.settings.show_cta
+  assign cta_text = section.settings.cta_text
+  assign cta_link = section.settings.cta_link
+-%}
 
-  <div class="header__icons">
-    {% if shop.customer_accounts_enabled %}
-      {{ 'icon-account.svg' | inline_asset_content | link_to: routes.account_url }}
-    {% endif %}
+{% comment %} CSS dinámico para esquemas de color y layouts {% endcomment %}
+{% style %}
+  /* ========================================
+     STICKY HEADER EFFECTS
+     ======================================== */
 
-    <a href="{{ routes.cart_url }}">
-      {% if cart.item_count > 0 %}
-        <sup>{{ cart.item_count }}</sup>
-      {% endif %}
+  /* Base sticky styles */
+  .velox-header-sticky {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  }
 
-      {{ 'icon-cart.svg' | inline_asset_content }}
-    </a>
-  </div>
-</header>
+  /* Scrolled state */
+  .velox-header-sticky.is-scrolled {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
 
-{% stylesheet %}
-  header {
-    height: 5rem;
+  .velox-header-sticky.is-scrolled.velox-header--light {
+    background-color: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+  }
+
+  .velox-header-sticky.is-scrolled.velox-header--dark {
+    background-color: rgba(15, 23, 42, 0.98);
+    backdrop-filter: blur(10px);
+  }
+
+  .velox-header-sticky.is-scrolled.velox-header--transparent {
+    background-color: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+  }
+
+  /* Transparent header override when scrolled */
+  .velox-header-sticky.is-scrolled.velox-header--transparent .velox-header-text {
+    color: #334155;
+  }
+
+  .velox-header-sticky.is-scrolled.velox-header--transparent .velox-header-text:hover {
+    color: #0f172a;
+  }
+
+  .velox-header-sticky.is-scrolled.velox-header--transparent .velox-header-logo {
+    color: #0f172a;
+  }
+
+  .velox-header-sticky.is-scrolled.velox-header--transparent .velox-header-icon {
+    color: #475569;
+  }
+
+  .velox-header-sticky.is-scrolled.velox-header--transparent .velox-header-icon:hover {
+    color: #0f172a;
+  }
+
+  /* Hide on scroll down, show on scroll up */
+  .velox-header-sticky.is-hidden {
+    transform: translateY(-100%);
+  }
+
+  /* Compact mode when scrolled (optional) */
+  .velox-header-sticky.is-compact .velox-header-inner {
+    height: 3.5rem;
+  }
+
+  @media (min-width: 990px) {
+    .velox-header-sticky.is-compact .velox-header-inner {
+      height: 4rem;
+    }
+  }
+  /* ========================================
+     HEADER - ESQUEMAS DE COLOR
+     ======================================== */
+
+  /* Light (default) */
+  .velox-header--light {
+    background-color: #ffffff;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  .velox-header--light .velox-header-text {
+    color: #334155;
+  }
+  .velox-header--light .velox-header-text:hover {
+    color: #0f172a;
+  }
+  .velox-header--light .velox-header-logo {
+    color: #0f172a;
+  }
+  .velox-header--light .velox-header-icon {
+    color: #475569;
+  }
+  .velox-header--light .velox-header-icon:hover {
+    color: #0f172a;
+  }
+
+  /* Dark */
+  .velox-header--dark {
+    background-color: #0f172a;
+    border-bottom: 1px solid #1e293b;
+  }
+  .velox-header--dark .velox-header-text {
+    color: #cbd5e1;
+  }
+  .velox-header--dark .velox-header-text:hover {
+    color: #ffffff;
+  }
+  .velox-header--dark .velox-header-logo {
+    color: #ffffff;
+  }
+  .velox-header--dark .velox-header-icon {
+    color: #94a3b8;
+  }
+  .velox-header--dark .velox-header-icon:hover {
+    color: #ffffff;
+  }
+  .velox-header--dark .velox-dropdown-bg {
+    background-color: #1e293b;
+  }
+  .velox-header--dark .velox-dropdown-item {
+    color: #cbd5e1;
+  }
+  .velox-header--dark .velox-dropdown-item:hover {
+    background-color: #334155;
+    color: #ffffff;
+  }
+
+  /* Transparent */
+  .velox-header--transparent {
+    background-color: transparent;
+    border-bottom: none;
+    position: absolute;
+    width: 100%;
+  }
+  .velox-header--transparent .velox-header-text {
+    color: rgba(255, 255, 255, 0.9);
+  }
+  .velox-header--transparent .velox-header-text:hover {
+    color: #ffffff;
+  }
+  .velox-header--transparent .velox-header-logo {
+    color: #ffffff;
+  }
+  .velox-header--transparent .velox-header-icon {
+    color: rgba(255, 255, 255, 0.9);
+  }
+  .velox-header--transparent .velox-header-icon:hover {
+    color: #ffffff;
+  }
+
+  /* ========================================
+     HEADER - LAYOUTS
+     ======================================== */
+
+  /* Standard (logo izq, nav centro, acciones der) */
+  .velox-header--standard .velox-header-inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    height: 4rem;
   }
-  header a {
-    position: relative;
-    text-decoration: none;
-    color: var(--color-foreground);
+  @media (min-width: 990px) {
+    .velox-header--standard .velox-header-inner {
+      height: 5rem;
+    }
+    .velox-header--standard .velox-header-nav {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
   }
-  header a sup {
-    position: absolute;
-    left: 100%;
-    overflow: hidden;
-    max-width: var(--page-margin);
-  }
-  header svg {
-    width: 2rem;
-  }
-  header .header__menu,
-  header .header__icons {
+
+  /* Centered (logo centrado, nav abajo) */
+  .velox-header--centered .velox-header-inner {
     display: flex;
-    gap: 1rem;
+    flex-direction: column;
+    padding-top: 1rem;
+    padding-bottom: 0.5rem;
   }
-{% endstylesheet %}
+  .velox-header--centered .velox-header-top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 0.75rem;
+  }
+  .velox-header--centered .velox-header-logo-wrap {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  @media (min-width: 990px) {
+    .velox-header--centered .velox-header-nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2.5rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(0, 0, 0, 0.05);
+      width: 100%;
+    }
+    .velox-header--dark.velox-header--centered .velox-header-nav {
+      border-top-color: rgba(255, 255, 255, 0.1);
+    }
+  }
+
+  /* Left nav (logo + nav izquierda) */
+  .velox-header--left_nav .velox-header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 4rem;
+  }
+  @media (min-width: 990px) {
+    .velox-header--left_nav .velox-header-inner {
+      height: 5rem;
+    }
+    .velox-header--left_nav .velox-header-left {
+      display: flex;
+      align-items: center;
+      gap: 3rem;
+    }
+    .velox-header--left_nav .velox-header-nav {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+  }
+
+  /* With CTA (con botón destacado) */
+  .velox-header--with_cta .velox-header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 4rem;
+  }
+  @media (min-width: 990px) {
+    .velox-header--with_cta .velox-header-inner {
+      height: 5rem;
+    }
+    .velox-header--with_cta .velox-header-nav {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+    .velox-header--with_cta .velox-header-cta {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.625rem 1.25rem;
+      background-color: #dc2626;
+      color: #ffffff;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border-radius: 0.5rem;
+      transition: background-color 0.2s;
+    }
+    .velox-header--with_cta .velox-header-cta:hover {
+      background-color: #b91c1c;
+    }
+  }
+
+  /* ========================================
+     ANNOUNCEMENT BAR
+     ======================================== */
+  .velox-announcement {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+  .velox-announcement--dark {
+    background-color: #0f172a;
+    color: #ffffff;
+  }
+  .velox-announcement--light {
+    background-color: #f1f5f9;
+    color: #334155;
+  }
+  .velox-announcement--brand {
+    background-color: #dc2626;
+    color: #ffffff;
+  }
+{% endstyle %}
+
+{%- comment -%} Announcement bar {%- endcomment -%}
+{% if show_announcement and announcement_text != blank %}
+  {%- liquid
+    assign announcement_style = section.settings.announcement_style | default: 'dark'
+  -%}
+  <div class="velox-announcement velox-announcement--{{ announcement_style }}">
+    <div class="tw-max-w-7xl tw-mx-auto tw-px-4 sm:tw-px-6 lg:tw-px-8">
+      <div class="tw-flex tw-items-center tw-justify-between tw-text-sm">
+        <p class="tw-flex-1 tw-text-center">
+          {% if section.settings.announcement_link != blank %}
+            <a href="{{ section.settings.announcement_link }}" class="hover:tw-underline">
+              {{ announcement_text }}
+            </a>
+          {% else %}
+            {{ announcement_text }}
+          {% endif %}
+        </p>
+
+        {%- comment -%} Account links (desktop) {%- endcomment -%}
+        <div class="tw-hidden lg:tw-flex tw-items-center tw-gap-4 tw-opacity-80">
+          {% if shop.customer_accounts_enabled %}
+            {% if customer %}
+              <a href="{{ routes.account_url }}" class="hover:tw-opacity-100 tw-transition-colors">
+                {{ 'customer.account.title' | t | default: 'Mi cuenta' }}
+              </a>
+            {% else %}
+              <a href="{{ routes.account_login_url }}" class="hover:tw-opacity-100 tw-transition-colors">
+                {{ 'customer.login.title' | t | default: 'Iniciar sesión' }}
+              </a>
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{%- comment -%} Header principal {%- endcomment -%}
+<header
+  id="shopify-section-header"
+  class="velox-header--{{ layout_style }} velox-header--{{ color_scheme }} tw-relative {% if sticky_header %}velox-header-sticky{% endif %}"
+  data-header
+  {% if sticky_header %}data-sticky-header{% endif %}
+>
+  <nav class="tw-mx-auto tw-max-w-7xl tw-px-4 sm:tw-px-6 lg:tw-px-8" aria-label="Navegación principal">
+
+    {%- comment -%} ===== LAYOUT: STANDARD ===== {%- endcomment -%}
+    {% if layout_style == 'standard' or layout_style == 'with_cta' %}
+      <div class="velox-header-inner">
+        {%- comment -%} Mobile menu button {%- endcomment -%}
+        <div class="tw-flex tw-items-center lg:tw-hidden">
+          <button
+            type="button"
+            class="velox-header-icon tw-p-2 tw--ml-2 tw-transition-colors"
+            data-mobile-menu-open
+            aria-label="{{ 'general.navigation.menu' | t | default: 'Menú' }}"
+            aria-expanded="false"
+            aria-controls="mobile-menu"
+          >
+            {% render 'icon', name: 'menu', class: 'tw-w-6 tw-h-6' %}
+          </button>
+        </div>
+
+        {%- comment -%} Logo {%- endcomment -%}
+        <div class="tw-flex tw-items-center">
+          {% render 'header-logo', logo: logo, logo_width: logo_width %}
+        </div>
+
+        {%- comment -%} Desktop navigation con mega menu {%- endcomment -%}
+        <div class="tw-hidden lg:tw-flex velox-header-nav">
+          {% render 'header-mega-menu', menu: main_menu, color_scheme: color_scheme, mega_menu_items: section.blocks %}
+        </div>
+
+        {%- comment -%} Acciones {%- endcomment -%}
+        <div class="tw-flex tw-items-center tw-gap-2 lg:tw-gap-4">
+          {% render 'header-actions', color_scheme: color_scheme %}
+
+          {% if layout_style == 'with_cta' and show_cta and cta_text != blank %}
+            <a href="{{ cta_link }}" class="tw-hidden lg:tw-inline-flex velox-header-cta">
+              {{ cta_text }}
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+
+    {%- comment -%} ===== LAYOUT: CENTERED ===== {%- endcomment -%}
+    {% if layout_style == 'centered' %}
+      <div class="velox-header-inner">
+        {%- comment -%} Top row: mobile menu, logo centered, actions {%- endcomment -%}
+        <div class="velox-header-top-row tw-relative">
+          {%- comment -%} Mobile menu button {%- endcomment -%}
+          <div class="tw-flex tw-items-center lg:tw-hidden">
+            <button
+              type="button"
+              class="velox-header-icon tw-p-2 tw--ml-2 tw-transition-colors"
+              data-mobile-menu-open
+              aria-label="{{ 'general.navigation.menu' | t | default: 'Menú' }}"
+              aria-expanded="false"
+              aria-controls="mobile-menu"
+            >
+              {% render 'icon', name: 'menu', class: 'tw-w-6 tw-h-6' %}
+            </button>
+          </div>
+
+          {%- comment -%} Logo centrado {%- endcomment -%}
+          <div class="velox-header-logo-wrap">
+            {% render 'header-logo', logo: logo, logo_width: logo_width %}
+          </div>
+
+          {%- comment -%} Acciones {%- endcomment -%}
+          <div class="tw-flex tw-items-center tw-gap-2 lg:tw-gap-4">
+            {% render 'header-actions', color_scheme: color_scheme %}
+          </div>
+        </div>
+
+        {%- comment -%} Nav row (desktop) con mega menu {%- endcomment -%}
+        <div class="tw-hidden lg:tw-flex velox-header-nav">
+          {% render 'header-mega-menu', menu: main_menu, color_scheme: color_scheme, mega_menu_items: section.blocks %}
+        </div>
+      </div>
+    {% endif %}
+
+    {%- comment -%} ===== LAYOUT: LEFT NAV ===== {%- endcomment -%}
+    {% if layout_style == 'left_nav' %}
+      <div class="velox-header-inner">
+        {%- comment -%} Left side: logo + nav {%- endcomment -%}
+        <div class="velox-header-left tw-flex tw-items-center">
+          {%- comment -%} Mobile menu button {%- endcomment -%}
+          <div class="tw-flex tw-items-center lg:tw-hidden">
+            <button
+              type="button"
+              class="velox-header-icon tw-p-2 tw--ml-2 tw-transition-colors"
+              data-mobile-menu-open
+              aria-label="{{ 'general.navigation.menu' | t | default: 'Menú' }}"
+              aria-expanded="false"
+              aria-controls="mobile-menu"
+            >
+              {% render 'icon', name: 'menu', class: 'tw-w-6 tw-h-6' %}
+            </button>
+          </div>
+
+          {%- comment -%} Logo {%- endcomment -%}
+          {% render 'header-logo', logo: logo, logo_width: logo_width %}
+
+          {%- comment -%} Nav junto al logo (desktop) con mega menu {%- endcomment -%}
+          <div class="tw-hidden lg:tw-flex velox-header-nav">
+            {% render 'header-mega-menu', menu: main_menu, color_scheme: color_scheme, mega_menu_items: section.blocks %}
+          </div>
+        </div>
+
+        {%- comment -%} Acciones {%- endcomment -%}
+        <div class="tw-flex tw-items-center tw-gap-2 lg:tw-gap-4">
+          {% render 'header-actions', color_scheme: color_scheme %}
+        </div>
+      </div>
+    {% endif %}
+
+  </nav>
+</header>
+
+{%- comment -%} Mobile menu drawer {%- endcomment -%}
+{% render 'mobile-menu', menu: main_menu %}
+
+{%- comment -%} Search modal {%- endcomment -%}
+{% render 'search-modal' %}
+
+{%- comment -%} Cart drawer {%- endcomment -%}
+{% render 'cart-drawer' %}
+
+{%- comment -%} Sticky header JavaScript {%- endcomment -%}
+{% if sticky_header %}
+<script>
+  (function() {
+    const header = document.querySelector('[data-sticky-header]');
+    if (!header) return;
+
+    let lastScrollY = window.scrollY;
+    let ticking = false;
+    const scrollThreshold = 100;
+    const hideOnScrollDown = {{ section.settings.hide_on_scroll | default: false }};
+
+    function updateHeader() {
+      const currentScrollY = window.scrollY;
+
+      // Agregar/quitar clase is-scrolled
+      if (currentScrollY > scrollThreshold) {
+        header.classList.add('is-scrolled');
+      } else {
+        header.classList.remove('is-scrolled');
+        header.classList.remove('is-hidden');
+      }
+
+      // Ocultar al bajar, mostrar al subir (opcional)
+      if (hideOnScrollDown && currentScrollY > scrollThreshold) {
+        if (currentScrollY > lastScrollY) {
+          // Scrolling down
+          header.classList.add('is-hidden');
+        } else {
+          // Scrolling up
+          header.classList.remove('is-hidden');
+        }
+      }
+
+      lastScrollY = currentScrollY;
+      ticking = false;
+    }
+
+    function onScroll() {
+      if (!ticking) {
+        window.requestAnimationFrame(updateHeader);
+        ticking = true;
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    // Estado inicial
+    updateHeader();
+  })();
+</script>
+{% endif %}
 
 {% schema %}
 {
-  "name": "t:general.header",
+  "name": "Header",
+  "tag": "div",
+  "class": "velox-header full-width",
+  "max_blocks": 10,
+  "blocks": [
+    {
+      "type": "mega_menu_promo",
+      "name": "Mega menu promo",
+      "settings": [
+        {
+          "type": "text",
+          "id": "menu_item",
+          "label": "Nombre del menú",
+          "info": "Escribe el nombre exacto del item del menú principal (ej: 'Mujer', 'Hombre')"
+        },
+        {
+          "type": "image_picker",
+          "id": "featured_image",
+          "label": "Imagen promocional"
+        },
+        {
+          "type": "text",
+          "id": "featured_title",
+          "label": "Título",
+          "default": "Nueva colección"
+        },
+        {
+          "type": "text",
+          "id": "featured_cta",
+          "label": "Texto del botón",
+          "default": "Comprar ahora"
+        },
+        {
+          "type": "url",
+          "id": "featured_link",
+          "label": "Enlace"
+        }
+      ]
+    }
+  ],
   "settings": [
+    {
+      "type": "header",
+      "content": "Estilo del header"
+    },
+    {
+      "type": "select",
+      "id": "layout_style",
+      "label": "Layout",
+      "options": [
+        { "value": "standard", "label": "Estándar" },
+        { "value": "centered", "label": "Logo centrado" },
+        { "value": "left_nav", "label": "Nav a la izquierda" },
+        { "value": "with_cta", "label": "Con botón CTA" }
+      ],
+      "default": "standard"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Esquema de colores",
+      "options": [
+        { "value": "light", "label": "Claro" },
+        { "value": "dark", "label": "Oscuro" },
+        { "value": "transparent", "label": "Transparente" }
+      ],
+      "default": "light",
+      "info": "Transparente ideal para páginas con hero de altura completa"
+    },
+    {
+      "type": "header",
+      "content": "Logo y navegación"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 60,
+      "max": 200,
+      "step": 10,
+      "default": 120,
+      "unit": "px",
+      "label": "Ancho del logo"
+    },
     {
       "type": "link_list",
       "id": "menu",
-      "label": "t:labels.menu"
+      "label": "Menú principal",
+      "default": "main-menu"
+    },
+    {
+      "type": "header",
+      "content": "Opciones"
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky_header",
+      "label": "Header sticky",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_on_scroll",
+      "label": "Ocultar al hacer scroll hacia abajo",
+      "default": false,
+      "info": "El header se oculta al bajar y reaparece al subir"
+    },
+    {
+      "type": "header",
+      "content": "Botón CTA"
+    },
+    {
+      "type": "paragraph",
+      "content": "Solo visible con layout 'Con botón CTA'"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cta",
+      "label": "Mostrar botón CTA",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Texto del botón",
+      "default": "Comprar ahora"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Enlace del botón"
+    },
+    {
+      "type": "header",
+      "content": "Barra de anuncios"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_announcement",
+      "label": "Mostrar barra de anuncios",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "announcement_style",
+      "label": "Estilo de la barra",
+      "options": [
+        { "value": "dark", "label": "Oscuro" },
+        { "value": "light", "label": "Claro" },
+        { "value": "brand", "label": "Color de marca" }
+      ],
+      "default": "dark"
+    },
+    {
+      "type": "text",
+      "id": "announcement_text",
+      "label": "Texto del anuncio",
+      "default": "Envío gratis en compras mayores a $2,000"
+    },
+    {
+      "type": "url",
+      "id": "announcement_link",
+      "label": "Enlace del anuncio"
     }
   ]
 }

@@ -1,0 +1,862 @@
+{% comment %}
+  Velox Theme - Main Page Section
+  Página de contenido genérica (About, Contact, etc.)
+  Adaptado de Tailwind Plus content-sections
+{% endcomment %}
+
+{%- liquid
+  assign color_scheme = section.settings.color_scheme | default: 'light'
+  assign content_width = section.settings.content_width | default: 'medium'
+  assign show_title = section.settings.show_title
+  assign show_featured_image = section.settings.show_featured_image
+
+  case content_width
+    when 'narrow'
+      assign width_class = 'velox-page__content--narrow'
+    when 'wide'
+      assign width_class = 'velox-page__content--wide'
+    else
+      assign width_class = 'velox-page__content--medium'
+  endcase
+-%}
+
+<div class="velox-page velox-page--{{ color_scheme }}" data-section-id="{{ section.id }}">
+  <div class="velox-page__container">
+    {%- comment %} Hero con imagen destacada opcional {% endcomment -%}
+    {%- if show_featured_image and page.image != blank -%}
+      <div class="velox-page__hero">
+        <img
+          src="{{ page.image | image_url: width: 1920 }}"
+          alt="{{ page.image.alt | escape }}"
+          width="1920"
+          height="{{ 1920 | divided_by: page.image.aspect_ratio | round }}"
+          class="velox-page__hero-image"
+          loading="eager"
+        >
+        {%- if show_title -%}
+          <div class="velox-page__hero-overlay">
+            <h1 class="velox-page__title velox-page__title--overlay">{{ page.title }}</h1>
+          </div>
+        {%- endif -%}
+      </div>
+    {%- elsif show_title -%}
+      <header class="velox-page__header">
+        <h1 class="velox-page__title">{{ page.title }}</h1>
+      </header>
+    {%- endif -%}
+
+    {%- comment %} Contenido de la página {% endcomment -%}
+    <div class="velox-page__content {{ width_class }}">
+      {%- if page.content != blank -%}
+        <div class="velox-page__body rte">
+          {{ page.content }}
+        </div>
+      {%- else -%}
+        <div class="velox-page__empty">
+          <p>{{ 'pages.empty_content' | t }}</p>
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- comment %} Bloques dinámicos {% endcomment -%}
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'text' -%}
+          <div class="velox-page__block velox-page__block--text {{ width_class }}" {{ block.shopify_attributes }}>
+            {%- if block.settings.heading != blank -%}
+              <h2 class="velox-page__block-heading">{{ block.settings.heading }}</h2>
+            {%- endif -%}
+            {%- if block.settings.text != blank -%}
+              <div class="velox-page__block-text rte">{{ block.settings.text }}</div>
+            {%- endif -%}
+          </div>
+
+        {%- when 'image' -%}
+          <div class="velox-page__block velox-page__block--image" {{ block.shopify_attributes }}>
+            {%- if block.settings.image != blank -%}
+              <figure class="velox-page__figure">
+                <img
+                  src="{{ block.settings.image | image_url: width: 1200 }}"
+                  alt="{{ block.settings.image.alt | escape }}"
+                  width="1200"
+                  height="{{ 1200 | divided_by: block.settings.image.aspect_ratio | round }}"
+                  class="velox-page__block-image"
+                  loading="lazy"
+                >
+                {%- if block.settings.caption != blank -%}
+                  <figcaption class="velox-page__caption">{{ block.settings.caption }}</figcaption>
+                {%- endif -%}
+              </figure>
+            {%- endif -%}
+          </div>
+
+        {%- when 'button' -%}
+          <div class="velox-page__block velox-page__block--button {{ width_class }}" {{ block.shopify_attributes }}>
+            {%- if block.settings.button_link != blank and block.settings.button_text != blank -%}
+              <a href="{{ block.settings.button_link }}" class="velox-page__button velox-page__button--{{ block.settings.button_style }}">
+                {{ block.settings.button_text }}
+              </a>
+            {%- endif -%}
+          </div>
+
+        {%- when 'divider' -%}
+          <div class="velox-page__block velox-page__block--divider {{ width_class }}" {{ block.shopify_attributes }}>
+            <hr class="velox-page__divider">
+          </div>
+
+        {%- when 'contact_form' -%}
+          <div class="velox-page__block velox-page__block--contact {{ width_class }}" {{ block.shopify_attributes }}>
+            {%- if block.settings.form_heading != blank -%}
+              <h2 class="velox-page__block-heading">{{ block.settings.form_heading }}</h2>
+            {%- endif -%}
+
+            {%- form 'contact', class: 'velox-page__contact-form' -%}
+              {%- if form.posted_successfully? -%}
+                <div class="velox-page__form-success">
+                  <svg class="velox-page__form-success-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <p>{{ 'pages.contact.success' | t }}</p>
+                </div>
+              {%- else -%}
+                {%- if form.errors -%}
+                  <div class="velox-page__form-errors">
+                    {{ form.errors | default_errors }}
+                  </div>
+                {%- endif -%}
+
+                <div class="velox-page__form-grid">
+                  <div class="velox-page__form-field">
+                    <label for="contact-name-{{ section.id }}" class="velox-page__label">
+                      {{ 'pages.contact.name' | t }} <span class="velox-page__required">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="contact-name-{{ section.id }}"
+                      name="contact[name]"
+                      required
+                      class="velox-page__input"
+                      value="{{ form.name }}"
+                    >
+                  </div>
+
+                  <div class="velox-page__form-field">
+                    <label for="contact-email-{{ section.id }}" class="velox-page__label">
+                      {{ 'pages.contact.email' | t }} <span class="velox-page__required">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      id="contact-email-{{ section.id }}"
+                      name="contact[email]"
+                      required
+                      class="velox-page__input"
+                      value="{{ form.email }}"
+                      autocomplete="email"
+                    >
+                  </div>
+
+                  {%- if block.settings.show_phone -%}
+                    <div class="velox-page__form-field velox-page__form-field--full">
+                      <label for="contact-phone-{{ section.id }}" class="velox-page__label">
+                        {{ 'pages.contact.phone' | t }}
+                      </label>
+                      <input
+                        type="tel"
+                        id="contact-phone-{{ section.id }}"
+                        name="contact[phone]"
+                        class="velox-page__input"
+                        value="{{ form.phone }}"
+                        autocomplete="tel"
+                      >
+                    </div>
+                  {%- endif -%}
+
+                  <div class="velox-page__form-field velox-page__form-field--full">
+                    <label for="contact-message-{{ section.id }}" class="velox-page__label">
+                      {{ 'pages.contact.message' | t }} <span class="velox-page__required">*</span>
+                    </label>
+                    <textarea
+                      id="contact-message-{{ section.id }}"
+                      name="contact[body]"
+                      required
+                      rows="5"
+                      class="velox-page__textarea"
+                    >{{ form.body }}</textarea>
+                  </div>
+                </div>
+
+                <button type="submit" class="velox-page__submit">
+                  {{ 'pages.contact.submit' | t }}
+                </button>
+              {%- endif -%}
+            {%- endform -%}
+          </div>
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+{% style %}
+  /* ===========================================
+     Velox Page - Estilos principales
+     =========================================== */
+
+  .velox-page {
+    --page-accent: var(--color-accent, #4f46e5);
+    --page-accent-hover: var(--color-accent-hover, #4338ca);
+    padding: 3rem 1rem;
+  }
+
+  .velox-page__container {
+    max-width: 80rem;
+    margin: 0 auto;
+  }
+
+  /* Hero con imagen */
+  .velox-page__hero {
+    position: relative;
+    margin: -3rem -1rem 2rem;
+    overflow: hidden;
+  }
+
+  .velox-page__hero-image {
+    width: 100%;
+    height: 20rem;
+    object-fit: cover;
+  }
+
+  .velox-page__hero-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0.3));
+  }
+
+  .velox-page__title--overlay {
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+
+  /* Header sin imagen */
+  .velox-page__header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .velox-page__title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  /* Anchos de contenido */
+  .velox-page__content,
+  .velox-page__block {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .velox-page__content--narrow {
+    max-width: 42rem;
+  }
+
+  .velox-page__content--medium {
+    max-width: 56rem;
+  }
+
+  .velox-page__content--wide {
+    max-width: 72rem;
+  }
+
+  /* Contenido principal - Tipografía rica */
+  .velox-page__body {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: #374151;
+  }
+
+  .velox-page__body h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 2.5rem 0 1rem;
+    line-height: 1.3;
+  }
+
+  .velox-page__body h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 2rem 0 0.75rem;
+    line-height: 1.4;
+  }
+
+  .velox-page__body h4 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 1.5rem 0 0.5rem;
+  }
+
+  .velox-page__body p {
+    margin: 1.25rem 0;
+  }
+
+  .velox-page__body ul,
+  .velox-page__body ol {
+    margin: 1.5rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .velox-page__body li {
+    margin: 0.5rem 0;
+  }
+
+  .velox-page__body ul li {
+    list-style-type: disc;
+  }
+
+  .velox-page__body ol li {
+    list-style-type: decimal;
+  }
+
+  .velox-page__body blockquote {
+    border-left: 4px solid var(--page-accent);
+    padding: 1rem 0 1rem 1.5rem;
+    margin: 2rem 0;
+    font-style: italic;
+    color: #4b5563;
+    background: #f9fafb;
+  }
+
+  .velox-page__body a {
+    color: var(--page-accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .velox-page__body a:hover {
+    color: var(--page-accent-hover);
+  }
+
+  .velox-page__body img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .velox-page__body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.875rem;
+  }
+
+  .velox-page__body th,
+  .velox-page__body td {
+    padding: 0.75rem 1rem;
+    border: 1px solid #e5e7eb;
+    text-align: left;
+  }
+
+  .velox-page__body th {
+    background: #f9fafb;
+    font-weight: 600;
+    color: #111827;
+  }
+
+  .velox-page__body code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.875em;
+    background: #f3f4f6;
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+    color: #dc2626;
+  }
+
+  .velox-page__body pre {
+    background: #1f2937;
+    color: #f9fafb;
+    padding: 1rem 1.25rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+
+  .velox-page__body pre code {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+  }
+
+  /* Empty state */
+  .velox-page__empty {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #6b7280;
+  }
+
+  /* Bloques dinámicos */
+  .velox-page__block {
+    margin-top: 2rem;
+  }
+
+  .velox-page__block-heading {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 1rem;
+  }
+
+  .velox-page__block-text {
+    color: #374151;
+    line-height: 1.75;
+  }
+
+  /* Bloque de imagen */
+  .velox-page__figure {
+    margin: 0;
+  }
+
+  .velox-page__block-image {
+    width: 100%;
+    height: auto;
+    border-radius: 0.75rem;
+  }
+
+  .velox-page__caption {
+    margin-top: 0.75rem;
+    font-size: 0.875rem;
+    color: #6b7280;
+    text-align: center;
+  }
+
+  /* Botón */
+  .velox-page__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .velox-page__button--primary {
+    background: var(--page-accent);
+    color: #ffffff;
+  }
+
+  .velox-page__button--primary:hover {
+    background: var(--page-accent-hover);
+  }
+
+  .velox-page__button--secondary {
+    background: #ffffff;
+    color: #111827;
+    border: 1px solid #d1d5db;
+  }
+
+  .velox-page__button--secondary:hover {
+    background: #f9fafb;
+    border-color: #9ca3af;
+  }
+
+  /* Divisor */
+  .velox-page__divider {
+    border: none;
+    border-top: 1px solid #e5e7eb;
+    margin: 2rem 0;
+  }
+
+  /* Formulario de contacto */
+  .velox-page__contact-form {
+    margin-top: 1.5rem;
+  }
+
+  .velox-page__form-grid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .velox-page__form-field {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .velox-page__label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.375rem;
+  }
+
+  .velox-page__required {
+    color: #dc2626;
+  }
+
+  .velox-page__input,
+  .velox-page__textarea {
+    width: 100%;
+    padding: 0.625rem 0.875rem;
+    font-size: 0.875rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    background: #ffffff;
+    color: #111827;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .velox-page__input:focus,
+  .velox-page__textarea:focus {
+    outline: none;
+    border-color: var(--page-accent);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  }
+
+  .velox-page__textarea {
+    resize: vertical;
+    min-height: 8rem;
+  }
+
+  .velox-page__submit {
+    margin-top: 1.5rem;
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #ffffff;
+    background: var(--page-accent);
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .velox-page__submit:hover {
+    background: var(--page-accent-hover);
+  }
+
+  .velox-page__form-success {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    border-radius: 0.5rem;
+    color: #065f46;
+  }
+
+  .velox-page__form-success-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  .velox-page__form-errors {
+    padding: 1rem;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 0.5rem;
+    color: #991b1b;
+    margin-bottom: 1.25rem;
+  }
+
+  /* ===========================================
+     Responsive
+     =========================================== */
+
+  @media (min-width: 640px) {
+    .velox-page {
+      padding: 4rem 1.5rem;
+    }
+
+    .velox-page__hero {
+      margin: -4rem -1.5rem 2.5rem;
+    }
+
+    .velox-page__hero-image {
+      height: 24rem;
+    }
+
+    .velox-page__title {
+      font-size: 2.5rem;
+    }
+
+    .velox-page__form-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .velox-page__form-field--full {
+      grid-column: span 2;
+    }
+
+    .velox-page__submit {
+      width: auto;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .velox-page {
+      padding: 5rem 2rem;
+    }
+
+    .velox-page__hero {
+      margin: -5rem -2rem 3rem;
+      border-radius: 0 0 1rem 1rem;
+    }
+
+    .velox-page__hero-image {
+      height: 28rem;
+    }
+
+    .velox-page__title {
+      font-size: 3rem;
+    }
+
+    .velox-page__body {
+      font-size: 1.125rem;
+    }
+
+    .velox-page__body h2 {
+      font-size: 1.875rem;
+    }
+  }
+
+  /* ===========================================
+     Dark mode
+     =========================================== */
+
+  .velox-page--dark {
+    background: #111827;
+  }
+
+  .velox-page--dark .velox-page__header {
+    border-color: #374151;
+  }
+
+  .velox-page--dark .velox-page__title {
+    color: #f9fafb;
+  }
+
+  .velox-page--dark .velox-page__body {
+    color: #d1d5db;
+  }
+
+  .velox-page--dark .velox-page__body h2,
+  .velox-page--dark .velox-page__body h3,
+  .velox-page--dark .velox-page__body h4 {
+    color: #f9fafb;
+  }
+
+  .velox-page--dark .velox-page__body blockquote {
+    background: #1f2937;
+    color: #9ca3af;
+  }
+
+  .velox-page--dark .velox-page__body th {
+    background: #1f2937;
+    color: #f9fafb;
+  }
+
+  .velox-page--dark .velox-page__body th,
+  .velox-page--dark .velox-page__body td {
+    border-color: #374151;
+  }
+
+  .velox-page--dark .velox-page__body code {
+    background: #374151;
+    color: #fca5a5;
+  }
+
+  .velox-page--dark .velox-page__block-heading {
+    color: #f9fafb;
+  }
+
+  .velox-page--dark .velox-page__block-text {
+    color: #d1d5db;
+  }
+
+  .velox-page--dark .velox-page__caption {
+    color: #9ca3af;
+  }
+
+  .velox-page--dark .velox-page__divider {
+    border-color: #374151;
+  }
+
+  .velox-page--dark .velox-page__button--secondary {
+    background: #1f2937;
+    color: #f9fafb;
+    border-color: #4b5563;
+  }
+
+  .velox-page--dark .velox-page__button--secondary:hover {
+    background: #374151;
+  }
+
+  .velox-page--dark .velox-page__label {
+    color: #d1d5db;
+  }
+
+  .velox-page--dark .velox-page__input,
+  .velox-page--dark .velox-page__textarea {
+    background: #1f2937;
+    border-color: #4b5563;
+    color: #f9fafb;
+  }
+
+  .velox-page--dark .velox-page__input:focus,
+  .velox-page--dark .velox-page__textarea:focus {
+    border-color: var(--page-accent);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+  }
+
+  .velox-page--dark .velox-page__empty {
+    color: #9ca3af;
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Page content",
+  "tag": "section",
+  "class": "section-page",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show page title",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_featured_image",
+      "label": "Show featured image as hero",
+      "default": false,
+      "info": "Displays the page's featured image as a hero banner"
+    },
+    {
+      "type": "select",
+      "id": "content_width",
+      "label": "Content width",
+      "options": [
+        { "value": "narrow", "label": "Narrow (672px)" },
+        { "value": "medium", "label": "Medium (896px)" },
+        { "value": "wide", "label": "Wide (1152px)" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "options": [
+        { "value": "light", "label": "Light" },
+        { "value": "dark", "label": "Dark" }
+      ],
+      "default": "light"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Text block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text"
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Caption"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "Button",
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text",
+          "default": "Learn more"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button style",
+          "options": [
+            { "value": "primary", "label": "Primary" },
+            { "value": "secondary", "label": "Secondary" }
+          ],
+          "default": "primary"
+        }
+      ]
+    },
+    {
+      "type": "divider",
+      "name": "Divider"
+    },
+    {
+      "type": "contact_form",
+      "name": "Contact form",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "form_heading",
+          "label": "Form heading",
+          "default": "Contact us"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_phone",
+          "label": "Show phone field",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Page content",
+      "category": "Text"
+    }
+  ]
+}
+{% endschema %}

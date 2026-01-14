@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "npx tailwindcss -i ./src/tailwind.css -o ./assets/velox.css --watch",
     "build": "npx tailwindcss -i ./src/tailwind.css -o ./assets/velox.css --minify",
-    "theme:dev": "shopify theme dev --store=YOUR_STORE.myshopify.com",
+    "theme:dev": "shopify theme dev --store=curet-core.myshopify.com",
     "theme:push": "shopify theme push",
     "theme:pull": "shopify theme pull",
     "lint": "shopify theme check"

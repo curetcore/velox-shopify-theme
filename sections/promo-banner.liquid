@@ -1,0 +1,421 @@
+{% comment %}
+  Velox Promo Banner Section
+
+  Sección versátil de banner promocional con múltiples estilos.
+  Puede usarse como: barra superior, sección hero, banner flotante.
+{% endcomment %}
+
+{%- liquid
+  assign layout = section.settings.layout
+  assign heading = section.settings.heading
+  assign subheading = section.settings.subheading
+  assign button_text = section.settings.button_text
+  assign button_url = section.settings.button_url
+  assign show_dismiss = section.settings.show_dismiss
+  assign bg_color = section.settings.background_color
+  assign bg_image = section.settings.background_image
+  assign overlay_opacity = section.settings.overlay_opacity
+
+  # Background color classes
+  case bg_color
+    when 'dark'
+      assign bg_class = 'tw-bg-velox-900'
+      assign text_class = 'tw-text-white'
+      assign text_muted_class = 'tw-text-velox-300'
+      assign btn_class = 'tw-bg-white tw-text-velox-900 hover:tw-bg-velox-100'
+    when 'accent'
+      assign bg_class = 'tw-bg-velox-accent'
+      assign text_class = 'tw-text-white'
+      assign text_muted_class = 'tw-text-white/80'
+      assign btn_class = 'tw-bg-white tw-text-velox-accent hover:tw-bg-velox-50'
+    when 'light'
+      assign bg_class = 'tw-bg-velox-50'
+      assign text_class = 'tw-text-velox-900'
+      assign text_muted_class = 'tw-text-velox-600'
+      assign btn_class = 'tw-bg-velox-900 tw-text-white hover:tw-bg-velox-800'
+    else
+      assign bg_class = 'tw-bg-white'
+      assign text_class = 'tw-text-velox-900'
+      assign text_muted_class = 'tw-text-velox-600'
+      assign btn_class = 'tw-bg-velox-accent tw-text-white hover:tw-bg-velox-accent/90'
+  endcase
+-%}
+
+{% case layout %}
+  {% when 'bar' %}
+    {%- comment -%} Barra de anuncio compacta {%- endcomment -%}
+    <div
+      class="tw-relative tw-isolate tw-overflow-hidden {{ bg_class }}"
+      id="PromoBanner-{{ section.id }}"
+      data-promo-banner
+      {{ section.shopify_attributes }}
+    >
+      {%- comment -%} Decorative gradient blurs {%- endcomment -%}
+      {% if bg_color == 'dark' %}
+        <div aria-hidden="true" class="tw-absolute tw-top-1/2 tw-left-[max(-7rem,calc(50%-52rem))] tw--z-10 tw--translate-y-1/2 tw-transform-gpu tw-blur-2xl">
+          <div style="clip-path: polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)" class="tw-aspect-[577/310] tw-w-[36rem] tw-bg-gradient-to-r tw-from-velox-accent tw-to-velox-accent/50 tw-opacity-30"></div>
+        </div>
+      {% endif %}
+
+      <div class="tw-mx-auto tw-max-w-7xl tw-px-4 tw-py-3 sm:tw-px-6 lg:tw-px-8">
+        <div class="tw-flex tw-flex-wrap tw-items-center tw-justify-center tw-gap-x-4 tw-gap-y-2">
+          <p class="tw-text-sm tw-leading-6 {{ text_class }}">
+            {% if heading != blank %}
+              <strong class="tw-font-semibold">{{ heading }}</strong>
+              {% if subheading != blank %}
+                <span class="tw-mx-2 tw-inline-block tw-size-1 tw-rounded-full {{ text_muted_class }} tw-bg-current" aria-hidden="true"></span>
+              {% endif %}
+            {% endif %}
+            {% if subheading != blank %}
+              <span class="{{ text_muted_class }}">{{ subheading }}</span>
+            {% endif %}
+          </p>
+
+          {% if button_text != blank and button_url != blank %}
+            <a
+              href="{{ button_url }}"
+              class="tw-flex-none tw-rounded-full tw-px-3.5 tw-py-1 tw-text-sm tw-font-semibold tw-shadow-sm tw-transition-colors {{ btn_class }}"
+            >
+              {{ button_text }}
+              <span aria-hidden="true" class="tw-ml-1">&rarr;</span>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+
+      {% if show_dismiss %}
+        <button
+          type="button"
+          class="tw-absolute tw-right-4 tw-top-1/2 tw--translate-y-1/2 tw-p-2 {{ text_muted_class }} hover:{{ text_class }} tw-transition-colors"
+          onclick="this.closest('[data-promo-banner]').remove()"
+          aria-label="{{ 'general.close' | t }}"
+        >
+          {% render 'icon', name: 'x-mark', class: 'tw-w-5 tw-h-5' %}
+        </button>
+      {% endif %}
+    </div>
+
+  {% when 'hero' %}
+    {%- comment -%} Banner hero con imagen de fondo {%- endcomment -%}
+    <section
+      class="tw-relative tw-overflow-hidden {{ bg_class }}"
+      id="PromoBanner-{{ section.id }}"
+      style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;"
+      {{ section.shopify_attributes }}
+    >
+      {%- comment -%} Background image {%- endcomment -%}
+      {% if bg_image != blank %}
+        <div aria-hidden="true" class="tw-absolute tw-inset-0">
+          <div class="tw-absolute tw-inset-0 tw-mx-auto tw-max-w-7xl tw-overflow-hidden xl:tw-px-8">
+            <img
+              src="{{ bg_image | image_url: width: 1920 }}"
+              alt=""
+              class="tw-size-full tw-object-cover"
+              loading="lazy"
+            >
+          </div>
+          <div class="tw-absolute tw-inset-0 tw-bg-white/{{ overlay_opacity }}"></div>
+          <div class="tw-absolute tw-inset-0 tw-bg-gradient-to-t tw-from-white tw-via-white/50"></div>
+        </div>
+      {% endif %}
+
+      <div class="tw-relative tw-mx-auto tw-max-w-7xl tw-px-4 sm:tw-px-6 lg:tw-px-8">
+        <div class="tw-mx-auto tw-max-w-2xl tw-text-center lg:tw-max-w-none">
+          {% if heading != blank %}
+            <h2 class="tw-text-4xl tw-font-bold tw-tracking-tight {{ text_class }} sm:tw-text-5xl lg:tw-text-6xl">
+              {{ heading }}
+            </h2>
+          {% endif %}
+
+          {% if subheading != blank %}
+            <p class="tw-mx-auto tw-mt-4 tw-max-w-xl tw-text-xl {{ text_muted_class }}">
+              {{ subheading }}
+            </p>
+          {% endif %}
+
+          {% if button_text != blank and button_url != blank %}
+            <a
+              href="{{ button_url }}"
+              class="tw-mt-6 tw-inline-block tw-rounded-md tw-border tw-border-transparent tw-px-8 tw-py-3 tw-font-medium tw-transition-colors {{ btn_class }}"
+            >
+              {{ button_text }}
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </section>
+
+  {% when 'split' %}
+    {%- comment -%} Layout dividido con imagen {%- endcomment -%}
+    <section
+      class="{{ bg_class }}"
+      id="PromoBanner-{{ section.id }}"
+      style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;"
+      {{ section.shopify_attributes }}
+    >
+      <div class="tw-mx-auto tw-max-w-7xl tw-px-4 sm:tw-px-6 lg:tw-px-8">
+        <div class="tw-grid tw-grid-cols-1 tw-items-center tw-gap-8 lg:tw-grid-cols-2 lg:tw-gap-16">
+          {%- comment -%} Contenido {%- endcomment -%}
+          <div class="{% if section.settings.image_position == 'left' %}lg:tw-order-2{% endif %}">
+            {% if heading != blank %}
+              <h2 class="tw-text-3xl tw-font-bold tw-tracking-tight {{ text_class }} sm:tw-text-4xl">
+                {{ heading }}
+              </h2>
+            {% endif %}
+
+            {% if subheading != blank %}
+              <p class="tw-mt-4 tw-text-lg {{ text_muted_class }}">
+                {{ subheading }}
+              </p>
+            {% endif %}
+
+            {% if button_text != blank and button_url != blank %}
+              <a
+                href="{{ button_url }}"
+                class="tw-mt-6 tw-inline-flex tw-items-center tw-gap-2 tw-rounded-md tw-px-6 tw-py-3 tw-font-semibold tw-transition-colors {{ btn_class }}"
+              >
+                {{ button_text }}
+                {% render 'icon', name: 'arrow-right', class: 'tw-w-4 tw-h-4' %}
+              </a>
+            {% endif %}
+          </div>
+
+          {%- comment -%} Imagen {%- endcomment -%}
+          <div class="{% if section.settings.image_position == 'left' %}lg:tw-order-1{% endif %}">
+            {% if bg_image != blank %}
+              <div class="tw-aspect-[4/3] tw-overflow-hidden tw-rounded-xl lg:tw-aspect-[3/2]">
+                <img
+                  src="{{ bg_image | image_url: width: 800 }}"
+                  alt="{{ bg_image.alt | escape }}"
+                  class="tw-size-full tw-object-cover"
+                  loading="lazy"
+                  width="{{ bg_image.width }}"
+                  height="{{ bg_image.height }}"
+                >
+              </div>
+            {% else %}
+              <div class="tw-aspect-[4/3] tw-rounded-xl tw-bg-velox-100 lg:tw-aspect-[3/2]"></div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </section>
+
+  {% when 'floating' %}
+    {%- comment -%} Banner flotante en la parte inferior {%- endcomment -%}
+    <div
+      class="tw-fixed tw-inset-x-0 tw-bottom-0 tw-z-40 tw-p-4 sm:tw-p-6"
+      id="PromoBanner-{{ section.id }}"
+      data-promo-banner
+      {{ section.shopify_attributes }}
+    >
+      <div class="tw-mx-auto tw-max-w-xl tw-rounded-xl {{ bg_class }} tw-p-4 tw-shadow-lg tw-ring-1 tw-ring-velox-900/10 sm:tw-p-6">
+        <div class="tw-flex tw-flex-col tw-items-center tw-gap-4 sm:tw-flex-row sm:tw-gap-6">
+          <div class="tw-flex-1 tw-text-center sm:tw-text-left">
+            {% if heading != blank %}
+              <p class="tw-font-semibold {{ text_class }}">{{ heading }}</p>
+            {% endif %}
+            {% if subheading != blank %}
+              <p class="tw-mt-1 tw-text-sm {{ text_muted_class }}">{{ subheading }}</p>
+            {% endif %}
+          </div>
+
+          <div class="tw-flex tw-items-center tw-gap-3">
+            {% if button_text != blank and button_url != blank %}
+              <a
+                href="{{ button_url }}"
+                class="tw-rounded-md tw-px-4 tw-py-2 tw-text-sm tw-font-semibold tw-transition-colors {{ btn_class }}"
+              >
+                {{ button_text }}
+              </a>
+            {% endif %}
+
+            {% if show_dismiss %}
+              <button
+                type="button"
+                class="tw-rounded-md tw-p-2 {{ text_muted_class }} hover:{{ text_class }} tw-transition-colors"
+                onclick="this.closest('[data-promo-banner]').remove()"
+                aria-label="{{ 'general.close' | t }}"
+              >
+                {% render 'icon', name: 'x-mark', class: 'tw-w-5 tw-h-5' %}
+              </button>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+  {% else %}
+    {%- comment -%} Centered (default) - Banner centrado simple {%- endcomment -%}
+    <section
+      class="{{ bg_class }}"
+      id="PromoBanner-{{ section.id }}"
+      style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;"
+      {{ section.shopify_attributes }}
+    >
+      <div class="tw-mx-auto tw-max-w-7xl tw-px-4 sm:tw-px-6 lg:tw-px-8">
+        <div class="tw-mx-auto tw-max-w-2xl tw-text-center">
+          {% if heading != blank %}
+            <h2 class="tw-text-3xl tw-font-bold tw-tracking-tight {{ text_class }} sm:tw-text-4xl">
+              {{ heading }}
+            </h2>
+          {% endif %}
+
+          {% if subheading != blank %}
+            <p class="tw-mt-4 tw-text-lg {{ text_muted_class }}">
+              {{ subheading }}
+            </p>
+          {% endif %}
+
+          {% if button_text != blank and button_url != blank %}
+            <a
+              href="{{ button_url }}"
+              class="tw-mt-6 tw-inline-flex tw-items-center tw-gap-2 tw-rounded-md tw-px-6 tw-py-3 tw-font-semibold tw-transition-colors {{ btn_class }}"
+            >
+              {{ button_text }}
+              {% render 'icon', name: 'arrow-right', class: 'tw-w-4 tw-h-4' %}
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </section>
+{% endcase %}
+
+{% schema %}
+{
+  "name": "Promo banner",
+  "tag": "section",
+  "class": "section-promo-banner",
+  "settings": [
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Diseño",
+      "options": [
+        { "value": "bar", "label": "Barra de anuncio" },
+        { "value": "centered", "label": "Centrado" },
+        { "value": "hero", "label": "Hero con imagen" },
+        { "value": "split", "label": "Dividido con imagen" },
+        { "value": "floating", "label": "Flotante (inferior)" }
+      ],
+      "default": "centered"
+    },
+    {
+      "type": "header",
+      "content": "Contenido"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titulo",
+      "default": "Oferta especial"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subtitulo",
+      "default": "Hasta 50% de descuento en productos seleccionados"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Texto del botón",
+      "default": "Ver ofertas"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "URL del botón"
+    },
+    {
+      "type": "header",
+      "content": "Apariencia"
+    },
+    {
+      "type": "select",
+      "id": "background_color",
+      "label": "Color de fondo",
+      "options": [
+        { "value": "white", "label": "Blanco" },
+        { "value": "light", "label": "Gris claro" },
+        { "value": "dark", "label": "Oscuro" },
+        { "value": "accent", "label": "Color de acento" }
+      ],
+      "default": "accent"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Imagen de fondo",
+      "info": "Solo para diseño Hero y Dividido"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Opacidad del overlay",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 75,
+      "info": "Solo para diseño Hero"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Posición de imagen",
+      "options": [
+        { "value": "left", "label": "Izquierda" },
+        { "value": "right", "label": "Derecha" }
+      ],
+      "default": "right",
+      "info": "Solo para diseño Dividido"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dismiss",
+      "label": "Mostrar botón cerrar",
+      "default": true,
+      "info": "Solo para Barra y Flotante"
+    },
+    {
+      "type": "header",
+      "content": "Espaciado"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding superior",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 48,
+      "info": "No aplica para Barra y Flotante"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding inferior",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 48,
+      "info": "No aplica para Barra y Flotante"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Promo banner",
+      "settings": {
+        "layout": "centered",
+        "heading": "Oferta especial de temporada",
+        "subheading": "Hasta 50% de descuento en productos seleccionados. Por tiempo limitado.",
+        "button_text": "Ver ofertas",
+        "background_color": "accent"
+      }
+    }
+  ]
+}
+{% endschema %}

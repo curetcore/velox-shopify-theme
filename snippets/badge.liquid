@@ -1,0 +1,74 @@
+{% comment %}
+  Velox Badge Component
+
+  Uso:
+  {% render 'badge', type: 'sale', text: '-20%' %}
+  {% render 'badge', type: 'new' %}
+  {% render 'badge', product: product %}
+
+  Tipos: sale, new, soldout, custom
+  Posiciones: top-left (default), top-right, bottom-left, bottom-right
+{% endcomment %}
+
+{% liquid
+  assign badge_type = type | default: 'custom'
+  assign badge_position = position | default: 'top-left'
+
+  # Auto-detectar tipo basado en producto
+  if product
+    if product.available == false
+      assign badge_type = 'soldout'
+      assign badge_text = 'products.product.sold_out' | t
+    elsif product.compare_at_price > product.price
+      assign badge_type = 'sale'
+      assign savings = product.compare_at_price | minus: product.price
+      assign savings_percent = savings | times: 100.0 | divided_by: product.compare_at_price | round
+      assign badge_text = '-' | append: savings_percent | append: '%'
+    else
+      # Verificar si es producto nuevo (creado en los últimos 30 días)
+      assign thirty_days_ago = 'now' | date: '%s' | minus: 2592000
+      assign product_created_timestamp = product.created_at | date: '%s'
+      if product_created_timestamp > thirty_days_ago
+        assign badge_type = 'new'
+        assign badge_text = 'products.product.new' | t | default: 'New'
+      endif
+    endif
+  else
+    assign badge_text = text | default: badge_type | capitalize
+  endif
+
+  # Si no hay badge para mostrar, salir
+  unless badge_text
+    break
+  endunless
+%}
+
+{% capture position_classes %}
+  {% case badge_position %}
+    {% when 'top-left' %}
+      tw-top-2 tw-left-2
+    {% when 'top-right' %}
+      tw-top-2 tw-right-2
+    {% when 'bottom-left' %}
+      tw-bottom-2 tw-left-2
+    {% when 'bottom-right' %}
+      tw-bottom-2 tw-right-2
+  {% endcase %}
+{% endcapture %}
+
+{% capture style_classes %}
+  {% case badge_type %}
+    {% when 'sale' %}
+      tw-bg-accent tw-text-white
+    {% when 'new' %}
+      tw-bg-velox-900 tw-text-white
+    {% when 'soldout' %}
+      tw-bg-velox-400 tw-text-white
+    {% when 'custom' %}
+      tw-bg-velox-100 tw-text-velox-900
+  {% endcase %}
+{% endcapture %}
+
+<span class="tw-absolute {{ position_classes | strip }} tw-px-2 tw-py-1 tw-text-xs tw-font-semibold tw-uppercase tw-tracking-wide tw-z-10 {{ style_classes | strip }}">
+  {{ badge_text }}
+</span>

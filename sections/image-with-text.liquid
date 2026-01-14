@@ -1,0 +1,236 @@
+{% comment %}
+  Velox Image with Text Section
+  Bloque promocional con imagen y texto lado a lado.
+{% endcomment %}
+
+{% liquid
+  assign image_position = section.settings.image_position
+  assign desktop_layout = section.settings.desktop_layout
+%}
+
+<section class="tw-py-12 md:tw-py-16 lg:tw-py-20 {% if section.settings.background_color == 'secondary' %}tw-bg-velox-50{% endif %}">
+  <div class="tw-max-w-7xl tw-mx-auto tw-px-4 sm:tw-px-6 lg:tw-px-8">
+    <div class="tw-grid tw-grid-cols-1 lg:tw-grid-cols-2 tw-gap-8 lg:tw-gap-12 tw-items-center">
+      {%- comment -%} Imagen {%- endcomment -%}
+      <div class="{% if image_position == 'right' %}lg:tw-order-2{% endif %}">
+        {% if section.settings.image != blank %}
+          <div class="tw-relative tw-overflow-hidden tw-rounded-lg {% if section.settings.image_ratio == 'square' %}tw-aspect-square{% elsif section.settings.image_ratio == 'portrait' %}tw-aspect-[3/4]{% else %}tw-aspect-[4/3]{% endif %}">
+            {{ section.settings.image | image_url: width: 1000 | image_tag:
+              class: 'tw-w-full tw-h-full tw-object-cover tw-object-center',
+              loading: 'lazy',
+              sizes: '(min-width: 1024px) 50vw, 100vw',
+              widths: '500, 750, 1000'
+            }}
+          </div>
+        {% else %}
+          <div class="tw-bg-velox-100 tw-rounded-lg {% if section.settings.image_ratio == 'square' %}tw-aspect-square{% elsif section.settings.image_ratio == 'portrait' %}tw-aspect-[3/4]{% else %}tw-aspect-[4/3]{% endif %} tw-flex tw-items-center tw-justify-center">
+            {% render 'icon', name: 'photo', class: 'tw-w-20 tw-h-20 tw-text-velox-300' %}
+          </div>
+        {% endif %}
+      </div>
+
+      {%- comment -%} Contenido {%- endcomment -%}
+      <div class="{% if image_position == 'right' %}lg:tw-order-1{% endif %} {% if section.settings.text_alignment == 'center' %}tw-text-center{% endif %}">
+        {% if section.settings.eyebrow != blank %}
+          <p class="tw-text-sm tw-font-semibold tw-uppercase tw-tracking-wider tw-text-velox-accent tw-mb-3">
+            {{ section.settings.eyebrow }}
+          </p>
+        {% endif %}
+
+        {% if section.settings.title != blank %}
+          <h2 class="tw-text-2xl md:tw-text-3xl lg:tw-text-4xl tw-font-bold tw-text-velox-900">
+            {{ section.settings.title }}
+          </h2>
+        {% endif %}
+
+        {% if section.settings.text != blank %}
+          <div class="tw-mt-4 tw-text-velox-600 tw-prose tw-prose-velox">
+            {{ section.settings.text }}
+          </div>
+        {% endif %}
+
+        {%- comment -%} Features list {%- endcomment -%}
+        {% if section.blocks.size > 0 %}
+          <ul class="tw-mt-6 tw-space-y-3">
+            {% for block in section.blocks %}
+              {% if block.type == 'feature' %}
+                <li class="tw-flex tw-items-start tw-gap-3" {{ block.shopify_attributes }}>
+                  {% render 'icon', name: 'check-circle', class: 'tw-w-5 tw-h-5 tw-text-velox-accent tw-flex-shrink-0 tw-mt-0.5' %}
+                  <span class="tw-text-velox-700">{{ block.settings.text }}</span>
+                </li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+        {%- comment -%} Botones {%- endcomment -%}
+        {% if section.settings.button_1_text != blank or section.settings.button_2_text != blank %}
+          <div class="tw-mt-8 tw-flex tw-flex-wrap tw-gap-4 {% if section.settings.text_alignment == 'center' %}tw-justify-center{% endif %}">
+            {% if section.settings.button_1_text != blank %}
+              {% render 'button',
+                label: section.settings.button_1_text,
+                href: section.settings.button_1_link,
+                style: section.settings.button_1_style,
+                size: 'lg'
+              %}
+            {% endif %}
+
+            {% if section.settings.button_2_text != blank %}
+              <a href="{{ section.settings.button_2_link }}" class="tw-inline-flex tw-items-center tw-text-velox-900 tw-font-medium hover:tw-text-velox-accent tw-transition-colors">
+                {{ section.settings.button_2_text }}
+                {% render 'icon', name: 'arrow-right', class: 'tw-w-5 tw-h-5 tw-ml-2' %}
+              </a>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Image with text",
+  "tag": "section",
+  "class": "velox-image-with-text",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Imagen"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Proporción de imagen",
+      "options": [
+        { "value": "landscape", "label": "Horizontal (4:3)" },
+        { "value": "square", "label": "Cuadrada (1:1)" },
+        { "value": "portrait", "label": "Vertical (3:4)" }
+      ],
+      "default": "landscape"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Posición de imagen (desktop)",
+      "options": [
+        { "value": "left", "label": "Izquierda" },
+        { "value": "right", "label": "Derecha" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Contenido"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Texto superior"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "default": "Calidad artesanal"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Texto",
+      "default": "<p>Cada par de zapatos está hecho a mano con los mejores materiales, garantizando durabilidad y comodidad excepcionales.</p>"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Alineación del texto",
+      "options": [
+        { "value": "left", "label": "Izquierda" },
+        { "value": "center", "label": "Centro" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Botón primario"
+    },
+    {
+      "type": "text",
+      "id": "button_1_text",
+      "label": "Texto",
+      "default": "Descubrir más"
+    },
+    {
+      "type": "url",
+      "id": "button_1_link",
+      "label": "Enlace"
+    },
+    {
+      "type": "select",
+      "id": "button_1_style",
+      "label": "Estilo",
+      "options": [
+        { "value": "primary", "label": "Primario" },
+        { "value": "secondary", "label": "Secundario" },
+        { "value": "accent", "label": "Acento" },
+        { "value": "outline", "label": "Outline" }
+      ],
+      "default": "primary"
+    },
+    {
+      "type": "header",
+      "content": "Botón secundario"
+    },
+    {
+      "type": "text",
+      "id": "button_2_text",
+      "label": "Texto"
+    },
+    {
+      "type": "url",
+      "id": "button_2_link",
+      "label": "Enlace"
+    },
+    {
+      "type": "header",
+      "content": "Estilo"
+    },
+    {
+      "type": "select",
+      "id": "background_color",
+      "label": "Color de fondo",
+      "options": [
+        { "value": "transparent", "label": "Transparente" },
+        { "value": "secondary", "label": "Secundario" }
+      ],
+      "default": "transparent"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Característica",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texto",
+          "default": "Materiales premium"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image with text",
+      "category": "Image",
+      "blocks": [
+        { "type": "feature", "settings": { "text": "Materiales premium" } },
+        { "type": "feature", "settings": { "text": "Hecho a mano" } },
+        { "type": "feature", "settings": { "text": "Envío gratuito" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,273 @@
+{% comment %}
+  Velox Featured Product Section
+  Destaca un producto individual con imagen grande y detalles.
+{% endcomment %}
+
+{% liquid
+  assign product = section.settings.product
+  assign current_variant = product.selected_or_first_available_variant
+  assign featured_image = product.featured_media
+%}
+
+<section class="tw-py-12 md:tw-py-16 lg:tw-py-20 {% if section.settings.background_color == 'secondary' %}tw-bg-velox-50{% endif %}">
+  <div class="tw-max-w-7xl tw-mx-auto tw-px-4 sm:tw-px-6 lg:tw-px-8">
+    {% if product %}
+      <div class="tw-grid tw-grid-cols-1 lg:tw-grid-cols-2 tw-gap-8 lg:tw-gap-16 tw-items-center">
+        {%- comment -%} Imagen del producto {%- endcomment -%}
+        <div class="{% if section.settings.image_position == 'right' %}lg:tw-order-2{% endif %}">
+          <div class="tw-relative tw-overflow-hidden tw-rounded-lg tw-bg-velox-50">
+            {% if featured_image %}
+              {{ featured_image | image_url: width: 1200 | image_tag:
+                class: 'tw-w-full tw-h-auto tw-object-contain',
+                loading: 'lazy',
+                sizes: '(min-width: 1024px) 50vw, 100vw',
+                widths: '600, 900, 1200'
+              }}
+            {% else %}
+              <div class="tw-aspect-square tw-flex tw-items-center tw-justify-center">
+                {% render 'icon', name: 'shopping-bag', class: 'tw-w-24 tw-h-24 tw-text-velox-300' %}
+              </div>
+            {% endif %}
+
+            {%- comment -%} Badges {%- endcomment -%}
+            <div class="tw-absolute tw-top-4 tw-left-4 tw-flex tw-flex-col tw-gap-2">
+              {% if product.compare_at_price > product.price %}
+                {% render 'badge', text: 'products.product.sale' | t, style: 'sale' %}
+              {% endif %}
+              {% if product.available == false %}
+                {% render 'badge', text: 'products.product.sold_out' | t, style: 'sold-out' %}
+              {% endif %}
+            </div>
+          </div>
+
+          {%- comment -%} Thumbnails {%- endcomment -%}
+          {% if product.media.size > 1 and section.settings.show_thumbnails %}
+            <div class="tw-flex tw-gap-2 tw-mt-4 tw-overflow-x-auto tw-pb-2">
+              {% for media in product.media limit: 5 %}
+                <button class="tw-flex-shrink-0 tw-w-16 tw-h-16 tw-rounded-md tw-overflow-hidden tw-border-2 tw-border-transparent hover:tw-border-velox-accent tw-transition-colors">
+                  {{ media | image_url: width: 150 | image_tag:
+                    class: 'tw-w-full tw-h-full tw-object-cover',
+                    loading: 'lazy'
+                  }}
+                </button>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+
+        {%- comment -%} Información del producto {%- endcomment -%}
+        <div class="{% if section.settings.image_position == 'right' %}lg:tw-order-1{% endif %}">
+          {% if section.settings.eyebrow != blank %}
+            <p class="tw-text-sm tw-font-semibold tw-uppercase tw-tracking-wider tw-text-velox-accent tw-mb-2">
+              {{ section.settings.eyebrow }}
+            </p>
+          {% endif %}
+
+          {% if section.settings.show_vendor and product.vendor %}
+            <p class="tw-text-sm tw-text-velox-500 tw-mb-1">{{ product.vendor }}</p>
+          {% endif %}
+
+          <h2 class="tw-text-2xl md:tw-text-3xl lg:tw-text-4xl tw-font-bold tw-text-velox-900">
+            {{ product.title }}
+          </h2>
+
+          {%- comment -%} Precio {%- endcomment -%}
+          <div class="tw-mt-4">
+            {% render 'price',
+              product: product,
+              use_variant: true,
+              show_badges: false,
+              price_class: 'tw-text-2xl'
+            %}
+          </div>
+
+          {%- comment -%} Descripción {%- endcomment -%}
+          {% if section.settings.show_description and product.description != blank %}
+            <div class="tw-mt-6 tw-text-velox-600 tw-prose tw-prose-velox">
+              {{ product.description | truncate: 300 }}
+            </div>
+          {% endif %}
+
+          {%- comment -%} Opciones de variante (simplificado) {%- endcomment -%}
+          {% if product.has_only_default_variant == false %}
+            <div class="tw-mt-6 tw-space-y-4">
+              {% for option in product.options_with_values %}
+                <div>
+                  <label class="tw-block tw-text-sm tw-font-medium tw-text-velox-900 tw-mb-2">
+                    {{ option.name }}
+                  </label>
+                  <div class="tw-flex tw-flex-wrap tw-gap-2">
+                    {% for value in option.values %}
+                      <button class="tw-px-4 tw-py-2 tw-text-sm tw-border tw-border-velox-200 tw-rounded-md hover:tw-border-velox-900 tw-transition-colors {% if option.selected_value == value %}tw-border-velox-900 tw-bg-velox-900 tw-text-white{% endif %}">
+                        {{ value }}
+                      </button>
+                    {% endfor %}
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          {%- comment -%} Botón de agregar al carrito {%- endcomment -%}
+          <div class="tw-mt-8">
+            <a href="{{ product.url }}" class="tw-inline-flex tw-w-full sm:tw-w-auto">
+              {% render 'button',
+                label: section.settings.button_text | default: 'products.product.add_to_cart' | t,
+                href: product.url,
+                style: 'accent',
+                size: 'lg',
+                full_width: true
+              %}
+            </a>
+          </div>
+
+          {%- comment -%} USPs {%- endcomment -%}
+          {% if section.blocks.size > 0 %}
+            <div class="tw-mt-8 tw-pt-8 tw-border-t tw-border-velox-200">
+              <ul class="tw-space-y-3">
+                {% for block in section.blocks %}
+                  <li class="tw-flex tw-items-center tw-gap-3 tw-text-sm tw-text-velox-600" {{ block.shopify_attributes }}>
+                    {% render 'icon', name: block.settings.icon | default: 'check', class: 'tw-w-5 tw-h-5 tw-text-velox-accent tw-flex-shrink-0' %}
+                    {{ block.settings.text }}
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+    {% else %}
+      {%- comment -%} Placeholder {%- endcomment -%}
+      <div class="tw-grid tw-grid-cols-1 lg:tw-grid-cols-2 tw-gap-8 lg:tw-gap-16 tw-items-center">
+        <div class="tw-bg-velox-100 tw-rounded-lg tw-aspect-square tw-flex tw-items-center tw-justify-center">
+          {% render 'icon', name: 'shopping-bag', class: 'tw-w-24 tw-h-24 tw-text-velox-300' %}
+        </div>
+        <div>
+          <div class="tw-h-6 tw-bg-velox-100 tw-rounded tw-w-3/4 tw-mb-4"></div>
+          <div class="tw-h-8 tw-bg-velox-100 tw-rounded tw-w-1/2 tw-mb-6"></div>
+          <div class="tw-h-4 tw-bg-velox-100 tw-rounded tw-w-full tw-mb-2"></div>
+          <div class="tw-h-4 tw-bg-velox-100 tw-rounded tw-w-5/6"></div>
+        </div>
+      </div>
+      <p class="tw-text-center tw-text-velox-500 tw-mt-8">
+        Selecciona un producto en el editor del tema.
+      </p>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured product",
+  "tag": "section",
+  "class": "velox-featured-product",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Producto"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Texto superior",
+      "default": "Producto destacado"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Posición de imagen (desktop)",
+      "options": [
+        { "value": "left", "label": "Izquierda" },
+        { "value": "right", "label": "Derecha" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Información del producto"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Mostrar marca",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Mostrar descripción",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_thumbnails",
+      "label": "Mostrar miniaturas",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Botón"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Texto del botón",
+      "default": "Ver producto"
+    },
+    {
+      "type": "header",
+      "content": "Estilo"
+    },
+    {
+      "type": "select",
+      "id": "background_color",
+      "label": "Color de fondo",
+      "options": [
+        { "value": "transparent", "label": "Transparente" },
+        { "value": "secondary", "label": "Secundario" }
+      ],
+      "default": "transparent"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "usp",
+      "name": "Beneficio",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icono",
+          "options": [
+            { "value": "check", "label": "Check" },
+            { "value": "truck", "label": "Envío" },
+            { "value": "shield-check", "label": "Garantía" },
+            { "value": "arrow-path", "label": "Devoluciones" },
+            { "value": "gift", "label": "Regalo" }
+          ],
+          "default": "check"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texto",
+          "default": "Envío gratis en este producto"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured product",
+      "category": "Product",
+      "blocks": [
+        { "type": "usp", "settings": { "icon": "truck", "text": "Envío gratis" } },
+        { "type": "usp", "settings": { "icon": "shield-check", "text": "Garantía de 2 años" } },
+        { "type": "usp", "settings": { "icon": "arrow-path", "text": "Devolución en 30 días" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

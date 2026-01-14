@@ -1,0 +1,136 @@
+{% comment %}
+  Velox Product Card Component
+
+  Uso:
+  {% render 'product-card', product: product %}
+  {% render 'product-card', product: product, show_vendor: true, show_quick_view: true %}
+
+  Opciones:
+  - show_vendor: Mostrar marca (default: false)
+  - show_quick_view: Botón de vista rápida (default: false)
+  - show_swatches: Mostrar swatches de color (default: true)
+  - show_second_image: Mostrar segunda imagen en hover (default: true)
+  - image_aspect: Aspect ratio de imagen (default: 'product')
+{% endcomment %}
+
+{% liquid
+  assign show_vendor_name = show_vendor | default: false
+  assign show_quick_view_btn = show_quick_view | default: false
+  assign show_color_swatches = show_swatches | default: true
+  assign show_hover_image = show_second_image | default: true
+  assign card_aspect = image_aspect | default: 'product'
+
+  assign featured_image = product.featured_image
+  assign second_image = product.images[1]
+
+  # Obtener variantes de color si existen
+  assign color_option = product.options_by_name['Color']
+  assign has_colors = false
+  if color_option and show_color_swatches
+    assign has_colors = true
+    assign color_values = color_option.values
+  endif
+%}
+
+<article class="tw-product-card tw-group tw-relative">
+  {%- comment -%} Imagen del producto {%- endcomment -%}
+  <a href="{{ product.url }}" class="tw-product-card-image tw-block tw-relative tw-overflow-hidden tw-bg-velox-100">
+    {%- comment -%} Badge (sale, new, soldout) {%- endcomment -%}
+    {% render 'badge', product: product %}
+
+    {%- comment -%} Imagen principal {%- endcomment -%}
+    {% if featured_image %}
+      {% render 'image',
+        image: featured_image,
+        aspect: card_aspect,
+        width: 600,
+        crop: 'center',
+        alt: product.title,
+        class: 'tw-transition-opacity tw-duration-300'
+      %}
+
+      {%- comment -%} Segunda imagen en hover {%- endcomment -%}
+      {% if second_image and show_hover_image %}
+        <div class="tw-absolute tw-inset-0 tw-opacity-0 group-hover:tw-opacity-100 tw-transition-opacity tw-duration-300">
+          {% render 'image',
+            image: second_image,
+            aspect: card_aspect,
+            width: 600,
+            crop: 'center',
+            alt: product.title
+          %}
+        </div>
+      {% endif %}
+    {% else %}
+      {%- comment -%} Placeholder si no hay imagen {%- endcomment -%}
+      <div class="tw-aspect-product tw-w-full tw-bg-velox-100 tw-flex tw-items-center tw-justify-center">
+        {% render 'icon', name: 'eye', class: 'tw-w-12 tw-h-12 tw-text-velox-300' %}
+      </div>
+    {% endif %}
+
+    {%- comment -%} Quick View overlay {%- endcomment -%}
+    {% if show_quick_view_btn %}
+      <div class="tw-absolute tw-inset-0 tw-flex tw-items-center tw-justify-center tw-bg-velox-900/30 tw-opacity-0 group-hover:tw-opacity-100 tw-transition-opacity tw-duration-300">
+        <button
+          type="button"
+          class="tw-px-4 tw-py-2 tw-bg-white tw-text-velox-900 tw-text-sm tw-font-medium tw-rounded-md tw-shadow-lg hover:tw-bg-velox-50 tw-transition-colors tw-flex tw-items-center tw-gap-2"
+          data-quick-view-trigger
+          data-product-handle="{{ product.handle }}"
+          aria-label="{{ 'products.product.quick_view' | t | default: 'Vista rápida' }}"
+        >
+          {% render 'icon', name: 'eye', class: 'tw-w-4 tw-h-4' %}
+          {{ 'products.product.quick_view' | t | default: 'Vista rápida' }}
+        </button>
+      </div>
+    {% endif %}
+  </a>
+
+  {%- comment -%} Información del producto {%- endcomment -%}
+  <div class="tw-mt-4 tw-space-y-2">
+    {%- comment -%} Vendor {%- endcomment -%}
+    {% if show_vendor_name and product.vendor %}
+      <p class="tw-text-xs tw-text-velox-500 tw-uppercase tw-tracking-wide">
+        {{ product.vendor }}
+      </p>
+    {% endif %}
+
+    {%- comment -%} Título {%- endcomment -%}
+    <h3 class="tw-text-sm tw-font-medium tw-text-velox-900">
+      <a href="{{ product.url }}" class="hover:tw-underline">
+        {{ product.title }}
+      </a>
+    </h3>
+
+    {%- comment -%} Precio {%- endcomment -%}
+    {% render 'price', product: product %}
+
+    {%- comment -%} Swatches de color {%- endcomment -%}
+    {% if has_colors and color_values.size > 1 %}
+      <div class="tw-flex tw-items-center tw-gap-1 tw-mt-2">
+        {% for color in color_values limit: 5 %}
+          {% assign color_handle = color | handleize %}
+          <button
+            type="button"
+            class="tw-color-swatch"
+            style="background-color: {{ color_handle }};"
+            title="{{ color }}"
+            aria-label="{{ color }}"
+          ></button>
+        {% endfor %}
+        {% if color_values.size > 5 %}
+          <span class="tw-text-xs tw-text-velox-500">+{{ color_values.size | minus: 5 }}</span>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+
+  {%- comment -%} Wishlist button {%- endcomment -%}
+  <button
+    type="button"
+    class="tw-absolute tw-top-2 tw-right-2 tw-p-2 tw-bg-white tw-rounded-full tw-shadow-sm tw-opacity-0 group-hover:tw-opacity-100 tw-transition-opacity tw-duration-200 tw-z-10 hover:tw-bg-velox-50"
+    data-wishlist-add="{{ product.id }}"
+    aria-label="{{ 'products.product.add_to_wishlist' | t | default: 'Add to wishlist' }}"
+  >
+    {% render 'icon', name: 'heart', class: 'tw-w-5 tw-h-5 tw-text-velox-600' %}
+  </button>
+</article>

@@ -1,35 +1,37 @@
 {% doc %}
-  Renders a responsive image that might be wrapped in a link.
+  Velox Image Component
+  Renderiza imágenes responsivas con lazy loading y srcset optimizado.
 
-  When `width`, `height` and `crop` are provided, the image will be rendered
-  with a fixed aspect ratio.
-
-  Serves as an example of how to use the `image_url` filter and `image_tag` filter
-  as well as how you can use LiquidDoc to document your code.
-
-  @param {image} image - The image to be rendered
-  @param {string} [url] - An optional destination URL for the image
-  @param {string} [class] - Optional class to be added to the image wrapper
-  @param {number} [width] - The highest resolution width of the image to be rendered
-  @param {number} [height] - The highest resolution height of the image to be rendered
-  @param {string} [crop] - The crop position of the image
+  @param {image} image - La imagen a renderizar
+  @param {string} [url] - URL de destino opcional
+  @param {string} [class] - Clases CSS adicionales
+  @param {number} [width] - Ancho máximo de la imagen
+  @param {number} [height] - Alto máximo (para aspect ratio fijo)
+  @param {string} [crop] - Posición de recorte: center, top, bottom, left, right
+  @param {string} [aspect] - Aspect ratio: square, product (3/4), wide (4/3), video (16/9)
+  @param {boolean} [lazy] - Lazy loading (default: true)
+  @param {string} [alt] - Alt text personalizado
+  @param {string} [sizes] - Sizes attribute para srcset
 
   @example
   {% render 'image', image: product.featured_image %}
-  {% render 'image', image: product.featured_image, url: product.url %}
+  {% render 'image', image: product.featured_image, aspect: 'product', lazy: true %}
   {% render 'image',
-    class: 'product__image',
     image: product.featured_image,
     url: product.url,
-    width: 1200,
-    height: 800,
-    crop: 'center',
+    width: 800,
+    aspect: 'product',
+    crop: 'center'
   %}
 {% enddoc %}
 
 {% liquid
+  assign lazy_load = lazy | default: true
+  assign image_alt = alt | default: image.alt | escape
+  assign image_crop = crop | default: 'center'
+
   unless height
-    assign width = width | default: image.width
+    assign width = width | default: image.width | at_most: 1600
   endunless
 
   if url
@@ -37,28 +39,36 @@
   else
     assign wrapper = 'div'
   endif
+
+  # Determinar aspect ratio class
+  case aspect
+    when 'square'
+      assign aspect_class = 'tw-aspect-square'
+    when 'product'
+      assign aspect_class = 'tw-aspect-product'
+    when 'wide'
+      assign aspect_class = 'tw-aspect-product-wide'
+    when 'video'
+      assign aspect_class = 'tw-aspect-video'
+    else
+      assign aspect_class = ''
+  endcase
+
+  # Sizes por defecto si no se especifica
+  assign image_sizes = sizes | default: '(min-width: 1200px) 400px, (min-width: 750px) 50vw, 100vw'
 %}
 
 <{{ wrapper }}
-  class="image {{ class }}"
-  {% if url %}
-    href="{{ url }}"
-  {% endif %}
+  class="tw-block tw-relative tw-overflow-hidden tw-w-full {{ aspect_class }} {{ class }}"
+  {% if url %}href="{{ url }}"{% endif %}
 >
-  {{ image | image_url: width: width, height: height, crop: crop | image_tag }}
+  {{ image
+    | image_url: width: width, height: height, crop: image_crop
+    | image_tag:
+      class: 'tw-w-full tw-h-full tw-object-cover tw-object-center',
+      loading: lazy_load | default: 'lazy',
+      alt: image_alt,
+      sizes: image_sizes,
+      widths: '165, 360, 535, 750, 1100, 1500'
+  }}
 </{{ wrapper }}>
-
-{% stylesheet %}
-  .image {
-    display: block;
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-    height: auto;
-  }
-
-  .image > img {
-    width: 100%;
-    height: auto;
-  }
-{% endstylesheet %}

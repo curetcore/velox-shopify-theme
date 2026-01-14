@@ -1,0 +1,70 @@
+{% comment %}
+  Velox FAQ Item
+
+  Renderiza un item de FAQ con accordion expandible usando <details>/<summary>.
+
+  Uso:
+  {% render 'faq-item',
+    block: block,
+    text_class: 'tw-text-velox-900',
+    text_muted_class: 'tw-text-velox-600',
+    border_class: 'tw-border-velox-200',
+    index: forloop.index,
+    style: 'card'
+  %}
+{% endcomment %}
+
+{%- liquid
+  assign question = block.settings.question
+  assign answer = block.settings.answer
+  assign open_by_default = block.settings.open_by_default
+  assign text_class = text_class | default: 'tw-text-velox-900'
+  assign text_muted_class = text_muted_class | default: 'tw-text-velox-600'
+  assign border_class = border_class | default: 'tw-border-velox-200'
+  assign style = style | default: 'simple'
+-%}
+
+<div {{ block.shopify_attributes }}>
+  {% if style == 'card' %}
+    {%- comment -%} Estilo tarjeta con borde {%- endcomment -%}
+    <details
+      class="tw-group tw-rounded-lg tw-border {{ border_class }} tw-overflow-hidden"
+      {% if open_by_default %}open{% endif %}
+    >
+      <summary class="tw-flex tw-w-full tw-cursor-pointer tw-items-center tw-justify-between tw-px-6 tw-py-5 tw-text-left hover:tw-bg-velox-50 tw-transition-colors tw-select-none [&::-webkit-details-marker]:tw-hidden">
+        <dt class="tw-text-base tw-font-medium {{ text_class }}">
+          {{ question }}
+        </dt>
+        <span class="tw-ml-6 tw-flex tw-h-7 tw-w-7 tw-shrink-0 tw-items-center tw-justify-center tw-rounded-full tw-bg-velox-50 group-open:tw-bg-velox-accent/10 tw-transition-colors">
+          {% render 'icon', name: 'plus', class: 'tw-w-5 tw-h-5 tw-text-velox-600 group-open:tw-hidden' %}
+          {% render 'icon', name: 'minus', class: 'tw-w-5 tw-h-5 tw-text-velox-accent tw-hidden group-open:tw-block' %}
+        </span>
+      </summary>
+      <dd class="tw-px-6 tw-pb-5">
+        <div class="tw-prose tw-prose-sm tw-max-w-none {{ text_muted_class }}">
+          {{ answer }}
+        </div>
+      </dd>
+    </details>
+  {% else %}
+    {%- comment -%} Estilo simple con divisor {%- endcomment -%}
+    <details
+      class="tw-group tw-pt-6"
+      {% if open_by_default %}open{% endif %}
+    >
+      <summary class="tw-flex tw-w-full tw-cursor-pointer tw-items-start tw-justify-between tw-text-left tw-select-none [&::-webkit-details-marker]:tw-hidden">
+        <dt class="tw-text-base tw-font-semibold {{ text_class }}">
+          {{ question }}
+        </dt>
+        <span class="tw-ml-6 tw-flex tw-h-7 tw-shrink-0 tw-items-center">
+          {% render 'icon', name: 'chevron-down', class: 'tw-w-5 tw-h-5 tw-text-velox-400 tw-transition-transform tw-duration-200 group-open:tw-rotate-180' %}
+        </span>
+      </summary>
+      <dd class="tw-mt-4 tw-pr-12">
+        <div class="tw-prose tw-prose-sm tw-max-w-none {{ text_muted_class }}">
+          {{ answer }}
+        </div>
+      </dd>
+    </details>
+  {% endif %}
+</div>

@@ -1,0 +1,541 @@
+{% comment %}
+  Velox Contact Form Section
+
+  Sección de contacto avanzada con múltiples layouts,
+  información de contacto y formulario configurable.
+{% endcomment %}
+
+{%- liquid
+  assign layout = section.settings.layout
+  assign heading = section.settings.heading
+  assign subheading = section.settings.subheading
+  assign bg_color = section.settings.background_color
+  assign show_contact_info = section.settings.show_contact_info
+  assign show_social = section.settings.show_social
+  assign show_hours = section.settings.show_hours
+  assign success_message = section.settings.success_message
+
+  # Background color classes
+  case bg_color
+    when 'dark'
+      assign bg_class = 'tw-bg-velox-900'
+      assign text_class = 'tw-text-white'
+      assign text_muted_class = 'tw-text-velox-300'
+      assign input_bg = 'tw-bg-white/5'
+      assign input_border = 'tw-border-white/10'
+      assign input_text = 'tw-text-white'
+      assign card_bg = 'tw-bg-velox-800'
+    when 'light'
+      assign bg_class = 'tw-bg-velox-50'
+      assign text_class = 'tw-text-velox-900'
+      assign text_muted_class = 'tw-text-velox-600'
+      assign input_bg = 'tw-bg-white'
+      assign input_border = 'tw-border-velox-300'
+      assign input_text = 'tw-text-velox-900'
+      assign card_bg = 'tw-bg-white'
+    else
+      assign bg_class = 'tw-bg-white'
+      assign text_class = 'tw-text-velox-900'
+      assign text_muted_class = 'tw-text-velox-600'
+      assign input_bg = 'tw-bg-velox-50'
+      assign input_border = 'tw-border-velox-300'
+      assign input_text = 'tw-text-velox-900'
+      assign card_bg = 'tw-bg-velox-50'
+  endcase
+-%}
+
+<section
+  class="{{ bg_class }} tw-relative tw-isolate"
+  style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;"
+  {{ section.shopify_attributes }}
+>
+  {%- comment -%} Background decoration for dark mode {%- endcomment -%}
+  {% if bg_color == 'dark' %}
+    <div aria-hidden="true" class="tw-absolute tw-inset-x-0 tw--top-40 tw--z-10 tw-transform-gpu tw-overflow-hidden tw-blur-3xl sm:tw--top-80">
+      <div
+        style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"
+        class="tw-relative tw-left-1/2 tw--z-10 tw-aspect-[1155/678] tw-w-[36rem] tw-max-w-none tw--translate-x-1/2 tw-rotate-[30deg] tw-bg-gradient-to-tr tw-from-velox-accent tw-to-velox-accent/50 tw-opacity-20 sm:tw-left-[calc(50%-40rem)] sm:tw-w-[72rem]"
+      ></div>
+    </div>
+  {% endif %}
+
+  <div class="tw-mx-auto tw-max-w-7xl tw-px-4 sm:tw-px-6 lg:tw-px-8">
+    {% if layout == 'split' %}
+      {%- comment -%} Layout dividido: Info + Form {%- endcomment -%}
+      <div class="lg:tw-grid lg:tw-grid-cols-2 lg:tw-gap-x-16">
+        {%- comment -%} Columna izquierda: Info de contacto {%- endcomment -%}
+        <div class="tw-mb-12 lg:tw-mb-0">
+          {% if heading != blank %}
+            <h2 class="tw-text-3xl tw-font-bold tw-tracking-tight {{ text_class }} sm:tw-text-4xl">
+              {{ heading }}
+            </h2>
+          {% endif %}
+
+          {% if subheading != blank %}
+            <p class="tw-mt-4 tw-text-lg {{ text_muted_class }}">
+              {{ subheading }}
+            </p>
+          {% endif %}
+
+          {%- comment -%} Info de contacto {%- endcomment -%}
+          {% if show_contact_info %}
+            <dl class="tw-mt-10 tw-space-y-6">
+              {% if section.settings.email != blank %}
+                <div class="tw-flex tw-gap-x-4">
+                  <dt class="tw-flex-none">
+                    {% render 'icon', name: 'envelope', class: 'tw-h-6 tw-w-6 ' | append: text_muted_class %}
+                  </dt>
+                  <dd>
+                    <a href="mailto:{{ section.settings.email }}" class="{{ text_muted_class }} hover:{{ text_class }} tw-transition-colors">
+                      {{ section.settings.email }}
+                    </a>
+                  </dd>
+                </div>
+              {% endif %}
+
+              {% if section.settings.phone != blank %}
+                <div class="tw-flex tw-gap-x-4">
+                  <dt class="tw-flex-none">
+                    {% render 'icon', name: 'phone', class: 'tw-h-6 tw-w-6 ' | append: text_muted_class %}
+                  </dt>
+                  <dd>
+                    <a href="tel:{{ section.settings.phone | remove: ' ' }}" class="{{ text_muted_class }} hover:{{ text_class }} tw-transition-colors">
+                      {{ section.settings.phone }}
+                    </a>
+                  </dd>
+                </div>
+              {% endif %}
+
+              {% if section.settings.address != blank %}
+                <div class="tw-flex tw-gap-x-4">
+                  <dt class="tw-flex-none">
+                    {% render 'icon', name: 'map-pin', class: 'tw-h-6 tw-w-6 ' | append: text_muted_class %}
+                  </dt>
+                  <dd class="{{ text_muted_class }}">
+                    {{ section.settings.address }}
+                  </dd>
+                </div>
+              {% endif %}
+            </dl>
+          {% endif %}
+
+          {%- comment -%} Horarios {%- endcomment -%}
+          {% if show_hours and section.settings.hours != blank %}
+            <div class="tw-mt-10">
+              <h3 class="tw-text-sm tw-font-semibold {{ text_class }}">
+                {{ 'sections.contact.hours_title' | t }}
+              </h3>
+              <div class="tw-mt-3 tw-text-sm {{ text_muted_class }}">
+                {{ section.settings.hours }}
+              </div>
+            </div>
+          {% endif %}
+
+          {%- comment -%} Redes sociales {%- endcomment -%}
+          {% if show_social %}
+            <div class="tw-mt-10">
+              <h3 class="tw-text-sm tw-font-semibold {{ text_class }}">
+                {{ 'sections.contact.follow_us' | t }}
+              </h3>
+              <ul class="tw-mt-4 tw-flex tw-gap-x-4">
+                {% if settings.social_facebook_link != blank %}
+                  <li>
+                    <a href="{{ settings.social_facebook_link }}" class="{{ text_muted_class }} hover:tw-text-velox-accent tw-transition-colors" target="_blank" rel="noopener">
+                      {% render 'icon', name: 'facebook', class: 'tw-h-6 tw-w-6' %}
+                    </a>
+                  </li>
+                {% endif %}
+                {% if settings.social_instagram_link != blank %}
+                  <li>
+                    <a href="{{ settings.social_instagram_link }}" class="{{ text_muted_class }} hover:tw-text-velox-accent tw-transition-colors" target="_blank" rel="noopener">
+                      {% render 'icon', name: 'instagram', class: 'tw-h-6 tw-w-6' %}
+                    </a>
+                  </li>
+                {% endif %}
+                {% if settings.social_twitter_link != blank %}
+                  <li>
+                    <a href="{{ settings.social_twitter_link }}" class="{{ text_muted_class }} hover:tw-text-velox-accent tw-transition-colors" target="_blank" rel="noopener">
+                      {% render 'icon', name: 'twitter', class: 'tw-h-6 tw-w-6' %}
+                    </a>
+                  </li>
+                {% endif %}
+              </ul>
+            </div>
+          {% endif %}
+        </div>
+
+        {%- comment -%} Columna derecha: Formulario {%- endcomment -%}
+        <div class="{{ card_bg }} tw-rounded-2xl tw-p-8 sm:tw-p-10">
+          {% render 'contact-form-fields',
+            section: section,
+            input_bg: input_bg,
+            input_border: input_border,
+            input_text: input_text,
+            text_class: text_class,
+            text_muted_class: text_muted_class,
+            success_message: success_message
+          %}
+        </div>
+      </div>
+
+    {% elsif layout == 'cards' %}
+      {%- comment -%} Layout tarjetas: Info en cards + Form {%- endcomment -%}
+      <div class="tw-text-center tw-mb-12">
+        {% if heading != blank %}
+          <h2 class="tw-text-3xl tw-font-bold tw-tracking-tight {{ text_class }} sm:tw-text-4xl">
+            {{ heading }}
+          </h2>
+        {% endif %}
+        {% if subheading != blank %}
+          <p class="tw-mt-4 tw-text-lg {{ text_muted_class }} tw-max-w-2xl tw-mx-auto">
+            {{ subheading }}
+          </p>
+        {% endif %}
+      </div>
+
+      {%- comment -%} Info cards {%- endcomment -%}
+      {% if show_contact_info %}
+        <div class="tw-grid tw-grid-cols-1 tw-gap-6 sm:tw-grid-cols-3 tw-mb-12">
+          {% if section.settings.email != blank %}
+            <div class="{{ card_bg }} tw-rounded-xl tw-p-6 tw-text-center">
+              <div class="tw-mx-auto tw-flex tw-h-12 tw-w-12 tw-items-center tw-justify-center tw-rounded-full tw-bg-velox-accent/10">
+                {% render 'icon', name: 'envelope', class: 'tw-h-6 tw-w-6 tw-text-velox-accent' %}
+              </div>
+              <h3 class="tw-mt-4 tw-text-sm tw-font-semibold {{ text_class }}">
+                {{ 'pages.contact.email' | t }}
+              </h3>
+              <p class="tw-mt-2">
+                <a href="mailto:{{ section.settings.email }}" class="{{ text_muted_class }} hover:tw-text-velox-accent tw-transition-colors tw-text-sm">
+                  {{ section.settings.email }}
+                </a>
+              </p>
+            </div>
+          {% endif %}
+
+          {% if section.settings.phone != blank %}
+            <div class="{{ card_bg }} tw-rounded-xl tw-p-6 tw-text-center">
+              <div class="tw-mx-auto tw-flex tw-h-12 tw-w-12 tw-items-center tw-justify-center tw-rounded-full tw-bg-velox-accent/10">
+                {% render 'icon', name: 'phone', class: 'tw-h-6 tw-w-6 tw-text-velox-accent' %}
+              </div>
+              <h3 class="tw-mt-4 tw-text-sm tw-font-semibold {{ text_class }}">
+                {{ 'pages.contact.phone' | t }}
+              </h3>
+              <p class="tw-mt-2">
+                <a href="tel:{{ section.settings.phone | remove: ' ' }}" class="{{ text_muted_class }} hover:tw-text-velox-accent tw-transition-colors tw-text-sm">
+                  {{ section.settings.phone }}
+                </a>
+              </p>
+            </div>
+          {% endif %}
+
+          {% if section.settings.address != blank %}
+            <div class="{{ card_bg }} tw-rounded-xl tw-p-6 tw-text-center">
+              <div class="tw-mx-auto tw-flex tw-h-12 tw-w-12 tw-items-center tw-justify-center tw-rounded-full tw-bg-velox-accent/10">
+                {% render 'icon', name: 'map-pin', class: 'tw-h-6 tw-w-6 tw-text-velox-accent' %}
+              </div>
+              <h3 class="tw-mt-4 tw-text-sm tw-font-semibold {{ text_class }}">
+                {{ 'sections.contact.address' | t }}
+              </h3>
+              <p class="tw-mt-2 {{ text_muted_class }} tw-text-sm">
+                {{ section.settings.address }}
+              </p>
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {%- comment -%} Form centrado {%- endcomment -%}
+      <div class="tw-mx-auto tw-max-w-xl {{ card_bg }} tw-rounded-2xl tw-p-8 sm:tw-p-10">
+        {% render 'contact-form-fields',
+          section: section,
+          input_bg: input_bg,
+          input_border: input_border,
+          input_text: input_text,
+          text_class: text_class,
+          text_muted_class: text_muted_class,
+          success_message: success_message
+        %}
+      </div>
+
+    {% else %}
+      {%- comment -%} Layout centrado (default) {%- endcomment -%}
+      <div class="tw-mx-auto tw-max-w-2xl tw-text-center">
+        {% if heading != blank %}
+          <h2 class="tw-text-3xl tw-font-bold tw-tracking-tight {{ text_class }} sm:tw-text-4xl">
+            {{ heading }}
+          </h2>
+        {% endif %}
+        {% if subheading != blank %}
+          <p class="tw-mt-4 tw-text-lg {{ text_muted_class }}">
+            {{ subheading }}
+          </p>
+        {% endif %}
+      </div>
+
+      <div class="tw-mx-auto tw-mt-12 tw-max-w-xl">
+        {% render 'contact-form-fields',
+          section: section,
+          input_bg: input_bg,
+          input_border: input_border,
+          input_text: input_text,
+          text_class: text_class,
+          text_muted_class: text_muted_class,
+          success_message: success_message
+        %}
+      </div>
+    {% endif %}
+
+    {%- comment -%} Mapa (si está habilitado) {%- endcomment -%}
+    {% if section.settings.show_map and section.settings.map_embed != blank %}
+      <div class="tw-mt-16 tw-aspect-[16/9] tw-w-full tw-overflow-hidden tw-rounded-xl">
+        {{ section.settings.map_embed }}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Contact form",
+  "tag": "section",
+  "class": "section-contact-form",
+  "settings": [
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Diseño",
+      "options": [
+        { "value": "centered", "label": "Centrado" },
+        { "value": "split", "label": "Dividido" },
+        { "value": "cards", "label": "Con tarjetas" }
+      ],
+      "default": "centered"
+    },
+    {
+      "type": "header",
+      "content": "Contenido"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Título",
+      "default": "Contáctanos"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subtítulo",
+      "default": "¿Tienes preguntas? Estamos aquí para ayudarte."
+    },
+    {
+      "type": "header",
+      "content": "Información de contacto"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_contact_info",
+      "label": "Mostrar información de contacto",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email",
+      "default": "hola@tutienda.com"
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Teléfono",
+      "default": "+1 (555) 123-4567"
+    },
+    {
+      "type": "textarea",
+      "id": "address",
+      "label": "Dirección"
+    },
+    {
+      "type": "header",
+      "content": "Horarios"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_hours",
+      "label": "Mostrar horarios",
+      "default": false
+    },
+    {
+      "type": "richtext",
+      "id": "hours",
+      "label": "Horarios de atención"
+    },
+    {
+      "type": "header",
+      "content": "Redes sociales"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social",
+      "label": "Mostrar redes sociales",
+      "default": false,
+      "info": "Las redes sociales se configuran en los ajustes del tema"
+    },
+    {
+      "type": "header",
+      "content": "Formulario"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_name_fields",
+      "label": "Mostrar campos de nombre",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_phone_field",
+      "label": "Mostrar campo de teléfono",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_subject_field",
+      "label": "Mostrar campo de asunto",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "submit_button_text",
+      "label": "Texto del botón",
+      "default": "Enviar mensaje"
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Mensaje de éxito",
+      "default": "¡Gracias por tu mensaje! Te responderemos pronto."
+    },
+    {
+      "type": "header",
+      "content": "Mapa"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_map",
+      "label": "Mostrar mapa",
+      "default": false
+    },
+    {
+      "type": "html",
+      "id": "map_embed",
+      "label": "Código embed del mapa",
+      "info": "Pega el código de Google Maps embed"
+    },
+    {
+      "type": "header",
+      "content": "Estilo"
+    },
+    {
+      "type": "select",
+      "id": "background_color",
+      "label": "Color de fondo",
+      "options": [
+        { "value": "white", "label": "Blanco" },
+        { "value": "light", "label": "Gris claro" },
+        { "value": "dark", "label": "Oscuro" }
+      ],
+      "default": "white"
+    },
+    {
+      "type": "header",
+      "content": "Espaciado"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding superior",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding inferior",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    }
+  ],
+  "blocks": [
+    {
+      "type": "custom_field",
+      "name": "Campo personalizado",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Etiqueta",
+          "default": "Campo personalizado"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Nombre del campo",
+          "default": "custom_field",
+          "info": "Sin espacios ni caracteres especiales"
+        },
+        {
+          "type": "select",
+          "id": "type",
+          "label": "Tipo",
+          "options": [
+            { "value": "text", "label": "Texto" },
+            { "value": "email", "label": "Email" },
+            { "value": "tel", "label": "Teléfono" },
+            { "value": "select", "label": "Selección" },
+            { "value": "textarea", "label": "Área de texto" }
+          ],
+          "default": "text"
+        },
+        {
+          "type": "text",
+          "id": "placeholder",
+          "label": "Placeholder"
+        },
+        {
+          "type": "textarea",
+          "id": "options",
+          "label": "Opciones (para selección)",
+          "info": "Una opción por línea"
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "Requerido",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "full_width",
+          "label": "Ancho completo",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact form",
+      "settings": {
+        "heading": "Contáctanos",
+        "subheading": "¿Tienes preguntas? Estamos aquí para ayudarte.",
+        "layout": "centered"
+      }
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,176 @@
+{% comment %}
+  Velox Hero Section - Simple Centered
+  Hero con imagen de fondo, título centrado y CTA.
+{% endcomment %}
+
+{% liquid
+  assign bg_image = section.settings.image
+  assign overlay_opacity = section.settings.overlay_opacity | divided_by: 100.0
+%}
+
+<section class="tw-relative tw-overflow-hidden {% if section.settings.full_height %}tw-min-h-[90vh]{% else %}tw-min-h-[500px] md:tw-min-h-[600px]{% endif %} tw-flex tw-items-center tw-justify-center">
+  {%- comment -%} Imagen de fondo {%- endcomment -%}
+  {% if bg_image %}
+    <div class="tw-absolute tw-inset-0">
+      {{ bg_image | image_url: width: 1920 | image_tag:
+        class: 'tw-w-full tw-h-full tw-object-cover tw-object-center',
+        loading: 'eager',
+        sizes: '100vw',
+        widths: '750, 1100, 1500, 1920'
+      }}
+    </div>
+  {% else %}
+    <div class="tw-absolute tw-inset-0 tw-bg-velox-900"></div>
+  {% endif %}
+
+  {%- comment -%} Overlay {%- endcomment -%}
+  <div class="tw-absolute tw-inset-0 tw-bg-velox-900" style="opacity: {{ overlay_opacity }};"></div>
+
+  {%- comment -%} Contenido {%- endcomment -%}
+  <div class="tw-relative tw-z-10 tw-max-w-4xl tw-mx-auto tw-px-4 sm:tw-px-6 lg:tw-px-8 tw-text-center">
+    {% if section.settings.eyebrow != blank %}
+      <p class="tw-text-sm md:tw-text-base tw-font-semibold tw-uppercase tw-tracking-wider tw-text-white/80 tw-mb-4">
+        {{ section.settings.eyebrow }}
+      </p>
+    {% endif %}
+
+    {% if section.settings.title != blank %}
+      <h1 class="tw-text-4xl md:tw-text-5xl lg:tw-text-6xl tw-font-bold tw-text-white tw-leading-tight">
+        {{ section.settings.title }}
+      </h1>
+    {% endif %}
+
+    {% if section.settings.subtitle != blank %}
+      <p class="tw-mt-6 tw-text-lg md:tw-text-xl tw-text-white/90 tw-max-w-2xl tw-mx-auto">
+        {{ section.settings.subtitle }}
+      </p>
+    {% endif %}
+
+    {%- comment -%} Botones {%- endcomment -%}
+    {% if section.settings.button_1_text != blank or section.settings.button_2_text != blank %}
+      <div class="tw-mt-10 tw-flex tw-flex-col sm:tw-flex-row tw-items-center tw-justify-center tw-gap-4">
+        {% if section.settings.button_1_text != blank %}
+          {% render 'button',
+            label: section.settings.button_1_text,
+            href: section.settings.button_1_link,
+            style: 'accent',
+            size: 'lg'
+          %}
+        {% endif %}
+
+        {% if section.settings.button_2_text != blank %}
+          <a href="{{ section.settings.button_2_link }}" class="tw-inline-flex tw-items-center tw-text-white tw-font-medium hover:tw-underline tw-underline-offset-4">
+            {{ section.settings.button_2_text }}
+            {% render 'icon', name: 'arrow-right', class: 'tw-w-5 tw-h-5 tw-ml-2' %}
+          </a>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+
+  {%- comment -%} Scroll indicator {%- endcomment -%}
+  {% if section.settings.show_scroll_indicator %}
+    <div class="tw-absolute tw-bottom-8 tw-left-1/2 tw--translate-x-1/2 tw-animate-bounce">
+      {% render 'icon', name: 'chevron-down', class: 'tw-w-8 tw-h-8 tw-text-white/70' %}
+    </div>
+  {% endif %}
+</section>
+
+{% schema %}
+{
+  "name": "Hero simple",
+  "tag": "section",
+  "class": "velox-hero",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Imagen de fondo"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 90,
+      "step": 10,
+      "default": 40,
+      "unit": "%",
+      "label": "Opacidad del overlay"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_height",
+      "label": "Altura completa",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Contenido"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Texto superior",
+      "default": "Nueva colección"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "default": "Descubre tu estilo"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtítulo",
+      "default": "Explora nuestra colección de calzado premium diseñado para el confort y la elegancia."
+    },
+    {
+      "type": "header",
+      "content": "Botón primario"
+    },
+    {
+      "type": "text",
+      "id": "button_1_text",
+      "label": "Texto",
+      "default": "Comprar ahora"
+    },
+    {
+      "type": "url",
+      "id": "button_1_link",
+      "label": "Enlace"
+    },
+    {
+      "type": "header",
+      "content": "Botón secundario"
+    },
+    {
+      "type": "text",
+      "id": "button_2_text",
+      "label": "Texto",
+      "default": "Ver colecciones"
+    },
+    {
+      "type": "url",
+      "id": "button_2_link",
+      "label": "Enlace"
+    },
+    {
+      "type": "header",
+      "content": "Opciones"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_scroll_indicator",
+      "label": "Mostrar indicador de scroll",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero simple",
+      "category": "Hero"
+    }
+  ]
+}
+{% endschema %}

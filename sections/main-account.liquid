@@ -1,0 +1,679 @@
+{% comment %}
+  Velox Theme - Customer Account Page
+  Fase 8: Cuenta de cliente
+  Adaptado de Tailwind Plus: ecommerce/order-history/invoice-panels
+
+  Features:
+  - Historial de pedidos con paneles
+  - Info de cada pedido: número, fecha, total
+  - Productos de cada pedido con imagen
+  - Estado del pedido (entregado, procesando, etc.)
+  - Links a ver pedido y comprar de nuevo
+  - Soporte dark mode
+{% endcomment %}
+
+{% style %}
+  /* ========== ACCOUNT BASE STYLES ========== */
+  .velox-account {
+    background-color: #ffffff;
+  }
+
+  .velox-account--dark {
+    background-color: #111827;
+  }
+
+  .velox-account__wrapper {
+    padding: 4rem 0;
+  }
+
+  .velox-account__container {
+    max-width: 56rem;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  /* ========== HEADER ========== */
+  .velox-account__header {
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .velox-account__title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .velox-account--dark .velox-account__title {
+    color: #ffffff;
+  }
+
+  .velox-account__subtitle {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin: 0;
+  }
+
+  .velox-account--dark .velox-account__subtitle {
+    color: #9ca3af;
+  }
+
+  .velox-account__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+
+  .velox-account__link {
+    font-size: 0.875rem;
+    color: var(--color-accent, #4f46e5);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .velox-account__link:hover {
+    text-decoration: underline;
+  }
+
+  .velox-account__logout {
+    font-size: 0.875rem;
+    color: #6b7280;
+    text-decoration: none;
+  }
+
+  .velox-account__logout:hover {
+    color: #374151;
+  }
+
+  .velox-account--dark .velox-account__logout {
+    color: #9ca3af;
+  }
+
+  .velox-account--dark .velox-account__logout:hover {
+    color: #d1d5db;
+  }
+
+  /* ========== ORDER LIST ========== */
+  .velox-orders {
+    margin-top: 2rem;
+  }
+
+  .velox-orders__list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  /* ========== ORDER CARD ========== */
+  .velox-order-card {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+  }
+
+  .velox-account--dark .velox-order-card {
+    background-color: #1f2937;
+    border-color: #374151;
+  }
+
+  /* Order Header */
+  .velox-order-card__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .velox-account--dark .velox-order-card__header {
+    border-color: #374151;
+  }
+
+  .velox-order-card__meta {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem 1.5rem;
+    flex: 1;
+  }
+
+  .velox-order-card__meta-item dt {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #111827;
+    margin: 0;
+  }
+
+  .velox-account--dark .velox-order-card__meta-item dt {
+    color: #f3f4f6;
+  }
+
+  .velox-order-card__meta-item dd {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin: 0.25rem 0 0 0;
+  }
+
+  .velox-account--dark .velox-order-card__meta-item dd {
+    color: #9ca3af;
+  }
+
+  .velox-order-card__meta-item--total dd {
+    font-weight: 500;
+    color: #111827;
+  }
+
+  .velox-account--dark .velox-order-card__meta-item--total dd {
+    color: #f3f4f6;
+  }
+
+  .velox-order-card__actions {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .velox-order-card__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    text-decoration: none;
+    transition: background-color 0.15s ease;
+  }
+
+  .velox-order-card__btn:hover {
+    background-color: #f9fafb;
+  }
+
+  .velox-account--dark .velox-order-card__btn {
+    background-color: #374151;
+    border-color: #4b5563;
+    color: #d1d5db;
+  }
+
+  .velox-account--dark .velox-order-card__btn:hover {
+    background-color: #4b5563;
+  }
+
+  /* Order Items */
+  .velox-order-card__items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .velox-order-card__item {
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .velox-order-card__item:last-child {
+    border-bottom: none;
+  }
+
+  .velox-account--dark .velox-order-card__item {
+    border-color: #374151;
+  }
+
+  .velox-order-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .velox-order-item__image {
+    width: 5rem;
+    height: 5rem;
+    flex-shrink: 0;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    background-color: #f3f4f6;
+  }
+
+  .velox-order-item__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .velox-order-item__details {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .velox-order-item__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .velox-order-item__title {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #111827;
+    margin: 0;
+  }
+
+  .velox-order-item__title a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .velox-order-item__title a:hover {
+    color: var(--color-accent, #4f46e5);
+  }
+
+  .velox-account--dark .velox-order-item__title {
+    color: #f3f4f6;
+  }
+
+  .velox-order-item__price {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #111827;
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  .velox-account--dark .velox-order-item__price {
+    color: #f3f4f6;
+  }
+
+  .velox-order-item__variant {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin: 0.25rem 0 0 0;
+  }
+
+  .velox-account--dark .velox-order-item__variant {
+    color: #9ca3af;
+  }
+
+  .velox-order-item__quantity {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin: 0.25rem 0 0 0;
+  }
+
+  .velox-account--dark .velox-order-item__quantity {
+    color: #9ca3af;
+  }
+
+  /* Order Footer */
+  .velox-order-item__footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+    gap: 1rem;
+  }
+
+  .velox-account--dark .velox-order-item__footer {
+    border-color: #374151;
+  }
+
+  .velox-order-item__status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .velox-order-item__status svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .velox-order-item__status--fulfilled svg {
+    color: #22c55e;
+  }
+
+  .velox-order-item__status--unfulfilled svg {
+    color: #f59e0b;
+  }
+
+  .velox-order-item__status-text {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #6b7280;
+  }
+
+  .velox-account--dark .velox-order-item__status-text {
+    color: #9ca3af;
+  }
+
+  .velox-order-item__links {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .velox-order-item__link {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-accent, #4f46e5);
+    text-decoration: none;
+  }
+
+  .velox-order-item__link:hover {
+    text-decoration: underline;
+  }
+
+  /* ========== EMPTY STATE ========== */
+  .velox-account__empty {
+    text-align: center;
+    padding: 4rem 1rem;
+    background-color: #f9fafb;
+    border-radius: 0.5rem;
+  }
+
+  .velox-account--dark .velox-account__empty {
+    background-color: #1f2937;
+  }
+
+  .velox-account__empty-icon {
+    width: 3rem;
+    height: 3rem;
+    margin: 0 auto 1rem;
+    color: #9ca3af;
+  }
+
+  .velox-account__empty-title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #111827;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .velox-account--dark .velox-account__empty-title {
+    color: #f3f4f6;
+  }
+
+  .velox-account__empty-text {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin: 0 0 1.5rem 0;
+  }
+
+  .velox-account--dark .velox-account__empty-text {
+    color: #9ca3af;
+  }
+
+  .velox-account__empty-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: var(--color-accent, #4f46e5);
+    border: none;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: background-color 0.15s ease;
+  }
+
+  .velox-account__empty-btn:hover {
+    background-color: var(--color-accent-hover, #4338ca);
+  }
+
+  /* ========== RESPONSIVE ========== */
+  @media (min-width: 640px) {
+    .velox-account__wrapper {
+      padding: 6rem 0;
+    }
+
+    .velox-account__container {
+      padding: 0 1.5rem;
+    }
+
+    .velox-account__header {
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+
+    .velox-account__title {
+      font-size: 1.875rem;
+    }
+
+    .velox-order-card__header {
+      padding: 1.5rem;
+    }
+
+    .velox-order-card__meta {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .velox-order-card__item {
+      padding: 1.5rem;
+    }
+
+    .velox-order-item__image {
+      width: 10rem;
+      height: 10rem;
+    }
+  }
+
+  @media (max-width: 639px) {
+    .velox-order-card__actions {
+      width: 100%;
+      justify-content: flex-end;
+    }
+
+    .velox-order-card__meta-item--date {
+      display: none;
+    }
+  }
+{% endstyle %}
+
+<div class="velox-account{% if section.settings.color_scheme == 'dark' %} velox-account--dark{% endif %}">
+  <div class="velox-account__wrapper">
+    <div class="velox-account__container">
+
+      {%- comment -%} Header con título y acciones {%- endcomment -%}
+      <div class="velox-account__header">
+        <div>
+          <h1 class="velox-account__title">{{ 'customer.account.title' | t }}</h1>
+          <p class="velox-account__subtitle">
+            {{ 'customer.account.welcome' | t: name: customer.first_name | default: customer.email }}
+          </p>
+        </div>
+
+        <div class="velox-account__actions">
+          <a href="{{ routes.account_addresses_url }}" class="velox-account__link">
+            {{ 'customer.account.addresses' | t | default: 'Manage addresses' }}
+          </a>
+          <a href="{{ routes.account_logout_url }}" class="velox-account__logout">
+            {{ 'customer.account.logout' | t | default: 'Log out' }}
+          </a>
+        </div>
+      </div>
+
+      {%- comment -%} Historial de pedidos {%- endcomment -%}
+      <div class="velox-orders">
+        <h2 class="tw-sr-only">{{ 'customer.orders.title' | t }}</h2>
+
+        {% if customer.orders.size > 0 %}
+          <div class="velox-orders__list">
+            {% for order in customer.orders %}
+              <div class="velox-order-card">
+
+                {%- comment -%} Order Header {%- endcomment -%}
+                <div class="velox-order-card__header">
+                  <dl class="velox-order-card__meta">
+                    <div class="velox-order-card__meta-item">
+                      <dt>{{ 'customer.orders.order_number' | t | default: 'Order number' }}</dt>
+                      <dd>{{ order.name }}</dd>
+                    </div>
+                    <div class="velox-order-card__meta-item velox-order-card__meta-item--date">
+                      <dt>{{ 'customer.orders.date' | t | default: 'Date placed' }}</dt>
+                      <dd>
+                        <time datetime="{{ order.created_at | date: '%Y-%m-%d' }}">
+                          {{ order.created_at | date: format: 'abbreviated_date' }}
+                        </time>
+                      </dd>
+                    </div>
+                    <div class="velox-order-card__meta-item velox-order-card__meta-item--total">
+                      <dt>{{ 'customer.orders.total' | t | default: 'Total amount' }}</dt>
+                      <dd>{{ order.total_price | money }}</dd>
+                    </div>
+                  </dl>
+
+                  <div class="velox-order-card__actions">
+                    <a href="{{ order.customer_url }}" class="velox-order-card__btn">
+                      {{ 'customer.orders.view_order' | t | default: 'View order' }}
+                    </a>
+                  </div>
+                </div>
+
+                {%- comment -%} Order Items {%- endcomment -%}
+                <ul class="velox-order-card__items" role="list">
+                  {% for line_item in order.line_items %}
+                    <li class="velox-order-card__item">
+                      <div class="velox-order-item">
+                        <div class="velox-order-item__image">
+                          {% if line_item.image %}
+                            {{ line_item.image | image_url: width: 200 | image_tag: alt: line_item.title }}
+                          {% else %}
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 100%; height: 100%; padding: 1.5rem; color: #d1d5db;">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                            </svg>
+                          {% endif %}
+                        </div>
+
+                        <div class="velox-order-item__details">
+                          <div class="velox-order-item__header">
+                            <div>
+                              <h3 class="velox-order-item__title">
+                                {% if line_item.product.url %}
+                                  <a href="{{ line_item.product.url }}">{{ line_item.title }}</a>
+                                {% else %}
+                                  {{ line_item.title }}
+                                {% endif %}
+                              </h3>
+                              {% if line_item.variant.title != 'Default Title' %}
+                                <p class="velox-order-item__variant">{{ line_item.variant.title }}</p>
+                              {% endif %}
+                              <p class="velox-order-item__quantity">
+                                {{ 'customer.orders.quantity' | t | default: 'Qty' }}: {{ line_item.quantity }}
+                              </p>
+                            </div>
+                            <p class="velox-order-item__price">{{ line_item.final_line_price | money }}</p>
+                          </div>
+
+                          <div class="velox-order-item__footer">
+                            <div class="velox-order-item__status velox-order-item__status--{% if order.fulfillment_status == 'fulfilled' %}fulfilled{% else %}unfulfilled{% endif %}">
+                              {% if order.fulfillment_status == 'fulfilled' %}
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                  <path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z" clip-rule="evenodd" />
+                                </svg>
+                                <span class="velox-order-item__status-text">
+                                  {{ 'customer.orders.fulfilled' | t | default: 'Delivered' }}
+                                </span>
+                              {% else %}
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                  <path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm.75-13a.75.75 0 0 0-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 0 0 0-1.5h-3.25V5Z" clip-rule="evenodd" />
+                                </svg>
+                                <span class="velox-order-item__status-text">
+                                  {{ 'customer.orders.unfulfilled' | t | default: 'Processing' }}
+                                </span>
+                              {% endif %}
+                            </div>
+
+                            <div class="velox-order-item__links">
+                              {% if line_item.product.url %}
+                                <a href="{{ line_item.product.url }}" class="velox-order-item__link">
+                                  {{ 'customer.orders.view_product' | t | default: 'View product' }}
+                                </a>
+                              {% endif %}
+                              {% if line_item.variant.available %}
+                                <a href="{{ line_item.variant.url }}?variant={{ line_item.variant.id }}" class="velox-order-item__link">
+                                  {{ 'customer.orders.buy_again' | t | default: 'Buy again' }}
+                                </a>
+                              {% endif %}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            {% endfor %}
+          </div>
+
+          {%- comment -%} Paginación si hay muchos pedidos {%- endcomment -%}
+          {% if paginate.pages > 1 %}
+            <nav class="velox-orders__pagination" aria-label="{{ 'general.pagination.label' | t }}">
+              {% render 'pagination', paginate: paginate %}
+            </nav>
+          {% endif %}
+
+        {% else %}
+
+          {%- comment -%} Empty state {%- endcomment -%}
+          <div class="velox-account__empty">
+            <svg class="velox-account__empty-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+            </svg>
+            <h3 class="velox-account__empty-title">
+              {{ 'customer.orders.empty_title' | t | default: 'No orders yet' }}
+            </h3>
+            <p class="velox-account__empty-text">
+              {{ 'customer.orders.empty_message' | t | default: "You haven't placed any orders yet." }}
+            </p>
+            <a href="{{ routes.all_products_collection_url }}" class="velox-account__empty-btn">
+              {{ 'customer.orders.start_shopping' | t | default: 'Start shopping' }}
+            </a>
+          </div>
+
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Customer account",
+  "tag": "section",
+  "class": "section-account",
+  "settings": [
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "options": [
+        {
+          "value": "light",
+          "label": "Light"
+        },
+        {
+          "value": "dark",
+          "label": "Dark"
+        }
+      ],
+      "default": "light"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,370 @@
+{% comment %}
+  Image Zoom Snippet
+  Proporciona zoom interactivo para imágenes de producto.
+
+  Features:
+  - Hover zoom: muestra imagen ampliada al hacer hover (desktop)
+  - Lightbox: abre imagen fullscreen al hacer click
+  - Pinch zoom: soporte para gestos en móvil
+  - Cursor lupa
+
+  Uso:
+    {% render 'image-zoom', image: product.featured_image, zoom_type: 'hover' %}
+
+  Opciones:
+    - zoom_type: 'hover', 'lightbox', 'both' (default: 'both')
+    - zoom_scale: nivel de zoom (default: 2)
+{% endcomment %}
+
+{%- liquid
+  assign zoom_type = zoom_type | default: 'both'
+  assign zoom_scale = zoom_scale | default: 2
+  assign image_id = image.id | default: 'zoom-image'
+-%}
+
+{% style %}
+  /* ========================================
+     IMAGE ZOOM STYLES
+     ======================================== */
+
+  /* Contenedor principal con zoom */
+  .velox-zoom-container {
+    position: relative;
+    overflow: hidden;
+    cursor: zoom-in;
+  }
+
+  .velox-zoom-container img {
+    transition: transform 0.1s ease-out;
+  }
+
+  /* Hover zoom effect */
+  .velox-zoom-container.zoom-active img {
+    transform: scale({{ zoom_scale }});
+  }
+
+  /* Zoom lens (magnifier circle) */
+  .velox-zoom-lens {
+    position: absolute;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+    background-repeat: no-repeat;
+    z-index: 10;
+  }
+
+  .velox-zoom-container:hover .velox-zoom-lens {
+    opacity: 1;
+  }
+
+  /* Zoom result area (for side zoom) */
+  .velox-zoom-result {
+    position: absolute;
+    top: 0;
+    left: calc(100% + 1rem);
+    width: 100%;
+    height: 100%;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    background-repeat: no-repeat;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+    z-index: 20;
+    pointer-events: none;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  }
+
+  .velox-zoom-container:hover .velox-zoom-result {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* Lightbox overlay */
+  .velox-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.9);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+    cursor: zoom-out;
+  }
+
+  .velox-lightbox.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .velox-lightbox__image {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    transform: scale(0.95);
+    transition: transform 0.3s;
+  }
+
+  .velox-lightbox.active .velox-lightbox__image {
+    transform: scale(1);
+  }
+
+  .velox-lightbox__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 9999px;
+    color: white;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .velox-lightbox__close:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .velox-lightbox__nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 9999px;
+    color: white;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .velox-lightbox__nav:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .velox-lightbox__nav--prev {
+    left: 1rem;
+  }
+
+  .velox-lightbox__nav--next {
+    right: 1rem;
+  }
+
+  /* Zoom icon indicator */
+  .velox-zoom-icon {
+    position: absolute;
+    bottom: 0.75rem;
+    right: 0.75rem;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 0.375rem;
+    color: white;
+    pointer-events: none;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+  }
+
+  .velox-zoom-container:hover .velox-zoom-icon {
+    opacity: 0;
+  }
+
+  /* Mobile adjustments */
+  @media (max-width: 1023px) {
+    .velox-zoom-result {
+      display: none;
+    }
+
+    .velox-zoom-container {
+      cursor: pointer;
+    }
+  }
+{% endstyle %}
+
+{% comment %} Lightbox HTML - se renderiza al final del body {% endcomment %}
+<div id="velox-lightbox" class="velox-lightbox" data-lightbox>
+  <button type="button" class="velox-lightbox__close" data-lightbox-close aria-label="{{ 'general.accessibility.close' | t | default: 'Cerrar' }}">
+    {% render 'icon', name: 'x-mark', class: 'tw-w-6 tw-h-6' %}
+  </button>
+
+  <button type="button" class="velox-lightbox__nav velox-lightbox__nav--prev" data-lightbox-prev aria-label="{{ 'general.accessibility.previous' | t | default: 'Anterior' }}">
+    {% render 'icon', name: 'chevron-left', class: 'tw-w-6 tw-h-6' %}
+  </button>
+
+  <img src="" alt="" class="velox-lightbox__image" data-lightbox-image>
+
+  <button type="button" class="velox-lightbox__nav velox-lightbox__nav--next" data-lightbox-next aria-label="{{ 'general.accessibility.next' | t | default: 'Siguiente' }}">
+    {% render 'icon', name: 'chevron-right', class: 'tw-w-6 tw-h-6' %}
+  </button>
+</div>
+
+<script>
+  (function() {
+    // Inicializar zoom cuando el DOM esté listo
+    document.addEventListener('DOMContentLoaded', initImageZoom);
+
+    function initImageZoom() {
+      const zoomContainers = document.querySelectorAll('[data-zoom-container]');
+      const lightbox = document.getElementById('velox-lightbox');
+      const lightboxImage = lightbox?.querySelector('[data-lightbox-image]');
+      const lightboxClose = lightbox?.querySelector('[data-lightbox-close]');
+      const lightboxPrev = lightbox?.querySelector('[data-lightbox-prev]');
+      const lightboxNext = lightbox?.querySelector('[data-lightbox-next]');
+
+      let currentImages = [];
+      let currentIndex = 0;
+
+      // Inicializar cada contenedor de zoom
+      zoomContainers.forEach(container => {
+        const image = container.querySelector('img');
+        const zoomType = container.dataset.zoomType || 'both';
+        const zoomScale = parseFloat(container.dataset.zoomScale) || 2;
+
+        if (!image) return;
+
+        // Obtener URL de imagen de alta resolución
+        const highResUrl = container.dataset.zoomImage || image.src.replace(/width=\d+/, 'width=2000');
+
+        // Crear zoom result area para hover zoom
+        if (zoomType === 'hover' || zoomType === 'both') {
+          const zoomResult = document.createElement('div');
+          zoomResult.className = 'velox-zoom-result';
+          zoomResult.style.backgroundImage = `url(${highResUrl})`;
+          container.appendChild(zoomResult);
+
+          // Hover zoom handlers
+          container.addEventListener('mouseenter', function(e) {
+            zoomResult.style.backgroundSize = `${image.offsetWidth * zoomScale}px ${image.offsetHeight * zoomScale}px`;
+          });
+
+          container.addEventListener('mousemove', function(e) {
+            const rect = container.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            // Calcular posición del background
+            const bgX = (x / image.offsetWidth) * 100;
+            const bgY = (y / image.offsetHeight) * 100;
+
+            zoomResult.style.backgroundPosition = `${bgX}% ${bgY}%`;
+          });
+        }
+
+        // Lightbox click handler
+        if (zoomType === 'lightbox' || zoomType === 'both') {
+          container.addEventListener('click', function() {
+            openLightbox(highResUrl, container);
+          });
+        }
+      });
+
+      // Lightbox functions
+      function openLightbox(imageSrc, sourceContainer) {
+        if (!lightbox || !lightboxImage) return;
+
+        // Recopilar todas las imágenes del producto
+        const galleryContainer = sourceContainer.closest('[data-product-gallery-main], .velox-product-gallery');
+        if (galleryContainer) {
+          const allImages = document.querySelectorAll('[data-zoom-container]');
+          currentImages = Array.from(allImages).map(container => {
+            return container.dataset.zoomImage || container.querySelector('img')?.src.replace(/width=\d+/, 'width=2000');
+          }).filter(Boolean);
+
+          currentIndex = currentImages.indexOf(imageSrc);
+          if (currentIndex === -1) currentIndex = 0;
+        } else {
+          currentImages = [imageSrc];
+          currentIndex = 0;
+        }
+
+        lightboxImage.src = imageSrc;
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+
+        // Mostrar/ocultar navegación
+        if (lightboxPrev && lightboxNext) {
+          const showNav = currentImages.length > 1;
+          lightboxPrev.style.display = showNav ? 'flex' : 'none';
+          lightboxNext.style.display = showNav ? 'flex' : 'none';
+        }
+      }
+
+      function closeLightbox() {
+        if (!lightbox) return;
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      function showImage(index) {
+        if (index < 0) index = currentImages.length - 1;
+        if (index >= currentImages.length) index = 0;
+        currentIndex = index;
+        if (lightboxImage) {
+          lightboxImage.src = currentImages[currentIndex];
+        }
+      }
+
+      // Event listeners
+      if (lightboxClose) {
+        lightboxClose.addEventListener('click', closeLightbox);
+      }
+
+      if (lightboxPrev) {
+        lightboxPrev.addEventListener('click', function(e) {
+          e.stopPropagation();
+          showImage(currentIndex - 1);
+        });
+      }
+
+      if (lightboxNext) {
+        lightboxNext.addEventListener('click', function(e) {
+          e.stopPropagation();
+          showImage(currentIndex + 1);
+        });
+      }
+
+      if (lightbox) {
+        lightbox.addEventListener('click', function(e) {
+          if (e.target === lightbox) {
+            closeLightbox();
+          }
+        });
+      }
+
+      // Keyboard navigation
+      document.addEventListener('keydown', function(e) {
+        if (!lightbox?.classList.contains('active')) return;
+
+        switch(e.key) {
+          case 'Escape':
+            closeLightbox();
+            break;
+          case 'ArrowLeft':
+            showImage(currentIndex - 1);
+            break;
+          case 'ArrowRight':
+            showImage(currentIndex + 1);
+            break;
+        }
+      });
+    }
+  })();
+</script>

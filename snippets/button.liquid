@@ -1,0 +1,70 @@
+{% comment %}
+  Velox Button Component
+
+  Uso:
+  {% render 'button',
+    label: 'Comprar ahora',
+    href: product.url,
+    style: 'primary',
+    size: 'md',
+    full_width: false,
+    icon: 'cart'
+  %}
+
+  Estilos: primary, secondary, accent, outline
+  Tamaños: sm, md, lg
+{% endcomment %}
+
+{% liquid
+  assign button_style = style | default: 'primary'
+  assign button_size = size | default: 'md'
+  assign is_full_width = full_width | default: false
+  assign button_type = type | default: 'button'
+%}
+
+{% capture size_classes %}
+  {% case button_size %}
+    {% when 'sm' %}
+      tw-px-4 tw-py-2 tw-text-sm
+    {% when 'md' %}
+      tw-px-6 tw-py-3 tw-text-base
+    {% when 'lg' %}
+      tw-px-8 tw-py-4 tw-text-lg
+  {% endcase %}
+{% endcapture %}
+
+{% capture style_classes %}
+  {% case button_style %}
+    {% when 'primary' %}
+      tw-bg-velox-900 tw-text-white hover:tw-bg-velox-800 focus:tw-ring-velox-500
+    {% when 'secondary' %}
+      tw-bg-white tw-text-velox-900 tw-border tw-border-velox-200 hover:tw-bg-velox-50 focus:tw-ring-velox-300
+    {% when 'accent' %}
+      tw-bg-accent tw-text-white hover:tw-bg-accent-hover focus:tw-ring-accent
+    {% when 'outline' %}
+      tw-bg-transparent tw-text-velox-900 tw-border tw-border-velox-900 hover:tw-bg-velox-900 hover:tw-text-white focus:tw-ring-velox-500
+  {% endcase %}
+{% endcapture %}
+
+{% capture base_classes %}
+  tw-inline-flex tw-items-center tw-justify-center tw-font-medium tw-rounded-md tw-transition-all tw-duration-200 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-offset-2 disabled:tw-opacity-50 disabled:tw-cursor-not-allowed
+  {{ size_classes | strip }}
+  {{ style_classes | strip }}
+  {% if is_full_width %}tw-w-full{% endif %}
+{% endcapture %}
+
+{% if href %}
+  <a href="{{ href }}" class="{{ base_classes | strip_newlines | strip }}">
+    {% if icon and icon != blank %}
+      {% render 'icon', name: icon, class: 'tw-w-5 tw-h-5 tw-mr-2' %}
+    {% endif %}
+    {{ label }}
+  </a>
+{% else %}
+  <button type="{{ button_type }}" class="{{ base_classes | strip_newlines | strip }}" {% if disabled %}disabled{% endif %}>
+    {% if icon and icon != blank %}
+      {% render 'icon', name: icon, class: 'tw-w-5 tw-h-5 tw-mr-2' %}
+    {% endif %}
+    {{ label }}
+  </button>
+{% endif %}

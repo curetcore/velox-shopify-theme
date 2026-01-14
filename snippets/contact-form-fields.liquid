@@ -1,0 +1,232 @@
+{% comment %}
+  Velox Contact Form Fields
+
+  Formulario de contacto con campos configurables.
+  Usado por sections/contact-form.liquid
+
+  Parámetros:
+  - section: (requerido) Objeto section para acceder a settings y blocks
+  - input_bg: Clase de fondo para inputs
+  - input_border: Clase de borde para inputs
+  - input_text: Clase de texto para inputs
+  - text_class: Clase de texto principal
+  - text_muted_class: Clase de texto secundario
+  - success_message: Mensaje de éxito personalizado
+{% endcomment %}
+
+{%- liquid
+  assign show_name_fields = section.settings.show_name_fields
+  assign show_phone_field = section.settings.show_phone_field
+  assign show_subject_field = section.settings.show_subject_field
+  assign submit_text = section.settings.submit_button_text | default: 'pages.contact.submit' | t
+
+  # Clases de input
+  assign input_classes = 'tw-block tw-w-full tw-rounded-lg tw-px-4 tw-py-3 tw-text-sm tw-placeholder-velox-400 tw-transition-colors focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-velox-accent focus:tw-ring-offset-2 ' | append: input_bg | append: ' ' | append: input_border | append: ' ' | append: input_text | append: ' tw-border'
+  assign label_classes = 'tw-block tw-text-sm tw-font-medium tw-mb-2 ' | append: text_class
+-%}
+
+{%- comment -%} Mensaje de éxito {%- endcomment -%}
+{% if form.posted_successfully? %}
+  <div class="tw-mb-6 tw-rounded-lg tw-bg-green-50 tw-p-4 tw-text-green-800">
+    <div class="tw-flex tw-items-center tw-gap-3">
+      {% render 'icon', name: 'check-circle', class: 'tw-h-5 tw-w-5 tw-text-green-500' %}
+      <p class="tw-text-sm tw-font-medium">
+        {{ success_message | default: 'pages.contact.success' | t }}
+      </p>
+    </div>
+  </div>
+{% endif %}
+
+{%- comment -%} Errores del formulario {%- endcomment -%}
+{% if form.errors %}
+  <div class="tw-mb-6 tw-rounded-lg tw-bg-red-50 tw-p-4">
+    <div class="tw-flex tw-items-start tw-gap-3">
+      {% render 'icon', name: 'exclamation-triangle', class: 'tw-h-5 tw-w-5 tw-text-red-500 tw-mt-0.5' %}
+      <div>
+        <p class="tw-text-sm tw-font-medium tw-text-red-800">
+          {{ 'sections.contact.form_error' | t }}
+        </p>
+        <ul class="tw-mt-2 tw-text-sm tw-text-red-700 tw-list-disc tw-list-inside">
+          {% for error in form.errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% form 'contact', class: 'tw-space-y-6' %}
+  {%- comment -%} Campos de nombre {%- endcomment -%}
+  {% if show_name_fields %}
+    <div class="tw-grid tw-grid-cols-1 tw-gap-6 sm:tw-grid-cols-2">
+      <div>
+        <label for="contact_first_name" class="{{ label_classes }}">
+          {{ 'customer.register.first_name' | t }}
+          <span class="tw-text-red-500">*</span>
+        </label>
+        <input
+          type="text"
+          id="contact_first_name"
+          name="contact[first_name]"
+          autocomplete="given-name"
+          required
+          class="{{ input_classes }}"
+          placeholder="{{ 'customer.register.first_name' | t }}"
+        >
+      </div>
+      <div>
+        <label for="contact_last_name" class="{{ label_classes }}">
+          {{ 'customer.register.last_name' | t }}
+          <span class="tw-text-red-500">*</span>
+        </label>
+        <input
+          type="text"
+          id="contact_last_name"
+          name="contact[last_name]"
+          autocomplete="family-name"
+          required
+          class="{{ input_classes }}"
+          placeholder="{{ 'customer.register.last_name' | t }}"
+        >
+      </div>
+    </div>
+  {% endif %}
+
+  {%- comment -%} Email (siempre visible) {%- endcomment -%}
+  <div>
+    <label for="contact_email" class="{{ label_classes }}">
+      {{ 'pages.contact.email' | t }}
+      <span class="tw-text-red-500">*</span>
+    </label>
+    <input
+      type="email"
+      id="contact_email"
+      name="contact[email]"
+      autocomplete="email"
+      required
+      class="{{ input_classes }}"
+      placeholder="{{ 'pages.contact.email' | t }}"
+      value="{{ form.email }}"
+    >
+  </div>
+
+  {%- comment -%} Teléfono (opcional) {%- endcomment -%}
+  {% if show_phone_field %}
+    <div>
+      <label for="contact_phone" class="{{ label_classes }}">
+        {{ 'pages.contact.phone' | t }}
+      </label>
+      <input
+        type="tel"
+        id="contact_phone"
+        name="contact[phone]"
+        autocomplete="tel"
+        class="{{ input_classes }}"
+        placeholder="{{ 'pages.contact.phone' | t }}"
+      >
+    </div>
+  {% endif %}
+
+  {%- comment -%} Asunto (opcional) {%- endcomment -%}
+  {% if show_subject_field %}
+    <div>
+      <label for="contact_subject" class="{{ label_classes }}">
+        {{ 'sections.contact.subject' | t }}
+      </label>
+      <input
+        type="text"
+        id="contact_subject"
+        name="contact[subject]"
+        class="{{ input_classes }}"
+        placeholder="{{ 'sections.contact.subject_placeholder' | t }}"
+      >
+    </div>
+  {% endif %}
+
+  {%- comment -%} Campos personalizados (blocks) {%- endcomment -%}
+  {% for block in section.blocks %}
+    {% if block.type == 'custom_field' %}
+      {%- liquid
+        assign field_label = block.settings.label
+        assign field_name = block.settings.name
+        assign field_type = block.settings.type
+        assign field_placeholder = block.settings.placeholder
+        assign field_required = block.settings.required
+        assign field_full_width = block.settings.full_width
+        assign field_options = block.settings.options | newline_to_br | split: '<br />'
+      -%}
+
+      <div class="{% unless field_full_width %}sm:tw-col-span-1{% endunless %}" {{ block.shopify_attributes }}>
+        <label for="contact_{{ field_name }}" class="{{ label_classes }}">
+          {{ field_label }}
+          {% if field_required %}<span class="tw-text-red-500">*</span>{% endif %}
+        </label>
+
+        {% case field_type %}
+          {% when 'textarea' %}
+            <textarea
+              id="contact_{{ field_name }}"
+              name="contact[{{ field_name }}]"
+              rows="4"
+              {% if field_required %}required{% endif %}
+              class="{{ input_classes }} tw-resize-none"
+              placeholder="{{ field_placeholder }}"
+            ></textarea>
+
+          {% when 'select' %}
+            <select
+              id="contact_{{ field_name }}"
+              name="contact[{{ field_name }}]"
+              {% if field_required %}required{% endif %}
+              class="{{ input_classes }}"
+            >
+              <option value="">{{ field_placeholder | default: 'sections.contact.select_option' | t }}</option>
+              {% for option in field_options %}
+                {% assign option_clean = option | strip %}
+                {% if option_clean != blank %}
+                  <option value="{{ option_clean }}">{{ option_clean }}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+
+          {% else %}
+            <input
+              type="{{ field_type }}"
+              id="contact_{{ field_name }}"
+              name="contact[{{ field_name }}]"
+              {% if field_required %}required{% endif %}
+              class="{{ input_classes }}"
+              placeholder="{{ field_placeholder }}"
+            >
+        {% endcase %}
+      </div>
+    {% endif %}
+  {% endfor %}
+
+  {%- comment -%} Mensaje (siempre visible) {%- endcomment -%}
+  <div>
+    <label for="contact_message" class="{{ label_classes }}">
+      {{ 'pages.contact.message' | t }}
+      <span class="tw-text-red-500">*</span>
+    </label>
+    <textarea
+      id="contact_message"
+      name="contact[body]"
+      rows="5"
+      required
+      class="{{ input_classes }} tw-resize-none"
+      placeholder="{{ 'sections.contact.message_placeholder' | t }}"
+    >{{ form.body }}</textarea>
+  </div>
+
+  {%- comment -%} Botón de envío {%- endcomment -%}
+  <div>
+    <button
+      type="submit"
+      class="tw-w-full tw-rounded-lg tw-bg-velox-accent tw-px-6 tw-py-3 tw-text-sm tw-font-semibold tw-text-white tw-transition-all hover:tw-bg-velox-accent/90 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-velox-accent focus:tw-ring-offset-2 active:tw-scale-[0.98] disabled:tw-opacity-50 disabled:tw-cursor-not-allowed"
+    >
+      {{ submit_text }}
+    </button>
+  </div>
+{% endform %}
