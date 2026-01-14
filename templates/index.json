@@ -133,46 +133,6 @@
         "background_color": "default"
       }
     },
-    "promo_banners": {
-      "type": "promo-banner",
-      "blocks": {
-        "banner_1": {
-          "type": "banner",
-          "settings": {
-            "title": "Envío express",
-            "text": "Recibe en 24-48 horas",
-            "icon": "truck",
-            "background_color": "#000000",
-            "text_color": "#FFFFFF"
-          }
-        },
-        "banner_2": {
-          "type": "banner",
-          "settings": {
-            "title": "Pago seguro",
-            "text": "Todas las tarjetas",
-            "icon": "credit-card",
-            "background_color": "#1a1a1a",
-            "text_color": "#FFFFFF"
-          }
-        },
-        "banner_3": {
-          "type": "banner",
-          "settings": {
-            "title": "Devolución fácil",
-            "text": "30 días para cambios",
-            "icon": "arrow-path",
-            "background_color": "#2a2a2a",
-            "text_color": "#FFFFFF"
-          }
-        }
-      },
-      "block_order": ["banner_1", "banner_2", "banner_3"],
-      "settings": {
-        "layout": "triple",
-        "full_width": true
-      }
-    },
     "featured_product": {
       "type": "featured-product",
       "settings": {
@@ -367,7 +327,6 @@
     "featured_collection",
     "collection_list",
     "image_with_text",
-    "promo_banners",
     "featured_product",
     "testimonials",
     "countdown",
