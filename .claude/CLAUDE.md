@@ -528,8 +528,22 @@ velox-shopify-theme/
     - DNS prefetch para conexiones rápidas
   - [x] Todos los aria-labels verificados con traducciones
 
+- [x] Fase 15-17: Presets, Traducciones, Documentación
+  - [x] Auditoría de presets en todas las secciones
+    - 28 secciones con presets configurados
+    - Categorías: Hero, Product, Collection, Text, Media, Social, Footer
+  - [x] Verificación de traducciones
+    - 300 keys en en.default.json y es.json
+    - Paridad completa entre ambos idiomas
+  - [x] Documentación completa
+    - README.md actualizado con features, instalación, settings
+    - CLAUDE.md con roadmap completo
+  - [x] Limpieza de archivos Skeleton theme
+    - Eliminados: CONTRIBUTING.md, CODE_OF_CONDUCT.md
+    - Eliminados: hello-world.liquid, article.liquid (placeholders)
+    - Conservado: LICENSE.md (licencia derivada)
+
 ### Pendientes
-- [ ] Fase 15-17: Presets, Traducciones, Documentación
 - [ ] Fase 18-19: Testing y Submission
 
 ---
