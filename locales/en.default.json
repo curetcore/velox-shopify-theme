@@ -3,7 +3,12 @@
     "accessibility": {
       "close": "Close",
       "skip_to_content": "Skip to content",
-      "loading": "Loading..."
+      "loading": "Loading...",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "cart": {
+      "error": "Something went wrong. Please try again."
     },
     "breadcrumbs": {
       "home": "Home"
@@ -11,7 +16,9 @@
     "pagination": {
       "previous": "Previous",
       "next": "Next",
-      "page": "Page {{ number }}"
+      "page": "Page {{ number }}",
+      "title": "Pagination",
+      "label": "Page navigation"
     },
     "close": "Close",
     "footer": {
@@ -26,7 +33,8 @@
       "confirmation": "Thanks for subscribing!"
     },
     "navigation": {
-      "menu": "Menu"
+      "menu": "Menu",
+      "view_all": "View all"
     },
     "search": {
       "search": "Search",
@@ -147,7 +155,11 @@
       "details": "Details",
       "shipping": "Shipping",
       "reviews": "Reviews",
+      "reviews_count": "{{ count }} reviews",
       "specifications": "Specifications",
+      "media_thumbnail": "View image {{ index }}",
+      "size_guide": "Size guide",
+      "share": "Share",
       "view_details": "View full details",
       "added_to_cart": "Added to cart"
     },
@@ -201,6 +213,8 @@
   "customer": {
     "account": {
       "title": "My account",
+      "welcome": "Welcome, {{ name }}",
+      "addresses": "Manage addresses",
       "orders_title": "Order history",
       "no_orders": "No orders yet",
       "no_orders_message": "You haven't placed any orders yet.",
@@ -215,7 +229,8 @@
       "forgot_password": "Forgot your password?",
       "create_account": "Create account",
       "no_account": "No account?",
-      "guest_title": "Continue as guest"
+      "guest_title": "Continue as guest",
+      "guest_continue": "Continue as guest"
     },
     "recover_password": {
       "title": "Reset your password",
@@ -235,10 +250,29 @@
       "title": "Order history",
       "order_number": "Order",
       "order_number_link": "Order {{ number }}",
+      "order": "Order {{ name }}",
       "date": "Date",
+      "placed_on": "Placed on {{ date }}",
       "payment_status": "Payment status",
       "fulfillment_status": "Fulfillment status",
-      "total": "Total"
+      "fulfilled": "Fulfilled",
+      "unfulfilled": "Unfulfilled",
+      "partially_fulfilled": "Partially fulfilled",
+      "total": "Total",
+      "view_order": "View order",
+      "quantity": "Qty: {{ quantity }}",
+      "view_product": "View product",
+      "buy_again": "Buy again",
+      "empty_title": "No orders yet",
+      "empty_message": "You haven't placed any orders yet.",
+      "start_shopping": "Start shopping",
+      "continue_shopping": "Continue shopping",
+      "back_to_account": "Back to account",
+      "tracking_number": "Tracking: {{ number }}",
+      "shipping": "Shipping",
+      "tax": "Tax",
+      "shipping_address": "Shipping address",
+      "billing_address": "Billing address"
     },
     "order": {
       "title": "Order {{ name }}",
@@ -264,9 +298,12 @@
     },
     "addresses": {
       "title": "Addresses",
+      "subtitle": "Manage your shipping addresses",
+      "back_to_account": "Back to account",
       "default": "Default",
       "add_new": "Add new address",
       "edit": "Edit",
+      "edit_address": "Edit address",
       "delete": "Delete",
       "delete_confirm": "Are you sure you want to delete this address?",
       "first_name": "First name",
@@ -282,7 +319,9 @@
       "set_default": "Set as default address",
       "cancel": "Cancel",
       "update": "Update address",
-      "add": "Add address"
+      "add": "Add address",
+      "no_addresses": "No addresses saved",
+      "no_addresses_message": "You haven't added any addresses yet."
     }
   },
   "gift_card": {
@@ -303,6 +342,7 @@
   "password": {
     "title": "This shop is private",
     "subtitle": "Opening soon",
+    "coming_soon": "Coming soon",
     "password": "Password",
     "placeholder": "Your password",
     "enter": "Enter",

@@ -278,6 +278,8 @@
                       <img
                         src="{{ collection.image | image_url: width: 300 }}"
                         alt="{{ collection.title | escape }}"
+                        width="150"
+                        height="150"
                         class="velox-search__popular-image"
                         loading="lazy"
                       >
@@ -285,6 +287,8 @@
                       <img
                         src="{{ collection.products.first.featured_image | image_url: width: 300 }}"
                         alt="{{ collection.title | escape }}"
+                        width="150"
+                        height="150"
                         class="velox-search__popular-image"
                         loading="lazy"
                       >

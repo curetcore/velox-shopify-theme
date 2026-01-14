@@ -204,8 +204,8 @@
           <div>
             <h3 class="velox-footer-heading tw-text-sm tw-font-semibold tw-uppercase tw-tracking-wider">Tienda</h3>
             <ul role="list" class="tw-mt-4 tw-space-y-3">
-              <li><a href="/collections/all" class="velox-footer-link tw-text-sm tw-transition-colors">Todos los productos</a></li>
-              <li><a href="/collections" class="velox-footer-link tw-text-sm tw-transition-colors">Colecciones</a></li>
+              <li><a href="{{ routes.all_products_collection_url }}" class="velox-footer-link tw-text-sm tw-transition-colors">Todos los productos</a></li>
+              <li><a href="{{ routes.collections_url }}" class="velox-footer-link tw-text-sm tw-transition-colors">Colecciones</a></li>
               <li><a href="/pages/new" class="velox-footer-link tw-text-sm tw-transition-colors">Novedades</a></li>
               <li><a href="/collections/sale" class="velox-footer-link tw-text-sm tw-transition-colors">Ofertas</a></li>
             </ul>
@@ -222,9 +222,9 @@
           <div>
             <h3 class="velox-footer-heading tw-text-sm tw-font-semibold tw-uppercase tw-tracking-wider">Cuenta</h3>
             <ul role="list" class="tw-mt-4 tw-space-y-3">
-              <li><a href="/account" class="velox-footer-link tw-text-sm tw-transition-colors">Mi cuenta</a></li>
-              <li><a href="/account/orders" class="velox-footer-link tw-text-sm tw-transition-colors">Mis pedidos</a></li>
-              <li><a href="/cart" class="velox-footer-link tw-text-sm tw-transition-colors">Carrito</a></li>
+              <li><a href="{{ routes.account_url }}" class="velox-footer-link tw-text-sm tw-transition-colors">Mi cuenta</a></li>
+              <li><a href="{{ routes.account_url }}/orders" class="velox-footer-link tw-text-sm tw-transition-colors">Mis pedidos</a></li>
+              <li><a href="{{ routes.cart_url }}" class="velox-footer-link tw-text-sm tw-transition-colors">Carrito</a></li>
               <li><a href="/pages/wishlist" class="velox-footer-link tw-text-sm tw-transition-colors">Favoritos</a></li>
             </ul>
           </div>
@@ -323,7 +323,7 @@
             {% endif %}
           {% endfor %}
         {% else %}
-          <a href="/collections/all" class="velox-footer-link tw-text-sm tw-transition-colors">Tienda</a>
+          <a href="{{ routes.all_products_collection_url }}" class="velox-footer-link tw-text-sm tw-transition-colors">Tienda</a>
           <a href="/pages/about" class="velox-footer-link tw-text-sm tw-transition-colors">Nosotros</a>
           <a href="/pages/contact" class="velox-footer-link tw-text-sm tw-transition-colors">Contacto</a>
           <a href="/policies/privacy-policy" class="velox-footer-link tw-text-sm tw-transition-colors">Privacidad</a>

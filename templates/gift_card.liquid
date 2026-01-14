@@ -428,7 +428,7 @@
       {%- comment -%} QR Code {%- endcomment -%}
       {%- if gift_card.qr_code -%}
         <div class="velox-gift-card__qr">
-          <img src="{{ gift_card.qr_code }}" alt="{{ 'gift_card.qr_code_alt' | t }}">
+          <img src="{{ gift_card.qr_code }}" alt="{{ 'gift_card.qr_code_alt' | t }}" width="120" height="120">
         </div>
       {%- endif -%}
 

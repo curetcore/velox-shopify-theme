@@ -1,4 +1,15 @@
 {
+  "password": {
+    "name": "Password page"
+  },
+  "sections": {
+    "cart": {
+      "name": "Cart"
+    },
+    "collection": {
+      "name": "Collection"
+    }
+  },
   "general": {
     "404": "Not found",
     "article": "Article",

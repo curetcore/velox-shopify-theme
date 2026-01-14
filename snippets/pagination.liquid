@@ -1,0 +1,68 @@
+{%- comment -%}
+  Pagination snippet
+
+  Acepta:
+  - paginate: Objeto de paginación de Shopify
+{%- endcomment -%}
+
+{% if paginate.pages > 1 %}
+  <nav class="velox-pagination tw-flex tw-items-center tw-justify-center tw-gap-2" aria-label="{{ 'general.pagination.label' | t }}">
+    {%- comment -%} Botón anterior {%- endcomment -%}
+    {% if paginate.previous %}
+      <a
+        href="{{ paginate.previous.url }}"
+        class="velox-pagination__btn tw-inline-flex tw-items-center tw-justify-center tw-rounded-md tw-border tw-border-velox-300 tw-bg-white tw-px-3 tw-py-2 tw-text-sm tw-font-medium tw-text-velox-700 hover:tw-bg-velox-50 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-velox-accent focus:tw-ring-offset-2"
+        aria-label="{{ 'general.pagination.previous' | t }}"
+      >
+        {% render 'icon', name: 'chevron-left', class: 'tw-w-4 tw-h-4' %}
+        <span class="tw-sr-only">{{ 'general.pagination.previous' | t }}</span>
+      </a>
+    {% else %}
+      <span class="velox-pagination__btn velox-pagination__btn--disabled tw-inline-flex tw-items-center tw-justify-center tw-rounded-md tw-border tw-border-velox-200 tw-bg-velox-100 tw-px-3 tw-py-2 tw-text-sm tw-font-medium tw-text-velox-400 tw-cursor-not-allowed" aria-disabled="true">
+        {% render 'icon', name: 'chevron-left', class: 'tw-w-4 tw-h-4' %}
+      </span>
+    {% endif %}
+
+    {%- comment -%} Páginas {%- endcomment -%}
+    <div class="velox-pagination__pages tw-flex tw-items-center tw-gap-1">
+      {% for part in paginate.parts %}
+        {% if part.is_link %}
+          <a
+            href="{{ part.url }}"
+            class="velox-pagination__page tw-inline-flex tw-items-center tw-justify-center tw-rounded-md tw-px-3 tw-py-2 tw-text-sm tw-font-medium tw-text-velox-700 hover:tw-bg-velox-100 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-velox-accent focus:tw-ring-offset-2"
+            aria-label="{{ 'general.pagination.page' | t: number: part.title }}"
+          >
+            {{ part.title }}
+          </a>
+        {% else %}
+          {% if part.title == '&hellip;' %}
+            <span class="velox-pagination__ellipsis tw-px-2 tw-text-velox-500">...</span>
+          {% else %}
+            <span
+              class="velox-pagination__page velox-pagination__page--current tw-inline-flex tw-items-center tw-justify-center tw-rounded-md tw-bg-velox-accent tw-px-3 tw-py-2 tw-text-sm tw-font-medium tw-text-white"
+              aria-current="page"
+            >
+              {{ part.title }}
+            </span>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    {%- comment -%} Botón siguiente {%- endcomment -%}
+    {% if paginate.next %}
+      <a
+        href="{{ paginate.next.url }}"
+        class="velox-pagination__btn tw-inline-flex tw-items-center tw-justify-center tw-rounded-md tw-border tw-border-velox-300 tw-bg-white tw-px-3 tw-py-2 tw-text-sm tw-font-medium tw-text-velox-700 hover:tw-bg-velox-50 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-velox-accent focus:tw-ring-offset-2"
+        aria-label="{{ 'general.pagination.next' | t }}"
+      >
+        <span class="tw-sr-only">{{ 'general.pagination.next' | t }}</span>
+        {% render 'icon', name: 'chevron-right', class: 'tw-w-4 tw-h-4' %}
+      </a>
+    {% else %}
+      <span class="velox-pagination__btn velox-pagination__btn--disabled tw-inline-flex tw-items-center tw-justify-center tw-rounded-md tw-border tw-border-velox-200 tw-bg-velox-100 tw-px-3 tw-py-2 tw-text-sm tw-font-medium tw-text-velox-400 tw-cursor-not-allowed" aria-disabled="true">
+        {% render 'icon', name: 'chevron-right', class: 'tw-w-4 tw-h-4' %}
+      </span>
+    {% endif %}
+  </nav>
+{% endif %}

@@ -3,7 +3,12 @@
     "accessibility": {
       "close": "Cerrar",
       "skip_to_content": "Ir al contenido",
-      "loading": "Cargando..."
+      "loading": "Cargando...",
+      "previous": "Anterior",
+      "next": "Siguiente"
+    },
+    "cart": {
+      "error": "Algo salió mal. Por favor, inténtalo de nuevo."
     },
     "breadcrumbs": {
       "home": "Inicio"
@@ -11,7 +16,9 @@
     "pagination": {
       "previous": "Anterior",
       "next": "Siguiente",
-      "page": "Página {{ number }}"
+      "page": "Página {{ number }}",
+      "title": "Paginación",
+      "label": "Navegación de páginas"
     },
     "close": "Cerrar",
     "footer": {
@@ -26,7 +33,8 @@
       "confirmation": "¡Gracias por suscribirte!"
     },
     "navigation": {
-      "menu": "Menú"
+      "menu": "Menú",
+      "view_all": "Ver todo"
     },
     "search": {
       "search": "Buscar",
@@ -148,6 +156,10 @@
       "shipping": "Envío",
       "reviews": "Reseñas",
       "specifications": "Especificaciones",
+      "media_thumbnail": "Ver imagen {{ index }}",
+      "size_guide": "Guía de tallas",
+      "share": "Compartir",
+      "reviews_count": "{{ count }} reseñas",
       "view_details": "Ver todos los detalles",
       "added_to_cart": "Agregado al carrito"
     },
@@ -201,6 +213,8 @@
   "customer": {
     "account": {
       "title": "Mi cuenta",
+      "welcome": "Bienvenido, {{ name }}",
+      "addresses": "Gestionar direcciones",
       "orders_title": "Historial de pedidos",
       "no_orders": "Sin pedidos aún",
       "no_orders_message": "Aún no has realizado ningún pedido.",
@@ -215,7 +229,8 @@
       "forgot_password": "¿Olvidaste tu contraseña?",
       "create_account": "Crear cuenta",
       "no_account": "¿No tienes cuenta?",
-      "guest_title": "Continuar como invitado"
+      "guest_title": "Continuar como invitado",
+      "guest_continue": "Continuar como invitado"
     },
     "recover_password": {
       "title": "Restablecer contraseña",
@@ -235,10 +250,29 @@
       "title": "Historial de pedidos",
       "order_number": "Pedido",
       "order_number_link": "Pedido {{ number }}",
+      "order": "Pedido {{ name }}",
       "date": "Fecha",
+      "placed_on": "Realizado el {{ date }}",
       "payment_status": "Estado del pago",
       "fulfillment_status": "Estado del envío",
-      "total": "Total"
+      "fulfilled": "Enviado",
+      "unfulfilled": "Pendiente",
+      "partially_fulfilled": "Parcialmente enviado",
+      "total": "Total",
+      "view_order": "Ver pedido",
+      "quantity": "Cant: {{ quantity }}",
+      "view_product": "Ver producto",
+      "buy_again": "Comprar de nuevo",
+      "empty_title": "Sin pedidos aún",
+      "empty_message": "Aún no has realizado ningún pedido.",
+      "start_shopping": "Empezar a comprar",
+      "continue_shopping": "Seguir comprando",
+      "back_to_account": "Volver a mi cuenta",
+      "tracking_number": "Seguimiento: {{ number }}",
+      "shipping": "Envío",
+      "tax": "Impuestos",
+      "shipping_address": "Dirección de envío",
+      "billing_address": "Dirección de facturación"
     },
     "order": {
       "title": "Pedido {{ name }}",
@@ -264,9 +298,12 @@
     },
     "addresses": {
       "title": "Direcciones",
+      "subtitle": "Gestiona tus direcciones de envío",
+      "back_to_account": "Volver a mi cuenta",
       "default": "Predeterminada",
       "add_new": "Agregar nueva dirección",
       "edit": "Editar",
+      "edit_address": "Editar dirección",
       "delete": "Eliminar",
       "delete_confirm": "¿Estás seguro de que quieres eliminar esta dirección?",
       "first_name": "Nombre",
@@ -282,7 +319,9 @@
       "set_default": "Establecer como dirección predeterminada",
       "cancel": "Cancelar",
       "update": "Actualizar dirección",
-      "add": "Agregar dirección"
+      "add": "Agregar dirección",
+      "no_addresses": "Sin direcciones guardadas",
+      "no_addresses_message": "Aún no has agregado ninguna dirección."
     }
   },
   "gift_card": {
@@ -303,6 +342,7 @@
   "password": {
     "title": "Esta tienda es privada",
     "subtitle": "Próximamente estaremos abiertos",
+    "coming_soon": "Próximamente",
     "password": "Contraseña",
     "placeholder": "Tu contraseña",
     "enter": "Entrar",
