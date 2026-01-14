@@ -10,12 +10,14 @@
   @param {string} [crop] - Posición de recorte: center, top, bottom, left, right
   @param {string} [aspect] - Aspect ratio: square, product (3/4), wide (4/3), video (16/9)
   @param {boolean} [lazy] - Lazy loading (default: true)
+  @param {boolean} [priority] - High priority for LCP images (default: false)
   @param {string} [alt] - Alt text personalizado
   @param {string} [sizes] - Sizes attribute para srcset
 
   @example
   {% render 'image', image: product.featured_image %}
   {% render 'image', image: product.featured_image, aspect: 'product', lazy: true %}
+  {% render 'image', image: hero_image, priority: true, lazy: false %}
   {% render 'image',
     image: product.featured_image,
     url: product.url,
@@ -26,9 +28,17 @@
 {% enddoc %}
 
 {% liquid
-  assign lazy_load = lazy | default: true
   assign image_alt = alt | default: image.alt | escape
   assign image_crop = crop | default: 'center'
+
+  # Priority images: disable lazy loading and set high fetchpriority
+  if priority
+    assign lazy_load = false
+    assign fetch_priority = 'high'
+  else
+    assign lazy_load = lazy | default: true
+    assign fetch_priority = nil
+  endif
 
   unless height
     assign width = width | default: image.width | at_most: 1600
@@ -62,13 +72,26 @@
   class="tw-block tw-relative tw-overflow-hidden tw-w-full {{ aspect_class }} {{ class }}"
   {% if url %}href="{{ url }}"{% endif %}
 >
-  {{ image
-    | image_url: width: width, height: height, crop: image_crop
-    | image_tag:
-      class: 'tw-w-full tw-h-full tw-object-cover tw-object-center',
-      loading: lazy_load | default: 'lazy',
-      alt: image_alt,
-      sizes: image_sizes,
-      widths: '165, 360, 535, 750, 1100, 1500'
-  }}
+  {% if fetch_priority %}
+    {{ image
+      | image_url: width: width, height: height, crop: image_crop
+      | image_tag:
+        class: 'tw-w-full tw-h-full tw-object-cover tw-object-center',
+        loading: 'eager',
+        fetchpriority: fetch_priority,
+        alt: image_alt,
+        sizes: image_sizes,
+        widths: '165, 360, 535, 750, 1100, 1500'
+    }}
+  {% else %}
+    {{ image
+      | image_url: width: width, height: height, crop: image_crop
+      | image_tag:
+        class: 'tw-w-full tw-h-full tw-object-cover tw-object-center',
+        loading: lazy_load | default: 'lazy',
+        alt: image_alt,
+        sizes: image_sizes,
+        widths: '165, 360, 535, 750, 1100, 1500'
+    }}
+  {% endif %}
 </{{ wrapper }}>

@@ -511,8 +511,24 @@ velox-shopify-theme/
   - [x] Template page.wishlist.json
   - [x] Traducciones en/es completas
 
+- [x] Fase 13-14: Performance y Accesibilidad
+  - [x] Skip to content link para navegación por teclado
+  - [x] ARIA landmarks (header role="banner", main role="main", footer role="contentinfo")
+  - [x] Focus states WCAG 2.1 AA compliant
+    - outline 2px solid con offset
+    - Estilos para todos los elementos interactivos
+  - [x] prefers-reduced-motion soporte
+    - Desactiva animaciones para usuarios sensibles
+    - Smooth scroll solo si usuario no desactiva
+  - [x] Fetchpriority para imágenes LCP
+    - Parámetro `priority` en image.liquid
+    - fetchpriority="high" y loading="eager"
+  - [x] Resource hints para CDNs
+    - Preconnect a cdn.shopify.com
+    - DNS prefetch para conexiones rápidas
+  - [x] Todos los aria-labels verificados con traducciones
+
 ### Pendientes
-- [ ] Fase 13-14: Performance y Accesibilidad
 - [ ] Fase 15-17: Presets, Traducciones, Documentación
 - [ ] Fase 18-19: Testing y Submission
 
