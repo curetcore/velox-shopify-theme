@@ -1,0 +1,106 @@
+/* Velox Theme - Tailwind CSS Entry Point */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Custom components para Velox
+ * Usa prefijo tw- en todas las clases
+ */
+
+@layer components {
+  /* Botones */
+  .tw-btn {
+    @apply tw-inline-flex tw-items-center tw-justify-center tw-px-6 tw-py-3 tw-font-medium tw-rounded-md tw-transition-colors tw-duration-200;
+  }
+
+  .tw-btn-primary {
+    @apply tw-btn tw-bg-velox-900 tw-text-white hover:tw-bg-velox-800;
+  }
+
+  .tw-btn-secondary {
+    @apply tw-btn tw-bg-white tw-text-velox-900 tw-border tw-border-velox-200 hover:tw-bg-velox-50;
+  }
+
+  .tw-btn-accent {
+    @apply tw-btn tw-bg-accent tw-text-white hover:tw-bg-accent-hover;
+  }
+
+  /* Cards de producto */
+  .tw-product-card {
+    @apply tw-group tw-relative tw-flex tw-flex-col tw-overflow-hidden tw-bg-white;
+  }
+
+  .tw-product-card-image {
+    @apply tw-aspect-[3/4] tw-w-full tw-overflow-hidden tw-bg-velox-100;
+  }
+
+  .tw-product-card-image img {
+    @apply tw-h-full tw-w-full tw-object-cover tw-object-center group-hover:tw-scale-105 tw-transition-transform tw-duration-300;
+  }
+
+  /* Quick View overlay */
+  .tw-quick-view-trigger {
+    @apply tw-absolute tw-inset-0 tw-flex tw-items-end tw-justify-center tw-p-4 tw-opacity-0 group-hover:tw-opacity-100 tw-transition-opacity tw-duration-200;
+  }
+
+  /* Swatches de color */
+  .tw-color-swatch {
+    @apply tw-w-6 tw-h-6 tw-rounded-full tw-border tw-border-velox-200 tw-cursor-pointer hover:tw-ring-2 hover:tw-ring-velox-400 hover:tw-ring-offset-1 tw-transition-all;
+  }
+
+  .tw-color-swatch.active {
+    @apply tw-ring-2 tw-ring-velox-900 tw-ring-offset-1;
+  }
+
+  /* Size selector */
+  .tw-size-option {
+    @apply tw-flex tw-items-center tw-justify-center tw-px-4 tw-py-2 tw-text-sm tw-font-medium tw-border tw-border-velox-200 tw-rounded-md tw-cursor-pointer hover:tw-border-velox-400 tw-transition-colors;
+  }
+
+  .tw-size-option.active {
+    @apply tw-bg-velox-900 tw-text-white tw-border-velox-900;
+  }
+
+  .tw-size-option.out-of-stock {
+    @apply tw-opacity-50 tw-cursor-not-allowed tw-line-through;
+  }
+
+  /* Badge */
+  .tw-badge {
+    @apply tw-absolute tw-top-2 tw-left-2 tw-px-2 tw-py-1 tw-text-xs tw-font-semibold tw-uppercase tw-tracking-wide;
+  }
+
+  .tw-badge-sale {
+    @apply tw-badge tw-bg-accent tw-text-white;
+  }
+
+  .tw-badge-new {
+    @apply tw-badge tw-bg-velox-900 tw-text-white;
+  }
+
+  .tw-badge-soldout {
+    @apply tw-badge tw-bg-velox-400 tw-text-white;
+  }
+}
+
+@layer utilities {
+  /* Animaciones de entrada */
+  .tw-animate-in {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  /* Aspect ratios para productos */
+  .tw-aspect-product {
+    aspect-ratio: 3/4;
+  }
+
+  .tw-aspect-product-wide {
+    aspect-ratio: 4/3;
+  }
+
+  .tw-aspect-square {
+    aspect-ratio: 1/1;
+  }
+}
