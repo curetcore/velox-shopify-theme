@@ -377,5 +377,18 @@
       "select_option": "Selecciona una opción",
       "form_error": "Por favor corrige los siguientes errores:"
     }
+  },
+  "wishlist": {
+    "title": "Mis favoritos",
+    "items": "artículos",
+    "items_one": "artículo",
+    "empty_title": "Tu lista de favoritos está vacía",
+    "empty_message": "Guarda tus artículos favoritos para encontrarlos fácilmente después.",
+    "start_shopping": "Empezar a comprar",
+    "remove": "Quitar de favoritos",
+    "add": "Agregar a favoritos",
+    "added": "Agregado a favoritos",
+    "removed": "Quitado de favoritos",
+    "view_wishlist": "Ver favoritos"
   }
 }

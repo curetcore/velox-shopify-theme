@@ -1,0 +1,138 @@
+{% comment %}
+  Velox Wishlist Button
+
+  Botón para agregar/quitar productos del wishlist.
+  Usa localStorage para visitantes.
+
+  Parámetros:
+  - product: (requerido) Objeto producto de Shopify
+  - size: (opcional) small, medium, large - default: medium
+  - style: (opcional) icon, icon-text, text - default: icon
+  - class: (opcional) Clases CSS adicionales
+  - show_tooltip: (opcional) Mostrar tooltip - default: true
+{% endcomment %}
+
+{%- liquid
+  assign btn_size = size | default: 'medium'
+  assign btn_style = style | default: 'icon'
+  assign show_tooltip = show_tooltip | default: true
+  assign extra_class = class | default: ''
+
+  # Tamaños
+  case btn_size
+    when 'small'
+      assign icon_size = 'tw-h-4 tw-w-4'
+      assign btn_padding = 'tw-p-1.5'
+    when 'large'
+      assign icon_size = 'tw-h-6 tw-w-6'
+      assign btn_padding = 'tw-p-3'
+    else
+      assign icon_size = 'tw-h-5 tw-w-5'
+      assign btn_padding = 'tw-p-2'
+  endcase
+
+  # Obtener imagen del producto
+  if product.featured_image
+    assign product_image = product.featured_image | image_url: width: 400
+  else
+    assign product_image = ''
+  endif
+
+  # Precio
+  assign product_price = product.price | money
+  if product.compare_at_price > product.price
+    assign product_compare_price = product.compare_at_price | money
+  else
+    assign product_compare_price = ''
+  endif
+-%}
+
+<button
+  type="button"
+  data-wishlist-button
+  data-product-id="{{ product.id }}"
+  data-product-handle="{{ product.handle }}"
+  data-product-title="{{ product.title | escape }}"
+  data-product-price="{{ product_price }}"
+  data-product-compare-price="{{ product_compare_price }}"
+  data-product-image="{{ product_image }}"
+  data-product-url="{{ product.url }}"
+  data-product-available="{{ product.available }}"
+  class="wishlist-button tw-group tw-relative tw-inline-flex tw-items-center tw-justify-center tw-rounded-full tw-bg-white/90 tw-backdrop-blur-sm tw-text-velox-600 tw-shadow-sm tw-ring-1 tw-ring-velox-900/5 tw-transition-all hover:tw-bg-white hover:tw-text-velox-accent hover:tw-shadow-md focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-velox-accent focus:tw-ring-offset-2 {{ btn_padding }} {{ extra_class }}"
+  aria-label="{{ 'products.product.add_to_wishlist' | t }}"
+  aria-pressed="false"
+>
+  {%- comment -%} Icono corazón outline (no activo) {%- endcomment -%}
+  <svg
+    class="wishlist-icon-outline {{ icon_size }} tw-transition-transform group-hover:tw-scale-110"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke-width="1.5"
+    stroke="currentColor"
+    aria-hidden="true"
+  >
+    <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+  </svg>
+
+  {%- comment -%} Icono corazón filled (activo) {%- endcomment -%}
+  <svg
+    class="wishlist-icon-filled {{ icon_size }} tw-absolute tw-text-red-500 tw-opacity-0 tw-scale-0 tw-transition-all"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    aria-hidden="true"
+  >
+    <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
+  </svg>
+
+  {%- comment -%} Texto (si aplica) {%- endcomment -%}
+  {% if btn_style == 'icon-text' or btn_style == 'text' %}
+    <span class="wishlist-text tw-ml-2 tw-text-sm tw-font-medium">
+      <span class="wishlist-text-add">{{ 'products.product.add_to_wishlist' | t }}</span>
+      <span class="wishlist-text-remove tw-hidden">{{ 'products.product.remove_from_wishlist' | t }}</span>
+    </span>
+  {% endif %}
+
+  {%- comment -%} Tooltip {%- endcomment -%}
+  {% if show_tooltip and btn_style == 'icon' %}
+    <span class="tw-pointer-events-none tw-absolute tw--top-10 tw-left-1/2 tw--translate-x-1/2 tw-whitespace-nowrap tw-rounded tw-bg-velox-900 tw-px-2 tw-py-1 tw-text-xs tw-text-white tw-opacity-0 tw-transition-opacity group-hover:tw-opacity-100">
+      <span class="wishlist-tooltip-add">{{ 'products.product.add_to_wishlist' | t }}</span>
+      <span class="wishlist-tooltip-remove tw-hidden">{{ 'products.product.remove_from_wishlist' | t }}</span>
+    </span>
+  {% endif %}
+</button>
+
+<style>
+  /* Estados del botón de wishlist */
+  .wishlist-button.is-active .wishlist-icon-outline {
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  .wishlist-button.is-active .wishlist-icon-filled {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .wishlist-button.is-active .wishlist-text-add,
+  .wishlist-button.is-active .wishlist-tooltip-add {
+    display: none;
+  }
+
+  .wishlist-button.is-active .wishlist-text-remove,
+  .wishlist-button.is-active .wishlist-tooltip-remove {
+    display: inline;
+  }
+
+  /* Animación al hacer click */
+  .wishlist-button.wishlist-animating .wishlist-icon-filled {
+    animation: wishlist-pop 0.3s ease-out;
+  }
+
+  @keyframes wishlist-pop {
+    0% { transform: scale(0.8); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+  }
+</style>

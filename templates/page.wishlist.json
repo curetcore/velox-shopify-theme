@@ -1,0 +1,17 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-wishlist",
+      "settings": {
+        "heading": "",
+        "columns_desktop": 4,
+        "columns_mobile": 2,
+        "show_vendor": false,
+        "show_compare_price": true
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

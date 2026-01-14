@@ -125,12 +125,7 @@
   </div>
 
   {%- comment -%} Wishlist button {%- endcomment -%}
-  <button
-    type="button"
-    class="tw-absolute tw-top-2 tw-right-2 tw-p-2 tw-bg-white tw-rounded-full tw-shadow-sm tw-opacity-0 group-hover:tw-opacity-100 tw-transition-opacity tw-duration-200 tw-z-10 hover:tw-bg-velox-50"
-    data-wishlist-add="{{ product.id }}"
-    aria-label="{{ 'products.product.add_to_wishlist' | t | default: 'Add to wishlist' }}"
-  >
-    {% render 'icon', name: 'heart', class: 'tw-w-5 tw-h-5 tw-text-velox-600' %}
-  </button>
+  <div class="tw-absolute tw-top-2 tw-right-2 tw-opacity-0 group-hover:tw-opacity-100 tw-transition-opacity tw-duration-200 tw-z-10">
+    {% render 'wishlist-button', product: product, size: 'medium', show_tooltip: true %}
+  </div>
 </article>

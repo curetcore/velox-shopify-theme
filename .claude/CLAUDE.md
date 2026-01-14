@@ -264,6 +264,11 @@ velox-shopify-theme/
 - `breadcrumbs.liquid` - Navegación de migas de pan
   - Estilos: chevrons, slashes, arrows
   - Soporte para productos, colecciones, artículos, páginas
+- `wishlist-button.liquid` - Botón de favoritos
+  - Tamaños: small, medium, large
+  - Estilos: icon, icon-text, text
+  - Tooltip configurable
+  - Animación al hacer click
 
 ### Product page
 - `image-zoom.liquid` - Zoom de imágenes
@@ -485,8 +490,28 @@ velox-shopify-theme/
     - Búsqueda integrada
     - Colecciones populares via bloques
 
+- [x] Fase 12: Wishlist system
+  - [x] wishlist.js - Sistema con localStorage
+    - VeloxWishlist objeto global
+    - Métodos: add, remove, toggle, has, getAll, getCount, clear
+    - Eventos: wishlist:init, wishlist:add, wishlist:remove, wishlist:clear
+    - Sincronización automática de botones y contadores
+  - [x] wishlist-button.liquid - Botón reutilizable
+    - Tamaños: small, medium, large
+    - Estilos: icon, icon-text, text
+    - Tooltip configurable
+    - Animación de corazón
+  - [x] main-wishlist.liquid - Página de favoritos
+    - Grid responsivo configurable
+    - Empty state con placeholder Shopify oficial
+    - Template dinámico vía JavaScript
+    - Botón de remover con animación
+  - [x] Integración en product-card.liquid
+  - [x] Link en header con contador
+  - [x] Template page.wishlist.json
+  - [x] Traducciones en/es completas
+
 ### Pendientes
-- [ ] Fase 12: Features premium (Quick View, Wishlist)
 - [ ] Fase 13-14: Performance y Accesibilidad
 - [ ] Fase 15-17: Presets, Traducciones, Documentación
 - [ ] Fase 18-19: Testing y Submission

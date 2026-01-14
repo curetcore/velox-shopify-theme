@@ -377,5 +377,18 @@
       "select_option": "Select an option",
       "form_error": "Please correct the following errors:"
     }
+  },
+  "wishlist": {
+    "title": "My wishlist",
+    "items": "items",
+    "items_one": "item",
+    "empty_title": "Your wishlist is empty",
+    "empty_message": "Save your favorite items to find them easily later.",
+    "start_shopping": "Start shopping",
+    "remove": "Remove from wishlist",
+    "add": "Add to wishlist",
+    "added": "Added to wishlist",
+    "removed": "Removed from wishlist",
+    "view_wishlist": "View wishlist"
   }
 }

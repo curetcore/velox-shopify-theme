@@ -1,0 +1,276 @@
+{% comment %}
+  Velox Wishlist Page Section
+
+  Página de favoritos con grid de productos y estado vacío.
+  Los productos se cargan desde localStorage via JavaScript.
+{% endcomment %}
+
+{%- liquid
+  assign columns_desktop = section.settings.columns_desktop | default: 4
+  assign columns_mobile = section.settings.columns_mobile | default: 2
+  assign show_vendor = section.settings.show_vendor
+  assign show_compare_price = section.settings.show_compare_price
+-%}
+
+<section
+  class="tw-py-12 sm:tw-py-16 lg:tw-py-20"
+  data-wishlist-container
+  {{ section.shopify_attributes }}
+>
+  <div class="tw-mx-auto tw-max-w-7xl tw-px-4 sm:tw-px-6 lg:tw-px-8">
+    {%- comment -%} Header {%- endcomment -%}
+    <div class="tw-mb-8 sm:tw-mb-12">
+      <h1 class="tw-text-2xl tw-font-bold tw-tracking-tight tw-text-velox-900 sm:tw-text-3xl">
+        {{ section.settings.heading | default: 'wishlist.title' | t }}
+      </h1>
+      <p class="tw-mt-2 tw-text-sm tw-text-velox-600" data-wishlist-count-text>
+        <span data-wishlist-count>0</span> {{ 'wishlist.items' | t }}
+      </p>
+    </div>
+
+    {%- comment -%} Grid de productos (se llena con JavaScript) {%- endcomment -%}
+    <div
+      class="tw-hidden tw-grid tw-gap-4 sm:tw-gap-6 lg:tw-gap-8"
+      style="grid-template-columns: repeat({{ columns_mobile }}, minmax(0, 1fr));"
+      data-wishlist-grid
+    >
+      {%- comment -%} Los items se insertan aquí via JavaScript {%- endcomment -%}
+    </div>
+
+    {%- comment -%} Estado vacío - Usa placeholder SVG oficial de Shopify {%- endcomment -%}
+    <div class="tw-text-center tw-py-16" data-wishlist-empty>
+      <div class="tw-mx-auto tw-mb-6 tw-w-48 tw-h-48 tw-text-velox-200">
+        {{ 'collection-1' | placeholder_svg_tag: 'tw-w-full tw-h-full' }}
+      </div>
+      <h2 class="tw-text-xl tw-font-semibold tw-text-velox-900">
+        {{ 'wishlist.empty_title' | t }}
+      </h2>
+      <p class="tw-mt-2 tw-text-velox-600 tw-max-w-md tw-mx-auto">
+        {{ 'wishlist.empty_message' | t }}
+      </p>
+      <div class="tw-mt-8">
+        <a
+          href="{{ routes.collections_url }}"
+          class="tw-inline-flex tw-items-center tw-gap-2 tw-rounded-lg tw-bg-velox-accent tw-px-6 tw-py-3 tw-text-sm tw-font-semibold tw-text-white tw-shadow-sm tw-transition-all hover:tw-bg-velox-accent/90 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-velox-accent focus:tw-ring-offset-2"
+        >
+          {% render 'icon', name: 'shopping-bag', class: 'tw-h-5 tw-w-5' %}
+          {{ 'wishlist.start_shopping' | t }}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{%- comment -%} Template para items del wishlist (usado por JavaScript) {%- endcomment -%}
+<template id="wishlist-item-template">
+  <div
+    class="tw-group tw-relative tw-transition-all tw-duration-200"
+    data-wishlist-item
+    data-product-id=""
+  >
+    {%- comment -%} Imagen {%- endcomment -%}
+    <div class="tw-aspect-square tw-overflow-hidden tw-rounded-lg tw-bg-velox-100">
+      <a href="" class="wishlist-item-link tw-block tw-h-full">
+        <img
+          src=""
+          alt=""
+          class="wishlist-item-image tw-h-full tw-w-full tw-object-cover tw-object-center tw-transition-transform tw-duration-300 group-hover:tw-scale-105"
+          loading="lazy"
+        >
+      </a>
+
+      {%- comment -%} Botón de remover {%- endcomment -%}
+      <button
+        type="button"
+        data-wishlist-remove
+        data-product-id=""
+        class="tw-absolute tw-right-2 tw-top-2 tw-rounded-full tw-bg-white/90 tw-p-2 tw-text-velox-600 tw-shadow-sm tw-ring-1 tw-ring-velox-900/5 tw-transition-all hover:tw-bg-white hover:tw-text-red-500 hover:tw-shadow-md focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-red-500"
+        aria-label="{{ 'wishlist.remove' | t }}"
+      >
+        <svg class="tw-h-4 tw-w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    {%- comment -%} Info del producto {%- endcomment -%}
+    <div class="tw-mt-4">
+      <h3 class="tw-text-sm tw-font-medium tw-text-velox-900">
+        <a href="" class="wishlist-item-link hover:tw-text-velox-accent">
+          <span class="wishlist-item-title"></span>
+        </a>
+      </h3>
+
+      {%- comment -%} Precio {%- endcomment -%}
+      <div class="tw-mt-1 tw-flex tw-items-center tw-gap-2">
+        <span class="wishlist-item-price tw-text-sm tw-font-semibold tw-text-velox-900"></span>
+        <span class="wishlist-item-compare-price tw-text-sm tw-text-velox-500 tw-line-through"></span>
+      </div>
+
+      {%- comment -%} Disponibilidad {%- endcomment -%}
+      <p class="wishlist-item-availability tw-mt-1 tw-text-xs"></p>
+    </div>
+
+    {%- comment -%} Botón agregar al carrito {%- endcomment -%}
+    <div class="tw-mt-4">
+      <a
+        href=""
+        class="wishlist-item-link tw-block tw-w-full tw-rounded-lg tw-bg-velox-900 tw-px-4 tw-py-2.5 tw-text-center tw-text-sm tw-font-semibold tw-text-white tw-transition-colors hover:tw-bg-velox-800 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-velox-accent focus:tw-ring-offset-2"
+      >
+        {{ 'products.product.add_to_cart' | t }}
+      </a>
+    </div>
+  </div>
+</template>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    renderWishlistItems();
+
+    // Re-render cuando cambie el wishlist
+    document.addEventListener('wishlist:remove', renderWishlistItems);
+    document.addEventListener('wishlist:clear', renderWishlistItems);
+  });
+
+  function renderWishlistItems() {
+    const grid = document.querySelector('[data-wishlist-grid]');
+    const emptyState = document.querySelector('[data-wishlist-empty]');
+    const template = document.getElementById('wishlist-item-template');
+
+    if (!grid || !template || !window.VeloxWishlist) return;
+
+    const items = VeloxWishlist.getAll();
+
+    // Limpiar grid
+    grid.innerHTML = '';
+
+    if (items.length === 0) {
+      grid.classList.add('tw-hidden');
+      emptyState.classList.remove('tw-hidden');
+      return;
+    }
+
+    grid.classList.remove('tw-hidden');
+    emptyState.classList.add('tw-hidden');
+
+    // Ajustar columnas responsive
+    grid.style.gridTemplateColumns = '';
+    grid.className = grid.className.replace(/tw-grid-cols-\d/g, '');
+    grid.classList.add(
+      'tw-grid',
+      'tw-grid-cols-{{ columns_mobile }}',
+      'sm:tw-grid-cols-3',
+      'lg:tw-grid-cols-{{ columns_desktop }}'
+    );
+
+    // Renderizar items
+    items.forEach(item => {
+      const clone = template.content.cloneNode(true);
+      const container = clone.querySelector('[data-wishlist-item]');
+
+      // Setear data attributes
+      container.dataset.productId = item.id;
+      clone.querySelector('[data-wishlist-remove]').dataset.productId = item.id;
+
+      // Setear imagen
+      const img = clone.querySelector('.wishlist-item-image');
+      if (item.image) {
+        img.src = item.image;
+        img.alt = item.title;
+      } else {
+        // Placeholder si no hay imagen - usar clase de placeholder
+        img.classList.add('tw-bg-velox-100');
+        img.removeAttribute('src');
+      }
+
+      // Setear links
+      clone.querySelectorAll('.wishlist-item-link').forEach(link => {
+        link.href = item.url;
+      });
+
+      // Setear título
+      clone.querySelector('.wishlist-item-title').textContent = item.title;
+
+      // Setear precios
+      clone.querySelector('.wishlist-item-price').textContent = item.price;
+
+      const comparePrice = clone.querySelector('.wishlist-item-compare-price');
+      if (item.comparePrice) {
+        comparePrice.textContent = item.comparePrice;
+      } else {
+        comparePrice.style.display = 'none';
+      }
+
+      // Setear disponibilidad
+      const availability = clone.querySelector('.wishlist-item-availability');
+      if (item.available) {
+        availability.textContent = '{{ "products.product.in_stock" | t }}';
+        availability.classList.add('tw-text-green-600');
+      } else {
+        availability.textContent = '{{ "products.product.sold_out" | t }}';
+        availability.classList.add('tw-text-red-600');
+      }
+
+      grid.appendChild(clone);
+    });
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Wishlist page",
+  "tag": "section",
+  "class": "section-wishlist",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Título",
+      "default": "Mis favoritos"
+    },
+    {
+      "type": "header",
+      "content": "Grid"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columnas en desktop",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "columns_mobile",
+      "label": "Columnas en móvil",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "header",
+      "content": "Información del producto"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Mostrar marca",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_compare_price",
+      "label": "Mostrar precio comparativo",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Wishlist page"
+    }
+  ]
+}
+{% endschema %}
