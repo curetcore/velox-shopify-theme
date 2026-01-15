@@ -328,9 +328,9 @@
         "type": "range",
         "id": "body_letter_spacing",
         "label": "Body letter spacing",
-        "min": -0.02,
+        "min": 0,
         "max": 0.1,
-        "step": 0.01,
+        "step": 0.1,
         "default": 0,
         "unit": "em"
       }
