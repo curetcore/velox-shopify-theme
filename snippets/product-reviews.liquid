@@ -1,0 +1,65 @@
+{% comment %}
+  Product Reviews Display
+  Shows product reviews from metafields or app integration
+  Compatible with Judge.me, Loox, Yotpo, etc.
+
+  Uso: {% render 'product-reviews', product: product, block: block %}
+{% endcomment %}
+
+{% liquid
+  # Try to get reviews data from metafields
+  assign reviews_rating = product.metafields.reviews.rating.value | default: 0
+  assign reviews_count = product.metafields.reviews.rating_count.value | default: 0
+  
+  # Alternative: from app metafields (Judge.me example)
+  if reviews_rating == 0 and product.metafields.judgeme.badge
+    assign reviews_rating = product.metafields.judgeme.rating.value
+    assign reviews_count = product.metafields.judgeme.reviews_count.value
+  endif
+%}
+
+<div 
+  class="product-reviews tw-mt-6"
+  data-product-reviews
+  {{ block.shopify_attributes }}
+>
+  {%- comment -%} Reviews Summary {%- endcomment -%}
+  {% if reviews_count > 0 %}
+    <div class="tw-flex tw-items-center tw-gap-3 tw-mb-4">
+      {% render 'star-rating', rating: reviews_rating, reviews_count: reviews_count, size: 'md' %}
+      <span class="tw-text-velox-600">
+        {{ reviews_count }} {{ reviews_count | pluralize: 'review', 'reviews' }}
+      </span>
+    </div>
+  {% endif %}
+
+  {%- comment -%} App Hook - Where review apps inject their widget {%- endcomment -%}
+  <div id="product-reviews-widget" class="product-reviews-widget">
+    {%- comment -%} 
+      Review apps like Judge.me, Loox, Yotpo will inject content here.
+      The app JavaScript will find this container by ID or data attribute.
+    {%- endcomment -%}
+  </div>
+
+  {%- comment -%} Write a Review Button (if app supports) {%- endcomment -%}
+  {% if block.settings.show_write_review %}
+    <button
+      type="button"
+      class="tw-mt-4 tw-px-4 tw-py-2 tw-border tw-border-velox-300 tw-rounded-lg tw-text-velox-700 hover:tw-bg-velox-50 tw-transition-colors tw-text-sm tw-font-medium"
+      data-write-review
+      onclick="if(window.SPR) SPR.onTriggerWrite(); if(window.jdgm) jdgm.createForm();"
+    >
+      {{ block.settings.write_review_text | default: 'Write a Review' }}
+    </button>
+  {% endif %}
+
+  {%- comment -%} No Reviews Yet State {%- endcomment -%}
+  {% if reviews_count == 0 and block.settings.show_no_reviews %}
+    <div class="tw-text-center tw-py-6 tw-text-velox-500">
+      <p class="tw-mb-2">{{ block.settings.no_reviews_text | default: 'No reviews yet' }}</p>
+      {% if block.settings.show_write_review %}
+        <p class="tw-text-sm">Be the first to review this product!</p>
+      {% endif %}
+    </div>
+  {% endif %}
+</div>

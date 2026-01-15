@@ -1,0 +1,62 @@
+{% comment %}
+  Star Rating Display
+  Shows stars based on rating value
+
+  Uso: {% render 'star-rating', rating: 4.5, max: 5, reviews_count: 42 %}
+{% endcomment %}
+
+{% liquid
+  assign rating_value = rating | default: 0 | round: 1
+  assign max_stars = max | default: 5
+  assign show_count = reviews_count | default: false
+  assign size_class = size | default: 'sm'
+
+  case size_class
+    when 'xs'
+      assign star_size = 'tw-w-3 tw-h-3'
+    when 'sm'
+      assign star_size = 'tw-w-4 tw-h-4'
+    when 'md'
+      assign star_size = 'tw-w-5 tw-h-5'
+    when 'lg'
+      assign star_size = 'tw-w-6 tw-h-6'
+    else
+      assign star_size = 'tw-w-4 tw-h-4'
+  endcase
+%}
+
+<div class="star-rating tw-inline-flex tw-items-center tw-gap-1" aria-label="Rating: {{ rating_value }} out of {{ max_stars }} stars">
+  <div class="tw-flex tw-gap-0.5">
+    {% for i in (1..max_stars) %}
+      {% if rating_value >= i %}
+        {%- comment -%} Full star {%- endcomment -%}
+        <svg class="{{ star_size }} tw-text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+        </svg>
+      {% elsif rating_value > i | minus: 1 %}
+        {%- comment -%} Half star {%- endcomment -%}
+        <div class="tw-relative">
+          <svg class="{{ star_size }} tw-text-velox-200" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+          </svg>
+          <div class="tw-absolute tw-inset-0 tw-overflow-hidden" style="width: 50%">
+            <svg class="{{ star_size }} tw-text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+            </svg>
+          </div>
+        </div>
+      {% else %}
+        {%- comment -%} Empty star {%- endcomment -%}
+        <svg class="{{ star_size }} tw-text-velox-200" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+        </svg>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  {% if show_count %}
+    <span class="tw-text-velox-500 {% if size_class == 'xs' %}tw-text-xs{% else %}tw-text-sm{% endif %}">
+      ({{ reviews_count }})
+    </span>
+  {% endif %}
+</div>

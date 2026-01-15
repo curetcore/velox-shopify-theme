@@ -643,6 +643,23 @@
             {% endif %}
           {% endfor %}
 
+          {%- comment -%} Size Chart {%- endcomment -%}
+          {% for block in section.blocks %}
+            {% if block.type == 'size_chart' %}
+              {% render 'size-chart-modal', block: block %}
+            {% endif %}
+          {% endfor %}
+
+          {%- comment -%} Back in Stock Alert (shows when variant is sold out) {%- endcomment -%}
+          {% render 'back-in-stock', product: product, variant: current_variant %}
+
+          {%- comment -%} Product Reviews {%- endcomment -%}
+          {% for block in section.blocks %}
+            {% if block.type == 'product_reviews' %}
+              {% render 'product-reviews', product: product, block: block %}
+            {% endif %}
+          {% endfor %}
+
           {%- comment -%} Product description / Tabs {%- endcomment -%}
           {% if section.settings.description_style == 'tabs' %}
             {%- comment -%} Tabs layout {%- endcomment -%}
@@ -1618,6 +1635,184 @@
           "type": "text",
           "id": "badge_4_text",
           "label": "Text"
+        }
+      ]
+    },
+    {
+      "type": "size_chart",
+      "name": "Size Chart",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text",
+          "default": "Size Guide"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Modal title",
+          "default": "Size Guide"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "image_picker",
+          "id": "chart_image",
+          "label": "Size chart image"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_table",
+          "label": "Show size table",
+          "default": true
+        },
+        {
+          "type": "header",
+          "content": "XS Measurements"
+        },
+        {
+          "type": "text",
+          "id": "size_xs",
+          "label": "Chest"
+        },
+        {
+          "type": "text",
+          "id": "waist_xs",
+          "label": "Waist"
+        },
+        {
+          "type": "text",
+          "id": "hips_xs",
+          "label": "Hips"
+        },
+        {
+          "type": "header",
+          "content": "S Measurements"
+        },
+        {
+          "type": "text",
+          "id": "size_s",
+          "label": "Chest",
+          "default": "34-36\""
+        },
+        {
+          "type": "text",
+          "id": "waist_s",
+          "label": "Waist",
+          "default": "26-28\""
+        },
+        {
+          "type": "text",
+          "id": "hips_s",
+          "label": "Hips",
+          "default": "36-38\""
+        },
+        {
+          "type": "header",
+          "content": "M Measurements"
+        },
+        {
+          "type": "text",
+          "id": "size_m",
+          "label": "Chest",
+          "default": "38-40\""
+        },
+        {
+          "type": "text",
+          "id": "waist_m",
+          "label": "Waist",
+          "default": "30-32\""
+        },
+        {
+          "type": "text",
+          "id": "hips_m",
+          "label": "Hips",
+          "default": "40-42\""
+        },
+        {
+          "type": "header",
+          "content": "L Measurements"
+        },
+        {
+          "type": "text",
+          "id": "size_l",
+          "label": "Chest",
+          "default": "42-44\""
+        },
+        {
+          "type": "text",
+          "id": "waist_l",
+          "label": "Waist",
+          "default": "34-36\""
+        },
+        {
+          "type": "text",
+          "id": "hips_l",
+          "label": "Hips",
+          "default": "44-46\""
+        },
+        {
+          "type": "header",
+          "content": "XL Measurements"
+        },
+        {
+          "type": "text",
+          "id": "size_xl",
+          "label": "Chest",
+          "default": "46-48\""
+        },
+        {
+          "type": "text",
+          "id": "waist_xl",
+          "label": "Waist",
+          "default": "38-40\""
+        },
+        {
+          "type": "text",
+          "id": "hips_xl",
+          "label": "Hips",
+          "default": "48-50\""
+        },
+        {
+          "type": "textarea",
+          "id": "measurement_tips",
+          "label": "How to measure tips"
+        }
+      ]
+    },
+    {
+      "type": "product_reviews",
+      "name": "Product Reviews",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_write_review",
+          "label": "Show write review button",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "write_review_text",
+          "label": "Button text",
+          "default": "Write a Review"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_no_reviews",
+          "label": "Show no reviews message",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "no_reviews_text",
+          "label": "No reviews text",
+          "default": "No reviews yet"
         }
       ]
     }
