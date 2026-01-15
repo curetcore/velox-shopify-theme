@@ -114,8 +114,8 @@
                   loading: 'lazy'
                 }}
               {% else %}
-                <div class="tw-w-full tw-h-full tw-flex tw-items-center tw-justify-center">
-                  {% render 'icon', name: 'eye', class: 'tw-w-8 tw-h-8 tw-text-velox-300' %}
+                <div class="tw-w-full tw-h-full tw-overflow-hidden">
+                  {{ 'product-1' | placeholder_svg_tag: 'tw-w-full tw-h-full tw-object-cover tw-text-velox-300' }}
                 </div>
               {% endif %}
             </a>

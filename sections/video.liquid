@@ -107,8 +107,13 @@
             <source src="{{ video_url }}" type="video/mp4">
           </video>
         {% else %}
-          <div class="tw-absolute tw-inset-0 tw-flex tw-items-center tw-justify-center tw-bg-velox-100">
-            {% render 'icon', name: 'play', class: 'tw-w-16 tw-h-16 tw-text-velox-300' %}
+          <div class="tw-absolute tw-inset-0 tw-bg-velox-100 tw-overflow-hidden">
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'tw-w-full tw-h-full tw-object-cover tw-text-velox-300' }}
+            <div class="tw-absolute tw-inset-0 tw-flex tw-items-center tw-justify-center tw-bg-velox-900/20">
+              <div class="tw-w-16 tw-h-16 tw-rounded-full tw-bg-white/90 tw-flex tw-items-center tw-justify-center">
+                {% render 'icon', name: 'play', class: 'tw-w-6 tw-h-6 tw-text-velox-900 tw-ml-0.5' %}
+              </div>
+            </div>
           </div>
         {% endif %}
       {% endif %}

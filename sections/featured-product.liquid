@@ -23,8 +23,8 @@
                 widths: '600, 900, 1200'
               }}
             {% else %}
-              <div class="tw-aspect-square tw-flex tw-items-center tw-justify-center">
-                {% render 'icon', name: 'shopping-bag', class: 'tw-w-24 tw-h-24 tw-text-velox-300' %}
+              <div class="tw-aspect-square tw-overflow-hidden">
+                {{ 'product-1' | placeholder_svg_tag: 'tw-w-full tw-h-full tw-object-cover tw-text-velox-300' }}
               </div>
             {% endif %}
 
@@ -139,8 +139,8 @@
     {% else %}
       {%- comment -%} Placeholder {%- endcomment -%}
       <div class="tw-grid tw-grid-cols-1 lg:tw-grid-cols-2 tw-gap-8 lg:tw-gap-16 tw-items-center">
-        <div class="tw-bg-velox-100 tw-rounded-lg tw-aspect-square tw-flex tw-items-center tw-justify-center">
-          {% render 'icon', name: 'shopping-bag', class: 'tw-w-24 tw-h-24 tw-text-velox-300' %}
+        <div class="tw-bg-velox-100 tw-rounded-lg tw-aspect-square tw-overflow-hidden">
+          {{ 'product-1' | placeholder_svg_tag: 'tw-w-full tw-h-full tw-object-cover tw-text-velox-300' }}
         </div>
         <div>
           <div class="tw-h-6 tw-bg-velox-100 tw-rounded tw-w-3/4 tw-mb-4"></div>

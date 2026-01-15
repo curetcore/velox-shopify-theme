@@ -38,7 +38,9 @@
               widths: '750, 1100, 1500, 1920, 2000'
             }}
           {% else %}
-            <div class="tw-w-full tw-h-full tw-bg-velox-200"></div>
+            <div class="tw-w-full tw-h-full tw-bg-velox-200 tw-overflow-hidden">
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'tw-w-full tw-h-full tw-object-cover tw-text-velox-300' }}
+            </div>
           {% endif %}
 
           {%- comment -%} Overlay {%- endcomment -%}
@@ -96,12 +98,12 @@
       {% endfor %}
     {% else %}
       {%- comment -%} Placeholder {%- endcomment -%}
-      <div class="tw-w-full tw-h-full tw-bg-velox-200 tw-flex tw-items-center tw-justify-center">
-        <div class="tw-text-center tw-p-8">
-          <div class="tw-w-16 tw-h-16 tw-mx-auto tw-mb-4 tw-rounded-full tw-bg-velox-300 tw-flex tw-items-center tw-justify-center">
-            {% render 'icon', name: 'eye', class: 'tw-w-8 tw-h-8 tw-text-velox-500' %}
+      <div class="tw-w-full tw-h-full tw-bg-velox-200 tw-relative tw-overflow-hidden">
+        {{ 'lifestyle-2' | placeholder_svg_tag: 'tw-absolute tw-inset-0 tw-w-full tw-h-full tw-object-cover tw-text-velox-300' }}
+        <div class="tw-absolute tw-inset-0 tw-flex tw-items-center tw-justify-center tw-bg-velox-900/30">
+          <div class="tw-text-center tw-p-8">
+            <p class="tw-text-white tw-text-lg tw-font-medium">{{ 'sections.slideshow.placeholder' | t | default: 'Agrega slides usando el editor del tema' }}</p>
           </div>
-          <p class="tw-text-velox-600 tw-text-lg">{{ 'sections.slideshow.placeholder' | t | default: 'Agrega slides usando el editor del tema' }}</p>
         </div>
       </div>
     {% endif %}

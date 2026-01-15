@@ -148,8 +148,8 @@
           {%- comment -%} Placeholder si no hay colecciones {%- endcomment -%}
           {% if section.blocks.size == 0 %}
             {% for i in (1..6) %}
-              <div class="tw-aspect-square tw-rounded-xl tw-bg-velox-100 tw-flex tw-items-center tw-justify-center">
-                {% render 'icon', name: 'photo', class: 'tw-h-10 tw-w-10 tw-text-velox-300' %}
+              <div class="tw-aspect-square tw-rounded-xl tw-bg-velox-100 tw-overflow-hidden">
+                {{ 'collection-' | append: i | placeholder_svg_tag: 'tw-w-full tw-h-full tw-object-cover tw-text-velox-300' }}
               </div>
             {% endfor %}
           {% endif %}
