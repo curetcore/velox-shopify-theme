@@ -75,6 +75,26 @@
       {% sections 'footer-group' %}
     </footer>
 
+    {% # Velox Theme - Global Configuration %}
+    <script>
+      window.Velox = window.Velox || {};
+      window.Velox.i18n = {
+        cart: {
+          empty: {{ 'cart.general.empty' | t | json }},
+          continueShopping: {{ 'cart.general.continue_shopping' | t | json }},
+          item: {{ 'cart.general.item' | t | json }},
+          items: {{ 'cart.general.items' | t | json }},
+          updateError: {{ 'cart.general.update_error' | t | json }}
+        },
+        product: {
+          adding: {{ 'products.product.adding' | t | json }},
+          added: {{ 'products.product.added_to_cart' | t | json }},
+          error: {{ 'products.product.error' | t | json }},
+          loadError: {{ 'products.product.load_error' | t | json }}
+        }
+      };
+    </script>
+
     {% # Velox Theme - Main JavaScript %}
     <script src="{{ 'velox.js' | asset_url }}" defer></script>
 

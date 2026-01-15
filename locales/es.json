@@ -154,7 +154,10 @@
       "free_shipping_achieved": "¡Tienes envío gratis!",
       "items_count": "{{ count }} artículos",
       "items_count_one": "1 artículo",
-      "upsells_heading": "También te puede interesar"
+      "upsells_heading": "También te puede interesar",
+      "item": "artículo",
+      "items": "artículos",
+      "update_error": "Error actualizando el carrito. Por favor intenta de nuevo."
     },
     "checkout": "Finalizar compra",
     "title": "Carrito",
@@ -174,6 +177,7 @@
       "error_retry": "Error - Reintentar",
       "added_to_cart": "Agregado al carrito",
       "error": "Error",
+      "load_error": "Error cargando el producto. Por favor intenta de nuevo.",
       "quantity": "Cantidad",
       "sale": "Oferta",
       "new": "Nuevo",

@@ -154,7 +154,10 @@
       "free_shipping_achieved": "You have free shipping!",
       "items_count": "{{ count }} items",
       "items_count_one": "1 item",
-      "upsells_heading": "You might also like"
+      "upsells_heading": "You might also like",
+      "item": "item",
+      "items": "items",
+      "update_error": "Error updating cart. Please try again."
     },
     "checkout": "Checkout",
     "title": "Cart",
@@ -174,6 +177,7 @@
       "error_retry": "Error - Retry",
       "added_to_cart": "Added to cart",
       "error": "Error",
+      "load_error": "Error loading product. Please try again.",
       "quantity": "Quantity",
       "sale": "Sale",
       "new": "New",

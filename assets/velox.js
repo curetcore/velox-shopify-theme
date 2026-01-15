@@ -284,7 +284,7 @@
       console.error('Cart update error:', error);
       if (item) item.classList.remove('tw-opacity-50', 'tw-pointer-events-none');
       // Mostrar error toast en lugar de reload
-      showCartError('Error actualizando el carrito. Por favor intenta de nuevo.');
+      showCartError(window.Velox.i18n?.cart?.updateError || 'Error updating cart');
     }
   }
 
@@ -312,7 +312,7 @@
     // Actualizar texto del contador
     const countText = document.querySelector('[data-cart-count-text]');
     if (countText) {
-      const itemLabel = cart.item_count === 1 ? 'item' : 'items';
+      const itemLabel = cart.item_count === 1 ? (window.Velox.i18n?.cart?.item || 'item') : (window.Velox.i18n?.cart?.items || 'items');
       countText.textContent = `(${cart.item_count} ${itemLabel})`;
     }
   }
@@ -377,8 +377,8 @@
           <svg class="tw-w-16 tw-h-16 tw-text-velox-200 tw-mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
           </svg>
-          <p class="tw-text-velox-500 tw-mb-4">Tu carrito está vacío</p>
-          <button type="button" class="tw-btn tw-btn-primary" data-cart-close>Seguir comprando</button>
+          <p class="tw-text-velox-500 tw-mb-4">${window.Velox.i18n?.cart?.empty || 'Your cart is empty'}</p>
+          <button type="button" class="tw-btn tw-btn-primary" data-cart-close>${window.Velox.i18n?.cart?.continueShopping || 'Continue shopping'}</button>
         </div>
       `;
       // Re-attach close event
@@ -719,7 +719,7 @@
           console.error('Quick add error:', error);
           modalContent.innerHTML = `
             <div class="tw-text-center tw-py-8 tw-text-red-500">
-              Error loading product. Please try again.
+              ${window.Velox.i18n?.product?.loadError || 'Error loading product. Please try again.'}
             </div>
           `;
         }
@@ -744,7 +744,7 @@
 
       if (submitBtn) {
         submitBtn.disabled = true;
-        submitBtn.textContent = 'Adding...';
+        submitBtn.textContent = window.Velox.i18n?.product?.adding || 'Adding...';
       }
 
       try {
@@ -791,7 +791,7 @@
       } catch (error) {
         console.error('Quick add submit error:', error);
         if (submitBtn) {
-          submitBtn.textContent = 'Error';
+          submitBtn.textContent = window.Velox.i18n?.product?.error || 'Error';
           setTimeout(() => {
             submitBtn.textContent = originalText;
             submitBtn.disabled = false;
