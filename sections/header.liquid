@@ -692,6 +692,41 @@
       "id": "announcement_link",
       "label": "Enlace del anuncio"
     }
-  ]
+  ],
+  "default": {
+    "settings": {
+      "layout_style": "standard",
+      "color_scheme": "light",
+      "logo_width": 120,
+      "menu": "main-menu",
+      "sticky_header": true,
+      "hide_on_scroll": false,
+      "show_cta": true,
+      "cta_text": "Shop now",
+      "show_announcement": true,
+      "announcement_style": "dark",
+      "announcement_text": "Free shipping on orders over $50 - Shop now!"
+    },
+    "blocks": [
+      {
+        "type": "mega_menu_promo",
+        "settings": {
+          "menu_item": "Collections",
+          "featured_title": "New arrivals",
+          "featured_cta": "Shop now",
+          "featured_link": "/collections/new-arrivals"
+        }
+      },
+      {
+        "type": "mega_menu_promo",
+        "settings": {
+          "menu_item": "Sale",
+          "featured_title": "Up to 50% off",
+          "featured_cta": "View deals",
+          "featured_link": "/collections/sale"
+        }
+      }
+    ]
+  }
 }
 {% endschema %}

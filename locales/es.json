@@ -418,6 +418,9 @@
     "popular_collections": "Colecciones populares"
   },
   "sections": {
+    "cart": {
+      "name": "Carrito"
+    },
     "collection": {
       "name": "Colección"
     },

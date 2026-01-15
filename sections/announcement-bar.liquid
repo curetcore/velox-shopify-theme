@@ -181,19 +181,45 @@
   ],
   "presets": [
     {
-      "name": "Announcement Bar",
+      "name": "Announcement bar",
+      "category": "Utility",
+      "settings": {
+        "background_color": "#000000",
+        "text_color": "#ffffff",
+        "autoplay_speed": 5,
+        "show_close": false
+      },
       "blocks": [
         {
           "type": "announcement",
           "settings": {
-            "text": "Free shipping on orders over $50"
+            "text": "Free shipping on orders over $50",
+            "link": "/collections/all",
+            "icon": "truck"
           }
         },
         {
           "type": "announcement",
           "settings": {
-            "text": "New arrivals just dropped!",
+            "text": "New arrivals just dropped - Shop now!",
+            "link": "/collections/new-arrivals",
             "icon": "star"
+          }
+        },
+        {
+          "type": "announcement",
+          "settings": {
+            "text": "Summer sale: Up to 40% off selected items",
+            "link": "/collections/sale",
+            "icon": "tag"
+          }
+        },
+        {
+          "type": "announcement",
+          "settings": {
+            "text": "Limited time offer - Don't miss out!",
+            "link": "/collections/featured",
+            "icon": "clock"
           }
         }
       ]

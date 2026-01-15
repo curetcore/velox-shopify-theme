@@ -171,10 +171,33 @@
     {
       "name": "Collection list",
       "category": "Collection",
+      "settings": {
+        "title": "Shop by category",
+        "description": "Find exactly what you're looking for. Browse our curated collections.",
+        "columns": 3,
+        "show_product_count": true,
+        "show_button": true,
+        "button_text": "Shop now"
+      },
       "blocks": [
-        { "type": "collection" },
-        { "type": "collection" },
-        { "type": "collection" }
+        {
+          "type": "collection",
+          "settings": {
+            "title": "New arrivals"
+          }
+        },
+        {
+          "type": "collection",
+          "settings": {
+            "title": "Best sellers"
+          }
+        },
+        {
+          "type": "collection",
+          "settings": {
+            "title": "On sale"
+          }
+        }
       ]
     }
   ]

@@ -370,23 +370,38 @@
   ],
   "presets": [
     {
-      "name": "Shoppable Image",
+      "name": "Shoppable image",
+      "category": "Image",
       "settings": {
-        "heading": "Shop the Look"
+        "heading": "Shop the look",
+        "subheading": "Click the hotspots to discover featured products",
+        "max_width": 1200,
+        "hotspot_style": "accent",
+        "caption": "Tap or click on the products you love to learn more."
       },
       "blocks": [
         {
           "type": "hotspot",
           "settings": {
-            "position_x": 30,
-            "position_y": 40
+            "position_x": 25,
+            "position_y": 35,
+            "custom_text": "Best seller - Limited stock"
           }
         },
         {
           "type": "hotspot",
           "settings": {
-            "position_x": 70,
-            "position_y": 60
+            "position_x": 55,
+            "position_y": 50,
+            "custom_text": "New arrival"
+          }
+        },
+        {
+          "type": "hotspot",
+          "settings": {
+            "position_x": 75,
+            "position_y": 70,
+            "custom_text": "Customer favorite"
           }
         }
       ]

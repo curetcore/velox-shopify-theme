@@ -181,11 +181,40 @@
     {
       "name": "Rich text",
       "category": "Text",
+      "settings": {
+        "content_width": "4xl",
+        "text_alignment": "center",
+        "background_color": "transparent"
+      },
       "blocks": [
-        { "type": "eyebrow", "settings": { "text": "Nuestra historia" } },
-        { "type": "heading", "settings": { "text": "Pasión por el calzado" } },
-        { "type": "text" },
-        { "type": "button", "settings": { "text": "Conocer más" } }
+        {
+          "type": "eyebrow",
+          "settings": {
+            "text": "Our story"
+          }
+        },
+        {
+          "type": "heading",
+          "settings": {
+            "text": "Passion for quality",
+            "heading_size": "large",
+            "heading_tag": "h2"
+          }
+        },
+        {
+          "type": "text",
+          "settings": {
+            "text": "<p>Since 2020, we've been dedicated to creating products that combine style, comfort, and sustainability. Every piece tells a story of craftsmanship and dedication.</p><p>Our team works tirelessly to bring you the best experience possible. We believe that quality should never be compromised.</p>"
+          }
+        },
+        {
+          "type": "button",
+          "settings": {
+            "text": "Learn more about us",
+            "link": "/pages/about",
+            "style": "primary"
+          }
+        }
       ]
     }
   ]
