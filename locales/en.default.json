@@ -1,4 +1,30 @@
 {
+  "settings": {
+    "colors": "Colors",
+    "typography": "Typography",
+    "components": "Components",
+    "layout": "Layout",
+    "animations": "Animations",
+    "cart": "Cart",
+    "search": "Search",
+    "social_media": "Social media",
+    "primary": "Primary",
+    "secondary": "Secondary",
+    "fonts": "Fonts"
+  },
+  "labels": {
+    "background": "Background",
+    "foreground": "Foreground",
+    "input_corner_radius": "Input corner radius",
+    "page_width": "Page width",
+    "page_margin": "Page margin"
+  },
+  "options": {
+    "page_width": {
+      "narrow": "Narrow (90rem)",
+      "wide": "Wide (110rem)"
+    }
+  },
   "general": {
     "accessibility": {
       "close": "Close",

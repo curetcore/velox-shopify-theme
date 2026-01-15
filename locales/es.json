@@ -1,4 +1,30 @@
 {
+  "settings": {
+    "colors": "Colores",
+    "typography": "Tipografía",
+    "components": "Componentes",
+    "layout": "Diseño",
+    "animations": "Animaciones",
+    "cart": "Carrito",
+    "search": "Búsqueda",
+    "social_media": "Redes sociales",
+    "primary": "Primario",
+    "secondary": "Secundario",
+    "fonts": "Fuentes"
+  },
+  "labels": {
+    "background": "Fondo",
+    "foreground": "Primer plano",
+    "input_corner_radius": "Radio de esquinas de inputs",
+    "page_width": "Ancho de página",
+    "page_margin": "Margen de página"
+  },
+  "options": {
+    "page_width": {
+      "narrow": "Estrecho (90rem)",
+      "wide": "Ancho (110rem)"
+    }
+  },
   "general": {
     "accessibility": {
       "close": "Cerrar",
