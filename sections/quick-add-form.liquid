@@ -159,10 +159,10 @@
         // Update button state
         if (variant.available) {
           submitBtn.disabled = false;
-          submitBtn.textContent = 'Add to Cart';
+          submitBtn.textContent = '{{ "products.product.add_to_cart" | t }}';
         } else {
           submitBtn.disabled = true;
-          submitBtn.textContent = 'Sold Out';
+          submitBtn.textContent = '{{ "products.product.sold_out" | t }}';
         }
       }
 

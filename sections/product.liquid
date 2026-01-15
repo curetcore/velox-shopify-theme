@@ -938,7 +938,7 @@
       
       // Estado de loading
       submitBtn?.setAttribute('disabled', 'disabled');
-      if (submitText) submitText.textContent = 'Agregando...';
+      if (submitText) submitText.textContent = '{{ "products.product.adding" | t }}';
       submitBtn?.querySelector('.tw-w-5')?.classList.add('tw-animate-spin');
       
       try {
@@ -997,7 +997,7 @@
         }
         
         // Mostrar éxito brevemente
-        if (submitText) submitText.textContent = '✓ Agregado';
+        if (submitText) submitText.textContent = '✓ {{ "products.product.added_to_cart" | t }}';
         setTimeout(() => {
           if (submitText) submitText.textContent = originalText;
         }, 2000);
@@ -1005,7 +1005,7 @@
       } catch (error) {
         console.error('Add to cart error:', error);
         // Mostrar error
-        if (submitText) submitText.textContent = error.message || 'Error';
+        if (submitText) submitText.textContent = error.message || '{{ "products.product.error" | t }}';
         setTimeout(() => {
           if (submitText) submitText.textContent = originalText;
         }, 3000);
