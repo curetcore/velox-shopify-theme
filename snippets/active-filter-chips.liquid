@@ -1,0 +1,45 @@
+{% comment %}
+  Active Filter Chips
+  Shows active filters as removable chips
+
+  Usage: {% render 'active-filter-chips', results: collection %}
+{% endcomment %}
+
+{% liquid
+  assign has_active_filters = false
+  for filter in results.filters
+    if filter.active_values.size > 0
+      assign has_active_filters = true
+      break
+    endif
+  endfor
+%}
+
+{% if has_active_filters %}
+<div class="active-filter-chips tw-flex tw-flex-wrap tw-items-center tw-gap-2 tw-mb-4">
+  {%- comment -%} Active filter chips {%- endcomment -%}
+  {% for filter in results.filters %}
+    {% for value in filter.active_values %}
+      <a 
+        href="{{ value.url_to_remove }}"
+        class="tw-inline-flex tw-items-center tw-gap-1.5 tw-px-3 tw-py-1.5 tw-bg-accent/10 tw-text-accent tw-text-sm tw-rounded-full hover:tw-bg-accent/20 tw-transition-colors"
+        aria-label="Remove filter: {{ filter.label }}: {{ value.label }}"
+      >
+        <span class="tw-text-xs tw-text-accent/70">{{ filter.label }}:</span>
+        <span class="tw-font-medium">{{ value.label }}</span>
+        <svg class="tw-w-3.5 tw-h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </a>
+    {% endfor %}
+  {% endfor %}
+
+  {%- comment -%} Clear all button {%- endcomment -%}
+  <a 
+    href="{{ results.url }}"
+    class="tw-text-sm tw-text-velox-600 hover:tw-text-velox-900 tw-underline tw-underline-offset-2"
+  >
+    {{ 'collections.filtering.clear_all' | t | default: 'Clear all' }}
+  </a>
+</div>
+{% endif %}

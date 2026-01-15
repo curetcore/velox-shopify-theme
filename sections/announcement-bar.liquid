@@ -1,0 +1,203 @@
+{% comment %}
+  Announcement Bar
+  Rotating announcements with Splide
+
+  Usage: Add section via customizer
+{% endcomment %}
+
+{% liquid
+  assign bg_color = section.settings.background_color | default: '#000000'
+  assign text_color = section.settings.text_color | default: '#ffffff'
+%}
+
+{% if section.blocks.size > 0 %}
+<div 
+  class="announcement-bar tw-relative tw-overflow-hidden header-announcement"
+  style="background-color: {{ bg_color }}; color: {{ text_color }};"
+  data-announcement-bar
+>
+  {% if section.blocks.size == 1 %}
+    {%- comment -%} Single announcement {%- endcomment -%}
+    <div class="tw-py-2 tw-text-center">
+      {% assign block = section.blocks.first %}
+      {% if block.settings.link != blank %}
+        <a href="{{ block.settings.link }}" class="tw-text-sm hover:tw-underline">
+          {{ block.settings.text }}
+        </a>
+      {% else %}
+        <p class="tw-text-sm">{{ block.settings.text }}</p>
+      {% endif %}
+    </div>
+  {% else %}
+    {%- comment -%} Multiple announcements carousel {%- endcomment -%}
+    <div 
+      class="splide announcement-carousel" 
+      data-announcement-carousel
+      aria-label="Announcements"
+    >
+      <div class="splide__track">
+        <ul class="splide__list">
+          {% for block in section.blocks %}
+            <li class="splide__slide tw-py-2 tw-text-center" {{ block.shopify_attributes }}>
+              {% if block.settings.link != blank %}
+                <a href="{{ block.settings.link }}" class="tw-text-sm hover:tw-underline">
+                  {% if block.settings.icon != 'none' %}
+                    {% render 'icon', name: block.settings.icon, class: 'tw-w-4 tw-h-4 tw-inline tw-mr-1' %}
+                  {% endif %}
+                  {{ block.settings.text }}
+                </a>
+              {% else %}
+                <p class="tw-text-sm">
+                  {% if block.settings.icon != 'none' %}
+                    {% render 'icon', name: block.settings.icon, class: 'tw-w-4 tw-h-4 tw-inline tw-mr-1' %}
+                  {% endif %}
+                  {{ block.settings.text }}
+                </p>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const carousel = document.querySelector('[data-announcement-carousel]');
+        if (!carousel || typeof Splide === 'undefined') return;
+
+        new Splide(carousel, {
+          type: 'loop',
+          autoplay: true,
+          interval: {{ section.settings.autoplay_speed | times: 1000 }},
+          pauseOnHover: true,
+          arrows: false,
+          pagination: false,
+          speed: 500
+        }).mount();
+      });
+    </script>
+  {% endif %}
+
+  {%- comment -%} Close button {%- endcomment -%}
+  {% if section.settings.show_close %}
+    <button 
+      type="button"
+      class="tw-absolute tw-right-2 tw-top-1/2 tw--translate-y-1/2 tw-p-1 tw-opacity-70 hover:tw-opacity-100 tw-transition-opacity"
+      data-announcement-close
+      aria-label="Close announcement"
+    >
+      {% render 'icon', name: 'x', class: 'tw-w-4 tw-h-4' %}
+    </button>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const closeBtn = document.querySelector('[data-announcement-close]');
+        const bar = document.querySelector('[data-announcement-bar]');
+        
+        if (closeBtn && bar) {
+          // Check if already dismissed
+          if (sessionStorage.getItem('announcement_dismissed')) {
+            bar.style.display = 'none';
+          }
+
+          closeBtn.addEventListener('click', () => {
+            bar.style.display = 'none';
+            sessionStorage.setItem('announcement_dismissed', 'true');
+          });
+        }
+      });
+    </script>
+  {% endif %}
+</div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Announcement Bar",
+  "tag": "section",
+  "class": "announcement-bar-section",
+  "settings": [
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "default": 5,
+      "unit": "s",
+      "label": "Rotation speed"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_close",
+      "label": "Show close button",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "announcement",
+      "name": "Announcement",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Free shipping on orders over $50"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "truck", "label": "Shipping" },
+            { "value": "tag", "label": "Sale" },
+            { "value": "gift", "label": "Gift" },
+            { "value": "clock", "label": "Limited time" },
+            { "value": "star", "label": "Star" }
+          ],
+          "default": "none"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Announcement Bar",
+      "blocks": [
+        {
+          "type": "announcement",
+          "settings": {
+            "text": "Free shipping on orders over $50"
+          }
+        },
+        {
+          "type": "announcement",
+          "settings": {
+            "text": "New arrivals just dropped!",
+            "icon": "star"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

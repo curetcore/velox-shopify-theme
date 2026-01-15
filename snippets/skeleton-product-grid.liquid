@@ -1,0 +1,17 @@
+{% comment %}
+  Skeleton Product Grid
+  Loading placeholder for product grids
+
+  Usage: {% render 'skeleton-product-grid', count: 4, columns: 4 %}
+{% endcomment %}
+
+{% liquid
+  assign skeleton_count = count | default: 4
+  assign grid_columns = columns | default: 4
+%}
+
+<div class="skeleton-product-grid tw-grid tw-grid-cols-2 md:tw-grid-cols-3 lg:tw-grid-cols-{{ grid_columns }} tw-gap-4 md:tw-gap-6">
+  {% for i in (1..skeleton_count) %}
+    {% render 'skeleton-product-card' %}
+  {% endfor %}
+</div>
