@@ -32,13 +32,13 @@
                     "type": "trust_badges",
                     "settings": {
                         "icon_1": "shield-check",
-                        "text_1": "t:templates.product_sneakers.trust_badges.authentic",
+                        "text_1": "100% Authentic",
                         "icon_2": "truck",
-                        "text_2": "t:templates.product_sneakers.trust_badges.shipping",
+                        "text_2": "Fast shipping",
                         "icon_3": "arrow-path",
-                        "text_3": "t:templates.product_sneakers.trust_badges.returns",
+                        "text_3": "Easy returns",
                         "icon_4": "lock-closed",
-                        "text_4": "t:templates.product_sneakers.trust_badges.secure"
+                        "text_4": "Secure checkout"
                     }
                 },
                 "size_chart": {
@@ -81,8 +81,8 @@
         "comparison_slider": {
             "type": "comparison-slider",
             "settings": {
-                "heading": "t:templates.product_sneakers.comparison.heading",
-                "caption": "t:templates.product_sneakers.comparison.caption",
+                "heading": "Before & After",
+                "caption": "See the transformation with proper care",
                 "label_before": "Fake",
                 "label_after": "Authentic",
                 "max_width": 700
@@ -91,7 +91,7 @@
         "related-products": {
             "type": "related-products",
             "settings": {
-                "heading": "t:templates.product_sneakers.related.heading",
+                "heading": "You May Also Like",
                 "products_to_show": 4,
                 "columns_desktop": "4",
                 "columns_mobile": "2",
@@ -103,7 +103,7 @@
         "recently_viewed": {
             "type": "recently-viewed",
             "settings": {
-                "heading": "t:templates.common.recently_viewed",
+                "heading": "Recently Viewed",
                 "products_to_show": 4,
                 "columns": 4
             }

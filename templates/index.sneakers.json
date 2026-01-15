@@ -6,7 +6,7 @@
                 "announcement_1": {
                     "type": "announcement",
                     "settings": {
-                        "text": "t:templates.index_sneakers.ticker.drop",
+                        "text": "NEW DROP ALERT",
                         "link": "shopify://collections/new-arrivals",
                         "icon": "star"
                     }
@@ -14,14 +14,14 @@
                 "announcement_2": {
                     "type": "announcement",
                     "settings": {
-                        "text": "t:templates.index_sneakers.ticker.shipping",
+                        "text": "FREE SHIPPING OVER $100",
                         "icon": "truck"
                     }
                 },
                 "announcement_3": {
                     "type": "announcement",
                     "settings": {
-                        "text": "t:templates.index_sneakers.ticker.authentic",
+                        "text": "100% AUTHENTIC",
                         "icon": "none"
                     }
                 }
@@ -45,8 +45,8 @@
                     "type": "slide",
                     "settings": {
                         "subheading": "Just Dropped",
-                        "heading": "t:templates.index_sneakers.hero.slide_1_heading",
-                        "text": "t:templates.index_sneakers.hero.slide_1_text",
+                        "heading": "Fresh Kicks Daily",
+                        "text": "The latest drops from top brands. Get them before they sell out.",
                         "button_label": "Shop New Arrivals",
                         "button_link": "shopify://collections/new-arrivals",
                         "button_label_2": "Explore All",
@@ -59,8 +59,8 @@
                     "type": "slide",
                     "settings": {
                         "subheading": "Limited Edition",
-                        "heading": "t:templates.index_sneakers.hero.slide_2_heading",
-                        "text": "t:templates.index_sneakers.hero.slide_2_text",
+                        "heading": "Limited Edition",
+                        "text": "Exclusive releases you won't find anywhere else",
                         "button_label": "Shop Retro",
                         "button_link": "shopify://collections/retro",
                         "text_color": "light",
@@ -71,8 +71,8 @@
                     "type": "slide",
                     "settings": {
                         "subheading": "Member Exclusive",
-                        "heading": "t:templates.index_sneakers.hero.slide_3_heading",
-                        "text": "t:templates.index_sneakers.hero.slide_3_text",
+                        "heading": "Street Ready",
+                        "text": "Performance meets style. Elevate your sneaker game.",
                         "button_label": "Shop Sale",
                         "button_link": "shopify://collections/sale",
                         "text_color": "light",
@@ -96,7 +96,7 @@
         "horizontal_ticker": {
             "type": "horizontal-ticker",
             "settings": {
-                "text": "t:templates.index_sneakers.ticker.marquee",
+                "text": "SNEAKER CULTURE STARTS HERE",
                 "speed": 30,
                 "background_color": "#000000",
                 "text_color": "#ffffff"
@@ -167,7 +167,7 @@
         "comparison_slider": {
             "type": "comparison-slider",
             "settings": {
-                "heading": "t:templates.index_sneakers.image_with_text.heading",
+                "heading": "Born from the Streets",
                 "caption": "Learn to spot the difference. We only sell 100% authenticated sneakers.",
                 "label_before": "Fake",
                 "label_after": "Authentic",
@@ -181,7 +181,7 @@
                 "image_ratio": "square",
                 "eyebrow": "Our Promise",
                 "title": "100% Authentic Guaranteed",
-                "text": "t:templates.index_sneakers.image_with_text.text",
+                "text": "<p>We live and breathe sneaker culture. Every pair we stock is hand-picked for authenticity and style.</p>",
                 "button_text": "Learn More",
                 "button_url": "shopify://pages/authenticity",
                 "button_style": "secondary",
@@ -209,7 +209,7 @@
                         "name": "James K.",
                         "title": "Verified Buyer",
                         "rating": 5,
-                        "text": "t:templates.index_sneakers.testimonials.testimonial_1"
+                        "text": "Best sneaker shop I've found. Always authentic, always fire."
                     }
                 },
                 "testimonial_2": {
@@ -218,7 +218,7 @@
                         "name": "Sarah M.",
                         "title": "Verified Buyer",
                         "rating": 5,
-                        "text": "t:templates.index_sneakers.testimonials.testimonial_2"
+                        "text": "Fast shipping and great customer service. My go-to for new drops."
                     }
                 },
                 "testimonial_3": {
@@ -227,7 +227,7 @@
                         "name": "Mike T.",
                         "title": "Verified Buyer",
                         "rating": 5,
-                        "text": "t:templates.index_sneakers.testimonials.testimonial_3"
+                        "text": "Finally found a place that understands sneaker culture. 10/10."
                     }
                 }
             },
@@ -237,7 +237,7 @@
                 "testimonial_3"
             ],
             "settings": {
-                "heading": "t:templates.index_sneakers.testimonials.heading",
+                "heading": "The Sneakerhead Community",
                 "subheading": "Thousands of satisfied customers",
                 "background_color": "default"
             }
@@ -320,32 +320,32 @@
                     "type": "badge",
                     "settings": {
                         "icon": "shield-check",
-                        "title": "t:templates.index_sneakers.trust_badges.authentic_title",
-                        "text": "t:templates.index_sneakers.trust_badges.authentic_text"
+                        "title": "100% Authentic",
+                        "text": "Verified genuine"
                     }
                 },
                 "badge_2": {
                     "type": "badge",
                     "settings": {
                         "icon": "truck",
-                        "title": "t:templates.index_sneakers.trust_badges.shipping_title",
-                        "text": "t:templates.index_sneakers.trust_badges.shipping_text"
+                        "title": "Fast Shipping",
+                        "text": "Ships same day"
                     }
                 },
                 "badge_3": {
                     "type": "badge",
                     "settings": {
                         "icon": "arrow-path",
-                        "title": "t:templates.index_sneakers.trust_badges.returns_title",
-                        "text": "t:templates.index_sneakers.trust_badges.returns_text"
+                        "title": "Easy Returns",
+                        "text": "30 day policy"
                     }
                 },
                 "badge_4": {
                     "type": "badge",
                     "settings": {
                         "icon": "lock-closed",
-                        "title": "t:templates.index_sneakers.trust_badges.secure_title",
-                        "text": "t:templates.index_sneakers.trust_badges.secure_text"
+                        "title": "Secure Checkout",
+                        "text": "Protected payments"
                     }
                 }
             },
@@ -364,7 +364,7 @@
         "recently_viewed": {
             "type": "recently-viewed",
             "settings": {
-                "heading": "t:templates.common.recently_viewed",
+                "heading": "Recently Viewed",
                 "empty_text": "Start browsing to see your recently viewed items",
                 "products_to_show": 4,
                 "columns": 4
@@ -378,7 +378,7 @@
                 "narrow_content": true,
                 "eyebrow": "Stay in the Loop",
                 "title": "Join the Club",
-                "text": "t:templates.index_sneakers.newsletter.text",
+                "text": "<p>Be the first to know about new drops, restocks, and exclusive releases.</p>",
                 "show_newsletter": true
             }
         }

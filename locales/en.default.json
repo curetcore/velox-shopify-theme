@@ -1,28 +1,199 @@
 {
-  "settings": {
-    "colors": "Colors",
-    "typography": "Typography",
-    "components": "Components",
-    "layout": "Layout",
-    "animations": "Animations",
-    "cart": "Cart",
-    "search": "Search",
-    "social_media": "Social media",
-    "primary": "Primary",
-    "secondary": "Secondary",
-    "fonts": "Fonts"
-  },
-  "labels": {
-    "background": "Background",
-    "foreground": "Foreground",
-    "input_corner_radius": "Input corner radius",
-    "page_width": "Page width",
-    "page_margin": "Page margin"
-  },
-  "options": {
-    "page_width": {
-      "narrow": "Narrow (90rem)",
-      "wide": "Wide (110rem)"
+  "settings_schema": {
+    "logo": {
+      "name": "Logo",
+      "settings": {
+        "logo": { "label": "Logo image" },
+        "logo_width": { "label": "Desktop logo width" },
+        "favicon": { "label": "Favicon", "info": "32x32px recommended" }
+      }
+    },
+    "colors": {
+      "name": "Colors",
+      "settings": {
+        "header_primary": { "content": "Primary colors" },
+        "color_background": { "label": "Background" },
+        "color_text": { "label": "Text" },
+        "header_secondary": { "content": "Secondary colors" },
+        "color_secondary_background": { "label": "Secondary background" },
+        "color_secondary_text": { "label": "Secondary text" },
+        "header_accent": { "content": "Accent colors" },
+        "color_accent": { "label": "Accent", "info": "Used for buttons, links, and highlighted elements" },
+        "color_accent_text": { "label": "Accent text" },
+        "header_sale": { "content": "Sale colors" },
+        "color_sale": { "label": "Sale price" }
+      }
+    },
+    "typography": {
+      "name": "Typography",
+      "settings": {
+        "header_headings": { "content": "Headings" },
+        "type_heading_font": { "label": "Heading font" },
+        "heading_font_size": {
+          "label": "Heading size",
+          "options": { "small": "Small", "medium": "Medium", "large": "Large" }
+        },
+        "heading_text_transform": {
+          "label": "Heading style",
+          "options": { "none": "None", "uppercase": "Uppercase", "capitalize": "Capitalize" }
+        },
+        "header_body": { "content": "Body text" },
+        "type_body_font": { "label": "Body font" },
+        "body_font_size": {
+          "label": "Body size",
+          "options": { "small": "Small", "medium": "Medium", "large": "Large" }
+        }
+      }
+    },
+    "layout": {
+      "name": "Layout",
+      "settings": {
+        "page_width": {
+          "label": "Page width",
+          "options": { "narrow": "Narrow (1200px)", "standard": "Standard (1400px)", "wide": "Wide (1600px)" }
+        },
+        "section_spacing": { "label": "Space between sections" },
+        "grid_horizontal_spacing": { "label": "Grid horizontal spacing" },
+        "grid_vertical_spacing": { "label": "Grid vertical spacing" }
+      }
+    },
+    "animations": {
+      "name": "Animations",
+      "settings": {
+        "enable_animations": { "label": "Enable animations", "info": "Animate sections as they enter the viewport" },
+        "animation_style": {
+          "label": "Animation style",
+          "options": { "fade": "Fade", "fade_up": "Fade up", "zoom": "Zoom" }
+        },
+        "hover_effect": {
+          "label": "Hover effect",
+          "info": "Effect when hovering over cards and images",
+          "options": { "none": "None", "lift": "Lift", "zoom": "Zoom" }
+        },
+        "respect_reduced_motion": { "label": "Respect reduced motion", "info": "Disable animations for users who prefer reduced motion" }
+      }
+    },
+    "buttons": {
+      "name": "Buttons",
+      "settings": {
+        "button_border_radius": { "label": "Corner radius" },
+        "button_style": {
+          "label": "Default style",
+          "options": { "solid": "Solid", "outline": "Outline" }
+        },
+        "button_text_transform": {
+          "label": "Text style",
+          "options": { "none": "None", "uppercase": "Uppercase" }
+        },
+        "button_show_shadow": { "label": "Show shadow" }
+      }
+    },
+    "inputs": {
+      "name": "Form inputs",
+      "settings": {
+        "input_border_radius": { "label": "Corner radius" },
+        "input_border_style": {
+          "label": "Border style",
+          "options": { "full": "Full border", "underline": "Underline only", "none": "None" }
+        }
+      }
+    },
+    "cards": {
+      "name": "Cards",
+      "settings": {
+        "header_product_cards": { "content": "Product cards" },
+        "card_style": {
+          "label": "Style",
+          "info": "Standard shows image with text below, Card adds a border and padding, Minimal shows only essential info",
+          "options": { "standard": "Standard", "card": "Card", "minimal": "Minimal" }
+        },
+        "card_image_ratio": {
+          "label": "Image ratio",
+          "options": { "portrait": "Portrait (2:3)", "square": "Square (1:1)", "landscape": "Landscape (4:3)", "adapt": "Adapt to image" }
+        },
+        "card_show_secondary_image": { "label": "Show second image on hover", "info": "If available, show the second image when hovering" },
+        "card_text_alignment": {
+          "label": "Text alignment",
+          "options": { "left": "Left", "center": "Center" }
+        },
+        "card_show_vendor": { "label": "Show vendor" },
+        "header_collection_cards": { "content": "Collection cards" },
+        "collection_card_style": {
+          "label": "Style",
+          "options": { "standard": "Standard", "overlay": "Text overlay" }
+        },
+        "header_blog_cards": { "content": "Blog cards" },
+        "blog_card_style": {
+          "label": "Style",
+          "options": { "standard": "Standard", "card": "Card" }
+        },
+        "blog_card_show_date": { "label": "Show date" },
+        "blog_card_show_author": { "label": "Show author" }
+      }
+    },
+    "badges": {
+      "name": "Badges",
+      "settings": {
+        "header_sale": { "content": "Sale badge" },
+        "badge_sale_style": {
+          "label": "Style",
+          "options": { "text": "Text (Sale)", "percentage": "Percentage (-20%)" }
+        },
+        "badge_sale_background": { "label": "Background color" },
+        "badge_sale_text": { "label": "Text color" },
+        "header_sold_out": { "content": "Sold out badge" },
+        "badge_sold_out_background": { "label": "Background color" },
+        "badge_sold_out_text": { "label": "Text color" },
+        "header_position": { "content": "Position" },
+        "badge_position": {
+          "label": "Badge position",
+          "options": { "top_left": "Top left", "top_right": "Top right", "bottom_left": "Bottom left", "bottom_right": "Bottom right" }
+        },
+        "badge_border_radius": { "label": "Corner radius" }
+      }
+    },
+    "brand_information": {
+      "name": "Brand information",
+      "settings": {
+        "brand_headline": { "label": "Headline", "info": "Shown in footer and about sections" },
+        "brand_description": { "label": "Description" },
+        "brand_image": { "label": "Brand image" }
+      }
+    },
+    "social_media": {
+      "name": "Social media",
+      "settings": {
+        "header_accounts": { "content": "Accounts" }
+      }
+    },
+    "search": {
+      "name": "Search",
+      "settings": {
+        "predictive_search_enabled": { "label": "Enable predictive search" },
+        "predictive_search_show_vendor": { "label": "Show vendor in results" },
+        "predictive_search_show_price": { "label": "Show price in results" }
+      }
+    },
+    "currency_format": {
+      "name": "Currency format",
+      "settings": {
+        "currency_code_enabled": { "label": "Show currency codes", "info": "Example: USD, EUR, MXN" }
+      }
+    },
+    "cart": {
+      "name": "Cart",
+      "settings": {
+        "cart_type": {
+          "label": "Cart type",
+          "options": { "drawer": "Drawer", "page": "Page", "notification": "Notification only" }
+        },
+        "cart_show_vendor": { "label": "Show vendor" },
+        "header_free_shipping": { "content": "Free shipping" },
+        "cart_show_free_shipping_bar": { "label": "Show free shipping progress bar" },
+        "cart_free_shipping_threshold": { "label": "Free shipping threshold", "info": "Amount required for free shipping" },
+        "header_cart_note": { "content": "Cart note" },
+        "cart_enable_note": { "label": "Enable cart note" }
+      }
     }
   },
   "general": {
@@ -85,7 +256,15 @@
   "404": {
     "title": "Page not found",
     "not_found": "The page you are looking for does not exist.",
-    "back_to_shopping": "Continue shopping"
+    "back_to_shopping": "Continue shopping",
+    "settings": {
+      "heading_label": "Heading",
+      "heading_info": "Leave empty to use translation",
+      "description_label": "Description",
+      "description_info": "Leave empty to use translation",
+      "button_label": "Primary button text",
+      "button_info": "Leave empty to use translation"
+    }
   },
   "blog": {
     "title": "Blog",
@@ -199,7 +378,6 @@
       "size_guide": "Size guide",
       "share": "Share",
       "view_details": "View full details",
-      "added_to_cart": "Added to cart",
       "notify_me": "Notify me",
       "notify_when_available": "Notify me when available",
       "notify_success": "We'll notify you when this product is back in stock",

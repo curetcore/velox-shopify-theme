@@ -18,9 +18,25 @@
 {% endcomment %}
 
 {%- liquid
-  assign heading = section.settings.heading | default: '404.title' | t
-  assign description = section.settings.description | default: '404.not_found' | t
-  assign button_text = section.settings.button_text | default: '404.back_to_shopping' | t
+  # Use section settings if defined, otherwise fall back to translations
+  if section.settings.heading != blank
+    assign heading = section.settings.heading
+  else
+    assign heading = '404.title' | t
+  endif
+
+  if section.settings.description != blank
+    assign description = section.settings.description
+  else
+    assign description = '404.not_found' | t
+  endif
+
+  if section.settings.button_text != blank
+    assign button_text = section.settings.button_text
+  else
+    assign button_text = '404.back_to_shopping' | t
+  endif
+
   assign button_link = section.settings.button_link | default: routes.root_url
 -%}
 

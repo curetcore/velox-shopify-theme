@@ -6,14 +6,14 @@
                 "announcement_1": {
                     "type": "announcement",
                     "settings": {
-                        "text": "t:templates.index_streetwear.ticker.stickers",
+                        "text": "FREE STICKERS WITH EVERY ORDER",
                         "icon": "gift"
                     }
                 },
                 "announcement_2": {
                     "type": "announcement",
                     "settings": {
-                        "text": "t:templates.index_streetwear.ticker.collab",
+                        "text": "NEW COLLAB DROP",
                         "link": "shopify://collections/collaborations",
                         "icon": "star"
                     }
@@ -37,8 +37,8 @@
                     "type": "slide",
                     "settings": {
                         "subheading": "SS25 Drop",
-                        "heading": "t:templates.index_streetwear.hero.slide_1_heading",
-                        "text": "t:templates.index_streetwear.hero.slide_1_text",
+                        "heading": "Street Culture",
+                        "text": "Bold designs for those who dare to stand out",
                         "button_label": "Shop Now",
                         "button_link": "shopify://collections/new-arrivals",
                         "button_label_2": "Lookbook",
@@ -50,8 +50,8 @@
                     "type": "slide",
                     "settings": {
                         "subheading": "Collab Alert",
-                        "heading": "t:templates.index_streetwear.hero.slide_2_heading",
-                        "text": "t:templates.index_streetwear.hero.slide_2_text",
+                        "heading": "Underground Style",
+                        "text": "From the streets to your wardrobe",
                         "button_label": "View Collab",
                         "button_link": "shopify://collections/collaborations",
                         "overlay_opacity": 50
@@ -61,8 +61,8 @@
                     "type": "slide",
                     "settings": {
                         "subheading": "Member Only",
-                        "heading": "t:templates.index_streetwear.hero.slide_3_heading",
-                        "text": "t:templates.index_streetwear.hero.slide_3_text",
+                        "heading": "Limited Runs",
+                        "text": "Once it's gone, it's gone",
                         "button_label": "Join Crew",
                         "button_link": "shopify://pages/membership",
                         "overlay_opacity": 50
@@ -148,7 +148,7 @@
                 "image_ratio": "portrait",
                 "eyebrow": "Our Vibe",
                 "title": "Not For Everyone",
-                "text": "t:templates.index_streetwear.image_with_text.text",
+                "text": "<p>We create for the culture. Every piece is designed with intention and made for those who express themselves through style.</p>",
                 "button_text": "About Us",
                 "button_url": "shopify://pages/about",
                 "button_style": "secondary",
@@ -164,7 +164,7 @@
                         "name": "@hypebeast_tony",
                         "title": "Instagram",
                         "rating": 5,
-                        "text": "t:templates.index_streetwear.testimonials.testimonial_1"
+                        "text": "The quality is insane. These pieces get compliments everywhere I go."
                     }
                 },
                 "testimonial_2": {
@@ -173,7 +173,7 @@
                         "name": "@streetstyle_maria",
                         "title": "Instagram",
                         "rating": 5,
-                        "text": "t:templates.index_streetwear.testimonials.testimonial_2"
+                        "text": "Finally a brand that gets streetwear. Unique designs, great fit."
                     }
                 }
             },
@@ -182,14 +182,14 @@
                 "testimonial_2"
             ],
             "settings": {
-                "heading": "t:templates.index_streetwear.testimonials.heading",
+                "heading": "The Community Speaks",
                 "subheading": "@streetwear"
             }
         },
         "recently_viewed": {
             "type": "recently-viewed",
             "settings": {
-                "heading": "t:templates.index_streetwear.recently_viewed.heading",
+                "heading": "Recently Viewed",
                 "products_to_show": 4,
                 "columns": 4
             }
@@ -202,7 +202,7 @@
                 "narrow_content": true,
                 "eyebrow": "Don't Sleep",
                 "title": "Join the Inner Circle",
-                "text": "t:templates.index_streetwear.newsletter.text",
+                "text": "<p>Join the crew. Get early access to drops and exclusive content.</p>",
                 "show_newsletter": true
             }
         }

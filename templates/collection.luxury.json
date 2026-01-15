@@ -23,7 +23,7 @@
                 "image_ratio": "square",
                 "eyebrow": "Artisanal Excellence",
                 "title": "Crafted in Italy",
-                "text": "t:templates.collection_luxury.image_with_text.text",
+                "text": "<p>Discover our curated selection of luxury footwear, each piece a testament to timeless craftsmanship.</p>",
                 "button_text": "Our Heritage",
                 "button_url": "shopify://pages/about",
                 "button_style": "secondary",

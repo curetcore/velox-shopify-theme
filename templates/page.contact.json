@@ -5,7 +5,7 @@
             "settings": {
                 "eyebrow": "Get in Touch",
                 "title": "Contact Us",
-                "text": "t:templates.page_contact.header.text",
+                "text": "<p>We'd love to hear from you. Reach out with any questions or feedback.</p>",
                 "text_position": "center"
             }
         },
@@ -13,7 +13,7 @@
             "type": "contact-form",
             "settings": {
                 "heading": "Send us a Message",
-                "subheading": "t:templates.page_contact.form.subheading"
+                "subheading": "Fill out the form below and we'll get back to you within 24 hours."
             }
         },
         "multicolumn": {
@@ -58,22 +58,22 @@
                 "faq_1": {
                     "type": "question",
                     "settings": {
-                        "question": "t:templates.page_contact.faq.shipping_question",
-                        "answer": "t:templates.page_contact.faq.shipping_answer"
+                        "question": "How long does shipping take?",
+                        "answer": "Standard shipping takes 5-7 business days. Express options are available at checkout."
                     }
                 },
                 "faq_2": {
                     "type": "question",
                     "settings": {
-                        "question": "t:templates.page_contact.faq.returns_question",
-                        "answer": "t:templates.page_contact.faq.returns_answer"
+                        "question": "What is your return policy?",
+                        "answer": "We offer 30-day returns on all unworn items in original packaging."
                     }
                 },
                 "faq_3": {
                     "type": "question",
                     "settings": {
-                        "question": "t:templates.page_contact.faq.international_question",
-                        "answer": "t:templates.page_contact.faq.international_answer"
+                        "question": "Do you ship internationally?",
+                        "answer": "Yes! We ship to most countries worldwide. Shipping rates are calculated at checkout."
                     }
                 }
             },

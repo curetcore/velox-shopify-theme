@@ -19,8 +19,8 @@
         "comparison": {
             "type": "comparison-slider",
             "settings": {
-                "heading": "t:templates.collection_sneakers.comparison.heading",
-                "caption": "t:templates.collection_sneakers.comparison.caption",
+                "heading": "Before & After",
+                "caption": "See the difference quality makes",
                 "label_before": "Fake",
                 "label_after": "Authentic",
                 "max_width": 600
@@ -33,24 +33,24 @@
                     "type": "badge",
                     "settings": {
                         "icon": "shield-check",
-                        "title": "t:templates.collection_sneakers.trust_badges.authenticated_title",
-                        "text": "t:templates.collection_sneakers.trust_badges.authenticated_text"
+                        "title": "Authenticated",
+                        "text": "Verified genuine"
                     }
                 },
                 "badge_2": {
                     "type": "badge",
                     "settings": {
                         "icon": "truck",
-                        "title": "t:templates.collection_sneakers.trust_badges.shipping_title",
-                        "text": "t:templates.collection_sneakers.trust_badges.shipping_text"
+                        "title": "Fast Shipping",
+                        "text": "Same day dispatch"
                     }
                 },
                 "badge_3": {
                     "type": "badge",
                     "settings": {
                         "icon": "arrow-path",
-                        "title": "t:templates.collection_sneakers.trust_badges.returns_title",
-                        "text": "t:templates.collection_sneakers.trust_badges.returns_text"
+                        "title": "Easy Returns",
+                        "text": "30-day policy"
                     }
                 }
             },

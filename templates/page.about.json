@@ -5,7 +5,7 @@
             "settings": {
                 "eyebrow": "Our Story",
                 "title": "About Us",
-                "text": "t:templates.page_about.header.text",
+                "text": "<p>Learn about our journey, values, and commitment to quality.</p>",
                 "button_text": "",
                 "text_position": "center"
             }
@@ -21,7 +21,7 @@
                 "image_ratio": "portrait",
                 "eyebrow": "Our Mission",
                 "title": "Style Without Compromise",
-                "text": "t:templates.page_about.image_with_text.text",
+                "text": "<p>Founded with a passion for quality footwear, we've been dedicated to bringing you the finest shoes since 2015. Our commitment to craftsmanship and customer satisfaction drives everything we do.</p>",
                 "button_text": "Shop Now",
                 "button_url": "shopify://collections/all",
                 "button_style": "primary"
@@ -33,22 +33,22 @@
                 "column_1": {
                     "type": "column",
                     "settings": {
-                        "title": "t:templates.page_about.multicolumn.column_1_title",
-                        "text": "t:templates.page_about.multicolumn.column_1_text"
+                        "title": "Quality First",
+                        "text": "We source only the finest materials and work with skilled artisans to create lasting products."
                     }
                 },
                 "column_2": {
                     "type": "column",
                     "settings": {
-                        "title": "t:templates.page_about.multicolumn.column_2_title",
-                        "text": "t:templates.page_about.multicolumn.column_2_text"
+                        "title": "Customer Focus",
+                        "text": "Your satisfaction is our priority. We're here to help at every step of your journey."
                     }
                 },
                 "column_3": {
                     "type": "column",
                     "settings": {
-                        "title": "t:templates.page_about.multicolumn.column_3_title",
-                        "text": "t:templates.page_about.multicolumn.column_3_text"
+                        "title": "Sustainability",
+                        "text": "We're committed to sustainable practices and reducing our environmental impact."
                     }
                 }
             },
@@ -72,7 +72,7 @@
                         "name": "Customer Name",
                         "title": "Verified Buyer",
                         "rating": 5,
-                        "text": "t:templates.page_about.testimonials.testimonial_1"
+                        "text": "A brand that truly cares about quality and customer experience."
                     }
                 }
             },
@@ -80,7 +80,7 @@
                 "testimonial_1"
             ],
             "settings": {
-                "heading": "t:templates.page_about.testimonials.heading",
+                "heading": "What People Say",
                 "per_page": 1
             }
         },
@@ -91,7 +91,7 @@
                 "text_alignment": "center",
                 "narrow_content": true,
                 "title": "Join Our Community",
-                "text": "t:templates.page_about.newsletter.text",
+                "text": "<p>Join our community and be the first to know about new releases and exclusive offers.</p>",
                 "show_newsletter": true
             }
         }

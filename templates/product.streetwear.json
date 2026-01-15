@@ -32,13 +32,13 @@
                     "type": "trust_badges",
                     "settings": {
                         "icon_1": "fire",
-                        "text_1": "t:templates.product_streetwear.trust_badges.limited",
+                        "text_1": "Limited edition",
                         "icon_2": "truck",
-                        "text_2": "t:templates.product_streetwear.trust_badges.shipping",
+                        "text_2": "Fast shipping",
                         "icon_3": "arrow-path",
-                        "text_3": "t:templates.product_streetwear.trust_badges.returns",
+                        "text_3": "Easy returns",
                         "icon_4": "lock-closed",
-                        "text_4": "t:templates.product_streetwear.trust_badges.secure"
+                        "text_4": "Secure checkout"
                     }
                 },
                 "size_chart": {
@@ -52,7 +52,7 @@
                         "size_m": "M: Chest 38-40\"",
                         "size_l": "L: Chest 42-44\"",
                         "size_xl": "XL: Chest 46-48\"",
-                        "measurement_tips": "t:templates.product_streetwear.size_chart.measurement_tips"
+                        "measurement_tips": "Measure yourself while wearing clothes similar to how you'll wear this item."
                     }
                 }
             },
@@ -84,8 +84,8 @@
             "type": "countdown",
             "settings": {
                 "eyebrow": "Limited Time",
-                "title": "t:templates.product_streetwear.countdown.title",
-                "description": "t:templates.product_streetwear.countdown.description",
+                "title": "Limited Drop",
+                "description": "Get it before it's gone forever",
                 "button_text": "",
                 "background_color": "accent"
             }
@@ -93,7 +93,7 @@
         "related-products": {
             "type": "related-products",
             "settings": {
-                "heading": "t:templates.product_streetwear.related.heading",
+                "heading": "Complete the Look",
                 "products_to_show": 4,
                 "columns_desktop": "4",
                 "columns_mobile": "2",
@@ -105,7 +105,7 @@
         "recently_viewed": {
             "type": "recently-viewed",
             "settings": {
-                "heading": "t:templates.product_streetwear.recently_viewed.heading",
+                "heading": "Recently Viewed",
                 "products_to_show": 4,
                 "columns": 4
             }

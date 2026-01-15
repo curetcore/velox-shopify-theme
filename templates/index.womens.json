@@ -6,7 +6,7 @@
                 "announcement_1": {
                     "type": "announcement",
                     "settings": {
-                        "text": "t:templates.index_womens.ticker.spring",
+                        "text": "SPRING COLLECTION NOW LIVE",
                         "link": "shopify://collections/spring",
                         "icon": "star"
                     }
@@ -14,7 +14,7 @@
                 "announcement_2": {
                     "type": "announcement",
                     "settings": {
-                        "text": "t:templates.index_womens.ticker.shipping",
+                        "text": "FREE SHIPPING ON ORDERS OVER $75",
                         "icon": "truck"
                     }
                 }
@@ -37,8 +37,8 @@
                     "type": "slide",
                     "settings": {
                         "subheading": "New Season",
-                        "heading": "t:templates.index_womens.hero.slide_1_heading",
-                        "text": "t:templates.index_womens.hero.slide_1_text",
+                        "heading": "Effortless Elegance",
+                        "text": "Discover shoes designed for the modern woman",
                         "button_label": "Shop Spring",
                         "button_link": "shopify://collections/spring",
                         "button_label_2": "View Lookbook",
@@ -50,8 +50,8 @@
                     "type": "slide",
                     "settings": {
                         "subheading": "Bestsellers",
-                        "heading": "t:templates.index_womens.hero.slide_2_heading",
-                        "text": "t:templates.index_womens.hero.slide_2_text",
+                        "heading": "Comfort Meets Style",
+                        "text": "All-day comfort without compromising on design",
                         "button_label": "Shop Essentials",
                         "button_link": "shopify://collections/essentials",
                         "overlay_opacity": 30
@@ -61,8 +61,8 @@
                     "type": "slide",
                     "settings": {
                         "subheading": "Limited Time",
-                        "heading": "t:templates.index_womens.hero.slide_3_heading",
-                        "text": "t:templates.index_womens.hero.slide_3_text",
+                        "heading": "New Season Arrivals",
+                        "text": "The latest trends curated just for you",
                         "button_label": "Shop Sale",
                         "button_link": "shopify://collections/sale",
                         "overlay_opacity": 30
@@ -149,7 +149,7 @@
                 "image_ratio": "portrait",
                 "eyebrow": "Editorial",
                 "title": "Sunset in Santorini",
-                "text": "t:templates.index_womens.image_with_text.text",
+                "text": "<p>We believe every woman deserves shoes that make her feel confident and comfortable. Our collection is designed with you in mind.</p>",
                 "button_text": "View Lookbook",
                 "button_url": "shopify://pages/lookbook",
                 "button_style": "secondary",
@@ -165,7 +165,7 @@
                         "name": "Emma L.",
                         "title": "Verified Buyer",
                         "rating": 5,
-                        "text": "t:templates.index_womens.testimonials.testimonial_1"
+                        "text": "Finally found heels I can actually walk in all day. Love the quality!"
                     }
                 },
                 "testimonial_2": {
@@ -174,7 +174,7 @@
                         "name": "Sofia R.",
                         "title": "Verified Buyer",
                         "rating": 5,
-                        "text": "t:templates.index_womens.testimonials.testimonial_2"
+                        "text": "Beautiful designs and so comfortable. I've bought three pairs already."
                     }
                 }
             },
@@ -183,14 +183,14 @@
                 "testimonial_2"
             ],
             "settings": {
-                "heading": "t:templates.index_womens.testimonials.heading",
+                "heading": "What Women Are Saying",
                 "subheading": "What Our Community Says"
             }
         },
         "recently_viewed": {
             "type": "recently-viewed",
             "settings": {
-                "heading": "t:templates.common.recently_viewed",
+                "heading": "Recently Viewed",
                 "products_to_show": 4,
                 "columns": 4
             }
@@ -203,7 +203,7 @@
                 "narrow_content": true,
                 "eyebrow": "Stay Connected",
                 "title": "Join Our Community",
-                "text": "t:templates.index_womens.newsletter.text",
+                "text": "<p>Subscribe for style inspiration, new arrivals, and exclusive offers.</p>",
                 "show_newsletter": true
             }
         }

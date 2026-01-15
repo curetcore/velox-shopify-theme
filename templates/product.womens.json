@@ -16,13 +16,13 @@
                     "type": "trust_badges",
                     "settings": {
                         "icon_1": "heart",
-                        "text_1": "t:templates.product_womens.trust_badges.sustainable",
+                        "text_1": "Sustainably made",
                         "icon_2": "truck",
-                        "text_2": "t:templates.product_womens.trust_badges.shipping",
+                        "text_2": "Free shipping over $75",
                         "icon_3": "arrow-path",
-                        "text_3": "t:templates.product_womens.trust_badges.returns",
+                        "text_3": "30-day returns",
                         "icon_4": "globe-americas",
-                        "text_4": "t:templates.product_womens.trust_badges.carbon"
+                        "text_4": "Carbon neutral shipping"
                     }
                 },
                 "size_chart": {
@@ -30,14 +30,14 @@
                     "settings": {
                         "button_text": "Size Guide",
                         "title": "Women's Size Guide",
-                        "description": "t:templates.product_womens.size_chart.description",
+                        "description": "Find your perfect fit with our size guide.",
                         "show_table": true,
                         "size_xs": "XS: Bust 32\", Waist 24\", Hips 34\"",
                         "size_s": "S: Bust 34\", Waist 26\", Hips 36\"",
                         "size_m": "M: Bust 36\", Waist 28\", Hips 38\"",
                         "size_l": "L: Bust 38\", Waist 30\", Hips 40\"",
                         "size_xl": "XL: Bust 40\", Waist 32\", Hips 42\"",
-                        "measurement_tips": "t:templates.product_womens.size_chart.measurement_tips"
+                        "measurement_tips": "For the best fit, measure your feet in the evening when they are slightly larger."
                     }
                 },
                 "product_reviews": {
@@ -46,7 +46,7 @@
                         "show_write_review": true,
                         "write_review_text": "Write a Review",
                         "show_no_reviews": true,
-                        "no_reviews_text": "t:templates.product_womens.reviews.no_reviews"
+                        "no_reviews_text": "Be the first to review this product"
                     }
                 }
             },
@@ -80,22 +80,22 @@
                 "column_1": {
                     "type": "column",
                     "settings": {
-                        "title": "t:templates.product_womens.multicolumn.column_1_title",
-                        "text": "t:templates.product_womens.multicolumn.column_1_text"
+                        "title": "Premium Materials",
+                        "text": "Crafted with the finest quality materials for lasting comfort."
                     }
                 },
                 "column_2": {
                     "type": "column",
                     "settings": {
-                        "title": "t:templates.product_womens.multicolumn.column_2_title",
-                        "text": "t:templates.product_womens.multicolumn.column_2_text"
+                        "title": "Comfort First",
+                        "text": "Designed with all-day comfort in mind."
                     }
                 },
                 "column_3": {
                     "type": "column",
                     "settings": {
-                        "title": "t:templates.product_womens.multicolumn.column_3_title",
-                        "text": "t:templates.product_womens.multicolumn.column_3_text"
+                        "title": "Sustainable",
+                        "text": "Made with eco-friendly practices and materials."
                     }
                 }
             },
@@ -113,7 +113,7 @@
         "related-products": {
             "type": "related-products",
             "settings": {
-                "heading": "t:templates.product_womens.related.heading",
+                "heading": "You May Also Like",
                 "products_to_show": 4,
                 "columns_desktop": "4",
                 "columns_mobile": "2",
@@ -125,7 +125,7 @@
         "recently_viewed": {
             "type": "recently-viewed",
             "settings": {
-                "heading": "t:templates.common.recently_viewed",
+                "heading": "Recently Viewed",
                 "products_to_show": 4,
                 "columns": 4
             }

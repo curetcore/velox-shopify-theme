@@ -20,8 +20,8 @@
             "type": "countdown",
             "settings": {
                 "eyebrow": "Limited Drop",
-                "title": "t:templates.collection_streetwear.countdown.title",
-                "description": "t:templates.collection_streetwear.countdown.description",
+                "title": "Flash Sale",
+                "description": "Limited time offer on selected items",
                 "button_text": "",
                 "background_color": "accent"
             }
@@ -34,7 +34,7 @@
                 "narrow_content": true,
                 "eyebrow": "Don't Miss Out",
                 "title": "Get Early Access",
-                "text": "t:templates.collection_streetwear.newsletter.text",
+                "text": "<p>Join the crew and get early access to drops.</p>",
                 "show_newsletter": true
             }
         }
