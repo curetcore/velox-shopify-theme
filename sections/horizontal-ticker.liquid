@@ -1,0 +1,340 @@
+{% comment %}
+  Velox Horizontal Ticker
+  Marquee infinito con texto, imágenes o iconos que se desplaza horizontalmente.
+{% endcomment %}
+
+{% liquid
+  assign speed = section.settings.speed | default: 30
+  assign direction = section.settings.direction | default: 'left'
+  assign pause_on_hover = section.settings.pause_on_hover | default: true
+  assign gap = section.settings.gap | default: 40
+%}
+
+<horizontal-ticker
+  class="tw-block tw-overflow-hidden tw-py-3
+    {% if section.settings.background_style == 'primary' %}
+      tw-bg-velox-900 tw-text-white
+    {% elsif section.settings.background_style == 'accent' %}
+      tw-bg-velox-accent tw-text-white
+    {% elsif section.settings.background_style == 'light' %}
+      tw-bg-velox-100 tw-text-velox-900
+    {% else %}
+      tw-bg-white tw-text-velox-900
+    {% endif %}
+  "
+  data-speed="{{ speed }}"
+  data-direction="{{ direction }}"
+  data-pause="{{ pause_on_hover }}"
+  style="--ticker-gap: {{ gap }}px; --ticker-speed: {{ speed }}s;"
+>
+  <div class="velox-ticker-track tw-flex tw-items-center {% if pause_on_hover %}hover:tw-pause{% endif %}">
+    {%- comment -%} Original content {%- endcomment -%}
+    <div class="velox-ticker-content tw-flex tw-items-center tw-shrink-0" aria-hidden="false">
+      {% for block in section.blocks %}
+        <div class="velox-ticker-item tw-flex tw-items-center tw-gap-2 tw-shrink-0 tw-px-[calc(var(--ticker-gap)/2)]" {{ block.shopify_attributes }}>
+          {% case block.type %}
+            {% when 'text' %}
+              <span class="tw-whitespace-nowrap tw-font-medium
+                {% case section.settings.text_size %}
+                  {% when 'small' %}tw-text-sm
+                  {% when 'medium' %}tw-text-base
+                  {% when 'large' %}tw-text-lg
+                {% endcase %}
+              ">
+                {{ block.settings.text }}
+              </span>
+
+            {% when 'text_with_icon' %}
+              {% if block.settings.icon != 'none' %}
+                <span class="tw-flex-shrink-0">
+                  {% render 'icon', name: block.settings.icon, class: 'tw-w-5 tw-h-5' %}
+                </span>
+              {% endif %}
+              <span class="tw-whitespace-nowrap tw-font-medium
+                {% case section.settings.text_size %}
+                  {% when 'small' %}tw-text-sm
+                  {% when 'medium' %}tw-text-base
+                  {% when 'large' %}tw-text-lg
+                {% endcase %}
+              ">
+                {{ block.settings.text }}
+              </span>
+
+            {% when 'image' %}
+              {% if block.settings.image != blank %}
+                {{ block.settings.image | image_url: height: 40 | image_tag:
+                  loading: 'lazy',
+                  class: 'tw-h-6 tw-w-auto tw-object-contain',
+                  alt: block.settings.image.alt | default: ''
+                }}
+              {% endif %}
+
+            {% when 'divider' %}
+              <span class="tw-w-px tw-h-4 tw-bg-current tw-opacity-30"></span>
+          {% endcase %}
+        </div>
+      {% endfor %}
+    </div>
+
+    {%- comment -%} Cloned content for seamless loop {%- endcomment -%}
+    <div class="velox-ticker-content tw-flex tw-items-center tw-shrink-0" aria-hidden="true">
+      {% for block in section.blocks %}
+        <div class="velox-ticker-item tw-flex tw-items-center tw-gap-2 tw-shrink-0 tw-px-[calc(var(--ticker-gap)/2)]">
+          {% case block.type %}
+            {% when 'text' %}
+              <span class="tw-whitespace-nowrap tw-font-medium
+                {% case section.settings.text_size %}
+                  {% when 'small' %}tw-text-sm
+                  {% when 'medium' %}tw-text-base
+                  {% when 'large' %}tw-text-lg
+                {% endcase %}
+              ">
+                {{ block.settings.text }}
+              </span>
+
+            {% when 'text_with_icon' %}
+              {% if block.settings.icon != 'none' %}
+                <span class="tw-flex-shrink-0">
+                  {% render 'icon', name: block.settings.icon, class: 'tw-w-5 tw-h-5' %}
+                </span>
+              {% endif %}
+              <span class="tw-whitespace-nowrap tw-font-medium
+                {% case section.settings.text_size %}
+                  {% when 'small' %}tw-text-sm
+                  {% when 'medium' %}tw-text-base
+                  {% when 'large' %}tw-text-lg
+                {% endcase %}
+              ">
+                {{ block.settings.text }}
+              </span>
+
+            {% when 'image' %}
+              {% if block.settings.image != blank %}
+                {{ block.settings.image | image_url: height: 40 | image_tag:
+                  loading: 'lazy',
+                  class: 'tw-h-6 tw-w-auto tw-object-contain',
+                  alt: block.settings.image.alt | default: ''
+                }}
+              {% endif %}
+
+            {% when 'divider' %}
+              <span class="tw-w-px tw-h-4 tw-bg-current tw-opacity-30"></span>
+          {% endcase %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</horizontal-ticker>
+
+<style>
+  horizontal-ticker .velox-ticker-track {
+    animation: velox-ticker var(--ticker-speed) linear infinite;
+  }
+
+  {% if direction == 'right' %}
+    @keyframes velox-ticker {
+      0% { transform: translateX(-50%); }
+      100% { transform: translateX(0); }
+    }
+  {% else %}
+    @keyframes velox-ticker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+  {% endif %}
+
+  horizontal-ticker .velox-ticker-track.hover\:tw-pause:hover {
+    animation-play-state: paused;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    horizontal-ticker .velox-ticker-track {
+      animation: none;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Horizontal ticker",
+  "tag": "section",
+  "class": "velox-horizontal-ticker",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Animación"
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "s",
+      "label": "Velocidad",
+      "info": "Menor = más rápido",
+      "default": 30
+    },
+    {
+      "type": "select",
+      "id": "direction",
+      "label": "Dirección",
+      "options": [
+        { "value": "left", "label": "Izquierda" },
+        { "value": "right", "label": "Derecha" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pausar al pasar el mouse",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "min": 20,
+      "max": 80,
+      "step": 10,
+      "unit": "px",
+      "label": "Espacio entre elementos",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Apariencia"
+    },
+    {
+      "type": "select",
+      "id": "background_style",
+      "label": "Estilo de fondo",
+      "options": [
+        { "value": "white", "label": "Blanco" },
+        { "value": "light", "label": "Gris claro" },
+        { "value": "primary", "label": "Oscuro" },
+        { "value": "accent", "label": "Acento" }
+      ],
+      "default": "primary"
+    },
+    {
+      "type": "select",
+      "id": "text_size",
+      "label": "Tamaño del texto",
+      "options": [
+        { "value": "small", "label": "Pequeño" },
+        { "value": "medium", "label": "Mediano" },
+        { "value": "large", "label": "Grande" }
+      ],
+      "default": "medium"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Texto",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texto",
+          "default": "Envío gratis en pedidos +$50"
+        }
+      ]
+    },
+    {
+      "type": "text_with_icon",
+      "name": "Texto con icono",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icono",
+          "options": [
+            { "value": "none", "label": "Ninguno" },
+            { "value": "truck", "label": "Envío" },
+            { "value": "shield-check", "label": "Garantía" },
+            { "value": "credit-card", "label": "Pago seguro" },
+            { "value": "arrow-path", "label": "Devoluciones" },
+            { "value": "gift", "label": "Regalo" },
+            { "value": "star", "label": "Estrella" },
+            { "value": "heart", "label": "Corazón" },
+            { "value": "check-circle", "label": "Check" },
+            { "value": "clock", "label": "Tiempo" },
+            { "value": "phone", "label": "Teléfono" },
+            { "value": "chat-bubble-left-right", "label": "Chat" }
+          ],
+          "default": "truck"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texto",
+          "default": "Envío gratis"
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "Imagen",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Imagen"
+        }
+      ]
+    },
+    {
+      "type": "divider",
+      "name": "Separador",
+      "settings": []
+    }
+  ],
+  "presets": [
+    {
+      "name": "Horizontal ticker",
+      "category": "Engagement",
+      "blocks": [
+        {
+          "type": "text_with_icon",
+          "settings": {
+            "icon": "truck",
+            "text": "Envío gratis +$50"
+          }
+        },
+        {
+          "type": "divider"
+        },
+        {
+          "type": "text_with_icon",
+          "settings": {
+            "icon": "shield-check",
+            "text": "Garantía 30 días"
+          }
+        },
+        {
+          "type": "divider"
+        },
+        {
+          "type": "text_with_icon",
+          "settings": {
+            "icon": "credit-card",
+            "text": "Pago 100% seguro"
+          }
+        },
+        {
+          "type": "divider"
+        },
+        {
+          "type": "text_with_icon",
+          "settings": {
+            "icon": "arrow-path",
+            "text": "Devoluciones fáciles"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

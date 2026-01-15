@@ -1,0 +1,271 @@
+{% comment %}
+  Velox Comparison Slider
+  Slider interactivo para comparar dos imágenes (antes/después).
+{% endcomment %}
+
+{% liquid
+  assign start_position = section.settings.start_position | default: 50
+  assign aspect_ratio = section.settings.aspect_ratio | default: '16/9'
+%}
+
+<section class="tw-py-12 md:tw-py-16 lg:tw-py-20">
+  <div class="tw-max-w-7xl tw-mx-auto tw-px-4 sm:tw-px-6 lg:tw-px-8">
+    {%- comment -%} Header {%- endcomment -%}
+    {% if section.settings.title != blank or section.settings.description != blank %}
+      <div class="tw-text-center tw-mb-10">
+        {% if section.settings.title != blank %}
+          <h2 class="tw-text-2xl md:tw-text-3xl lg:tw-text-4xl tw-font-bold tw-text-velox-900">
+            {{ section.settings.title }}
+          </h2>
+        {% endif %}
+
+        {% if section.settings.description != blank %}
+          <p class="tw-mt-4 tw-text-velox-600 tw-max-w-2xl tw-mx-auto">
+            {{ section.settings.description }}
+          </p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {%- comment -%} Comparison slider {%- endcomment -%}
+    <div class="tw-max-w-4xl tw-mx-auto">
+      <comparison-slider
+        class="tw-block tw-relative tw-overflow-hidden tw-rounded-lg tw-shadow-lg tw-select-none tw-touch-none"
+        style="--slider-position: {{ start_position }}%; aspect-ratio: {{ aspect_ratio }};"
+        data-start="{{ start_position }}"
+      >
+        {%- comment -%} Before image (bottom layer) {%- endcomment -%}
+        <div class="velox-comparison-before tw-absolute tw-inset-0">
+          {% if section.settings.before_image != blank %}
+            {{ section.settings.before_image | image_url: width: 1200 | image_tag:
+              loading: 'lazy',
+              class: 'tw-w-full tw-h-full tw-object-cover',
+              alt: section.settings.before_image.alt | default: section.settings.before_label
+            }}
+          {% else %}
+            <div class="tw-w-full tw-h-full tw-bg-velox-200 tw-flex tw-items-center tw-justify-center">
+              <span class="tw-text-velox-400">{{ section.settings.before_label | default: 'Before' }}</span>
+            </div>
+          {% endif %}
+
+          {%- comment -%} Before label {%- endcomment -%}
+          {% if section.settings.show_labels %}
+            <span class="tw-absolute tw-bottom-4 tw-left-4 tw-bg-black/70 tw-text-white tw-px-3 tw-py-1.5 tw-rounded-full tw-text-sm tw-font-medium">
+              {{ section.settings.before_label | default: 'Before' }}
+            </span>
+          {% endif %}
+        </div>
+
+        {%- comment -%} After image (top layer, clipped) {%- endcomment -%}
+        <div class="velox-comparison-after tw-absolute tw-inset-0 tw-overflow-hidden" style="clip-path: inset(0 0 0 var(--slider-position));">
+          {% if section.settings.after_image != blank %}
+            {{ section.settings.after_image | image_url: width: 1200 | image_tag:
+              loading: 'lazy',
+              class: 'tw-w-full tw-h-full tw-object-cover',
+              alt: section.settings.after_image.alt | default: section.settings.after_label
+            }}
+          {% else %}
+            <div class="tw-w-full tw-h-full tw-bg-velox-300 tw-flex tw-items-center tw-justify-center">
+              <span class="tw-text-velox-500">{{ section.settings.after_label | default: 'After' }}</span>
+            </div>
+          {% endif %}
+
+          {%- comment -%} After label {%- endcomment -%}
+          {% if section.settings.show_labels %}
+            <span class="tw-absolute tw-bottom-4 tw-right-4 tw-bg-white/90 tw-text-velox-900 tw-px-3 tw-py-1.5 tw-rounded-full tw-text-sm tw-font-medium">
+              {{ section.settings.after_label | default: 'After' }}
+            </span>
+          {% endif %}
+        </div>
+
+        {%- comment -%} Slider line and handle {%- endcomment -%}
+        <div class="velox-comparison-handle tw-absolute tw-top-0 tw-bottom-0 tw-w-1 tw-bg-white tw-shadow-lg tw-cursor-ew-resize" style="left: var(--slider-position); transform: translateX(-50%);">
+          {%- comment -%} Handle button {%- endcomment -%}
+          <div class="tw-absolute tw-top-1/2 tw-left-1/2 tw--translate-x-1/2 tw--translate-y-1/2 tw-w-10 tw-h-10 tw-bg-white tw-rounded-full tw-shadow-lg tw-flex tw-items-center tw-justify-center tw-border-2 tw-border-velox-200">
+            <svg class="tw-w-5 tw-h-5 tw-text-velox-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4"/>
+            </svg>
+          </div>
+        </div>
+
+        {%- comment -%} Invisible input for accessibility {%- endcomment -%}
+        <input
+          type="range"
+          min="0"
+          max="100"
+          value="{{ start_position }}"
+          class="velox-comparison-input tw-absolute tw-inset-0 tw-w-full tw-h-full tw-opacity-0 tw-cursor-ew-resize"
+          aria-label="{{ 'sections.comparison.slider_label' | t | default: 'Drag to compare images' }}"
+        />
+      </comparison-slider>
+    </div>
+  </div>
+</section>
+
+<script>
+  class ComparisonSlider extends HTMLElement {
+    constructor() {
+      super();
+      this.slider = this.querySelector('.velox-comparison-input');
+      this.handle = this.querySelector('.velox-comparison-handle');
+      this.afterLayer = this.querySelector('.velox-comparison-after');
+      this.isDragging = false;
+    }
+
+    connectedCallback() {
+      if (!this.slider) return;
+
+      // Mouse events
+      this.addEventListener('mousedown', (e) => this.startDrag(e));
+      document.addEventListener('mousemove', (e) => this.drag(e));
+      document.addEventListener('mouseup', () => this.endDrag());
+
+      // Touch events
+      this.addEventListener('touchstart', (e) => this.startDrag(e), { passive: true });
+      document.addEventListener('touchmove', (e) => this.drag(e), { passive: false });
+      document.addEventListener('touchend', () => this.endDrag());
+
+      // Keyboard/input events
+      this.slider.addEventListener('input', (e) => this.updatePosition(e.target.value));
+
+      // Initial position
+      this.updatePosition(this.slider.value);
+    }
+
+    startDrag(e) {
+      this.isDragging = true;
+      this.classList.add('is-dragging');
+      this.drag(e);
+    }
+
+    drag(e) {
+      if (!this.isDragging) return;
+
+      e.preventDefault();
+
+      const rect = this.getBoundingClientRect();
+      const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+      const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
+
+      this.slider.value = percentage;
+      this.updatePosition(percentage);
+    }
+
+    endDrag() {
+      this.isDragging = false;
+      this.classList.remove('is-dragging');
+    }
+
+    updatePosition(value) {
+      this.style.setProperty('--slider-position', `${value}%`);
+    }
+  }
+
+  if (!customElements.get('comparison-slider')) {
+    customElements.define('comparison-slider', ComparisonSlider);
+  }
+</script>
+
+<style>
+  comparison-slider.is-dragging {
+    cursor: ew-resize;
+  }
+
+  comparison-slider.is-dragging .velox-comparison-handle {
+    transform: translateX(-50%) scale(1.1);
+  }
+
+  comparison-slider .velox-comparison-handle {
+    transition: transform 0.15s ease;
+  }
+
+  comparison-slider:not(.is-dragging) .velox-comparison-after,
+  comparison-slider:not(.is-dragging) .velox-comparison-handle {
+    transition: clip-path 0.1s ease, left 0.1s ease;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Comparison slider",
+  "tag": "div",
+  "class": "velox-comparison-slider",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "default": "Antes y después"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Descripción"
+    },
+    {
+      "type": "header",
+      "content": "Imágenes"
+    },
+    {
+      "type": "image_picker",
+      "id": "before_image",
+      "label": "Imagen antes"
+    },
+    {
+      "type": "text",
+      "id": "before_label",
+      "label": "Etiqueta antes",
+      "default": "Antes"
+    },
+    {
+      "type": "image_picker",
+      "id": "after_image",
+      "label": "Imagen después"
+    },
+    {
+      "type": "text",
+      "id": "after_label",
+      "label": "Etiqueta después",
+      "default": "Después"
+    },
+    {
+      "type": "header",
+      "content": "Configuración"
+    },
+    {
+      "type": "range",
+      "id": "start_position",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "Posición inicial",
+      "default": 50
+    },
+    {
+      "type": "select",
+      "id": "aspect_ratio",
+      "label": "Proporción de aspecto",
+      "options": [
+        { "value": "1/1", "label": "Cuadrado (1:1)" },
+        { "value": "4/3", "label": "4:3" },
+        { "value": "16/9", "label": "16:9" },
+        { "value": "21/9", "label": "Panorámico (21:9)" }
+      ],
+      "default": "16/9"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_labels",
+      "label": "Mostrar etiquetas",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Comparison slider",
+      "category": "Media"
+    }
+  ]
+}
+{% endschema %}

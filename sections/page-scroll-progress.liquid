@@ -1,0 +1,163 @@
+{% comment %}
+  Velox Page Scroll Progress
+  Barra de progreso que indica cuánto ha scrolleado el usuario en la página.
+{% endcomment %}
+
+{% liquid
+  assign position = section.settings.position | default: 'top'
+  assign bar_height = section.settings.bar_height | default: 4
+  assign bar_color = section.settings.bar_color | default: 'accent'
+  assign show_percentage = section.settings.show_percentage | default: false
+%}
+
+<page-scroll-progress
+  class="tw-fixed {{ position }} tw-left-0 tw-right-0 tw-z-50 tw-pointer-events-none"
+  style="--progress-height: {{ bar_height }}px;"
+  data-show-percentage="{{ show_percentage }}"
+>
+  {%- comment -%} Track background {%- endcomment -%}
+  {% if section.settings.show_track %}
+    <div class="tw-absolute tw-inset-0 tw-bg-velox-200/50"></div>
+  {% endif %}
+
+  {%- comment -%} Progress bar {%- endcomment -%}
+  <div
+    class="velox-scroll-progress-bar tw-h-[var(--progress-height)] tw-origin-left tw-scale-x-0 tw-transition-transform tw-duration-75 tw-ease-out
+      {% case bar_color %}
+        {% when 'accent' %}
+          tw-bg-velox-accent
+        {% when 'primary' %}
+          tw-bg-velox-900
+        {% when 'gradient' %}
+          tw-bg-gradient-to-r tw-from-velox-accent tw-via-velox-600 tw-to-velox-accent
+        {% else %}
+          tw-bg-velox-accent
+      {% endcase %}
+    "
+    style="{% if section.settings.custom_color != blank %}background-color: {{ section.settings.custom_color }};{% endif %}"
+    aria-hidden="true"
+  ></div>
+
+  {%- comment -%} Percentage indicator (optional) {%- endcomment -%}
+  {% if show_percentage %}
+    <div
+      class="velox-scroll-percentage tw-absolute tw-right-4 tw-top-1/2 tw--translate-y-1/2 tw-text-xs tw-font-medium tw-text-velox-600 tw-bg-white tw-px-2 tw-py-0.5 tw-rounded-full tw-shadow-sm tw-pointer-events-auto"
+      aria-live="polite"
+      aria-atomic="true"
+    >
+      <span class="velox-percentage-value">0</span>%
+    </div>
+  {% endif %}
+</page-scroll-progress>
+
+<script>
+  class PageScrollProgress extends HTMLElement {
+    constructor() {
+      super();
+      this.progressBar = this.querySelector('.velox-scroll-progress-bar');
+      this.percentageEl = this.querySelector('.velox-percentage-value');
+      this.showPercentage = this.dataset.showPercentage === 'true';
+      this.ticking = false;
+    }
+
+    connectedCallback() {
+      this.updateProgress();
+      window.addEventListener('scroll', () => this.requestUpdate(), { passive: true });
+      window.addEventListener('resize', () => this.requestUpdate(), { passive: true });
+    }
+
+    requestUpdate() {
+      if (!this.ticking) {
+        requestAnimationFrame(() => {
+          this.updateProgress();
+          this.ticking = false;
+        });
+        this.ticking = true;
+      }
+    }
+
+    updateProgress() {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? Math.min(scrollTop / docHeight, 1) : 0;
+
+      if (this.progressBar) {
+        this.progressBar.style.transform = `scaleX(${progress})`;
+      }
+
+      if (this.showPercentage && this.percentageEl) {
+        this.percentageEl.textContent = Math.round(progress * 100);
+      }
+    }
+  }
+
+  if (!customElements.get('page-scroll-progress')) {
+    customElements.define('page-scroll-progress', PageScrollProgress);
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Page scroll progress",
+  "tag": "div",
+  "class": "velox-page-scroll-progress",
+  "settings": [
+    {
+      "type": "select",
+      "id": "position",
+      "label": "Posición",
+      "options": [
+        { "value": "tw-top-0", "label": "Arriba" },
+        { "value": "tw-bottom-0", "label": "Abajo" }
+      ],
+      "default": "tw-top-0"
+    },
+    {
+      "type": "range",
+      "id": "bar_height",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "unit": "px",
+      "label": "Altura de la barra",
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "bar_color",
+      "label": "Color de la barra",
+      "options": [
+        { "value": "accent", "label": "Acento" },
+        { "value": "primary", "label": "Primario" },
+        { "value": "gradient", "label": "Gradiente" },
+        { "value": "custom", "label": "Personalizado" }
+      ],
+      "default": "accent"
+    },
+    {
+      "type": "color",
+      "id": "custom_color",
+      "label": "Color personalizado",
+      "info": "Solo aplica si seleccionas 'Personalizado' arriba"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_track",
+      "label": "Mostrar track de fondo",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_percentage",
+      "label": "Mostrar porcentaje",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Page scroll progress",
+      "category": "Engagement"
+    }
+  ]
+}
+{% endschema %}

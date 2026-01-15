@@ -5,7 +5,8 @@
       "skip_to_content": "Ir al contenido",
       "loading": "Cargando...",
       "previous": "Anterior",
-      "next": "Siguiente"
+      "next": "Siguiente",
+      "scroll_to_top": "Volver arriba"
     },
     "cart": {
       "error": "Algo salió mal. Por favor, inténtalo de nuevo."
@@ -382,6 +383,9 @@
   "sections": {
     "collection": {
       "name": "Colección"
+    },
+    "comparison": {
+      "slider_label": "Arrastra para comparar imágenes"
     },
     "countdown": {
       "days": "Días",

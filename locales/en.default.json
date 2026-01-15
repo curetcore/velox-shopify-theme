@@ -5,7 +5,8 @@
       "skip_to_content": "Skip to content",
       "loading": "Loading...",
       "previous": "Previous",
-      "next": "Next"
+      "next": "Next",
+      "scroll_to_top": "Scroll to top"
     },
     "cart": {
       "error": "Something went wrong. Please try again."
@@ -382,6 +383,9 @@
   "sections": {
     "collection": {
       "name": "Collection"
+    },
+    "comparison": {
+      "slider_label": "Drag to compare images"
     },
     "countdown": {
       "days": "Days",

@@ -1,0 +1,215 @@
+{% comment %}
+  Velox Scroll to Top Button
+  Botón flotante que aparece después de hacer scroll para volver arriba.
+{% endcomment %}
+
+{% liquid
+  assign position = section.settings.position | default: 'bottom-right'
+  assign show_after = section.settings.show_after | default: 300
+  assign button_style = section.settings.button_style | default: 'solid'
+%}
+
+<scroll-to-top
+  class="tw-fixed tw-z-40 tw-transition-all tw-duration-300 tw-opacity-0 tw-invisible tw-translate-y-4
+    {% case position %}
+      {% when 'bottom-right' %}
+        tw-bottom-6 tw-right-6
+      {% when 'bottom-left' %}
+        tw-bottom-6 tw-left-6
+      {% when 'bottom-center' %}
+        tw-bottom-6 tw-left-1/2 tw--translate-x-1/2
+    {% endcase %}
+  "
+  data-show-after="{{ show_after }}"
+  aria-hidden="true"
+>
+  <button
+    type="button"
+    class="velox-scroll-to-top-btn tw-group tw-flex tw-items-center tw-justify-center tw-rounded-full tw-shadow-lg hover:tw-shadow-xl tw-transition-all tw-duration-200 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-offset-2
+      {% case section.settings.size %}
+        {% when 'small' %}
+          tw-w-10 tw-h-10
+        {% when 'medium' %}
+          tw-w-12 tw-h-12
+        {% when 'large' %}
+          tw-w-14 tw-h-14
+      {% endcase %}
+      {% case button_style %}
+        {% when 'solid' %}
+          tw-bg-velox-900 hover:tw-bg-velox-800 tw-text-white focus:tw-ring-velox-900
+        {% when 'accent' %}
+          tw-bg-velox-accent hover:tw-opacity-90 tw-text-white focus:tw-ring-velox-accent
+        {% when 'outline' %}
+          tw-bg-white tw-border-2 tw-border-velox-900 tw-text-velox-900 hover:tw-bg-velox-900 hover:tw-text-white focus:tw-ring-velox-900
+        {% when 'glass' %}
+          tw-bg-white/80 tw-backdrop-blur-sm tw-text-velox-900 hover:tw-bg-white focus:tw-ring-velox-500
+      {% endcase %}
+    "
+    aria-label="{{ 'general.accessibility.scroll_to_top' | t | default: 'Scroll to top' }}"
+  >
+    {%- comment -%} Arrow icon {%- endcomment -%}
+    <svg
+      class="tw-transition-transform tw-duration-200 group-hover:tw--translate-y-0.5
+        {% case section.settings.size %}
+          {% when 'small' %}tw-w-5 tw-h-5
+          {% when 'medium' %}tw-w-6 tw-h-6
+          {% when 'large' %}tw-w-7 tw-h-7
+        {% endcase %}
+      "
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+      {% if section.settings.icon_style == 'arrow' %}
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
+      {% else %}
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
+      {% endif %}
+    </svg>
+  </button>
+</scroll-to-top>
+
+<script>
+  class ScrollToTop extends HTMLElement {
+    constructor() {
+      super();
+      this.button = this.querySelector('button');
+      this.showAfter = parseInt(this.dataset.showAfter) || 300;
+      this.isVisible = false;
+      this.ticking = false;
+    }
+
+    connectedCallback() {
+      this.checkVisibility();
+      window.addEventListener('scroll', () => this.requestCheck(), { passive: true });
+      this.button?.addEventListener('click', () => this.scrollToTop());
+    }
+
+    requestCheck() {
+      if (!this.ticking) {
+        requestAnimationFrame(() => {
+          this.checkVisibility();
+          this.ticking = false;
+        });
+        this.ticking = true;
+      }
+    }
+
+    checkVisibility() {
+      const scrollY = window.scrollY || document.documentElement.scrollTop;
+      const shouldShow = scrollY > this.showAfter;
+
+      if (shouldShow !== this.isVisible) {
+        this.isVisible = shouldShow;
+        this.setAttribute('aria-hidden', !shouldShow);
+
+        if (shouldShow) {
+          this.classList.remove('tw-opacity-0', 'tw-invisible', 'tw-translate-y-4');
+          this.classList.add('tw-opacity-100', 'tw-visible', 'tw-translate-y-0');
+        } else {
+          this.classList.add('tw-opacity-0', 'tw-invisible', 'tw-translate-y-4');
+          this.classList.remove('tw-opacity-100', 'tw-visible', 'tw-translate-y-0');
+        }
+      }
+    }
+
+    scrollToTop() {
+      // Respect reduced motion preference
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      window.scrollTo({
+        top: 0,
+        behavior: prefersReducedMotion ? 'auto' : 'smooth'
+      });
+
+      // Focus on skip link or main content for accessibility
+      const skipLink = document.querySelector('.velox-skip-link');
+      if (skipLink) {
+        skipLink.focus();
+      }
+    }
+  }
+
+  if (!customElements.get('scroll-to-top')) {
+    customElements.define('scroll-to-top', ScrollToTop);
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Scroll to top",
+  "tag": "div",
+  "class": "velox-scroll-to-top",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Posición"
+    },
+    {
+      "type": "select",
+      "id": "position",
+      "label": "Posición del botón",
+      "options": [
+        { "value": "bottom-right", "label": "Abajo derecha" },
+        { "value": "bottom-left", "label": "Abajo izquierda" },
+        { "value": "bottom-center", "label": "Abajo centro" }
+      ],
+      "default": "bottom-right"
+    },
+    {
+      "type": "range",
+      "id": "show_after",
+      "min": 100,
+      "max": 1000,
+      "step": 50,
+      "unit": "px",
+      "label": "Mostrar después de scroll",
+      "default": 300
+    },
+    {
+      "type": "header",
+      "content": "Apariencia"
+    },
+    {
+      "type": "select",
+      "id": "size",
+      "label": "Tamaño",
+      "options": [
+        { "value": "small", "label": "Pequeño" },
+        { "value": "medium", "label": "Mediano" },
+        { "value": "large", "label": "Grande" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Estilo del botón",
+      "options": [
+        { "value": "solid", "label": "Sólido" },
+        { "value": "accent", "label": "Acento" },
+        { "value": "outline", "label": "Outline" },
+        { "value": "glass", "label": "Cristal" }
+      ],
+      "default": "solid"
+    },
+    {
+      "type": "select",
+      "id": "icon_style",
+      "label": "Estilo del icono",
+      "options": [
+        { "value": "chevron", "label": "Chevron" },
+        { "value": "arrow", "label": "Flecha" }
+      ],
+      "default": "chevron"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Scroll to top",
+      "category": "Engagement"
+    }
+  ]
+}
+{% endschema %}

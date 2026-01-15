@@ -232,6 +232,28 @@ velox-shopify-theme/
   - Bloques para preguntas ilimitadas
   - Enlace a contacto opcional
 
+### Utility & UX
+- `page-scroll-progress.liquid` - Barra de progreso de scroll
+  - Web Component nativo
+  - Posición: arriba o abajo
+  - Colores: accent, primary, gradient, custom
+  - Porcentaje opcional
+- `scroll-to-top.liquid` - Botón volver arriba
+  - Posiciones: bottom-right, bottom-left, bottom-center
+  - Estilos: solid, accent, outline, glass
+  - Tamaños: small, medium, large
+  - Respeta prefers-reduced-motion
+- `horizontal-ticker.liquid` - Marquee infinito
+  - Bloques: texto, texto+icono, imagen, separador
+  - Fondos: white, light, primary, accent
+  - Dirección: izquierda o derecha
+  - Pausa en hover
+- `comparison-slider.liquid` - Comparador antes/después
+  - Slider interactivo con arrastre
+  - Proporciones: 1:1, 4:3, 16:9, 21:9
+  - Etiquetas configurables
+  - Accessible con input range
+
 ### Complementarias (Fase C)
 - `promo-banners.liquid` - Banners promocionales
   - Layouts: single, double, triple, marquee
