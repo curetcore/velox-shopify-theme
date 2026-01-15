@@ -663,6 +663,9 @@
         "testimonial_1": "Copped the last drop and been getting compliments non-stop. Quality is insane!",
         "testimonial_2": "Finally a brand that gets it. Unique pieces that nobody else has."
       },
+      "recently_viewed": {
+        "heading": "Checked Out Recently"
+      },
       "newsletter": {
         "text": "<p>Be first to know about drops. Get 15% off your first order.</p>"
       }
@@ -699,6 +702,10 @@
       }
     },
     "collection_sneakers": {
+      "comparison": {
+        "heading": "Spot the Difference",
+        "caption": "Slide to compare authentic vs counterfeit sneakers"
+      },
       "trust_badges": {
         "authenticated_title": "Authenticated",
         "authenticated_text": "Every pair verified",
@@ -713,7 +720,8 @@
     },
     "collection_streetwear": {
       "countdown": {
-        "title": "This Collection Ends Soon"
+        "title": "This Collection Ends Soon",
+        "description": "Limited edition items won't be restocked. Once they're gone, they're gone forever."
       },
       "newsletter": {
         "title": "Get Early Access",
@@ -723,6 +731,8 @@
     "collection_womens": {
       "testimonials": {
         "heading": "Customer Love",
+        "testimonial_1": "The quality exceeded my expectations. Already planning my next purchase!",
+        "testimonial_2": "Perfect fit, beautiful fabric, and I love that it's sustainable.",
         "testimonial_1_title": "Verified Buyer",
         "testimonial_1_text": "The quality exceeded my expectations. Already planning my next purchase!",
         "testimonial_2_title": "Verified Buyer",
@@ -730,34 +740,93 @@
       }
     },
     "product_luxury": {
+      "shipping_prefix": "Estimated delivery:",
+      "image_with_text": {
+        "text": "<p>Each pair takes over 8 hours to craft. Our artisans use traditional techniques passed down through generations.</p>"
+      },
       "rich_text": {
         "text": "<p>Each pair takes over 8 hours to craft. Our artisans use traditional techniques passed down through generations.</p>"
+      },
+      "size_chart": {
+        "description": "Our luxury footwear is crafted using European sizing standards.",
+        "measurement_tips": "For the perfect fit, measure your foot at the end of the day when feet are largest."
+      },
+      "trust_badges": {
+        "handmade": "Handmade in Florence",
+        "packaging": "Luxury gift packaging",
+        "shipping": "Complimentary shipping",
+        "warranty": "Lifetime quality guarantee"
       },
       "related": {
         "heading": "You May Also Like"
       }
     },
     "product_sneakers": {
+      "comparison": {
+        "heading": "Authentic vs Fake",
+        "caption": "Slide to see the difference between real and counterfeit sneakers"
+      },
       "image_with_text": {
         "heading": "Authentic vs Fake"
+      },
+      "trust_badges": {
+        "authentic": "100% Authenticated",
+        "shipping": "Free shipping $100+",
+        "returns": "14-day easy returns",
+        "secure": "Secure checkout"
       },
       "related": {
         "heading": "Complete Your Collection"
       }
     },
     "product_streetwear": {
+      "countdown": {
+        "title": "Drop Ends Soon",
+        "description": "This limited edition won't be restocked. Get it before it's gone."
+      },
+      "recently_viewed": {
+        "heading": "Checked Out Recently"
+      },
+      "size_chart": {
+        "measurement_tips": "Our streetwear fits oversized. Size down for a more fitted look."
+      },
+      "trust_badges": {
+        "limited": "Limited edition drop",
+        "shipping": "Fast worldwide shipping",
+        "returns": "30-day returns",
+        "secure": "Secure payment"
+      },
       "related": {
         "heading": "Match With"
       }
     },
     "product_womens": {
       "multicolumn": {
+        "column_1_title": "Sustainable",
+        "column_1_text": "Made from organic cotton and sustainable materials.",
+        "column_2_title": "Flattering Fit",
+        "column_2_text": "Designed by women, for women. Flattering every body type.",
+        "column_3_title": "Easy Care",
+        "column_3_text": "Machine washable. Wrinkle-resistant. Ready to wear.",
         "sustainable_title": "Sustainable",
         "sustainable_text": "Made from organic cotton and sustainable materials.",
         "flattering_title": "Flattering Fit",
         "flattering_text": "Designed by women, for women. Flattering every body type.",
         "easy_care_title": "Easy Care",
         "easy_care_text": "Machine washable. Wrinkle-resistant. Ready to wear."
+      },
+      "size_chart": {
+        "description": "Our women's sizing is based on US standards. Check below for your perfect fit.",
+        "measurement_tips": "Measure at the fullest part of bust, natural waist, and widest part of hips."
+      },
+      "trust_badges": {
+        "sustainable": "Sustainably made",
+        "shipping": "Free shipping $75+",
+        "returns": "Easy 30-day returns",
+        "carbon": "Carbon neutral shipping"
+      },
+      "reviews": {
+        "no_reviews": "Be the first to share your thoughts on this piece."
       },
       "related": {
         "heading": "Complete the Look"
@@ -767,10 +836,19 @@
       "header": {
         "text": "Passionate about fashion since day one."
       },
+      "image_with_text": {
+        "text": "<p>We believe everyone deserves access to quality fashion. Our team works directly with manufacturers to bring you the best pieces at fair prices.</p><p>From design to delivery, every step is handled with care and attention to detail.</p>"
+      },
       "rich_text": {
         "text": "<p>We believe everyone deserves access to quality fashion. Our team works directly with manufacturers to bring you the best pieces at fair prices.</p><p>From design to delivery, every step is handled with care and attention to detail.</p>"
       },
       "multicolumn": {
+        "column_1_title": "Quality First",
+        "column_1_text": "We source only the best materials and work with trusted manufacturers.",
+        "column_2_title": "Customer Focus",
+        "column_2_text": "Your satisfaction is our priority. We're here to help 24/7.",
+        "column_3_title": "Fast Shipping",
+        "column_3_text": "Swift processing and reliable delivery worldwide.",
         "quality_title": "Quality First",
         "quality_text": "We source only the best materials and work with trusted manufacturers.",
         "customer_title": "Customer Focus",
@@ -791,7 +869,8 @@
         "text": "We'd love to hear from you. Our team is here to help."
       },
       "form": {
-        "heading": "Send us a Message"
+        "heading": "Send us a Message",
+        "subheading": "Fill out the form below and we'll get back to you within 24 hours."
       },
       "info": {
         "email": "support@yourstore.com",

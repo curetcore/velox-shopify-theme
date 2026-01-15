@@ -663,6 +663,9 @@
         "testimonial_1": "Compré el último drop y no paran los cumplidos. ¡La calidad es una locura!",
         "testimonial_2": "Por fin una marca que lo entiende. Piezas únicas que nadie más tiene."
       },
+      "recently_viewed": {
+        "heading": "Visto recientemente"
+      },
       "newsletter": {
         "text": "<p>Sé el primero en saber sobre drops. Obtén 15% de descuento en tu primer pedido.</p>"
       }
@@ -699,6 +702,10 @@
       }
     },
     "collection_sneakers": {
+      "comparison": {
+        "heading": "Detecta la diferencia",
+        "caption": "Desliza para comparar sneakers auténticos vs falsificados"
+      },
       "trust_badges": {
         "authenticated_title": "Autenticado",
         "authenticated_text": "Cada par verificado",
@@ -713,7 +720,8 @@
     },
     "collection_streetwear": {
       "countdown": {
-        "title": "Esta colección termina pronto"
+        "title": "Esta colección termina pronto",
+        "description": "Los artículos de edición limitada no se reabastecerán. Una vez que se agoten, se fueron para siempre."
       },
       "newsletter": {
         "title": "Obtén acceso anticipado",
@@ -723,6 +731,8 @@
     "collection_womens": {
       "testimonials": {
         "heading": "Amor de clientes",
+        "testimonial_1": "¡La calidad superó mis expectativas. Ya estoy planeando mi próxima compra!",
+        "testimonial_2": "Ajuste perfecto, tela hermosa, y me encanta que sea sostenible.",
         "testimonial_1_title": "Comprador verificado",
         "testimonial_1_text": "¡La calidad superó mis expectativas. Ya estoy planeando mi próxima compra!",
         "testimonial_2_title": "Comprador verificado",
@@ -730,34 +740,93 @@
       }
     },
     "product_luxury": {
+      "shipping_prefix": "Entrega estimada:",
+      "image_with_text": {
+        "text": "<p>Cada par toma más de 8 horas en crearse. Nuestros artesanos usan técnicas tradicionales transmitidas de generación en generación.</p>"
+      },
       "rich_text": {
         "text": "<p>Cada par toma más de 8 horas en crearse. Nuestros artesanos usan técnicas tradicionales transmitidas de generación en generación.</p>"
+      },
+      "size_chart": {
+        "description": "Nuestro calzado de lujo está fabricado con estándares de tallas europeos.",
+        "measurement_tips": "Para el ajuste perfecto, mide tu pie al final del día cuando los pies están más grandes."
+      },
+      "trust_badges": {
+        "handmade": "Hecho a mano en Florencia",
+        "packaging": "Empaque de regalo de lujo",
+        "shipping": "Envío de cortesía",
+        "warranty": "Garantía de calidad de por vida"
       },
       "related": {
         "heading": "También te puede gustar"
       }
     },
     "product_sneakers": {
+      "comparison": {
+        "heading": "Auténtico vs falso",
+        "caption": "Desliza para ver la diferencia entre sneakers reales y falsificados"
+      },
       "image_with_text": {
         "heading": "Auténtico vs falso"
+      },
+      "trust_badges": {
+        "authentic": "100% autenticado",
+        "shipping": "Envío gratis $100+",
+        "returns": "Devoluciones fáciles 14 días",
+        "secure": "Pago seguro"
       },
       "related": {
         "heading": "Completa tu colección"
       }
     },
     "product_streetwear": {
+      "countdown": {
+        "title": "El drop termina pronto",
+        "description": "Esta edición limitada no se reabastecerá. Consíguelo antes de que se agote."
+      },
+      "recently_viewed": {
+        "heading": "Visto recientemente"
+      },
+      "size_chart": {
+        "measurement_tips": "Nuestra ropa streetwear tiene corte oversized. Baja una talla para un ajuste más ceñido."
+      },
+      "trust_badges": {
+        "limited": "Drop de edición limitada",
+        "shipping": "Envío rápido mundial",
+        "returns": "Devoluciones 30 días",
+        "secure": "Pago seguro"
+      },
       "related": {
         "heading": "Combina con"
       }
     },
     "product_womens": {
       "multicolumn": {
+        "column_1_title": "Sostenible",
+        "column_1_text": "Hecho con algodón orgánico y materiales sostenibles.",
+        "column_2_title": "Ajuste favorecedor",
+        "column_2_text": "Diseñado por mujeres, para mujeres. Favorece todo tipo de cuerpo.",
+        "column_3_title": "Fácil cuidado",
+        "column_3_text": "Lavable a máquina. Resistente a arrugas. Lista para usar.",
         "sustainable_title": "Sostenible",
         "sustainable_text": "Hecho con algodón orgánico y materiales sostenibles.",
         "flattering_title": "Ajuste favorecedor",
         "flattering_text": "Diseñado por mujeres, para mujeres. Favorece todo tipo de cuerpo.",
         "easy_care_title": "Fácil cuidado",
         "easy_care_text": "Lavable a máquina. Resistente a arrugas. Lista para usar."
+      },
+      "size_chart": {
+        "description": "Nuestras tallas de mujer están basadas en estándares de EE.UU. Consulta abajo tu talla perfecta.",
+        "measurement_tips": "Mide en la parte más ancha del busto, cintura natural y parte más ancha de las caderas."
+      },
+      "trust_badges": {
+        "sustainable": "Hecho sosteniblemente",
+        "shipping": "Envío gratis $75+",
+        "returns": "Devoluciones fáciles 30 días",
+        "carbon": "Envío carbono neutral"
+      },
+      "reviews": {
+        "no_reviews": "Sé el primero en compartir tu opinión sobre esta pieza."
       },
       "related": {
         "heading": "Completa el look"
@@ -767,10 +836,19 @@
       "header": {
         "text": "Apasionados por la moda desde el día uno."
       },
+      "image_with_text": {
+        "text": "<p>Creemos que todos merecen acceso a moda de calidad. Nuestro equipo trabaja directamente con fabricantes para traerte las mejores piezas a precios justos.</p><p>Desde el diseño hasta la entrega, cada paso se maneja con cuidado y atención al detalle.</p>"
+      },
       "rich_text": {
         "text": "<p>Creemos que todos merecen acceso a moda de calidad. Nuestro equipo trabaja directamente con fabricantes para traerte las mejores piezas a precios justos.</p><p>Desde el diseño hasta la entrega, cada paso se maneja con cuidado y atención al detalle.</p>"
       },
       "multicolumn": {
+        "column_1_title": "Calidad primero",
+        "column_1_text": "Obtenemos solo los mejores materiales y trabajamos con fabricantes de confianza.",
+        "column_2_title": "Enfoque al cliente",
+        "column_2_text": "Tu satisfacción es nuestra prioridad. Estamos aquí para ayudarte 24/7.",
+        "column_3_title": "Envío rápido",
+        "column_3_text": "Procesamiento veloz y entrega confiable en todo el mundo.",
         "quality_title": "Calidad primero",
         "quality_text": "Obtenemos solo los mejores materiales y trabajamos con fabricantes de confianza.",
         "customer_title": "Enfoque al cliente",
@@ -791,7 +869,8 @@
         "text": "Nos encantaría saber de ti. Nuestro equipo está aquí para ayudarte."
       },
       "form": {
-        "heading": "Envíanos un mensaje"
+        "heading": "Envíanos un mensaje",
+        "subheading": "Completa el formulario y te responderemos en 24 horas."
       },
       "info": {
         "email": "soporte@tutienda.com",
