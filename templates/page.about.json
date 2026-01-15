@@ -1,0 +1,107 @@
+{
+    "sections": {
+        "hero": {
+            "type": "hero-simple",
+            "settings": {
+                "eyebrow": "Our Story",
+                "title": "About Us",
+                "text": "Passionate about fashion since day one.",
+                "button_text": "",
+                "text_position": "center"
+            }
+        },
+        "main": {
+            "type": "main-page",
+            "settings": {}
+        },
+        "image_with_text_1": {
+            "type": "image-with-text",
+            "settings": {
+                "image_position": "left",
+                "image_ratio": "portrait",
+                "eyebrow": "Our Mission",
+                "title": "Style Without Compromise",
+                "text": "<p>We believe everyone deserves access to quality fashion. Our team works directly with manufacturers to bring you the best pieces at fair prices.</p><p>From design to delivery, every step is handled with care and attention to detail.</p>",
+                "button_text": "Shop Now",
+                "button_url": "shopify://collections/all",
+                "button_style": "primary"
+            }
+        },
+        "multicolumn": {
+            "type": "multicolumn",
+            "blocks": {
+                "column_1": {
+                    "type": "column",
+                    "settings": {
+                        "title": "Quality First",
+                        "text": "We source only the best materials and work with trusted manufacturers."
+                    }
+                },
+                "column_2": {
+                    "type": "column",
+                    "settings": {
+                        "title": "Customer Focused",
+                        "text": "Your satisfaction is our priority. We're here to help 24/7."
+                    }
+                },
+                "column_3": {
+                    "type": "column",
+                    "settings": {
+                        "title": "Fast Shipping",
+                        "text": "Swift processing and reliable delivery worldwide."
+                    }
+                }
+            },
+            "block_order": [
+                "column_1",
+                "column_2",
+                "column_3"
+            ],
+            "settings": {
+                "title": "Why Choose Us",
+                "columns": 3,
+                "background_color": "secondary"
+            }
+        },
+        "testimonials": {
+            "type": "testimonials",
+            "blocks": {
+                "testimonial_1": {
+                    "type": "testimonial",
+                    "settings": {
+                        "name": "Customer Name",
+                        "title": "Verified Buyer",
+                        "rating": 5,
+                        "text": "Amazing quality and fast shipping. Will definitely order again!"
+                    }
+                }
+            },
+            "block_order": [
+                "testimonial_1"
+            ],
+            "settings": {
+                "heading": "What Our Customers Say",
+                "per_page": 1
+            }
+        },
+        "newsletter": {
+            "type": "rich-text",
+            "settings": {
+                "background_color": "accent",
+                "text_alignment": "center",
+                "narrow_content": true,
+                "title": "Join Our Community",
+                "text": "<p>Get exclusive offers and be the first to know about new arrivals.</p>",
+                "show_newsletter": true
+            }
+        }
+    },
+    "order": [
+        "hero",
+        "main",
+        "image_with_text_1",
+        "multicolumn",
+        "testimonials",
+        "newsletter"
+    ]
+}

@@ -1,0 +1,38 @@
+{
+    "sections": {
+        "main": {
+            "type": "collection",
+            "settings": {
+                "header_style": "banner",
+                "grid_style": "grid_3",
+                "products_per_page": 12,
+                "show_vendor": false,
+                "show_quick_view": true,
+                "show_swatches": true,
+                "show_second_image": true,
+                "enable_filtering": true,
+                "filter_style": "sidebar",
+                "enable_sorting": true,
+                "color_scheme": "light"
+            }
+        },
+        "image_with_text": {
+            "type": "image-with-text",
+            "settings": {
+                "image_position": "left",
+                "image_ratio": "square",
+                "eyebrow": "Artisanal Excellence",
+                "title": "Crafted in Italy",
+                "text": "<p>Each piece in this collection represents generations of shoemaking expertise. Premium leathers, hand-stitched details, and timeless design.</p>",
+                "button_text": "Our Heritage",
+                "button_url": "shopify://pages/about",
+                "button_style": "secondary",
+                "background_color": "secondary"
+            }
+        }
+    },
+    "order": [
+        "main",
+        "image_with_text"
+    ]
+}

@@ -1,0 +1,73 @@
+{
+    "sections": {
+        "main": {
+            "type": "collection",
+            "settings": {
+                "header_style": "banner",
+                "grid_style": "grid_4",
+                "products_per_page": 16,
+                "show_vendor": true,
+                "show_quick_view": true,
+                "show_swatches": true,
+                "show_second_image": true,
+                "enable_filtering": true,
+                "filter_style": "sidebar",
+                "enable_sorting": true,
+                "color_scheme": "light"
+            }
+        },
+        "comparison": {
+            "type": "comparison-slider",
+            "settings": {
+                "heading": "Real vs Fake",
+                "caption": "Every pair we sell is 100% authenticated",
+                "label_before": "Fake",
+                "label_after": "Authentic",
+                "max_width": 600
+            }
+        },
+        "trust_badges": {
+            "type": "trust-badges",
+            "blocks": {
+                "badge_1": {
+                    "type": "badge",
+                    "settings": {
+                        "icon": "shield-check",
+                        "title": "Authenticated",
+                        "text": "Every pair verified"
+                    }
+                },
+                "badge_2": {
+                    "type": "badge",
+                    "settings": {
+                        "icon": "truck",
+                        "title": "Free Shipping",
+                        "text": "Orders $100+"
+                    }
+                },
+                "badge_3": {
+                    "type": "badge",
+                    "settings": {
+                        "icon": "arrow-path",
+                        "title": "Easy Returns",
+                        "text": "14 day policy"
+                    }
+                }
+            },
+            "block_order": [
+                "badge_1",
+                "badge_2",
+                "badge_3"
+            ],
+            "settings": {
+                "layout": "horizontal",
+                "background_color": "secondary"
+            }
+        }
+    },
+    "order": [
+        "main",
+        "comparison",
+        "trust_badges"
+    ]
+}

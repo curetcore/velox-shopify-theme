@@ -1,0 +1,120 @@
+{
+    "sections": {
+        "main": {
+            "type": "product",
+            "blocks": {
+                "quantity_breaks": {
+                    "type": "quantity_breaks",
+                    "settings": {
+                        "enable": true,
+                        "qty_1": 1,
+                        "label_1": "1 Item",
+                        "qty_2": 2,
+                        "discount_2": 15,
+                        "label_2": "2 Items",
+                        "badge_2": "15% OFF",
+                        "qty_3": 3,
+                        "discount_3": 20,
+                        "label_3": "3+ Items",
+                        "badge_3": "20% OFF"
+                    }
+                },
+                "estimated_shipping": {
+                    "type": "estimated_shipping",
+                    "settings": {
+                        "min_days": 4,
+                        "max_days": 8,
+                        "exclude_weekends": true,
+                        "prefix": "Ships within:"
+                    }
+                },
+                "trust_badges": {
+                    "type": "trust_badges",
+                    "settings": {
+                        "icon_1": "fire",
+                        "text_1": "Limited Drop",
+                        "icon_2": "truck",
+                        "text_2": "Free Worldwide",
+                        "icon_3": "arrow-path",
+                        "text_3": "Easy Returns",
+                        "icon_4": "lock-closed",
+                        "text_4": "Secure Payment"
+                    }
+                },
+                "size_chart": {
+                    "type": "size_chart",
+                    "settings": {
+                        "button_text": "Size Guide",
+                        "title": "Size Chart",
+                        "show_table": true,
+                        "size_xs": "XS: Chest 32-34\"",
+                        "size_s": "S: Chest 34-36\"",
+                        "size_m": "M: Chest 38-40\"",
+                        "size_l": "L: Chest 42-44\"",
+                        "size_xl": "XL: Chest 46-48\"",
+                        "measurement_tips": "Measure around the fullest part of your chest. For oversized fit, size up."
+                    }
+                }
+            },
+            "block_order": [
+                "quantity_breaks",
+                "estimated_shipping",
+                "trust_badges",
+                "size_chart"
+            ],
+            "settings": {
+                "layout_style": "gallery",
+                "gallery_position": "left",
+                "enable_zoom": true,
+                "zoom_type": "both",
+                "zoom_scale": 2,
+                "show_breadcrumbs": true,
+                "breadcrumb_style": "arrows",
+                "swatch_size": "large",
+                "show_vendor": true,
+                "show_reviews": true,
+                "show_quantity": true,
+                "show_dynamic_checkout": true,
+                "show_share": true,
+                "description_style": "accordion",
+                "show_sticky_atc": true
+            }
+        },
+        "countdown": {
+            "type": "countdown",
+            "settings": {
+                "eyebrow": "Limited Time",
+                "title": "This Drop Ends Soon",
+                "description": "Once it's gone, it's gone. No restocks.",
+                "button_text": "",
+                "background_color": "accent"
+            }
+        },
+        "related-products": {
+            "type": "related-products",
+            "settings": {
+                "heading": "Match With",
+                "products_to_show": 4,
+                "columns_desktop": "4",
+                "columns_mobile": "2",
+                "show_vendor": true,
+                "show_quick_view": true,
+                "show_view_all": true
+            }
+        },
+        "recently_viewed": {
+            "type": "recently-viewed",
+            "settings": {
+                "heading": "Checked Out",
+                "products_to_show": 4,
+                "columns": 4
+            }
+        }
+    },
+    "order": [
+        "main",
+        "countdown",
+        "related-products",
+        "recently_viewed"
+    ]
+}

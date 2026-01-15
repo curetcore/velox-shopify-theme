@@ -1,0 +1,118 @@
+{
+    "sections": {
+        "main": {
+            "type": "product",
+            "blocks": {
+                "quantity_breaks": {
+                    "type": "quantity_breaks",
+                    "settings": {
+                        "enable": true,
+                        "qty_1": 1,
+                        "label_1": "1 Pair",
+                        "qty_2": 2,
+                        "discount_2": 10,
+                        "label_2": "2 Pairs",
+                        "badge_2": "Save 10%",
+                        "qty_3": 3,
+                        "discount_3": 15,
+                        "label_3": "3 Pairs",
+                        "badge_3": "Save 15%"
+                    }
+                },
+                "estimated_shipping": {
+                    "type": "estimated_shipping",
+                    "settings": {
+                        "min_days": 3,
+                        "max_days": 7,
+                        "exclude_weekends": true,
+                        "prefix": "Estimated delivery:"
+                    }
+                },
+                "trust_badges": {
+                    "type": "trust_badges",
+                    "settings": {
+                        "icon_1": "shield-check",
+                        "text_1": "100% Authentic",
+                        "icon_2": "truck",
+                        "text_2": "Free Shipping $100+",
+                        "icon_3": "arrow-path",
+                        "text_3": "Easy Returns",
+                        "icon_4": "lock-closed",
+                        "text_4": "Secure Checkout"
+                    }
+                },
+                "size_chart": {
+                    "type": "size_chart",
+                    "settings": {
+                        "button_text": "Size Guide",
+                        "title": "Sneaker Size Chart",
+                        "show_table": true,
+                        "size_s": "US 6 / EU 38",
+                        "size_m": "US 8 / EU 40",
+                        "size_l": "US 10 / EU 42",
+                        "size_xl": "US 12 / EU 44"
+                    }
+                }
+            },
+            "block_order": [
+                "quantity_breaks",
+                "estimated_shipping",
+                "trust_badges",
+                "size_chart"
+            ],
+            "settings": {
+                "layout_style": "gallery",
+                "gallery_position": "left",
+                "enable_zoom": true,
+                "zoom_type": "both",
+                "zoom_scale": 2.5,
+                "show_breadcrumbs": true,
+                "breadcrumb_style": "slashes",
+                "swatch_size": "large",
+                "show_vendor": true,
+                "show_reviews": true,
+                "show_quantity": true,
+                "show_dynamic_checkout": true,
+                "show_share": true,
+                "description_style": "tabs",
+                "show_sticky_atc": true
+            }
+        },
+        "comparison_slider": {
+            "type": "comparison-slider",
+            "settings": {
+                "heading": "Authentic vs Fake",
+                "caption": "We only sell 100% verified authentic sneakers",
+                "label_before": "Fake",
+                "label_after": "Authentic",
+                "max_width": 700
+            }
+        },
+        "related-products": {
+            "type": "related-products",
+            "settings": {
+                "heading": "Complete Your Collection",
+                "products_to_show": 4,
+                "columns_desktop": "4",
+                "columns_mobile": "2",
+                "show_vendor": true,
+                "show_quick_view": true,
+                "show_view_all": true
+            }
+        },
+        "recently_viewed": {
+            "type": "recently-viewed",
+            "settings": {
+                "heading": "Recently Viewed",
+                "products_to_show": 4,
+                "columns": 4
+            }
+        }
+    },
+    "order": [
+        "main",
+        "comparison_slider",
+        "related-products",
+        "recently_viewed"
+    ]
+}

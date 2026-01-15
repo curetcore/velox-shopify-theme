@@ -1,0 +1,66 @@
+{
+    "sections": {
+        "main": {
+            "type": "collection",
+            "settings": {
+                "header_style": "banner",
+                "grid_style": "grid_4",
+                "products_per_page": 16,
+                "show_vendor": false,
+                "show_quick_view": true,
+                "show_swatches": true,
+                "show_second_image": true,
+                "enable_filtering": true,
+                "filter_style": "sidebar",
+                "enable_sorting": true,
+                "color_scheme": "light"
+            }
+        },
+        "testimonials": {
+            "type": "testimonials",
+            "blocks": {
+                "testimonial_1": {
+                    "type": "testimonial",
+                    "settings": {
+                        "name": "Emma L.",
+                        "title": "Verified Buyer",
+                        "rating": 5,
+                        "text": "The quality exceeded my expectations. Already planning my next purchase!"
+                    }
+                },
+                "testimonial_2": {
+                    "type": "testimonial",
+                    "settings": {
+                        "name": "Sofia R.",
+                        "title": "Verified Buyer",
+                        "rating": 5,
+                        "text": "Perfect fit, beautiful fabric, and I love that it's sustainable. ❤️"
+                    }
+                }
+            },
+            "block_order": [
+                "testimonial_1",
+                "testimonial_2"
+            ],
+            "settings": {
+                "heading": "Customer Love",
+                "carousel_type": "loop",
+                "per_page": 2,
+                "show_arrows": true
+            }
+        },
+        "recently_viewed": {
+            "type": "recently-viewed",
+            "settings": {
+                "heading": "Recently Viewed",
+                "products_to_show": 4,
+                "columns": 4
+            }
+        }
+    },
+    "order": [
+        "main",
+        "testimonials",
+        "recently_viewed"
+    ]
+}

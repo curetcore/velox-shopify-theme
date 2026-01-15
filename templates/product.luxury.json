@@ -1,0 +1,108 @@
+{
+    "sections": {
+        "main": {
+            "type": "product",
+            "blocks": {
+                "estimated_shipping": {
+                    "type": "estimated_shipping",
+                    "settings": {
+                        "min_days": 5,
+                        "max_days": 10,
+                        "exclude_weekends": true,
+                        "prefix": "Handcrafted & shipped within:"
+                    }
+                },
+                "trust_badges": {
+                    "type": "trust_badges",
+                    "settings": {
+                        "icon_1": "sparkles",
+                        "text_1": "Handmade in Italy",
+                        "icon_2": "gift",
+                        "text_2": "Luxury Packaging",
+                        "icon_3": "truck",
+                        "text_3": "Free Worldwide Shipping",
+                        "icon_4": "shield-check",
+                        "text_4": "2 Year Warranty"
+                    }
+                },
+                "size_chart": {
+                    "type": "size_chart",
+                    "settings": {
+                        "button_text": "Size Guide",
+                        "title": "Footwear Size Guide",
+                        "description": "Our shoes run true to size. If between sizes, we recommend sizing up.",
+                        "show_table": true,
+                        "size_s": "EU 39 / UK 5",
+                        "size_m": "EU 41 / UK 7",
+                        "size_l": "EU 43 / UK 9",
+                        "size_xl": "EU 45 / UK 11",
+                        "measurement_tips": "Measure your foot length in centimeters at the end of the day when feet are largest."
+                    }
+                }
+            },
+            "block_order": [
+                "estimated_shipping",
+                "trust_badges",
+                "size_chart"
+            ],
+            "settings": {
+                "layout_style": "gallery",
+                "gallery_position": "left",
+                "enable_zoom": true,
+                "zoom_type": "both",
+                "zoom_scale": 3,
+                "show_breadcrumbs": true,
+                "breadcrumb_style": "slashes",
+                "swatch_size": "large",
+                "show_vendor": false,
+                "show_reviews": true,
+                "show_quantity": true,
+                "show_dynamic_checkout": true,
+                "show_share": true,
+                "description_style": "tabs",
+                "show_sticky_atc": true
+            }
+        },
+        "image_with_text": {
+            "type": "image-with-text",
+            "settings": {
+                "image_position": "left",
+                "image_ratio": "square",
+                "eyebrow": "Craftsmanship",
+                "title": "Made by Hand",
+                "text": "<p>Each pair takes over 8 hours to craft. Our artisans use traditional techniques passed down through generations.</p>",
+                "button_text": "Our Process",
+                "button_url": "shopify://pages/craftsmanship",
+                "button_style": "secondary",
+                "background_color": "secondary"
+            }
+        },
+        "related-products": {
+            "type": "related-products",
+            "settings": {
+                "heading": "You May Also Like",
+                "products_to_show": 4,
+                "columns_desktop": "4",
+                "columns_mobile": "2",
+                "show_vendor": false,
+                "show_quick_view": true,
+                "show_view_all": true
+            }
+        },
+        "recently_viewed": {
+            "type": "recently-viewed",
+            "settings": {
+                "heading": "Recently Viewed",
+                "products_to_show": 4,
+                "columns": 4,
+                "background": "secondary"
+            }
+        }
+    },
+    "order": [
+        "main",
+        "image_with_text",
+        "related-products",
+        "recently_viewed"
+    ]
+}

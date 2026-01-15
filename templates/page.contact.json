@@ -1,0 +1,99 @@
+{
+    "sections": {
+        "hero": {
+            "type": "hero-simple",
+            "settings": {
+                "eyebrow": "Get in Touch",
+                "title": "Contact Us",
+                "text": "We'd love to hear from you. Our team is here to help.",
+                "button_text": "",
+                "text_position": "center"
+            }
+        },
+        "main": {
+            "type": "contact-form",
+            "settings": {
+                "heading": "Send us a Message",
+                "description": "Fill out the form below and we'll get back to you within 24 hours.",
+                "show_phone_field": true,
+                "button_text": "Send Message"
+            }
+        },
+        "multicolumn": {
+            "type": "multicolumn",
+            "blocks": {
+                "column_1": {
+                    "type": "column",
+                    "settings": {
+                        "title": "Email",
+                        "text": "support@yourstore.com"
+                    }
+                },
+                "column_2": {
+                    "type": "column",
+                    "settings": {
+                        "title": "Phone",
+                        "text": "+1 (555) 123-4567"
+                    }
+                },
+                "column_3": {
+                    "type": "column",
+                    "settings": {
+                        "title": "Hours",
+                        "text": "Mon-Fri: 9am-6pm EST"
+                    }
+                }
+            },
+            "block_order": [
+                "column_1",
+                "column_2",
+                "column_3"
+            ],
+            "settings": {
+                "title": "Other Ways to Reach Us",
+                "columns": 3,
+                "background_color": "secondary"
+            }
+        },
+        "faq": {
+            "type": "faq",
+            "blocks": {
+                "faq_1": {
+                    "type": "faq",
+                    "settings": {
+                        "question": "How long does shipping take?",
+                        "answer": "Standard shipping takes 3-7 business days. Express shipping is available at checkout."
+                    }
+                },
+                "faq_2": {
+                    "type": "faq",
+                    "settings": {
+                        "question": "What is your return policy?",
+                        "answer": "We offer free returns within 30 days of purchase. Items must be unworn with tags attached."
+                    }
+                },
+                "faq_3": {
+                    "type": "faq",
+                    "settings": {
+                        "question": "Do you ship internationally?",
+                        "answer": "Yes! We ship worldwide. International shipping typically takes 7-14 business days."
+                    }
+                }
+            },
+            "block_order": [
+                "faq_1",
+                "faq_2",
+                "faq_3"
+            ],
+            "settings": {
+                "title": "Frequently Asked Questions"
+            }
+        }
+    },
+    "order": [
+        "hero",
+        "main",
+        "multicolumn",
+        "faq"
+    ]
+}
