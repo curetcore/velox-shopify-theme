@@ -421,6 +421,17 @@
       "message_placeholder": "Cuéntanos más sobre tu consulta...",
       "select_option": "Selecciona una opción",
       "form_error": "Por favor corrige los siguientes errores:"
+    },
+    "shoppable": {
+      "view_product": "Ver producto",
+      "select_product": "Selecciona un producto"
+    },
+    "stories": {
+      "view_story": "Ver historia",
+      "close": "Cerrar historia",
+      "previous": "Historia anterior",
+      "next": "Historia siguiente",
+      "progress": "Progreso de historia"
     }
   },
   "wishlist": {

@@ -1,0 +1,299 @@
+{% comment %}
+  Bundle Offer - Oferta de Productos Combinados
+  Inspirado en Shrine Pro
+
+  Uso:
+  {% render 'bundle-offer', 
+    product: product,
+    block: block
+  %}
+
+  Características:
+  - Hasta 3 productos en bundle
+  - Descuento global o por producto
+  - Variant picker por producto
+  - Precio total dinámico
+{% endcomment %}
+
+{% liquid
+  assign main_product = product
+  assign product_1 = block.settings.product_1
+  assign product_2 = block.settings.product_2
+  assign product_3 = block.settings.product_3
+  assign global_discount = block.settings.global_discount | default: 0
+%}
+
+<div 
+  class="bundle-offer tw-mt-8 tw-border tw-border-velox-200 tw-rounded-lg tw-overflow-hidden"
+  data-bundle-offer
+  data-global-discount="{{ global_discount }}"
+  {{ block.shopify_attributes }}
+>
+  {%- comment -%} Header {%- endcomment -%}
+  <div class="tw-px-4 tw-py-3 tw-bg-gradient-to-r tw-from-accent tw-to-accent/80 tw-text-white">
+    <h3 class="tw-font-semibold tw-flex tw-items-center tw-gap-2">
+      {% render 'icon', name: 'gift', class: 'tw-w-5 tw-h-5' %}
+      {{ block.settings.title | default: 'Compra juntos y ahorra' }}
+    </h3>
+    {% if global_discount > 0 %}
+      <p class="tw-text-sm tw-opacity-90 tw-mt-1">
+        {{ global_discount }}% de descuento al comprar el bundle
+      </p>
+    {% endif %}
+  </div>
+
+  {%- comment -%} Products Grid {%- endcomment -%}
+  <div class="tw-p-4">
+    <div class="tw-flex tw-items-start tw-gap-3 tw-flex-wrap tw-justify-center">
+      {%- comment -%} Current Product {%- endcomment -%}
+      <div class="bundle-product tw-flex tw-flex-col tw-items-center tw-w-24" data-bundle-item data-product-id="{{ main_product.id }}" data-is-main="true">
+        <div class="tw-relative tw-mb-2">
+          <input type="checkbox" checked disabled class="tw-absolute tw-top-1 tw-right-1 tw-w-4 tw-h-4 tw-accent-green-500 tw-z-10">
+          <div class="tw-w-20 tw-h-20 tw-bg-velox-100 tw-rounded-lg tw-overflow-hidden">
+            {{ main_product.featured_image | image_url: width: 160 | image_tag: class: 'tw-w-full tw-h-full tw-object-cover' }}
+          </div>
+        </div>
+        <p class="tw-text-xs tw-text-center tw-line-clamp-2 tw-text-velox-700">{{ main_product.title | truncate: 30 }}</p>
+        <p class="tw-text-xs tw-font-medium tw-text-velox-900 tw-mt-1" data-item-price>{{ main_product.selected_or_first_available_variant.price | money }}</p>
+      </div>
+
+      <span class="tw-text-2xl tw-text-velox-300 tw-self-center">+</span>
+
+      {%- comment -%} Product 1 {%- endcomment -%}
+      {% if product_1 != blank %}
+        <div class="bundle-product tw-flex tw-flex-col tw-items-center tw-w-24" data-bundle-item data-product-id="{{ product_1.id }}">
+          <div class="tw-relative tw-mb-2">
+            <input type="checkbox" checked class="bundle-checkbox tw-absolute tw-top-1 tw-right-1 tw-w-4 tw-h-4 tw-accent-green-500 tw-z-10 tw-cursor-pointer">
+            <div class="tw-w-20 tw-h-20 tw-bg-velox-100 tw-rounded-lg tw-overflow-hidden">
+              {{ product_1.featured_image | image_url: width: 160 | image_tag: class: 'tw-w-full tw-h-full tw-object-cover' }}
+            </div>
+          </div>
+          <p class="tw-text-xs tw-text-center tw-line-clamp-2 tw-text-velox-700">{{ product_1.title | truncate: 30 }}</p>
+          <p class="tw-text-xs tw-font-medium tw-text-velox-900 tw-mt-1" data-item-price data-original-price="{{ product_1.selected_or_first_available_variant.price }}">{{ product_1.selected_or_first_available_variant.price | money }}</p>
+          <input type="hidden" data-variant-id value="{{ product_1.selected_or_first_available_variant.id }}">
+        </div>
+
+        {% if product_2 != blank or product_3 != blank %}
+          <span class="tw-text-2xl tw-text-velox-300 tw-self-center">+</span>
+        {% endif %}
+      {% endif %}
+
+      {%- comment -%} Product 2 {%- endcomment -%}
+      {% if product_2 != blank %}
+        <div class="bundle-product tw-flex tw-flex-col tw-items-center tw-w-24" data-bundle-item data-product-id="{{ product_2.id }}">
+          <div class="tw-relative tw-mb-2">
+            <input type="checkbox" checked class="bundle-checkbox tw-absolute tw-top-1 tw-right-1 tw-w-4 tw-h-4 tw-accent-green-500 tw-z-10 tw-cursor-pointer">
+            <div class="tw-w-20 tw-h-20 tw-bg-velox-100 tw-rounded-lg tw-overflow-hidden">
+              {{ product_2.featured_image | image_url: width: 160 | image_tag: class: 'tw-w-full tw-h-full tw-object-cover' }}
+            </div>
+          </div>
+          <p class="tw-text-xs tw-text-center tw-line-clamp-2 tw-text-velox-700">{{ product_2.title | truncate: 30 }}</p>
+          <p class="tw-text-xs tw-font-medium tw-text-velox-900 tw-mt-1" data-item-price data-original-price="{{ product_2.selected_or_first_available_variant.price }}">{{ product_2.selected_or_first_available_variant.price | money }}</p>
+          <input type="hidden" data-variant-id value="{{ product_2.selected_or_first_available_variant.id }}">
+        </div>
+
+        {% if product_3 != blank %}
+          <span class="tw-text-2xl tw-text-velox-300 tw-self-center">+</span>
+        {% endif %}
+      {% endif %}
+
+      {%- comment -%} Product 3 {%- endcomment -%}
+      {% if product_3 != blank %}
+        <div class="bundle-product tw-flex tw-flex-col tw-items-center tw-w-24" data-bundle-item data-product-id="{{ product_3.id }}">
+          <div class="tw-relative tw-mb-2">
+            <input type="checkbox" checked class="bundle-checkbox tw-absolute tw-top-1 tw-right-1 tw-w-4 tw-h-4 tw-accent-green-500 tw-z-10 tw-cursor-pointer">
+            <div class="tw-w-20 tw-h-20 tw-bg-velox-100 tw-rounded-lg tw-overflow-hidden">
+              {{ product_3.featured_image | image_url: width: 160 | image_tag: class: 'tw-w-full tw-h-full tw-object-cover' }}
+            </div>
+          </div>
+          <p class="tw-text-xs tw-text-center tw-line-clamp-2 tw-text-velox-700">{{ product_3.title | truncate: 30 }}</p>
+          <p class="tw-text-xs tw-font-medium tw-text-velox-900 tw-mt-1" data-item-price data-original-price="{{ product_3.selected_or_first_available_variant.price }}">{{ product_3.selected_or_first_available_variant.price | money }}</p>
+          <input type="hidden" data-variant-id value="{{ product_3.selected_or_first_available_variant.id }}">
+        </div>
+      {% endif %}
+    </div>
+
+    {%- comment -%} Totals {%- endcomment -%}
+    {% liquid
+      assign total = main_product.selected_or_first_available_variant.price
+      if product_1 != blank
+        assign total = total | plus: product_1.selected_or_first_available_variant.price
+      endif
+      if product_2 != blank
+        assign total = total | plus: product_2.selected_or_first_available_variant.price
+      endif
+      if product_3 != blank
+        assign total = total | plus: product_3.selected_or_first_available_variant.price
+      endif
+      assign discount_multiplier = 100 | minus: global_discount | times: 1.0 | divided_by: 100
+      assign discounted_total = total | times: discount_multiplier
+      assign savings = total | minus: discounted_total
+    %}
+
+    <div class="tw-mt-4 tw-pt-4 tw-border-t tw-border-velox-100">
+      <div class="tw-flex tw-items-center tw-justify-between tw-mb-3">
+        <span class="tw-text-sm tw-text-velox-600">Precio del bundle:</span>
+        <div class="tw-text-right">
+          {% if global_discount > 0 %}
+            <span class="tw-text-sm tw-text-velox-400 tw-line-through tw-mr-2" data-bundle-original>{{ total | money }}</span>
+          {% endif %}
+          <span class="tw-text-lg tw-font-bold tw-text-accent" data-bundle-total>{{ discounted_total | money }}</span>
+        </div>
+      </div>
+      
+      {% if global_discount > 0 %}
+        <p class="tw-text-sm tw-text-green-600 tw-font-medium tw-text-center tw-mb-3">
+          🎉 ¡Ahorras <span data-bundle-savings>{{ savings | money }}</span>!
+        </p>
+      {% endif %}
+
+      {%- comment -%} Add Bundle Button {%- endcomment -%}
+      <button
+        type="button"
+        class="tw-w-full tw-flex tw-items-center tw-justify-center tw-gap-2 tw-px-6 tw-py-3 tw-bg-accent tw-text-white tw-font-semibold tw-rounded-md hover:tw-bg-accent/90 tw-transition-colors"
+        data-add-bundle
+      >
+        {% render 'icon', name: 'shopping-cart', class: 'tw-w-5 tw-h-5' %}
+        {{ block.settings.button_text | default: 'Agregar Bundle al Carrito' }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Bundle Offer JavaScript
+  (function() {
+    const container = document.querySelector('[data-bundle-offer]');
+    if (!container) return;
+
+    const globalDiscount = parseFloat(container.dataset.globalDiscount) || 0;
+    const checkboxes = container.querySelectorAll('.bundle-checkbox');
+    const addBundleBtn = container.querySelector('[data-add-bundle]');
+    const totalEl = container.querySelector('[data-bundle-total]');
+    const originalEl = container.querySelector('[data-bundle-original]');
+    const savingsEl = container.querySelector('[data-bundle-savings]');
+
+    function calculateTotals() {
+      let total = 0;
+      const items = container.querySelectorAll('[data-bundle-item]');
+      
+      items.forEach(item => {
+        const checkbox = item.querySelector('.bundle-checkbox');
+        const isMain = item.dataset.isMain === 'true';
+        const priceEl = item.querySelector('[data-item-price]');
+        
+        // Main product always included, others depend on checkbox
+        if (isMain || (checkbox && checkbox.checked)) {
+          const price = parseInt(priceEl?.dataset.originalPrice || priceEl?.textContent.replace(/[^0-9]/g, '')) || 0;
+          total += price;
+        }
+      });
+
+      const discountMultiplier = (100 - globalDiscount) / 100;
+      const discountedTotal = Math.round(total * discountMultiplier);
+      const savings = total - discountedTotal;
+
+      if (totalEl) totalEl.textContent = formatMoney(discountedTotal);
+      if (originalEl) originalEl.textContent = formatMoney(total);
+      if (savingsEl) savingsEl.textContent = formatMoney(savings);
+    }
+
+    // Listen to checkbox changes
+    checkboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', () => {
+        const item = checkbox.closest('[data-bundle-item]');
+        if (checkbox.checked) {
+          item.classList.remove('tw-opacity-50');
+        } else {
+          item.classList.add('tw-opacity-50');
+        }
+        calculateTotals();
+      });
+    });
+
+    // Add bundle to cart
+    addBundleBtn?.addEventListener('click', async () => {
+      const items = [];
+      const bundleItems = container.querySelectorAll('[data-bundle-item]');
+      
+      bundleItems.forEach(item => {
+        const checkbox = item.querySelector('.bundle-checkbox');
+        const isMain = item.dataset.isMain === 'true';
+        const variantInput = item.querySelector('[data-variant-id]');
+        
+        if (isMain) {
+          // Main product uses the form's variant
+          const formVariant = document.querySelector('[data-product-form] [data-variant-id]');
+          if (formVariant) {
+            items.push({ id: parseInt(formVariant.value), quantity: 1 });
+          }
+        } else if (checkbox?.checked && variantInput) {
+          items.push({ id: parseInt(variantInput.value), quantity: 1 });
+        }
+      });
+
+      if (items.length === 0) return;
+
+      addBundleBtn.disabled = true;
+      addBundleBtn.textContent = 'Agregando...';
+
+      try {
+        const response = await fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ items })
+        });
+
+        if (!response.ok) throw new Error('Error');
+
+        // Open cart drawer
+        const drawer = document.querySelector('[data-cart-drawer]');
+        const overlay = document.querySelector('[data-cart-overlay]');
+        if (drawer && overlay) {
+          drawer.classList.remove('tw-translate-x-full');
+          overlay.classList.remove('tw-opacity-0', 'tw-invisible');
+          document.body.style.overflow = 'hidden';
+          
+          // Refresh cart content
+          const sectionResponse = await fetch('/?sections=cart-drawer');
+          const sections = await sectionResponse.json();
+          if (sections['cart-drawer']) {
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = sections['cart-drawer'];
+            const newDrawer = tempDiv.querySelector('[data-cart-drawer]');
+            if (newDrawer) {
+              drawer.innerHTML = newDrawer.innerHTML;
+              if (window.Velox?.initCartDrawer) window.Velox.initCartDrawer();
+            }
+          }
+        }
+
+        // Update header cart count
+        const cartResponse = await fetch('/cart.js');
+        const cart = await cartResponse.json();
+        document.querySelectorAll('[data-cart-count]').forEach(el => {
+          el.textContent = cart.item_count;
+          el.style.display = cart.item_count > 0 ? '' : 'none';
+        });
+
+        addBundleBtn.textContent = '✓ Bundle Agregado';
+        setTimeout(() => {
+          addBundleBtn.textContent = '{{ block.settings.button_text | default: "Agregar Bundle al Carrito" }}';
+          addBundleBtn.disabled = false;
+        }, 2000);
+
+      } catch (error) {
+        console.error('Bundle add error:', error);
+        addBundleBtn.textContent = 'Error - Reintentar';
+        addBundleBtn.disabled = false;
+      }
+    });
+
+    function formatMoney(cents) {
+      return (cents / 100).toLocaleString('es', {
+        style: 'currency',
+        currency: '{{ cart.currency.iso_code }}'
+      });
+    }
+  })();
+</script>

@@ -1,0 +1,246 @@
+{% comment %}
+  Sticky Add to Cart
+  Inspired by Shrine Pro
+
+  Aparece cuando el usuario hace scroll pasado el botón ATC principal.
+  Muestra: imagen, título, variante, precio, botón de agregar.
+
+  Uso: {% render 'sticky-atc', product: product %}
+{% endcomment %}
+
+{% liquid
+  assign current_variant = product.selected_or_first_available_variant
+%}
+
+<div 
+  id="sticky-atc"
+  class="tw-fixed tw-bottom-0 tw-left-0 tw-right-0 tw-z-40 tw-transform tw-translate-y-full tw-transition-transform tw-duration-300 tw-ease-out"
+  data-sticky-atc
+  aria-hidden="true"
+>
+  {%- comment -%} Backdrop {%- endcomment -%}
+  <div class="tw-bg-white tw-border-t tw-border-velox-200 tw-shadow-[0_-4px_20px_rgba(0,0,0,0.1)]">
+    <div class="tw-max-w-7xl tw-mx-auto tw-px-4 tw-py-3">
+      <div class="tw-flex tw-items-center tw-gap-4">
+        {%- comment -%} Product Image {%- endcomment -%}
+        <div class="tw-hidden sm:tw-block tw-w-14 tw-h-14 tw-bg-velox-100 tw-rounded-lg tw-overflow-hidden tw-flex-shrink-0">
+          {% if product.featured_image %}
+            {{ product.featured_image | image_url: width: 112 | image_tag: 
+              class: 'tw-w-full tw-h-full tw-object-cover',
+              loading: 'lazy'
+            }}
+          {% endif %}
+        </div>
+
+        {%- comment -%} Product Info {%- endcomment -%}
+        <div class="tw-flex-1 tw-min-w-0">
+          <h3 class="tw-text-sm tw-font-medium tw-text-velox-900 tw-truncate">
+            {{ product.title }}
+          </h3>
+          <div class="tw-flex tw-items-center tw-gap-2">
+            {% if current_variant.title != 'Default Title' %}
+              <span class="tw-text-xs tw-text-velox-500" data-sticky-variant>{{ current_variant.title }}</span>
+              <span class="tw-text-velox-300">•</span>
+            {% endif %}
+            <span class="tw-text-sm tw-font-semibold tw-text-velox-900" data-sticky-price>
+              {{ current_variant.price | money }}
+            </span>
+            {% if current_variant.compare_at_price > current_variant.price %}
+              <span class="tw-text-xs tw-text-velox-400 tw-line-through">
+                {{ current_variant.compare_at_price | money }}
+              </span>
+            {% endif %}
+          </div>
+        </div>
+
+        {%- comment -%} Quantity + Add Button {%- endcomment -%}
+        <div class="tw-flex tw-items-center tw-gap-2">
+          {%- comment -%} Quick quantity selector (mobile hidden) {%- endcomment -%}
+          <div class="tw-hidden md:tw-flex tw-items-center tw-border tw-border-velox-200 tw-rounded-lg">
+            <button 
+              type="button" 
+              class="tw-p-2 tw-text-velox-500 hover:tw-text-velox-900"
+              data-sticky-qty-minus
+            >
+              {% render 'icon', name: 'minus', class: 'tw-w-4 tw-h-4' %}
+            </button>
+            <input 
+              type="number" 
+              value="1" 
+              min="1"
+              class="tw-w-12 tw-text-center tw-text-sm tw-border-0 focus:tw-ring-0"
+              data-sticky-qty-input
+            >
+            <button 
+              type="button" 
+              class="tw-p-2 tw-text-velox-500 hover:tw-text-velox-900"
+              data-sticky-qty-plus
+            >
+              {% render 'icon', name: 'plus', class: 'tw-w-4 tw-h-4' %}
+            </button>
+          </div>
+
+          {%- comment -%} Add to Cart Button {%- endcomment -%}
+          <button
+            type="button"
+            class="tw-px-6 tw-py-2.5 tw-bg-velox-900 tw-text-white tw-font-medium tw-rounded-lg hover:tw-bg-velox-800 tw-transition-colors tw-flex tw-items-center tw-gap-2 disabled:tw-opacity-50"
+            data-sticky-add-to-cart
+            data-variant-id="{{ current_variant.id }}"
+            {% unless current_variant.available %}disabled{% endunless %}
+          >
+            {% render 'icon', name: 'shopping-bag', class: 'tw-w-5 tw-h-5' %}
+            <span class="tw-hidden sm:tw-inline" data-sticky-btn-text>
+              {% if current_variant.available %}
+                {{ 'products.product.add_to_cart' | t | default: 'Agregar' }}
+              {% else %}
+                {{ 'products.product.sold_out' | t | default: 'Agotado' }}
+              {% endif %}
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const stickyATC = document.querySelector('[data-sticky-atc]');
+  const mainATC = document.querySelector('[data-add-to-cart]');
+  
+  if (!stickyATC || !mainATC) return;
+
+  // Show/hide based on main ATC visibility
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // Main ATC visible - hide sticky
+        stickyATC.classList.add('tw-translate-y-full');
+        stickyATC.setAttribute('aria-hidden', 'true');
+      } else {
+        // Main ATC not visible - show sticky
+        stickyATC.classList.remove('tw-translate-y-full');
+        stickyATC.setAttribute('aria-hidden', 'false');
+      }
+    });
+  }, {
+    threshold: 0,
+    rootMargin: '0px 0px 100px 0px'
+  });
+
+  observer.observe(mainATC);
+
+  // Quantity controls
+  const qtyInput = stickyATC.querySelector('[data-sticky-qty-input]');
+  const minusBtn = stickyATC.querySelector('[data-sticky-qty-minus]');
+  const plusBtn = stickyATC.querySelector('[data-sticky-qty-plus]');
+
+  minusBtn?.addEventListener('click', () => {
+    const val = parseInt(qtyInput.value) || 1;
+    if (val > 1) qtyInput.value = val - 1;
+  });
+
+  plusBtn?.addEventListener('click', () => {
+    const val = parseInt(qtyInput.value) || 1;
+    qtyInput.value = val + 1;
+  });
+
+  // Add to cart
+  const addBtn = stickyATC.querySelector('[data-sticky-add-to-cart]');
+  const btnText = stickyATC.querySelector('[data-sticky-btn-text]');
+  
+  addBtn?.addEventListener('click', async () => {
+    const variantId = addBtn.dataset.variantId;
+    const quantity = parseInt(qtyInput?.value) || 1;
+    const originalText = btnText?.textContent;
+    
+    addBtn.disabled = true;
+    if (btnText) btnText.textContent = 'Agregando...';
+
+    try {
+      const response = await fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: variantId, quantity })
+      });
+
+      if (!response.ok) throw new Error('Error');
+
+      // Open cart drawer
+      const drawer = document.querySelector('[data-cart-drawer]');
+      const overlay = document.querySelector('[data-cart-overlay]');
+      if (drawer && overlay) {
+        drawer.classList.remove('tw-translate-x-full');
+        overlay.classList.remove('tw-opacity-0', 'tw-invisible');
+        document.body.style.overflow = 'hidden';
+
+        // Refresh cart content
+        const sectionResponse = await fetch('/?sections=cart-drawer');
+        const sections = await sectionResponse.json();
+        if (sections['cart-drawer']) {
+          const tempDiv = document.createElement('div');
+          tempDiv.innerHTML = sections['cart-drawer'];
+          const newDrawer = tempDiv.querySelector('[data-cart-drawer]');
+          if (newDrawer) {
+            drawer.innerHTML = newDrawer.innerHTML;
+            if (window.Velox?.initCartDrawer) window.Velox.initCartDrawer();
+          }
+        }
+      }
+
+      // Update cart count
+      const cartResponse = await fetch('/cart.js');
+      const cart = await cartResponse.json();
+      document.querySelectorAll('[data-cart-count]').forEach(el => {
+        el.textContent = cart.item_count;
+        el.style.display = cart.item_count > 0 ? '' : 'none';
+      });
+
+      if (btnText) btnText.textContent = '✓ Agregado';
+      setTimeout(() => {
+        if (btnText) btnText.textContent = originalText;
+        addBtn.disabled = false;
+      }, 2000);
+
+    } catch (error) {
+      console.error('Sticky ATC error:', error);
+      if (btnText) btnText.textContent = 'Error';
+      setTimeout(() => {
+        if (btnText) btnText.textContent = originalText;
+        addBtn.disabled = false;
+      }, 2000);
+    }
+  });
+
+  // Sync with main product form variant changes
+  document.addEventListener('variant:changed', (e) => {
+    const variant = e.detail;
+    if (!variant) return;
+
+    addBtn.dataset.variantId = variant.id;
+    
+    const priceEl = stickyATC.querySelector('[data-sticky-price]');
+    const variantEl = stickyATC.querySelector('[data-sticky-variant]');
+    
+    if (priceEl) priceEl.textContent = formatMoney(variant.price);
+    if (variantEl && variant.title !== 'Default Title') {
+      variantEl.textContent = variant.title;
+    }
+
+    if (variant.available) {
+      addBtn.disabled = false;
+      if (btnText) btnText.textContent = '{{ "products.product.add_to_cart" | t | default: "Agregar" }}';
+    } else {
+      addBtn.disabled = true;
+      if (btnText) btnText.textContent = '{{ "products.product.sold_out" | t | default: "Agotado" }}';
+    }
+  });
+
+  function formatMoney(cents) {
+    return (cents / 100).toLocaleString('{{ localization.language.iso_code | default: "es" }}', {
+      style: 'currency',
+      currency: '{{ cart.currency.iso_code }}'
+    });
+  }
+})();
+</script>

@@ -1,0 +1,98 @@
+{% comment %}
+  Estimated Shipping - Fecha de Entrega Estimada
+  Inspirado en Shrine Pro
+
+  Uso:
+  {% render 'estimated-shipping', block: block %}
+
+  Placeholders:
+  - [start_date] - Fecha mínima de entrega
+  - [end_date] - Fecha máxima de entrega
+{% endcomment %}
+
+{% liquid
+  assign min_days = block.settings.min_days | default: 3
+  assign max_days = block.settings.max_days | default: 5
+  assign exclude_weekends = block.settings.exclude_weekends | default: true
+  assign message = block.settings.message | default: 'Pide hoy y recibe entre el [start_date] y [end_date]'
+  assign icon = block.settings.icon | default: 'truck'
+%}
+
+<div 
+  class="estimated-shipping tw-flex tw-items-center tw-gap-3 tw-p-4 tw-bg-green-50 tw-border tw-border-green-200 tw-rounded-lg tw-mt-4"
+  data-estimated-shipping
+  data-min-days="{{ min_days }}"
+  data-max-days="{{ max_days }}"
+  data-exclude-weekends="{{ exclude_weekends }}"
+  data-message="{{ message }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="tw-flex-shrink-0 tw-text-green-600">
+    {% case icon %}
+      {% when 'truck' %}
+        {% render 'icon', name: 'truck', class: 'tw-w-6 tw-h-6' %}
+      {% when 'clock' %}
+        {% render 'icon', name: 'clock', class: 'tw-w-6 tw-h-6' %}
+      {% when 'calendar' %}
+        {% render 'icon', name: 'calendar', class: 'tw-w-6 tw-h-6' %}
+      {% when 'package' %}
+        {% render 'icon', name: 'cube', class: 'tw-w-6 tw-h-6' %}
+    {% endcase %}
+  </div>
+  <p class="tw-text-sm tw-text-green-800" data-shipping-message>
+    {{ message | replace: '[start_date]', '...' | replace: '[end_date]', '...' }}
+  </p>
+</div>
+
+<script>
+  // Estimated Shipping JavaScript
+  (function() {
+    const container = document.querySelector('[data-estimated-shipping]');
+    if (!container) return;
+
+    const minDays = parseInt(container.dataset.minDays) || 3;
+    const maxDays = parseInt(container.dataset.maxDays) || 5;
+    const excludeWeekends = container.dataset.excludeWeekends === 'true';
+    const messageTemplate = container.dataset.message || 'Pide hoy y recibe entre el [start_date] y [end_date]';
+    const messageEl = container.querySelector('[data-shipping-message]');
+
+    function addBusinessDays(date, days) {
+      let result = new Date(date);
+      let added = 0;
+      
+      while (added < days) {
+        result.setDate(result.getDate() + 1);
+        const dayOfWeek = result.getDay();
+        
+        // Excluir sábado (6) y domingo (0) si está configurado
+        if (excludeWeekends && (dayOfWeek === 0 || dayOfWeek === 6)) {
+          continue;
+        }
+        added++;
+      }
+      
+      return result;
+    }
+
+    function formatDate(date) {
+      const options = { 
+        weekday: 'short', 
+        day: 'numeric', 
+        month: 'short' 
+      };
+      return date.toLocaleDateString('{{ localization.language.iso_code | default: "es" }}', options);
+    }
+
+    const today = new Date();
+    const startDate = addBusinessDays(today, minDays);
+    const endDate = addBusinessDays(today, maxDays);
+
+    const message = messageTemplate
+      .replace('[start_date]', formatDate(startDate))
+      .replace('[end_date]', formatDate(endDate));
+
+    if (messageEl) {
+      messageEl.textContent = message;
+    }
+  })();
+</script>

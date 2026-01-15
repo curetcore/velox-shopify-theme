@@ -34,6 +34,9 @@
     {% # Velox Theme - Tailwind CSS %}
     {{ 'velox.css' | asset_url | stylesheet_tag }}
 
+    {% # Velox Animations & Effects %}
+    {{ 'animations.css' | asset_url | stylesheet_tag }}
+
     {% # Splide.js - Lightweight slider library %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide-core.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js" defer></script>
@@ -44,7 +47,11 @@
     {{ content_for_header }}
   </head>
 
-  <body class="tw-antialiased">
+  <body 
+    class="tw-antialiased"
+    data-animation-repeat="{{ settings.animation_repeat }}"
+    data-animation-threshold="{{ settings.animation_threshold | divided_by: 100.0 }}"
+  >
     {%- comment -%} Skip to content link for accessibility {%- endcomment -%}
     <a
       href="#main-content"

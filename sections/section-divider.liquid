@@ -1,0 +1,184 @@
+{% comment %}
+  Velox Section Divider
+  Separadores decorativos SVG entre secciones.
+  Formas: wave, diagonal, curve, triangle, zigzag, drops
+{% endcomment %}
+
+{% liquid
+  assign shape = section.settings.shape | default: 'wave'
+  assign height = section.settings.height | default: 80
+  assign flip_horizontal = section.settings.flip_horizontal
+  assign flip_vertical = section.settings.flip_vertical
+%}
+
+<section-divider
+  class="tw-block tw-w-full tw-overflow-hidden tw-leading-[0]"
+  style="
+    --divider-height: {{ height }}px;
+    {% if flip_horizontal %}--scale-x: -1;{% else %}--scale-x: 1;{% endif %}
+    {% if flip_vertical %}--scale-y: -1;{% else %}--scale-y: 1;{% endif %}
+  "
+>
+  <div
+    class="tw-w-full"
+    style="transform: scaleX(var(--scale-x)) scaleY(var(--scale-y));"
+  >
+    <svg
+      class="tw-w-full tw-block
+        {% case section.settings.color_style %}
+          {% when 'primary' %}
+            tw-fill-velox-900
+          {% when 'accent' %}
+            tw-fill-velox-accent
+          {% when 'light' %}
+            tw-fill-velox-100
+          {% when 'white' %}
+            tw-fill-white
+          {% when 'dark' %}
+            tw-fill-velox-950
+        {% endcase %}
+      "
+      style="height: var(--divider-height); {% if section.settings.custom_color != blank %}fill: {{ section.settings.custom_color }};{% endif %}"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 1200 120"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+      {% case shape %}
+        {% when 'wave' %}
+          <path d="M0,0 C150,90 350,0 600,60 C850,120 1050,30 1200,90 L1200,120 L0,120 Z"></path>
+
+        {% when 'wave-smooth' %}
+          <path d="M0,60 Q300,120 600,60 T1200,60 L1200,120 L0,120 Z"></path>
+
+        {% when 'waves-multi' %}
+          <path d="M0,0 C200,80 400,0 600,50 C800,100 1000,20 1200,70 L1200,120 L0,120 Z" opacity="0.5"></path>
+          <path d="M0,40 C200,100 400,40 600,80 C800,120 1000,60 1200,100 L1200,120 L0,120 Z"></path>
+
+        {% when 'diagonal' %}
+          <polygon points="0,0 1200,120 0,120"></polygon>
+
+        {% when 'diagonal-reverse' %}
+          <polygon points="0,120 1200,0 1200,120"></polygon>
+
+        {% when 'curve' %}
+          <path d="M0,120 Q600,0 1200,120 L1200,120 L0,120 Z"></path>
+
+        {% when 'curve-asymmetric' %}
+          <path d="M0,100 Q400,0 800,60 T1200,40 L1200,120 L0,120 Z"></path>
+
+        {% when 'triangle' %}
+          <polygon points="600,0 1200,120 0,120"></polygon>
+
+        {% when 'triangle-asymmetric' %}
+          <polygon points="400,0 1200,120 0,120"></polygon>
+
+        {% when 'zigzag' %}
+          <polygon points="0,60 100,0 200,60 300,0 400,60 500,0 600,60 700,0 800,60 900,0 1000,60 1100,0 1200,60 1200,120 0,120"></polygon>
+
+        {% when 'drops' %}
+          <path d="M0,120 L0,80 Q75,0 150,80 Q225,160 300,80 Q375,0 450,80 Q525,160 600,80 Q675,0 750,80 Q825,160 900,80 Q975,0 1050,80 Q1125,160 1200,80 L1200,120 Z"></path>
+
+        {% when 'arrow' %}
+          <polygon points="600,0 1200,60 1200,120 600,60 0,120 0,60"></polygon>
+
+        {% when 'book' %}
+          <path d="M0,120 L0,20 Q600,100 1200,20 L1200,120 Z"></path>
+
+        {% when 'tilt' %}
+          <polygon points="0,40 1200,0 1200,120 0,120"></polygon>
+
+        {% else %}
+          <path d="M0,0 C150,90 350,0 600,60 C850,120 1050,30 1200,90 L1200,120 L0,120 Z"></path>
+      {% endcase %}
+    </svg>
+  </div>
+</section-divider>
+
+{% schema %}
+{
+  "name": "Section divider",
+  "tag": "div",
+  "class": "velox-section-divider",
+  "settings": [
+    {
+      "type": "select",
+      "id": "shape",
+      "label": "Forma",
+      "options": [
+        { "value": "wave", "label": "Ola" },
+        { "value": "wave-smooth", "label": "Ola suave" },
+        { "value": "waves-multi", "label": "Olas múltiples" },
+        { "value": "diagonal", "label": "Diagonal" },
+        { "value": "diagonal-reverse", "label": "Diagonal inversa" },
+        { "value": "curve", "label": "Curva" },
+        { "value": "curve-asymmetric", "label": "Curva asimétrica" },
+        { "value": "triangle", "label": "Triángulo" },
+        { "value": "triangle-asymmetric", "label": "Triángulo asimétrico" },
+        { "value": "zigzag", "label": "Zigzag" },
+        { "value": "drops", "label": "Gotas" },
+        { "value": "arrow", "label": "Flecha" },
+        { "value": "book", "label": "Libro" },
+        { "value": "tilt", "label": "Inclinado" }
+      ],
+      "default": "wave"
+    },
+    {
+      "type": "range",
+      "id": "height",
+      "min": 40,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Altura",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Color"
+    },
+    {
+      "type": "select",
+      "id": "color_style",
+      "label": "Estilo de color",
+      "options": [
+        { "value": "white", "label": "Blanco" },
+        { "value": "light", "label": "Gris claro" },
+        { "value": "primary", "label": "Primario" },
+        { "value": "accent", "label": "Acento" },
+        { "value": "dark", "label": "Oscuro" },
+        { "value": "custom", "label": "Personalizado" }
+      ],
+      "default": "white"
+    },
+    {
+      "type": "color",
+      "id": "custom_color",
+      "label": "Color personalizado",
+      "info": "Solo aplica si seleccionas 'Personalizado'"
+    },
+    {
+      "type": "header",
+      "content": "Transformación"
+    },
+    {
+      "type": "checkbox",
+      "id": "flip_horizontal",
+      "label": "Voltear horizontalmente",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "flip_vertical",
+      "label": "Voltear verticalmente",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Section divider",
+      "category": "Design"
+    }
+  ]
+}
+{% endschema %}

@@ -421,6 +421,17 @@
       "message_placeholder": "Tell us more about your inquiry...",
       "select_option": "Select an option",
       "form_error": "Please correct the following errors:"
+    },
+    "shoppable": {
+      "view_product": "View product",
+      "select_product": "Select a product"
+    },
+    "stories": {
+      "view_story": "View story",
+      "close": "Close story",
+      "previous": "Previous story",
+      "next": "Next story",
+      "progress": "Story progress"
     }
   },
   "wishlist": {

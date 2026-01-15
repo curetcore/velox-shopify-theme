@@ -1,0 +1,366 @@
+/**
+ * Velox Animations & Effects
+ * Inspired by Shrine Pro
+ * 
+ * Includes:
+ * - Section load animations
+ * - Button hover effects
+ * - Smooth transitions
+ */
+
+/* ===========================================
+   CSS Variables from Settings
+   =========================================== */
+:root {
+  --animation-duration: {{ settings.animation_duration }}ms;
+  --animation-delay: {{ settings.animation_delay }}ms;
+  --animation-easing: {{ settings.animation_easing }};
+  --button-radius: {{ settings.button_corner_radius }}px;
+}
+
+/* ===========================================
+   SECTION ANIMATIONS
+   =========================================== */
+
+/* Base state for animated elements */
+[data-animate] {
+  opacity: 0;
+  transition: 
+    opacity var(--animation-duration) var(--animation-easing),
+    transform var(--animation-duration) var(--animation-easing);
+}
+
+/* Visible state */
+[data-animate].is-visible {
+  opacity: 1;
+  transform: none !important;
+}
+
+/* Fade only */
+[data-animate="fade"] {
+  transform: none;
+}
+
+/* Fade up */
+[data-animate="fade-up"] {
+  transform: translateY(30px);
+}
+
+/* Fade down */
+[data-animate="fade-down"] {
+  transform: translateY(-30px);
+}
+
+/* Fade left */
+[data-animate="fade-left"] {
+  transform: translateX(-30px);
+}
+
+/* Fade right */
+[data-animate="fade-right"] {
+  transform: translateX(30px);
+}
+
+/* Zoom in */
+[data-animate="zoom-in"] {
+  transform: scale(0.9);
+}
+
+/* Zoom out */
+[data-animate="zoom-out"] {
+  transform: scale(1.1);
+}
+
+/* Flip */
+[data-animate="flip"] {
+  transform: perspective(600px) rotateX(-10deg);
+  transform-origin: center bottom;
+}
+
+/* Stagger children */
+[data-animate-children] > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: 
+    opacity var(--animation-duration) var(--animation-easing),
+    transform var(--animation-duration) var(--animation-easing);
+}
+
+[data-animate-children].is-visible > *:nth-child(1) { transition-delay: calc(var(--animation-delay) * 0); }
+[data-animate-children].is-visible > *:nth-child(2) { transition-delay: calc(var(--animation-delay) * 1); }
+[data-animate-children].is-visible > *:nth-child(3) { transition-delay: calc(var(--animation-delay) * 2); }
+[data-animate-children].is-visible > *:nth-child(4) { transition-delay: calc(var(--animation-delay) * 3); }
+[data-animate-children].is-visible > *:nth-child(5) { transition-delay: calc(var(--animation-delay) * 4); }
+[data-animate-children].is-visible > *:nth-child(6) { transition-delay: calc(var(--animation-delay) * 5); }
+[data-animate-children].is-visible > *:nth-child(7) { transition-delay: calc(var(--animation-delay) * 6); }
+[data-animate-children].is-visible > *:nth-child(8) { transition-delay: calc(var(--animation-delay) * 7); }
+
+[data-animate-children].is-visible > * {
+  opacity: 1;
+  transform: none;
+}
+
+/* ===========================================
+   BUTTON HOVER EFFECTS
+   =========================================== */
+
+/* Base button transitions */
+.tw-btn,
+button[type="submit"],
+.velox-btn {
+  position: relative;
+  overflow: hidden;
+  transition: 
+    background-color 0.3s ease,
+    transform 0.2s ease,
+    box-shadow 0.3s ease;
+}
+
+/* Darken effect (default) */
+{% if settings.button_hover_effect == 'darken' %}
+.tw-btn:hover,
+button[type="submit"]:hover,
+.velox-btn:hover {
+  filter: brightness(0.9);
+}
+{% endif %}
+
+/* Glow effect */
+{% if settings.button_hover_effect == 'glow' %}
+.tw-btn-primary:hover,
+.tw-btn-accent:hover,
+button[type="submit"]:hover {
+  box-shadow: 
+    0 0 20px rgba(var(--accent-rgb, 0, 0, 0), 0.4),
+    0 0 40px rgba(var(--accent-rgb, 0, 0, 0), 0.2);
+  transform: translateY(-2px);
+}
+
+.tw-btn-secondary:hover {
+  box-shadow: 
+    0 0 15px rgba(0, 0, 0, 0.1),
+    0 0 30px rgba(0, 0, 0, 0.05);
+}
+{% endif %}
+
+/* Slide from left effect */
+{% if settings.button_hover_effect == 'slide-left' %}
+.tw-btn::before,
+button[type="submit"]::before,
+.velox-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: left 0.4s ease;
+  z-index: 0;
+}
+
+.tw-btn:hover::before,
+button[type="submit"]:hover::before,
+.velox-btn:hover::before {
+  left: 100%;
+}
+
+.tw-btn > *,
+button[type="submit"] > *,
+.velox-btn > * {
+  position: relative;
+  z-index: 1;
+}
+{% endif %}
+
+/* Slide from bottom effect */
+{% if settings.button_hover_effect == 'slide-up' %}
+.tw-btn::before,
+button[type="submit"]::before,
+.velox-btn::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  background: rgba(255, 255, 255, 0.15);
+  transition: height 0.3s ease;
+  z-index: 0;
+}
+
+.tw-btn:hover::before,
+button[type="submit"]:hover::before,
+.velox-btn:hover::before {
+  height: 100%;
+}
+
+.tw-btn > *,
+button[type="submit"] > *,
+.velox-btn > * {
+  position: relative;
+  z-index: 1;
+}
+{% endif %}
+
+/* Arrow reveal effect */
+{% if settings.button_hover_effect == 'arrow' %}
+.tw-btn,
+button[type="submit"],
+.velox-btn {
+  padding-right: 1.5rem;
+}
+
+.tw-btn::after,
+button[type="submit"]::after,
+.velox-btn::after {
+  content: '→';
+  position: absolute;
+  right: -20px;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.tw-btn:hover,
+button[type="submit"]:hover,
+.velox-btn:hover {
+  padding-right: 2.5rem;
+}
+
+.tw-btn:hover::after,
+button[type="submit"]:hover::after,
+.velox-btn:hover::after {
+  right: 1rem;
+  opacity: 1;
+}
+{% endif %}
+
+/* ===========================================
+   MICRO-INTERACTIONS
+   =========================================== */
+
+/* Card hover lift */
+.velox-card,
+.product-card,
+[data-product-card] {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.velox-card:hover,
+.product-card:hover,
+[data-product-card]:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* Image zoom on hover */
+.velox-card img,
+.product-card img,
+[data-product-card] img {
+  transition: transform 0.5s ease;
+}
+
+.velox-card:hover img,
+.product-card:hover img,
+[data-product-card]:hover img {
+  transform: scale(1.05);
+}
+
+/* Link underline animation */
+.velox-link-animated {
+  position: relative;
+  text-decoration: none;
+}
+
+.velox-link-animated::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.3s ease;
+}
+
+.velox-link-animated:hover::after {
+  width: 100%;
+}
+
+/* ===========================================
+   REDUCED MOTION
+   =========================================== */
+{% if settings.respect_reduced_motion %}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  [data-animate] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  [data-animate-children] > * {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+{% endif %}
+
+/* ===========================================
+   LOADING STATES
+   =========================================== */
+
+/* Skeleton loading animation */
+@keyframes velox-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.velox-skeleton {
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 25%,
+    #e0e0e0 50%,
+    #f0f0f0 75%
+  );
+  background-size: 200% 100%;
+  animation: velox-shimmer 1.5s infinite;
+}
+
+/* Pulse animation */
+@keyframes velox-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.velox-pulse {
+  animation: velox-pulse 2s ease-in-out infinite;
+}
+
+/* Spin animation */
+@keyframes velox-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.velox-spin {
+  animation: velox-spin 1s linear infinite;
+}

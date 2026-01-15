@@ -1,0 +1,124 @@
+{% comment %}
+  Trust Badges - Iconos de Confianza
+  Inspired by Shrine Pro
+
+  Muestra iconos de confianza: envío gratis, garantía, pago seguro, etc.
+
+  Uso: {% render 'trust-badges', block: block %}
+{% endcomment %}
+
+<div 
+  class="trust-badges tw-mt-6 tw-py-4 tw-border-t tw-border-velox-100"
+  data-trust-badges
+  {{ block.shopify_attributes }}
+>
+  <div class="tw-flex tw-flex-wrap tw-items-center tw-justify-center tw-gap-4 md:tw-gap-6">
+    {%- comment -%} Badge 1 {%- endcomment -%}
+    {% if block.settings.badge_1_text != blank %}
+      <div class="tw-flex tw-items-center tw-gap-2 tw-text-velox-600">
+        <div class="tw-w-8 tw-h-8 tw-flex tw-items-center tw-justify-center tw-rounded-full tw-bg-green-50 tw-text-green-600">
+          {% case block.settings.badge_1_icon %}
+            {% when 'truck' %}
+              {% render 'icon', name: 'truck', class: 'tw-w-4 tw-h-4' %}
+            {% when 'shield' %}
+              {% render 'icon', name: 'shield-check', class: 'tw-w-4 tw-h-4' %}
+            {% when 'lock' %}
+              {% render 'icon', name: 'lock-closed', class: 'tw-w-4 tw-h-4' %}
+            {% when 'refresh' %}
+              {% render 'icon', name: 'refresh', class: 'tw-w-4 tw-h-4' %}
+            {% when 'check' %}
+              {% render 'icon', name: 'check-circle', class: 'tw-w-4 tw-h-4' %}
+            {% when 'star' %}
+              {% render 'icon', name: 'star', class: 'tw-w-4 tw-h-4' %}
+            {% when 'heart' %}
+              {% render 'icon', name: 'heart', class: 'tw-w-4 tw-h-4' %}
+            {% when 'clock' %}
+              {% render 'icon', name: 'clock', class: 'tw-w-4 tw-h-4' %}
+          {% endcase %}
+        </div>
+        <span class="tw-text-sm tw-font-medium">{{ block.settings.badge_1_text }}</span>
+      </div>
+    {% endif %}
+
+    {%- comment -%} Badge 2 {%- endcomment -%}
+    {% if block.settings.badge_2_text != blank %}
+      <div class="tw-flex tw-items-center tw-gap-2 tw-text-velox-600">
+        <div class="tw-w-8 tw-h-8 tw-flex tw-items-center tw-justify-center tw-rounded-full tw-bg-blue-50 tw-text-blue-600">
+          {% case block.settings.badge_2_icon %}
+            {% when 'truck' %}
+              {% render 'icon', name: 'truck', class: 'tw-w-4 tw-h-4' %}
+            {% when 'shield' %}
+              {% render 'icon', name: 'shield-check', class: 'tw-w-4 tw-h-4' %}
+            {% when 'lock' %}
+              {% render 'icon', name: 'lock-closed', class: 'tw-w-4 tw-h-4' %}
+            {% when 'refresh' %}
+              {% render 'icon', name: 'refresh', class: 'tw-w-4 tw-h-4' %}
+            {% when 'check' %}
+              {% render 'icon', name: 'check-circle', class: 'tw-w-4 tw-h-4' %}
+            {% when 'star' %}
+              {% render 'icon', name: 'star', class: 'tw-w-4 tw-h-4' %}
+            {% when 'heart' %}
+              {% render 'icon', name: 'heart', class: 'tw-w-4 tw-h-4' %}
+            {% when 'clock' %}
+              {% render 'icon', name: 'clock', class: 'tw-w-4 tw-h-4' %}
+          {% endcase %}
+        </div>
+        <span class="tw-text-sm tw-font-medium">{{ block.settings.badge_2_text }}</span>
+      </div>
+    {% endif %}
+
+    {%- comment -%} Badge 3 {%- endcomment -%}
+    {% if block.settings.badge_3_text != blank %}
+      <div class="tw-flex tw-items-center tw-gap-2 tw-text-velox-600">
+        <div class="tw-w-8 tw-h-8 tw-flex tw-items-center tw-justify-center tw-rounded-full tw-bg-purple-50 tw-text-purple-600">
+          {% case block.settings.badge_3_icon %}
+            {% when 'truck' %}
+              {% render 'icon', name: 'truck', class: 'tw-w-4 tw-h-4' %}
+            {% when 'shield' %}
+              {% render 'icon', name: 'shield-check', class: 'tw-w-4 tw-h-4' %}
+            {% when 'lock' %}
+              {% render 'icon', name: 'lock-closed', class: 'tw-w-4 tw-h-4' %}
+            {% when 'refresh' %}
+              {% render 'icon', name: 'refresh', class: 'tw-w-4 tw-h-4' %}
+            {% when 'check' %}
+              {% render 'icon', name: 'check-circle', class: 'tw-w-4 tw-h-4' %}
+            {% when 'star' %}
+              {% render 'icon', name: 'star', class: 'tw-w-4 tw-h-4' %}
+            {% when 'heart' %}
+              {% render 'icon', name: 'heart', class: 'tw-w-4 tw-h-4' %}
+            {% when 'clock' %}
+              {% render 'icon', name: 'clock', class: 'tw-w-4 tw-h-4' %}
+          {% endcase %}
+        </div>
+        <span class="tw-text-sm tw-font-medium">{{ block.settings.badge_3_text }}</span>
+      </div>
+    {% endif %}
+
+    {%- comment -%} Badge 4 {%- endcomment -%}
+    {% if block.settings.badge_4_text != blank %}
+      <div class="tw-flex tw-items-center tw-gap-2 tw-text-velox-600">
+        <div class="tw-w-8 tw-h-8 tw-flex tw-items-center tw-justify-center tw-rounded-full tw-bg-yellow-50 tw-text-yellow-600">
+          {% case block.settings.badge_4_icon %}
+            {% when 'truck' %}
+              {% render 'icon', name: 'truck', class: 'tw-w-4 tw-h-4' %}
+            {% when 'shield' %}
+              {% render 'icon', name: 'shield-check', class: 'tw-w-4 tw-h-4' %}
+            {% when 'lock' %}
+              {% render 'icon', name: 'lock-closed', class: 'tw-w-4 tw-h-4' %}
+            {% when 'refresh' %}
+              {% render 'icon', name: 'refresh', class: 'tw-w-4 tw-h-4' %}
+            {% when 'check' %}
+              {% render 'icon', name: 'check-circle', class: 'tw-w-4 tw-h-4' %}
+            {% when 'star' %}
+              {% render 'icon', name: 'star', class: 'tw-w-4 tw-h-4' %}
+            {% when 'heart' %}
+              {% render 'icon', name: 'heart', class: 'tw-w-4 tw-h-4' %}
+            {% when 'clock' %}
+              {% render 'icon', name: 'clock', class: 'tw-w-4 tw-h-4' %}
+          {% endcase %}
+        </div>
+        <span class="tw-text-sm tw-font-medium">{{ block.settings.badge_4_text }}</span>
+      </div>
+    {% endif %}
+  </div>
+</div>

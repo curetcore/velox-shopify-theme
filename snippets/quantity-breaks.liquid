@@ -1,0 +1,303 @@
+{% comment %}
+  Quantity Breaks - Descuentos por Cantidad
+  Inspirado en Shrine Pro
+
+  Uso:
+  {% render 'quantity-breaks', 
+    product: product,
+    block: block
+  %}
+
+  Características:
+  - Hasta 4 opciones de cantidad con descuentos
+  - Badges personalizables (POPULAR, BEST DEAL)
+  - Actualización dinámica de precios
+  - Integración con variant picker
+{% endcomment %}
+
+{% liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign base_price = current_variant.price
+  assign compare_price = current_variant.compare_at_price | default: base_price
+%}
+
+<div 
+  class="quantity-breaks tw-mt-6 tw-border tw-border-velox-200 tw-rounded-lg tw-overflow-hidden"
+  data-quantity-breaks
+  data-base-price="{{ base_price }}"
+  data-compare-price="{{ compare_price }}"
+  {{ block.shopify_attributes }}
+>
+  {%- comment -%} Header {%- endcomment -%}
+  {% if block.settings.title != blank %}
+    <div class="tw-px-4 tw-py-3 tw-bg-velox-50 tw-border-b tw-border-velox-100">
+      <h3 class="tw-text-sm tw-font-semibold tw-text-velox-900 tw-flex tw-items-center tw-gap-2">
+        {% render 'icon', name: 'tag', class: 'tw-w-4 tw-h-4 tw-text-accent' %}
+        {{ block.settings.title }}
+      </h3>
+    </div>
+  {% endif %}
+
+  {%- comment -%} Quantity Options {%- endcomment -%}
+  <div class="tw-divide-y tw-divide-velox-100">
+    {%- comment -%} Option 1 {%- endcomment -%}
+    {% if block.settings.qty_1 > 0 %}
+      {% liquid
+        assign qty = block.settings.qty_1
+        assign discount = block.settings.discount_1 | times: 1.0 | divided_by: 100
+        assign unit_price = base_price | times: 1.0 | minus: base_price | times: discount
+        assign total_price = unit_price | times: qty
+        assign savings = base_price | times: qty | minus: total_price
+      %}
+      <label 
+        class="quantity-break-option tw-flex tw-items-center tw-gap-4 tw-px-4 tw-py-3 tw-cursor-pointer hover:tw-bg-velox-50 tw-transition-colors tw-relative {% if forloop.first %}tw-bg-velox-50{% endif %}"
+        data-quantity-option
+        data-quantity="{{ qty }}"
+        data-discount="{{ block.settings.discount_1 }}"
+        data-unit-price="{{ unit_price }}"
+        data-total-price="{{ total_price }}"
+      >
+        <input 
+          type="radio" 
+          name="quantity_break_{{ section.id }}" 
+          value="{{ qty }}"
+          class="tw-w-5 tw-h-5 tw-text-accent tw-border-velox-300 focus:tw-ring-accent"
+          {% if block.settings.default_option == 1 %}checked{% endif %}
+        >
+        <div class="tw-flex-1">
+          <div class="tw-flex tw-items-center tw-gap-2">
+            <span class="tw-font-medium tw-text-velox-900">{{ qty }} {{ qty | pluralize: 'unidad', 'unidades' }}</span>
+            {% if block.settings.badge_1 != blank %}
+              <span class="tw-px-2 tw-py-0.5 tw-text-xs tw-font-bold tw-uppercase tw-bg-accent tw-text-white tw-rounded">
+                {{ block.settings.badge_1 }}
+              </span>
+            {% endif %}
+          </div>
+          {% if block.settings.discount_1 > 0 %}
+            <p class="tw-text-xs tw-text-green-600 tw-mt-0.5">
+              Ahorra {{ block.settings.discount_1 }}% ({{ savings | money }})
+            </p>
+          {% endif %}
+        </div>
+        <div class="tw-text-right">
+          <p class="tw-font-semibold tw-text-velox-900" data-option-total>{{ total_price | money }}</p>
+          {% if block.settings.discount_1 > 0 %}
+            <p class="tw-text-xs tw-text-velox-400 tw-line-through">{{ base_price | times: qty | money }}</p>
+          {% endif %}
+          <p class="tw-text-xs tw-text-velox-500" data-option-unit>{{ unit_price | money }}/u</p>
+        </div>
+      </label>
+    {% endif %}
+
+    {%- comment -%} Option 2 {%- endcomment -%}
+    {% if block.settings.qty_2 > 0 %}
+      {% liquid
+        assign qty = block.settings.qty_2
+        assign discount = block.settings.discount_2 | times: 1.0 | divided_by: 100
+        assign unit_price = base_price | times: 1.0 | minus: base_price | times: discount
+        assign total_price = unit_price | times: qty
+        assign savings = base_price | times: qty | minus: total_price
+      %}
+      <label 
+        class="quantity-break-option tw-flex tw-items-center tw-gap-4 tw-px-4 tw-py-3 tw-cursor-pointer hover:tw-bg-velox-50 tw-transition-colors tw-relative"
+        data-quantity-option
+        data-quantity="{{ qty }}"
+        data-discount="{{ block.settings.discount_2 }}"
+        data-unit-price="{{ unit_price }}"
+        data-total-price="{{ total_price }}"
+      >
+        <input 
+          type="radio" 
+          name="quantity_break_{{ section.id }}" 
+          value="{{ qty }}"
+          class="tw-w-5 tw-h-5 tw-text-accent tw-border-velox-300 focus:tw-ring-accent"
+          {% if block.settings.default_option == 2 %}checked{% endif %}
+        >
+        <div class="tw-flex-1">
+          <div class="tw-flex tw-items-center tw-gap-2">
+            <span class="tw-font-medium tw-text-velox-900">{{ qty }} {{ qty | pluralize: 'unidad', 'unidades' }}</span>
+            {% if block.settings.badge_2 != blank %}
+              <span class="tw-px-2 tw-py-0.5 tw-text-xs tw-font-bold tw-uppercase tw-bg-green-500 tw-text-white tw-rounded">
+                {{ block.settings.badge_2 }}
+              </span>
+            {% endif %}
+          </div>
+          {% if block.settings.discount_2 > 0 %}
+            <p class="tw-text-xs tw-text-green-600 tw-mt-0.5">
+              Ahorra {{ block.settings.discount_2 }}% ({{ savings | money }})
+            </p>
+          {% endif %}
+        </div>
+        <div class="tw-text-right">
+          <p class="tw-font-semibold tw-text-velox-900" data-option-total>{{ total_price | money }}</p>
+          {% if block.settings.discount_2 > 0 %}
+            <p class="tw-text-xs tw-text-velox-400 tw-line-through">{{ base_price | times: qty | money }}</p>
+          {% endif %}
+          <p class="tw-text-xs tw-text-velox-500" data-option-unit>{{ unit_price | money }}/u</p>
+        </div>
+      </label>
+    {% endif %}
+
+    {%- comment -%} Option 3 {%- endcomment -%}
+    {% if block.settings.qty_3 > 0 %}
+      {% liquid
+        assign qty = block.settings.qty_3
+        assign discount = block.settings.discount_3 | times: 1.0 | divided_by: 100
+        assign unit_price = base_price | times: 1.0 | minus: base_price | times: discount
+        assign total_price = unit_price | times: qty
+        assign savings = base_price | times: qty | minus: total_price
+      %}
+      <label 
+        class="quantity-break-option tw-flex tw-items-center tw-gap-4 tw-px-4 tw-py-3 tw-cursor-pointer hover:tw-bg-velox-50 tw-transition-colors tw-relative"
+        data-quantity-option
+        data-quantity="{{ qty }}"
+        data-discount="{{ block.settings.discount_3 }}"
+        data-unit-price="{{ unit_price }}"
+        data-total-price="{{ total_price }}"
+      >
+        <input 
+          type="radio" 
+          name="quantity_break_{{ section.id }}" 
+          value="{{ qty }}"
+          class="tw-w-5 tw-h-5 tw-text-accent tw-border-velox-300 focus:tw-ring-accent"
+          {% if block.settings.default_option == 3 %}checked{% endif %}
+        >
+        <div class="tw-flex-1">
+          <div class="tw-flex tw-items-center tw-gap-2">
+            <span class="tw-font-medium tw-text-velox-900">{{ qty }} {{ qty | pluralize: 'unidad', 'unidades' }}</span>
+            {% if block.settings.badge_3 != blank %}
+              <span class="tw-px-2 tw-py-0.5 tw-text-xs tw-font-bold tw-uppercase tw-bg-yellow-500 tw-text-white tw-rounded">
+                {{ block.settings.badge_3 }}
+              </span>
+            {% endif %}
+          </div>
+          {% if block.settings.discount_3 > 0 %}
+            <p class="tw-text-xs tw-text-green-600 tw-mt-0.5">
+              Ahorra {{ block.settings.discount_3 }}% ({{ savings | money }})
+            </p>
+          {% endif %}
+        </div>
+        <div class="tw-text-right">
+          <p class="tw-font-semibold tw-text-velox-900" data-option-total>{{ total_price | money }}</p>
+          {% if block.settings.discount_3 > 0 %}
+            <p class="tw-text-xs tw-text-velox-400 tw-line-through">{{ base_price | times: qty | money }}</p>
+          {% endif %}
+          <p class="tw-text-xs tw-text-velox-500" data-option-unit>{{ unit_price | money }}/u</p>
+        </div>
+      </label>
+    {% endif %}
+
+    {%- comment -%} Option 4 {%- endcomment -%}
+    {% if block.settings.qty_4 > 0 %}
+      {% liquid
+        assign qty = block.settings.qty_4
+        assign discount = block.settings.discount_4 | times: 1.0 | divided_by: 100
+        assign unit_price = base_price | times: 1.0 | minus: base_price | times: discount
+        assign total_price = unit_price | times: qty
+        assign savings = base_price | times: qty | minus: total_price
+      %}
+      <label 
+        class="quantity-break-option tw-flex tw-items-center tw-gap-4 tw-px-4 tw-py-3 tw-cursor-pointer hover:tw-bg-velox-50 tw-transition-colors tw-relative"
+        data-quantity-option
+        data-quantity="{{ qty }}"
+        data-discount="{{ block.settings.discount_4 }}"
+        data-unit-price="{{ unit_price }}"
+        data-total-price="{{ total_price }}"
+      >
+        <input 
+          type="radio" 
+          name="quantity_break_{{ section.id }}" 
+          value="{{ qty }}"
+          class="tw-w-5 tw-h-5 tw-text-accent tw-border-velox-300 focus:tw-ring-accent"
+          {% if block.settings.default_option == 4 %}checked{% endif %}
+        >
+        <div class="tw-flex-1">
+          <div class="tw-flex tw-items-center tw-gap-2">
+            <span class="tw-font-medium tw-text-velox-900">{{ qty }} {{ qty | pluralize: 'unidad', 'unidades' }}</span>
+            {% if block.settings.badge_4 != blank %}
+              <span class="tw-px-2 tw-py-0.5 tw-text-xs tw-font-bold tw-uppercase tw-bg-red-500 tw-text-white tw-rounded">
+                {{ block.settings.badge_4 }}
+              </span>
+            {% endif %}
+          </div>
+          {% if block.settings.discount_4 > 0 %}
+            <p class="tw-text-xs tw-text-green-600 tw-mt-0.5">
+              Ahorra {{ block.settings.discount_4 }}% ({{ savings | money }})
+            </p>
+          {% endif %}
+        </div>
+        <div class="tw-text-right">
+          <p class="tw-font-semibold tw-text-velox-900" data-option-total>{{ total_price | money }}</p>
+          {% if block.settings.discount_4 > 0 %}
+            <p class="tw-text-xs tw-text-velox-400 tw-line-through">{{ base_price | times: qty | money }}</p>
+          {% endif %}
+          <p class="tw-text-xs tw-text-velox-500" data-option-unit>{{ unit_price | money }}/u</p>
+        </div>
+      </label>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+  // Quantity Breaks JavaScript
+  (function() {
+    const container = document.querySelector('[data-quantity-breaks]');
+    if (!container) return;
+
+    const options = container.querySelectorAll('[data-quantity-option]');
+    const quantityInput = document.querySelector('[data-quantity-input]');
+    
+    options.forEach(option => {
+      const radio = option.querySelector('input[type="radio"]');
+      
+      option.addEventListener('click', () => {
+        // Deseleccionar todos
+        options.forEach(opt => opt.classList.remove('tw-bg-accent/5', 'tw-border-accent'));
+        
+        // Seleccionar este
+        option.classList.add('tw-bg-accent/5');
+        radio.checked = true;
+        
+        // Actualizar cantidad en el input del formulario
+        const qty = option.dataset.quantity;
+        if (quantityInput) {
+          quantityInput.value = qty;
+        }
+      });
+      
+      // Si ya está checked, aplicar estilo
+      if (radio.checked) {
+        option.classList.add('tw-bg-accent/5');
+        if (quantityInput) {
+          quantityInput.value = option.dataset.quantity;
+        }
+      }
+    });
+
+    // Escuchar cambios de variante para actualizar precios
+    document.addEventListener('variant:changed', (e) => {
+      const newPrice = e.detail.price;
+      const newComparePrice = e.detail.compare_at_price || newPrice;
+      
+      options.forEach(option => {
+        const qty = parseInt(option.dataset.quantity);
+        const discount = parseFloat(option.dataset.discount) / 100;
+        const unitPrice = newPrice * (1 - discount);
+        const totalPrice = unitPrice * qty;
+        
+        const totalEl = option.querySelector('[data-option-total]');
+        const unitEl = option.querySelector('[data-option-unit]');
+        
+        if (totalEl) totalEl.textContent = formatMoney(totalPrice);
+        if (unitEl) unitEl.textContent = formatMoney(unitPrice) + '/u';
+      });
+    });
+
+    function formatMoney(cents) {
+      return (cents / 100).toLocaleString('es', {
+        style: 'currency',
+        currency: '{{ cart.currency.iso_code }}'
+      });
+    }
+  })();
+</script>

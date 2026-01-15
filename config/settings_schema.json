@@ -131,17 +131,45 @@
         "id": "enable_section_animations",
         "label": "Enable section load animations",
         "default": true,
-        "info": "Sections will fade in as they enter the viewport"
+        "info": "Sections will animate as they enter the viewport"
       },
       {
         "type": "select",
         "id": "animation_style",
         "label": "Animation style",
         "options": [
-          { "value": "fade", "label": "Fade" },
-          { "value": "fade-up", "label": "Fade up" },
-          { "value": "fade-down", "label": "Fade down" },
-          { "value": "zoom-in", "label": "Zoom in" }
+          {
+            "value": "fade",
+            "label": "Fade"
+          },
+          {
+            "value": "fade-up",
+            "label": "Fade up"
+          },
+          {
+            "value": "fade-down",
+            "label": "Fade down"
+          },
+          {
+            "value": "fade-left",
+            "label": "Fade from left"
+          },
+          {
+            "value": "fade-right",
+            "label": "Fade from right"
+          },
+          {
+            "value": "zoom-in",
+            "label": "Zoom in"
+          },
+          {
+            "value": "zoom-out",
+            "label": "Zoom out"
+          },
+          {
+            "value": "flip",
+            "label": "Flip"
+          }
         ],
         "default": "fade-up"
       },
@@ -150,9 +178,9 @@
         "id": "animation_duration",
         "label": "Animation duration",
         "min": 200,
-        "max": 1000,
+        "max": 1200,
         "step": 50,
-        "default": 500,
+        "default": 600,
         "unit": "ms"
       },
       {
@@ -160,15 +188,69 @@
         "id": "animation_delay",
         "label": "Stagger delay between elements",
         "min": 0,
-        "max": 200,
+        "max": 300,
         "step": 25,
         "default": 100,
         "unit": "ms",
         "info": "Delay between each animated element"
       },
       {
+        "type": "select",
+        "id": "animation_easing",
+        "label": "Animation easing",
+        "options": [
+          {
+            "value": "ease",
+            "label": "Ease (default)"
+          },
+          {
+            "value": "ease-in",
+            "label": "Ease in"
+          },
+          {
+            "value": "ease-out",
+            "label": "Ease out"
+          },
+          {
+            "value": "ease-in-out",
+            "label": "Ease in-out"
+          },
+          {
+            "value": "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+            "label": "Smooth"
+          },
+          {
+            "value": "cubic-bezier(0.68, -0.55, 0.265, 1.55)",
+            "label": "Bouncy"
+          }
+        ],
+        "default": "ease-out"
+      },
+      {
         "type": "header",
-        "content": "Reduced motion"
+        "content": "Animation behavior"
+      },
+      {
+        "type": "checkbox",
+        "id": "animation_repeat",
+        "label": "Repeat animation on scroll",
+        "default": false,
+        "info": "Re-animate sections when scrolling back into view"
+      },
+      {
+        "type": "range",
+        "id": "animation_threshold",
+        "label": "Animation trigger point",
+        "min": 0,
+        "max": 50,
+        "step": 5,
+        "default": 10,
+        "unit": "%",
+        "info": "How much of the element should be visible before animating"
+      },
+      {
+        "type": "header",
+        "content": "Accessibility"
       },
       {
         "type": "checkbox",
@@ -210,10 +292,22 @@
         "id": "heading_text_transform",
         "label": "Heading text transform",
         "options": [
-          { "value": "none", "label": "None" },
-          { "value": "uppercase", "label": "Uppercase" },
-          { "value": "lowercase", "label": "Lowercase" },
-          { "value": "capitalize", "label": "Capitalize" }
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "uppercase",
+            "label": "Uppercase"
+          },
+          {
+            "value": "lowercase",
+            "label": "Lowercase"
+          },
+          {
+            "value": "capitalize",
+            "label": "Capitalize"
+          }
         ],
         "default": "none"
       },
@@ -264,12 +358,30 @@
         "id": "button_hover_effect",
         "label": "Button hover effect",
         "options": [
-          { "value": "none", "label": "None" },
-          { "value": "darken", "label": "Darken" },
-          { "value": "glow", "label": "Glow" },
-          { "value": "slide-left", "label": "Slide from left" },
-          { "value": "slide-up", "label": "Slide from bottom" },
-          { "value": "arrow", "label": "Arrow reveal" }
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "darken",
+            "label": "Darken"
+          },
+          {
+            "value": "glow",
+            "label": "Glow"
+          },
+          {
+            "value": "slide-left",
+            "label": "Slide from left"
+          },
+          {
+            "value": "slide-up",
+            "label": "Slide from bottom"
+          },
+          {
+            "value": "arrow",
+            "label": "Arrow reveal"
+          }
         ],
         "default": "darken"
       },
@@ -278,8 +390,14 @@
         "id": "button_text_transform",
         "label": "Button text transform",
         "options": [
-          { "value": "none", "label": "None" },
-          { "value": "uppercase", "label": "Uppercase" }
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "uppercase",
+            "label": "Uppercase"
+          }
         ],
         "default": "none"
       },

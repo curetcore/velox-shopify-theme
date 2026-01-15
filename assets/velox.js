@@ -3,7 +3,7 @@
  * Handles header interactions: mobile menu, search, cart drawer
  */
 
-(function() {
+(function () {
   'use strict';
 
   // DOM Ready
@@ -404,12 +404,12 @@
       document.body.appendChild(toast);
     }
     toast.textContent = message;
-    
+
     // Mostrar con animación
     requestAnimationFrame(() => {
       toast.classList.remove('tw-translate-y-full', 'tw-opacity-0');
     });
-    
+
     // Ocultar después de 3 segundos
     setTimeout(() => {
       toast.classList.add('tw-translate-y-full', 'tw-opacity-0');
@@ -548,9 +548,10 @@
   /**
    * Section Animations
    * Animate sections on scroll using IntersectionObserver
+   * Enhanced with settings from Theme Customizer
    */
   function initSectionAnimations() {
-    const animatedElements = document.querySelectorAll('[data-animate]');
+    const animatedElements = document.querySelectorAll('[data-animate], [data-animate-children]');
     if (!animatedElements.length) return;
 
     // Check if animations are disabled via CSS (reduced motion)
@@ -561,17 +562,39 @@
       return;
     }
 
+    // Get settings from data attributes (set in theme.liquid)
+    const animationRepeat = document.body.dataset.animationRepeat === 'true';
+    const animationThreshold = parseFloat(document.body.dataset.animationThreshold || '0.1');
+
+    const observerOptions = {
+      threshold: animationThreshold,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
+          // Add stagger delay for children if data-animate-stagger is set
+          const stagger = entry.target.dataset.animateStagger;
+          if (stagger) {
+            const children = entry.target.children;
+            Array.from(children).forEach((child, index) => {
+              child.style.transitionDelay = `${index * parseInt(stagger)}ms`;
+            });
+          }
+
           entry.target.classList.add('is-visible');
-          observer.unobserve(entry.target);
+
+          // Only unobserve if repeat is disabled
+          if (!animationRepeat) {
+            observer.unobserve(entry.target);
+          }
+        } else if (animationRepeat) {
+          // Remove visible class when out of view (for repeat)
+          entry.target.classList.remove('is-visible');
         }
       });
-    }, {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    });
+    }, observerOptions);
 
     animatedElements.forEach(el => observer.observe(el));
   }

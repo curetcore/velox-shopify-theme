@@ -553,8 +553,22 @@
               {% endfor %}
             {% endunless %}
 
-            {%- comment -%} Quantity selector {%- endcomment -%}
-            {% if section.settings.show_quantity %}
+            {%- comment -%} Quantity Breaks - Descuentos por cantidad {%- endcomment -%}
+            {% for block in section.blocks %}
+              {% if block.type == 'quantity_breaks' %}
+                {% render 'quantity-breaks', product: product, block: block %}
+              {% endif %}
+            {% endfor %}
+
+            {%- comment -%} Quantity selector (only show if no quantity breaks block) {%- endcomment -%}
+            {% assign has_quantity_breaks = false %}
+            {% for block in section.blocks %}
+              {% if block.type == 'quantity_breaks' %}
+                {% assign has_quantity_breaks = true %}
+              {% endif %}
+            {% endfor %}
+            
+            {% if section.settings.show_quantity and has_quantity_breaks == false %}
               <div class="tw-mb-6">
                 <label for="quantity" class="tw-block tw-text-sm tw-font-medium tw-text-velox-900 tw-mb-3">
                   {{ 'products.product.quantity' | t }}
@@ -577,7 +591,11 @@
                   </button>
                 </div>
               </div>
+            {% elsif has_quantity_breaks %}
+              {%- comment -%} Hidden quantity input for form submission when using quantity breaks {%- endcomment -%}
+              <input type="hidden" name="quantity" value="1" data-quantity-input>
             {% endif %}
+
 
             {%- comment -%} Add to cart button {%- endcomment -%}
             <button
@@ -603,6 +621,27 @@
               </div>
             {% endif %}
           {% endform %}
+
+          {%- comment -%} Estimated Shipping - Fecha de entrega {%- endcomment -%}
+          {% for block in section.blocks %}
+            {% if block.type == 'estimated_shipping' %}
+              {% render 'estimated-shipping', block: block %}
+            {% endif %}
+          {% endfor %}
+
+          {%- comment -%} Bundle Offer - Compra juntos y ahorra {%- endcomment -%}
+          {% for block in section.blocks %}
+            {% if block.type == 'bundle_offer' %}
+              {% render 'bundle-offer', product: product, block: block %}
+            {% endif %}
+          {% endfor %}
+
+          {%- comment -%} Trust Badges {%- endcomment -%}
+          {% for block in section.blocks %}
+            {% if block.type == 'trust_badges' %}
+              {% render 'trust-badges', block: block %}
+            {% endif %}
+          {% endfor %}
 
           {%- comment -%} Product description / Tabs {%- endcomment -%}
           {% if section.settings.description_style == 'tabs' %}
@@ -957,9 +996,14 @@
         submitBtn?.removeAttribute('disabled');
         submitBtn?.querySelector('.tw-w-5')?.classList.remove('tw-animate-spin');
       }
-    });
-  });
+      });
+    });\n  });
 </script>
+
+{%- comment -%} Sticky Add to Cart - Aparece al hacer scroll {%- endcomment -%}
+{% if section.settings.show_sticky_atc %}
+  {% render 'sticky-atc', product: product %}
+{% endif %}
 
 
 {% schema %}
@@ -968,6 +1012,17 @@
   "tag": "section",
   "class": "velox-product-section",
   "settings": [
+    {
+      "type": "header",
+      "content": "Sticky Add to Cart"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sticky_atc",
+      "default": true,
+      "label": "Show sticky add to cart",
+      "info": "Appears when scrolling past the main add to cart button"
+    },
     {
       "type": "header",
       "content": "Estilo de layout"
@@ -1226,6 +1281,343 @@
             { "value": "chart-bar", "label": "Especificaciones" }
           ],
           "default": ""
+        }
+      ]
+    },
+    {
+      "type": "quantity_breaks",
+      "name": "Descuentos por cantidad",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "default": "Compra más, ahorra más",
+          "label": "Título"
+        },
+        {
+          "type": "header",
+          "content": "Opción 1"
+        },
+        {
+          "type": "number",
+          "id": "qty_1",
+          "default": 1,
+          "label": "Cantidad"
+        },
+        {
+          "type": "range",
+          "id": "discount_1",
+          "min": 0,
+          "max": 50,
+          "step": 5,
+          "default": 0,
+          "unit": "%",
+          "label": "Descuento"
+        },
+        {
+          "type": "text",
+          "id": "badge_1",
+          "label": "Badge (opcional)"
+        },
+        {
+          "type": "header",
+          "content": "Opción 2"
+        },
+        {
+          "type": "number",
+          "id": "qty_2",
+          "default": 2,
+          "label": "Cantidad"
+        },
+        {
+          "type": "range",
+          "id": "discount_2",
+          "min": 0,
+          "max": 50,
+          "step": 5,
+          "default": 10,
+          "unit": "%",
+          "label": "Descuento"
+        },
+        {
+          "type": "text",
+          "id": "badge_2",
+          "default": "POPULAR",
+          "label": "Badge (opcional)"
+        },
+        {
+          "type": "header",
+          "content": "Opción 3"
+        },
+        {
+          "type": "number",
+          "id": "qty_3",
+          "default": 3,
+          "label": "Cantidad"
+        },
+        {
+          "type": "range",
+          "id": "discount_3",
+          "min": 0,
+          "max": 50,
+          "step": 5,
+          "default": 15,
+          "unit": "%",
+          "label": "Descuento"
+        },
+        {
+          "type": "text",
+          "id": "badge_3",
+          "default": "BEST DEAL",
+          "label": "Badge (opcional)"
+        },
+        {
+          "type": "header",
+          "content": "Opción 4 (opcional)"
+        },
+        {
+          "type": "number",
+          "id": "qty_4",
+          "default": 0,
+          "label": "Cantidad (0 para desactivar)"
+        },
+        {
+          "type": "range",
+          "id": "discount_4",
+          "min": 0,
+          "max": 50,
+          "step": 5,
+          "default": 20,
+          "unit": "%",
+          "label": "Descuento"
+        },
+        {
+          "type": "text",
+          "id": "badge_4",
+          "label": "Badge (opcional)"
+        },
+        {
+          "type": "select",
+          "id": "default_option",
+          "label": "Opción seleccionada por defecto",
+          "options": [
+            { "value": "1", "label": "Opción 1" },
+            { "value": "2", "label": "Opción 2" },
+            { "value": "3", "label": "Opción 3" },
+            { "value": "4", "label": "Opción 4" }
+          ],
+          "default": "2"
+        }
+      ]
+    },
+    {
+      "type": "estimated_shipping",
+      "name": "Fecha de entrega estimada",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "message",
+          "default": "Pide hoy y recibe entre el [start_date] y [end_date]",
+          "label": "Mensaje",
+          "info": "Usa [start_date] y [end_date] para fechas dinámicas"
+        },
+        {
+          "type": "number",
+          "id": "min_days",
+          "default": 3,
+          "label": "Días mínimos de envío"
+        },
+        {
+          "type": "number",
+          "id": "max_days",
+          "default": 5,
+          "label": "Días máximos de envío"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icono",
+          "options": [
+            { "value": "truck", "label": "Camión" },
+            { "value": "clock", "label": "Reloj" },
+            { "value": "calendar", "label": "Calendario" },
+            { "value": "package", "label": "Paquete" }
+          ],
+          "default": "truck"
+        },
+        {
+          "type": "checkbox",
+          "id": "exclude_weekends",
+          "default": true,
+          "label": "Excluir fines de semana"
+        }
+      ]
+    },
+    {
+      "type": "bundle_offer",
+      "name": "Oferta Bundle",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "default": "Compra juntos y ahorra",
+          "label": "Título"
+        },
+        {
+          "type": "range",
+          "id": "global_discount",
+          "min": 0,
+          "max": 30,
+          "step": 5,
+          "default": 10,
+          "unit": "%",
+          "label": "Descuento global del bundle"
+        },
+        {
+          "type": "header",
+          "content": "Producto 1"
+        },
+        {
+          "type": "product",
+          "id": "product_1",
+          "label": "Seleccionar producto"
+        },
+        {
+          "type": "header",
+          "content": "Producto 2 (opcional)"
+        },
+        {
+          "type": "product",
+          "id": "product_2",
+          "label": "Seleccionar producto"
+        },
+        {
+          "type": "header",
+          "content": "Producto 3 (opcional)"
+        },
+        {
+          "type": "product",
+          "id": "product_3",
+          "label": "Seleccionar producto"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "default": "Agregar Bundle al Carrito",
+          "label": "Texto del botón"
+        }
+      ]
+    },
+    {
+      "type": "trust_badges",
+      "name": "Trust Badges",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Badge 1"
+        },
+        {
+          "type": "select",
+          "id": "badge_1_icon",
+          "label": "Icon",
+          "options": [
+            { "value": "truck", "label": "Shipping" },
+            { "value": "shield", "label": "Shield" },
+            { "value": "lock", "label": "Lock" },
+            { "value": "refresh", "label": "Returns" },
+            { "value": "check", "label": "Checkmark" },
+            { "value": "star", "label": "Star" },
+            { "value": "heart", "label": "Heart" },
+            { "value": "clock", "label": "Clock" }
+          ],
+          "default": "truck"
+        },
+        {
+          "type": "text",
+          "id": "badge_1_text",
+          "default": "Free Shipping",
+          "label": "Text"
+        },
+        {
+          "type": "header",
+          "content": "Badge 2"
+        },
+        {
+          "type": "select",
+          "id": "badge_2_icon",
+          "label": "Icon",
+          "options": [
+            { "value": "truck", "label": "Shipping" },
+            { "value": "shield", "label": "Shield" },
+            { "value": "lock", "label": "Lock" },
+            { "value": "refresh", "label": "Returns" },
+            { "value": "check", "label": "Checkmark" },
+            { "value": "star", "label": "Star" },
+            { "value": "heart", "label": "Heart" },
+            { "value": "clock", "label": "Clock" }
+          ],
+          "default": "shield"
+        },
+        {
+          "type": "text",
+          "id": "badge_2_text",
+          "default": "2 Year Warranty",
+          "label": "Text"
+        },
+        {
+          "type": "header",
+          "content": "Badge 3"
+        },
+        {
+          "type": "select",
+          "id": "badge_3_icon",
+          "label": "Icon",
+          "options": [
+            { "value": "truck", "label": "Shipping" },
+            { "value": "shield", "label": "Shield" },
+            { "value": "lock", "label": "Lock" },
+            { "value": "refresh", "label": "Returns" },
+            { "value": "check", "label": "Checkmark" },
+            { "value": "star", "label": "Star" },
+            { "value": "heart", "label": "Heart" },
+            { "value": "clock", "label": "Clock" }
+          ],
+          "default": "lock"
+        },
+        {
+          "type": "text",
+          "id": "badge_3_text",
+          "default": "Secure Payment",
+          "label": "Text"
+        },
+        {
+          "type": "header",
+          "content": "Badge 4 (optional)"
+        },
+        {
+          "type": "select",
+          "id": "badge_4_icon",
+          "label": "Icon",
+          "options": [
+            { "value": "truck", "label": "Shipping" },
+            { "value": "shield", "label": "Shield" },
+            { "value": "lock", "label": "Lock" },
+            { "value": "refresh", "label": "Returns" },
+            { "value": "check", "label": "Checkmark" },
+            { "value": "star", "label": "Star" },
+            { "value": "heart", "label": "Heart" },
+            { "value": "clock", "label": "Clock" }
+          ],
+          "default": "refresh"
+        },
+        {
+          "type": "text",
+          "id": "badge_4_text",
+          "label": "Text"
         }
       ]
     }
