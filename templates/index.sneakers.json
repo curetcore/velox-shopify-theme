@@ -6,7 +6,7 @@
                 "announcement_1": {
                     "type": "announcement",
                     "settings": {
-                        "text": "🔥 New Drop: Air Max Collection",
+                        "text": "New Drop: Air Max Collection",
                         "link": "shopify://collections/new-arrivals",
                         "icon": "star"
                     }

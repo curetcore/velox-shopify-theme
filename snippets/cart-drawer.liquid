@@ -65,8 +65,9 @@
             {{ 'cart.general.free_shipping_remaining' | t: amount: amount_remaining | money | default: 'Te faltan ' | append: amount_remaining | money | append: ' para envío gratis' }}
           </span>
         {% else %}
-          <span class="tw-text-green-700 tw-font-medium">
-            🎉 {{ 'cart.general.free_shipping_achieved' | t | default: '¡Envío gratis desbloqueado!' }}
+          <span class="tw-text-green-700 tw-font-medium tw-inline-flex tw-items-center tw-gap-1">
+            {% render 'icon', name: 'check-circle', class: 'tw-w-4 tw-h-4' %}
+            {{ 'cart.general.free_shipping_achieved' | t | default: '¡Envío gratis desbloqueado!' }}
           </span>
         {% endif %}
       </p>
@@ -89,7 +90,7 @@
             <div class="tw-flex tw-flex-col tw-items-center" style="position: absolute; left: {{ checkpoint_percentage }}%; transform: translateX(-50%);">
               <div class="tw-w-3 tw-h-3 tw-rounded-full tw-border-2 {% if is_reached %}tw-bg-green-500 tw-border-green-500{% else %}tw-bg-white tw-border-velox-300{% endif %} tw-transition-colors tw-duration-300"></div>
               {% if i == 4 %}
-                <span class="tw-text-[10px] tw-text-velox-500 tw-mt-1">🚚</span>
+                {% render 'icon', name: 'truck', class: 'tw-w-3 tw-h-3 tw-text-velox-500 tw-mt-1' %}
               {% endif %}
             </div>
           {% endfor %}

@@ -348,7 +348,7 @@
     }
     if (message) {
       if (remaining === 0) {
-        message.innerHTML = `<span class="tw-text-green-700 tw-font-medium">🎉 ${bar.dataset.freeShippingSuccess || '¡Tienes envío gratis!'}</span>`;
+        message.innerHTML = `<span class="tw-text-green-700 tw-font-medium tw-inline-flex tw-items-center tw-gap-1"><svg class="tw-w-4 tw-h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>${bar.dataset.freeShippingSuccess || '¡Tienes envío gratis!'}</span>`;
       } else {
         const formattedRemaining = formatMoney(remaining);
         message.innerHTML = `<span class="tw-text-velox-700">${(bar.dataset.freeShippingRemaining || 'Te faltan {amount} para envío gratis').replace('{amount}', formattedRemaining)}</span>`;

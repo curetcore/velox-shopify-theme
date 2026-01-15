@@ -6,7 +6,7 @@
                 "announcement_1": {
                     "type": "announcement",
                     "settings": {
-                        "text": "✨ New Spring Collection Now Live",
+                        "text": "New Spring Collection Now Live",
                         "link": "shopify://collections/spring",
                         "icon": "star"
                     }
@@ -174,7 +174,7 @@
                         "name": "Sofia R.",
                         "title": "Verified Buyer",
                         "rating": 5,
-                        "text": "Finally a brand that understands what women actually want—style, comfort, and sustainability. ❤️"
+                        "text": "Finally a brand that understands what women actually want—style, comfort, and sustainability."
                     }
                 }
             },

@@ -143,7 +143,7 @@
       
       {% if global_discount > 0 %}
         <p class="tw-text-sm tw-text-green-600 tw-font-medium tw-text-center tw-mb-3">
-          🎉 ¡Ahorras <span data-bundle-savings>{{ savings | money }}</span>!
+          {% render 'icon', name: 'check-circle', class: 'tw-w-4 tw-h-4 tw-inline' %} ¡Ahorras <span data-bundle-savings>{{ savings | money }}</span>!
         </p>
       {% endif %}
 
