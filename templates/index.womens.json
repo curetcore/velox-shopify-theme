@@ -6,8 +6,8 @@
                 "announcement_1": {
                     "type": "announcement",
                     "settings": {
-                        "text": "SPRING COLLECTION NOW LIVE",
-                        "link": "shopify://collections/spring",
+                        "text": "WOMEN'S COLLECTION NOW LIVE",
+                        "link": "shopify://collections/womens",
                         "icon": "star"
                     }
                 },
@@ -39,8 +39,8 @@
                         "subheading": "New Season",
                         "heading": "Effortless Elegance",
                         "text": "Discover shoes designed for the modern woman",
-                        "button_label": "Shop Spring",
-                        "button_link": "shopify://collections/spring",
+                        "button_label": "Shop Women's",
+                        "button_link": "shopify://collections/womens",
                         "button_label_2": "View Lookbook",
                         "button_link_2": "shopify://pages/lookbook",
                         "overlay_opacity": 20
@@ -52,8 +52,8 @@
                         "subheading": "Bestsellers",
                         "heading": "Comfort Meets Style",
                         "text": "All-day comfort without compromising on design",
-                        "button_label": "Shop Essentials",
-                        "button_link": "shopify://collections/essentials",
+                        "button_label": "Shop Luxury",
+                        "button_link": "shopify://collections/luxury",
                         "overlay_opacity": 30
                     }
                 },
@@ -105,25 +105,25 @@
                 "collection_1": {
                     "type": "collection",
                     "settings": {
-                        "title": "Dresses"
+                        "title": "Women's"
                     }
                 },
                 "collection_2": {
                     "type": "collection",
                     "settings": {
-                        "title": "Tops"
+                        "title": "Sneakers"
                     }
                 },
                 "collection_3": {
                     "type": "collection",
                     "settings": {
-                        "title": "Bottoms"
+                        "title": "Luxury"
                     }
                 },
                 "collection_4": {
                     "type": "collection",
                     "settings": {
-                        "title": "Shoes"
+                        "title": "Sale"
                     }
                 }
             },

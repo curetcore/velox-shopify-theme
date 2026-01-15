@@ -40,7 +40,7 @@
                         "heading": "Street Culture",
                         "text": "Bold designs for those who dare to stand out",
                         "button_label": "Shop Now",
-                        "button_link": "shopify://collections/new-arrivals",
+                        "button_link": "shopify://collections/streetwear",
                         "button_label_2": "Lookbook",
                         "button_link_2": "shopify://pages/lookbook",
                         "overlay_opacity": 40
@@ -49,22 +49,22 @@
                 "slide_2": {
                     "type": "slide",
                     "settings": {
-                        "subheading": "Collab Alert",
+                        "subheading": "Fresh Kicks",
                         "heading": "Underground Style",
                         "text": "From the streets to your wardrobe",
-                        "button_label": "View Collab",
-                        "button_link": "shopify://collections/collaborations",
+                        "button_label": "Shop Sneakers",
+                        "button_link": "shopify://collections/sneakers",
                         "overlay_opacity": 50
                     }
                 },
                 "slide_3": {
                     "type": "slide",
                     "settings": {
-                        "subheading": "Member Only",
-                        "heading": "Limited Runs",
+                        "subheading": "Limited Time",
+                        "heading": "Sale Items",
                         "text": "Once it's gone, it's gone",
-                        "button_label": "Join Crew",
-                        "button_link": "shopify://pages/membership",
+                        "button_label": "Shop Sale",
+                        "button_link": "shopify://collections/sale",
                         "overlay_opacity": 50
                     }
                 }
@@ -105,25 +105,25 @@
                 "collection_1": {
                     "type": "collection",
                     "settings": {
-                        "title": "Tees"
+                        "title": "Streetwear"
                     }
                 },
                 "collection_2": {
                     "type": "collection",
                     "settings": {
-                        "title": "Hoodies"
+                        "title": "Sneakers"
                     }
                 },
                 "collection_3": {
                     "type": "collection",
                     "settings": {
-                        "title": "Pants"
+                        "title": "Women's"
                     }
                 },
                 "collection_4": {
                     "type": "collection",
                     "settings": {
-                        "title": "Accessories"
+                        "title": "Sale"
                     }
                 }
             },

@@ -10,7 +10,7 @@
                         "heading": "The Art of Italian Footwear",
                         "text": "Experience unparalleled craftsmanship and timeless elegance",
                         "button_label": "Shop Collection",
-                        "button_link": "shopify://collections/new-arrivals",
+                        "button_link": "shopify://collections/luxury",
                         "button_label_2": "Our Heritage",
                         "button_link_2": "shopify://pages/about",
                         "text_color": "light",
@@ -24,7 +24,7 @@
                         "heading": "Handmade Excellence",
                         "text": "Each pair tells a story of dedication and mastery",
                         "button_label": "Discover",
-                        "button_link": "shopify://collections/handmade",
+                        "button_link": "shopify://collections/womens",
                         "text_color": "light",
                         "overlay_opacity": 40
                     }
@@ -36,7 +36,7 @@
                         "heading": "The Oxford Collection",
                         "text": "Timeless designs for the modern gentleman",
                         "button_label": "Shop Oxfords",
-                        "button_link": "shopify://collections/oxfords",
+                        "button_link": "shopify://collections/boots",
                         "text_color": "light",
                         "overlay_opacity": 30
                     }
@@ -88,19 +88,19 @@
                 "collection_1": {
                     "type": "collection",
                     "settings": {
-                        "title": "Oxfords"
+                        "title": "Luxury"
                     }
                 },
                 "collection_2": {
                     "type": "collection",
                     "settings": {
-                        "title": "Derbies"
+                        "title": "Women's"
                     }
                 },
                 "collection_3": {
                     "type": "collection",
                     "settings": {
-                        "title": "Loafers"
+                        "title": "Sneakers"
                     }
                 },
                 "collection_4": {

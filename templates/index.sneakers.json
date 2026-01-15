@@ -7,7 +7,7 @@
                     "type": "announcement",
                     "settings": {
                         "text": "NEW DROP ALERT",
-                        "link": "shopify://collections/new-arrivals",
+                        "link": "shopify://collections/sneakers",
                         "icon": "star"
                     }
                 },
@@ -48,7 +48,7 @@
                         "heading": "Fresh Kicks Daily",
                         "text": "The latest drops from top brands. Get them before they sell out.",
                         "button_label": "Shop New Arrivals",
-                        "button_link": "shopify://collections/new-arrivals",
+                        "button_link": "shopify://collections/sneakers",
                         "button_label_2": "Explore All",
                         "button_link_2": "shopify://collections/all",
                         "text_color": "light",
@@ -62,7 +62,7 @@
                         "heading": "Limited Edition",
                         "text": "Exclusive releases you won't find anywhere else",
                         "button_label": "Shop Retro",
-                        "button_link": "shopify://collections/retro",
+                        "button_link": "shopify://collections/streetwear",
                         "text_color": "light",
                         "overlay_opacity": 40
                     }
@@ -126,25 +126,25 @@
                 "collection_1": {
                     "type": "collection",
                     "settings": {
-                        "title": "Running"
+                        "title": "Sneakers"
                     }
                 },
                 "collection_2": {
                     "type": "collection",
                     "settings": {
-                        "title": "Basketball"
+                        "title": "Streetwear"
                     }
                 },
                 "collection_3": {
                     "type": "collection",
                     "settings": {
-                        "title": "Lifestyle"
+                        "title": "Women's"
                     }
                 },
                 "collection_4": {
                     "type": "collection",
                     "settings": {
-                        "title": "Classics"
+                        "title": "Sale"
                     }
                 }
             },
