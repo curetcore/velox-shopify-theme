@@ -1,0 +1,186 @@
+{% comment %}
+  Quick Add Form - Section for AJAX loading in modal
+  Rendered when fetching product for quick add
+{% endcomment %}
+
+{% liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign product_form_id = 'quick-add-form-' | append: product.id
+%}
+
+<div class="quick-add-form">
+  {%- comment -%} Product Image + Title {%- endcomment -%}
+  <div class="tw-flex tw-gap-4 tw-mb-4 tw-pb-4 tw-border-b tw-border-velox-100">
+    {% if product.featured_image %}
+      <div class="tw-w-20 tw-h-20 tw-bg-velox-100 tw-rounded-lg tw-overflow-hidden tw-flex-shrink-0">
+        {{ product.featured_image | image_url: width: 160 | image_tag: class: 'tw-w-full tw-h-full tw-object-cover' }}
+      </div>
+    {% endif %}
+    <div class="tw-flex-1">
+      <h3 class="tw-font-medium tw-text-velox-900 tw-line-clamp-2">{{ product.title }}</h3>
+      <div class="tw-mt-1">
+        {% render 'price', product: product %}
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%} Product Form {%- endcomment -%}
+  {% form 'product', product, id: product_form_id, novalidate: 'novalidate' %}
+    <input type="hidden" name="id" value="{{ current_variant.id }}">
+
+    {%- comment -%} Variant Selector {%- endcomment -%}
+    {% unless product.has_only_default_variant %}
+      <div class="tw-space-y-4 tw-mb-4">
+        {% for option in product.options_with_values %}
+          <div>
+            <label class="tw-block tw-text-sm tw-font-medium tw-text-velox-700 tw-mb-2">
+              {{ option.name }}
+            </label>
+            <div class="tw-flex tw-flex-wrap tw-gap-2">
+              {% for value in option.values %}
+                {% assign option_disabled = true %}
+                {% for variant in product.variants %}
+                  {% case option.position %}
+                    {% when 1 %}
+                      {% if variant.option1 == value and variant.available %}
+                        {% assign option_disabled = false %}
+                      {% endif %}
+                    {% when 2 %}
+                      {% if variant.option2 == value and variant.available %}
+                        {% assign option_disabled = false %}
+                      {% endif %}
+                    {% when 3 %}
+                      {% if variant.option3 == value and variant.available %}
+                        {% assign option_disabled = false %}
+                      {% endif %}
+                  {% endcase %}
+                {% endfor %}
+                
+                <button
+                  type="button"
+                  class="tw-px-3 tw-py-1.5 tw-text-sm tw-border tw-rounded-lg tw-transition-colors
+                    {% if option.selected_value == value %}
+                      tw-border-velox-900 tw-bg-velox-900 tw-text-white
+                    {% elsif option_disabled %}
+                      tw-border-velox-200 tw-text-velox-300 tw-cursor-not-allowed
+                    {% else %}
+                      tw-border-velox-200 hover:tw-border-velox-400
+                    {% endif %}"
+                  data-option-index="{{ option.position }}"
+                  data-option-value="{{ value }}"
+                  {% if option_disabled %}disabled{% endif %}
+                >
+                  {{ value }}
+                </button>
+              {% endfor %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% endunless %}
+
+    {%- comment -%} Quantity {%- endcomment -%}
+    <div class="tw-flex tw-items-center tw-gap-4 tw-mb-4">
+      <label class="tw-text-sm tw-font-medium tw-text-velox-700">Quantity</label>
+      <div class="tw-flex tw-items-center tw-border tw-border-velox-200 tw-rounded-lg">
+        <button type="button" class="tw-p-2" data-qty-minus>
+          {% render 'icon', name: 'minus', class: 'tw-w-4 tw-h-4' %}
+        </button>
+        <input 
+          type="number" 
+          name="quantity" 
+          value="1" 
+          min="1"
+          class="tw-w-12 tw-text-center tw-border-0 focus:tw-ring-0"
+        >
+        <button type="button" class="tw-p-2" data-qty-plus>
+          {% render 'icon', name: 'plus', class: 'tw-w-4 tw-h-4' %}
+        </button>
+      </div>
+    </div>
+
+    {%- comment -%} Add to Cart {%- endcomment -%}
+    <button
+      type="submit"
+      class="tw-w-full tw-py-3 tw-px-4 tw-bg-velox-900 tw-text-white tw-font-medium tw-rounded-lg hover:tw-bg-velox-800 tw-transition-colors disabled:tw-opacity-50"
+      {% unless current_variant.available %}disabled{% endunless %}
+    >
+      {% if current_variant.available %}
+        Add to Cart
+      {% else %}
+        Sold Out
+      {% endif %}
+    </button>
+  {% endform %}
+</div>
+
+<script>
+(function() {
+  const form = document.getElementById('{{ product_form_id }}');
+  if (!form) return;
+
+  const product = {{ product | json }};
+  const variantInput = form.querySelector('input[name="id"]');
+  const submitBtn = form.querySelector('[type="submit"]');
+  const qtyInput = form.querySelector('input[name="quantity"]');
+  const qtyMinus = form.querySelector('[data-qty-minus]');
+  const qtyPlus = form.querySelector('[data-qty-plus]');
+
+  // Quantity controls
+  qtyMinus?.addEventListener('click', () => {
+    const val = parseInt(qtyInput.value) || 1;
+    if (val > 1) qtyInput.value = val - 1;
+  });
+
+  qtyPlus?.addEventListener('click', () => {
+    const val = parseInt(qtyInput.value) || 1;
+    qtyInput.value = val + 1;
+  });
+
+  // Variant selection
+  const optionBtns = form.querySelectorAll('[data-option-value]');
+  let selectedOptions = product.options.map((opt, i) => product.selected_or_first_available_variant[`option${i + 1}`]);
+
+  optionBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const index = parseInt(btn.dataset.optionIndex) - 1;
+      const value = btn.dataset.optionValue;
+      
+      selectedOptions[index] = value;
+      
+      // Find matching variant
+      const variant = product.variants.find(v => 
+        selectedOptions.every((opt, i) => v[`option${i + 1}`] === opt)
+      );
+
+      if (variant) {
+        variantInput.value = variant.id;
+        
+        // Update button state
+        if (variant.available) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Add to Cart';
+        } else {
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Sold Out';
+        }
+      }
+
+      // Update selected state
+      form.querySelectorAll(`[data-option-index="${btn.dataset.optionIndex}"]`).forEach(b => {
+        b.classList.remove('tw-border-velox-900', 'tw-bg-velox-900', 'tw-text-white');
+        b.classList.add('tw-border-velox-200');
+      });
+      btn.classList.add('tw-border-velox-900', 'tw-bg-velox-900', 'tw-text-white');
+      btn.classList.remove('tw-border-velox-200');
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Quick Add Form",
+  "settings": []
+}
+{% endschema %}

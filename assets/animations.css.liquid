@@ -364,3 +364,34 @@ button[type="submit"]:hover::after,
 .velox-spin {
   animation: velox-spin 1s linear infinite;
 }
+
+/* ===========================================
+   STICKY HEADER COMPACT
+   =========================================== */
+
+/* Compact mode - reduces header size on scroll */
+[data-sticky-header].is-compact {
+  --header-padding: 0.5rem;
+}
+
+[data-sticky-header].is-compact .header-logo img {
+  max-height: 32px;
+  transition: max-height 0.3s ease;
+}
+
+[data-sticky-header].is-compact .header-announcement {
+  display: none;
+}
+
+[data-sticky-header].is-compact .header-nav-secondary {
+  display: none;
+}
+
+/* Transition for smooth compact mode */
+[data-sticky-header] {
+  transition: padding 0.3s ease, box-shadow 0.3s ease;
+}
+
+[data-sticky-header] .header-logo img {
+  transition: max-height 0.3s ease;
+}

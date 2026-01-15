@@ -8,6 +8,7 @@
   Opciones:
   - show_vendor: Mostrar marca (default: false)
   - show_quick_view: Botón de vista rápida (default: false)
+  - show_quick_add: Botón "+" para agregar rápido (default: false)
   - show_swatches: Mostrar swatches de color (default: true)
   - show_second_image: Mostrar segunda imagen en hover (default: true)
   - image_aspect: Aspect ratio de imagen (default: 'product')
@@ -128,4 +129,18 @@
   <div class="tw-absolute tw-top-2 tw-right-2 tw-opacity-0 group-hover:tw-opacity-100 tw-transition-opacity tw-duration-200 tw-z-10">
     {% render 'wishlist-button', product: product, size: 'medium', show_tooltip: true %}
   </div>
+
+  {%- comment -%} Quick Add button {%- endcomment -%}
+  {% assign show_quick_add_btn = show_quick_add | default: false %}
+  {% if show_quick_add_btn and product.available %}
+    <button
+      type="button"
+      class="tw-absolute tw-bottom-2 tw-right-2 tw-w-10 tw-h-10 tw-flex tw-items-center tw-justify-center tw-bg-velox-900 tw-text-white tw-rounded-full tw-shadow-lg tw-opacity-0 group-hover:tw-opacity-100 tw-transition-all tw-duration-200 hover:tw-scale-110 tw-z-10"
+      data-quick-add
+      data-product-url="{{ product.url }}"
+      aria-label="Quick add {{ product.title }}"
+    >
+      {% render 'icon', name: 'plus', class: 'tw-w-5 tw-h-5' %}
+    </button>
+  {% endif %}
 </article>

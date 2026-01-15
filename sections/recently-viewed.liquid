@@ -1,0 +1,174 @@
+{% comment %}
+  Recently Viewed Products
+  Shopify Theme Store Compliant
+
+  Muestra productos vistos recientemente usando localStorage.
+  No requiere cookies ni tracking externo.
+{% endcomment %}
+
+{% liquid
+  assign products_to_show = section.settings.products_to_show | default: 4
+  assign columns = section.settings.columns | default: 4
+%}
+
+<section 
+  class="recently-viewed-section tw-py-12 lg:tw-py-16 {% if section.settings.background == 'secondary' %}tw-bg-velox-50{% endif %}"
+  data-section-id="{{ section.id }}"
+  data-animate="fade-up"
+>
+  <div class="tw-max-w-7xl tw-mx-auto tw-px-4">
+    {%- comment -%} Header {%- endcomment -%}
+    {% if section.settings.heading != blank %}
+      <div class="tw-text-center tw-mb-8">
+        <h2 class="tw-text-2xl lg:tw-text-3xl tw-font-bold tw-text-velox-900">
+          {{ section.settings.heading }}
+        </h2>
+      </div>
+    {% endif %}
+
+    {%- comment -%} Products Container - Hidden until populated {%- endcomment -%}
+    <div 
+      class="recently-viewed-container tw-hidden"
+      data-recently-viewed-container
+      data-products-to-show="{{ products_to_show }}"
+    >
+      <div 
+        class="tw-grid tw-grid-cols-2 md:tw-grid-cols-3 lg:tw-grid-cols-{{ columns }} tw-gap-4 md:tw-gap-6"
+        data-recently-viewed-grid
+      >
+        {%- comment -%} Products injected via JavaScript {%- endcomment -%}
+      </div>
+    </div>
+
+    {%- comment -%} Empty State {%- endcomment -%}
+    <div 
+      class="recently-viewed-empty tw-text-center tw-py-8 tw-text-velox-500"
+      data-recently-viewed-empty
+    >
+      <p>{{ section.settings.empty_text | default: 'No products viewed yet' }}</p>
+    </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  const STORAGE_KEY = 'velox_recently_viewed';
+  const MAX_PRODUCTS = 12;
+
+  const container = document.querySelector('[data-recently-viewed-container]');
+  const grid = document.querySelector('[data-recently-viewed-grid]');
+  const emptyState = document.querySelector('[data-recently-viewed-empty]');
+  
+  if (!container || !grid) return;
+
+  const productsToShow = parseInt(container.dataset.productsToShow) || 4;
+
+  // Get stored products
+  function getStoredProducts() {
+    try {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Render products
+  function renderProducts() {
+    const products = getStoredProducts();
+    
+    // Filter out current product if on product page
+    const currentHandle = window.location.pathname.split('/products/')[1]?.split('?')[0];
+    const filtered = products.filter(p => p.handle !== currentHandle);
+    
+    if (filtered.length === 0) {
+      emptyState?.classList.remove('tw-hidden');
+      container?.classList.add('tw-hidden');
+      return;
+    }
+
+    emptyState?.classList.add('tw-hidden');
+    container?.classList.remove('tw-hidden');
+
+    const html = filtered.slice(0, productsToShow).map(product => `
+      <div class="tw-group">
+        <a href="${product.url}" class="tw-block">
+          <div class="tw-aspect-product tw-bg-velox-100 tw-rounded-lg tw-overflow-hidden tw-mb-3">
+            ${product.image ? `
+              <img 
+                src="${product.image}" 
+                alt="${product.title}"
+                class="tw-w-full tw-h-full tw-object-cover group-hover:tw-scale-105 tw-transition-transform tw-duration-300"
+                loading="lazy"
+              >
+            ` : ''}
+          </div>
+          <h3 class="tw-text-sm tw-font-medium tw-text-velox-900 tw-line-clamp-2 group-hover:tw-underline">
+            ${product.title}
+          </h3>
+          <p class="tw-text-sm tw-text-velox-600 tw-mt-1">${product.price}</p>
+        </a>
+      </div>
+    `).join('');
+
+    grid.innerHTML = html;
+  }
+
+  // Initialize
+  renderProducts();
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Recently Viewed",
+  "tag": "section",
+  "class": "recently-viewed-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Recently Viewed"
+    },
+    {
+      "type": "text",
+      "id": "empty_text",
+      "label": "Empty state text",
+      "default": "No products viewed yet"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 4,
+      "label": "Products to show"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4,
+      "label": "Columns"
+    },
+    {
+      "type": "select",
+      "id": "background",
+      "label": "Background",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "secondary", "label": "Secondary" }
+      ],
+      "default": "default"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Recently Viewed"
+    }
+  ]
+}
+{% endschema %}

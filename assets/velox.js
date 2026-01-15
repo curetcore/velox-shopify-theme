@@ -17,6 +17,8 @@
     initStickyHeader();
     initSectionAnimations();
     initSplideCarousels();
+    initRecentlyViewed();
+    initQuickAdd();
   }
 
   /**
@@ -522,14 +524,14 @@
   }
 
   /**
-   * Sticky Header
+   * Sticky Header - Compact mode on scroll
    */
   function initStickyHeader() {
     const header = document.querySelector('[data-sticky-header]');
     if (!header) return;
 
     let lastScroll = 0;
-    const headerHeight = header.offsetHeight;
+    const COMPACT_THRESHOLD = 50;
 
     window.addEventListener('scroll', () => {
       const currentScroll = window.pageYOffset;
@@ -539,6 +541,13 @@
         header.classList.add('tw-shadow-md');
       } else {
         header.classList.remove('tw-shadow-md');
+      }
+
+      // Compact mode when scrolled past threshold
+      if (currentScroll > COMPACT_THRESHOLD) {
+        header.classList.add('is-compact');
+      } else {
+        header.classList.remove('is-compact');
       }
 
       lastScroll = currentScroll;
@@ -625,6 +634,171 @@
         console.error('Splide initialization error:', error);
       }
     });
+  }
+
+  /**
+   * Recently Viewed Products - Track product views
+   */
+  function initRecentlyViewed() {
+    const STORAGE_KEY = 'velox_recently_viewed';
+    const MAX_PRODUCTS = 12;
+
+    // Only track on product pages
+    const productData = document.querySelector('[data-product-json]');
+    if (!productData) return;
+
+    try {
+      const product = JSON.parse(productData.textContent);
+      const storedProducts = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+      // Create product object
+      const newProduct = {
+        id: product.id,
+        handle: product.handle,
+        title: product.title,
+        url: `/products/${product.handle}`,
+        image: product.featured_image?.replace(/(\.[^.]+)$/, '_400x400$1') || product.featured_image,
+        price: formatMoney(product.price)
+      };
+
+      // Remove if already exists
+      const filtered = storedProducts.filter(p => p.id !== product.id);
+
+      // Add to beginning
+      filtered.unshift(newProduct);
+
+      // Keep only max
+      const final = filtered.slice(0, MAX_PRODUCTS);
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(final));
+    } catch (e) {
+      console.error('Recently viewed tracking error:', e);
+    }
+  }
+
+  /**
+   * Quick Add to Cart - Modal for fast adding
+   */
+  function initQuickAdd() {
+    const quickAddBtns = document.querySelectorAll('[data-quick-add]');
+    const modal = document.querySelector('[data-quick-add-modal]');
+    const modalContent = document.querySelector('[data-quick-add-content]');
+    const closeBtn = document.querySelector('[data-quick-add-close]');
+    const overlay = document.querySelector('[data-quick-add-overlay]');
+
+    if (!quickAddBtns.length) return;
+
+    quickAddBtns.forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const productUrl = btn.dataset.productUrl;
+        if (!productUrl || !modal || !modalContent) return;
+
+        // Show loading
+        modalContent.innerHTML = `
+          <div class="tw-flex tw-items-center tw-justify-center tw-py-12">
+            <div class="tw-w-8 tw-h-8 tw-border-2 tw-border-velox-200 tw-border-t-accent tw-rounded-full tw-animate-spin"></div>
+          </div>
+        `;
+        modal.classList.remove('tw-hidden');
+        document.body.style.overflow = 'hidden';
+
+        try {
+          // Fetch product section
+          const response = await fetch(`${productUrl}?section_id=quick-add-form`);
+          const html = await response.text();
+          modalContent.innerHTML = html;
+
+          // Initialize form in modal
+          const form = modalContent.querySelector('form');
+          form?.addEventListener('submit', handleQuickAddSubmit);
+
+        } catch (error) {
+          console.error('Quick add error:', error);
+          modalContent.innerHTML = `
+            <div class="tw-text-center tw-py-8 tw-text-red-500">
+              Error loading product. Please try again.
+            </div>
+          `;
+        }
+      });
+    });
+
+    // Close handlers
+    function closeModal() {
+      modal?.classList.add('tw-hidden');
+      document.body.style.overflow = '';
+    }
+
+    closeBtn?.addEventListener('click', closeModal);
+    overlay?.addEventListener('click', closeModal);
+
+    // Handle quick add form submit
+    async function handleQuickAddSubmit(e) {
+      e.preventDefault();
+      const form = e.target;
+      const submitBtn = form.querySelector('[type="submit"]');
+      const originalText = submitBtn?.textContent;
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Adding...';
+      }
+
+      try {
+        const formData = new FormData(form);
+        const response = await fetch('/cart/add.js', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!response.ok) throw new Error('Add failed');
+
+        closeModal();
+
+        // Open cart drawer
+        const drawer = document.querySelector('[data-cart-drawer]');
+        const drawerOverlay = document.querySelector('[data-cart-overlay]');
+        if (drawer && drawerOverlay) {
+          drawer.classList.remove('tw-translate-x-full');
+          drawerOverlay.classList.remove('tw-opacity-0', 'tw-invisible');
+          document.body.style.overflow = 'hidden';
+
+          // Refresh cart
+          const sectionResponse = await fetch('/?sections=cart-drawer');
+          const sections = await sectionResponse.json();
+          if (sections['cart-drawer']) {
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = sections['cart-drawer'];
+            const newDrawer = tempDiv.querySelector('[data-cart-drawer]');
+            if (newDrawer) {
+              drawer.innerHTML = newDrawer.innerHTML;
+              window.Velox?.initCartDrawer?.();
+            }
+          }
+        }
+
+        // Update cart count
+        const cartResponse = await fetch('/cart.js');
+        const cart = await cartResponse.json();
+        document.querySelectorAll('[data-cart-count]').forEach(el => {
+          el.textContent = cart.item_count;
+          el.style.display = cart.item_count > 0 ? '' : 'none';
+        });
+
+      } catch (error) {
+        console.error('Quick add submit error:', error);
+        if (submitBtn) {
+          submitBtn.textContent = 'Error';
+          setTimeout(() => {
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+          }, 2000);
+        }
+      }
+    }
   }
 
   /**
