@@ -5,7 +5,10 @@
 
 {% liquid
   assign layout = section.settings.layout | default: 'grid'
-  assign is_carousel = layout == 'carousel'
+  assign is_carousel = false
+  if layout == 'carousel'
+    assign is_carousel = true
+  endif
   assign products_to_show = section.settings.products_to_show | default: 4
 %}
 
