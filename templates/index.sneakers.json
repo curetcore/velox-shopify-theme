@@ -97,7 +97,7 @@
             "type": "horizontal-ticker",
             "settings": {
                 "text": "FREE SHIPPING • EASY RETURNS • 100% AUTHENTIC • FREE SHIPPING • EASY RETURNS • 100% AUTHENTIC",
-                "speed": "medium",
+                "speed": 30,
                 "background_color": "#000000",
                 "text_color": "#ffffff"
             }
