@@ -225,7 +225,7 @@
           <div class="velox-collection-content tw-max-w-3xl">
             {% if collection.image %}
               <div class="tw-absolute tw-inset-0 tw-opacity-10">
-                {{ collection.image | image_url: width: 1920 | image_tag: class: 'tw-w-full tw-h-full tw-object-cover' }}
+                {{ collection.image | image_url: width: 1920 | image_tag: class: 'tw-w-full tw-h-full tw-object-cover', loading: 'lazy' }}
               </div>
             {% endif %}
             <h1 class="tw-text-3xl lg:tw-text-4xl tw-font-bold tw-text-velox-900 tw-mb-2">
@@ -247,7 +247,7 @@
       <header class="velox-collection-header velox-collection-header--overlay">
         {% if collection.image %}
           <div class="tw-absolute tw-inset-0">
-            {{ collection.image | image_url: width: 1920 | image_tag: class: 'tw-w-full tw-h-full tw-object-cover' }}
+            {{ collection.image | image_url: width: 1920 | image_tag: class: 'tw-w-full tw-h-full tw-object-cover', loading: 'lazy' }}
           </div>
         {% else %}
           <div class="tw-absolute tw-inset-0 tw-bg-velox-900"></div>
