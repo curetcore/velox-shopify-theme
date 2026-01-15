@@ -12,10 +12,13 @@
   assign current_variant = product.selected_or_first_available_variant
 %}
 
-<div 
+<div
   id="sticky-atc"
   class="tw-fixed tw-bottom-0 tw-left-0 tw-right-0 tw-z-40 tw-transform tw-translate-y-full tw-transition-transform tw-duration-300 tw-ease-out"
   data-sticky-atc
+  data-adding-text="{{ 'products.product.adding' | t }}"
+  data-added-text="{{ 'products.product.added_to_cart' | t }}"
+  data-error-text="{{ 'products.product.error' | t }}"
   aria-hidden="true"
 >
   {%- comment -%} Backdrop {%- endcomment -%}
@@ -155,7 +158,7 @@
     const originalText = btnText?.textContent;
     
     addBtn.disabled = true;
-    if (btnText) btnText.textContent = 'Agregando...';
+    if (btnText) btnText.textContent = stickyATC.dataset.addingText || 'Adding...';
 
     try {
       const response = await fetch('/cart/add.js', {
@@ -196,7 +199,7 @@
         el.style.display = cart.item_count > 0 ? '' : 'none';
       });
 
-      if (btnText) btnText.textContent = '✓ Agregado';
+      if (btnText) btnText.textContent = '✓ ' + (stickyATC.dataset.addedText || 'Added');
       setTimeout(() => {
         if (btnText) btnText.textContent = originalText;
         addBtn.disabled = false;
@@ -204,7 +207,7 @@
 
     } catch (error) {
       console.error('Sticky ATC error:', error);
-      if (btnText) btnText.textContent = 'Error';
+      if (btnText) btnText.textContent = stickyATC.dataset.errorText || 'Error';
       setTimeout(() => {
         if (btnText) btnText.textContent = originalText;
         addBtn.disabled = false;

@@ -23,10 +23,13 @@
   assign global_discount = block.settings.global_discount | default: 0
 %}
 
-<div 
+<div
   class="bundle-offer tw-mt-8 tw-border tw-border-velox-200 tw-rounded-lg tw-overflow-hidden"
   data-bundle-offer
   data-global-discount="{{ global_discount }}"
+  data-adding-text="{{ 'products.product.adding' | t }}"
+  data-added-text="{{ 'products.product.bundle_added' | t }}"
+  data-error-text="{{ 'products.product.error_retry' | t }}"
   {{ block.shopify_attributes }}
 >
   {%- comment -%} Header {%- endcomment -%}
@@ -235,7 +238,7 @@
       if (items.length === 0) return;
 
       addBundleBtn.disabled = true;
-      addBundleBtn.textContent = 'Agregando...';
+      addBundleBtn.textContent = container.dataset.addingText || 'Adding...';
 
       try {
         const response = await fetch('/cart/add.js', {
@@ -276,7 +279,7 @@
           el.style.display = cart.item_count > 0 ? '' : 'none';
         });
 
-        addBundleBtn.textContent = '✓ Bundle Agregado';
+        addBundleBtn.textContent = '✓ ' + (container.dataset.addedText || 'Bundle added');
         setTimeout(() => {
           addBundleBtn.textContent = '{{ block.settings.button_text | default: "Agregar Bundle al Carrito" }}';
           addBundleBtn.disabled = false;
@@ -284,7 +287,7 @@
 
       } catch (error) {
         console.error('Bundle add error:', error);
-        addBundleBtn.textContent = 'Error - Reintentar';
+        addBundleBtn.textContent = container.dataset.errorText || 'Error - Retry';
         addBundleBtn.disabled = false;
       }
     });
