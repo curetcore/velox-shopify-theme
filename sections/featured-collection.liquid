@@ -1,9 +1,15 @@
 {% comment %}
   Velox Featured Collection Section
-  Muestra productos de una colección seleccionada en grid.
+  Muestra productos de una colección en grid o carousel.
 {% endcomment %}
 
-<section class="tw-py-12 md:tw-py-16 lg:tw-py-20">
+{% liquid
+  assign layout = section.settings.layout | default: 'grid'
+  assign is_carousel = layout == 'carousel'
+  assign products_to_show = section.settings.products_to_show | default: 4
+%}
+
+<section class="tw-py-12 md:tw-py-16 lg:tw-py-20 {% if is_carousel %}tw-overflow-hidden{% endif %}">
   <div class="tw-max-w-7xl tw-mx-auto tw-px-4 sm:tw-px-6 lg:tw-px-8">
     {%- comment -%} Header de la sección {%- endcomment -%}
     {% if section.settings.title != blank or section.settings.description != blank %}
@@ -22,26 +28,104 @@
       </div>
     {% endif %}
 
-    {%- comment -%} Grid de productos {%- endcomment -%}
+    {%- comment -%} Productos {%- endcomment -%}
     {% if section.settings.collection != blank %}
       {% assign collection = section.settings.collection %}
-      {% assign products_to_show = section.settings.products_to_show | default: 4 %}
 
-      <div class="tw-grid tw-grid-cols-2 md:tw-grid-cols-3 lg:tw-grid-cols-{{ section.settings.columns }} tw-gap-4 md:tw-gap-6 lg:tw-gap-8">
-        {% for product in collection.products limit: products_to_show %}
-          {% render 'product-card',
-            product: product,
-            show_vendor: section.settings.show_vendor,
-            show_quick_view: section.settings.show_quick_view,
-            show_swatches: section.settings.show_swatches,
-            show_second_image: section.settings.show_second_image
-          %}
-        {% endfor %}
-      </div>
+      {% if is_carousel %}
+        {%- comment -%} Carousel con Splide {%- endcomment -%}
+        <div
+          id="splide-{{ section.id }}"
+          class="splide velox-product-carousel"
+          data-splide='{
+            "type": "{{ section.settings.carousel_loop | default: false | json | remove: '"' | replace: 'true', 'loop' | replace: 'false', 'slide' }}",
+            "perPage": {{ section.settings.columns | default: 4 }},
+            "perMove": 1,
+            "gap": "1.5rem",
+            "pagination": {{ section.settings.show_dots | default: true | json }},
+            "arrows": {{ section.settings.show_arrows | default: true | json }},
+            "autoplay": {{ section.settings.carousel_autoplay | default: false | json }},
+            "interval": {{ section.settings.carousel_speed | default: 5 | times: 1000 }},
+            "pauseOnHover": true,
+            "breakpoints": {
+              "1024": { "perPage": 3 },
+              "768": { "perPage": 2 },
+              "480": { "perPage": 1, "gap": "1rem" }
+            }
+          }'
+        >
+          <div class="splide__track">
+            <ul class="splide__list">
+              {% for product in collection.products limit: products_to_show %}
+                <li class="splide__slide">
+                  {% render 'product-card',
+                    product: product,
+                    show_vendor: section.settings.show_vendor,
+                    show_quick_view: section.settings.show_quick_view,
+                    show_swatches: section.settings.show_swatches,
+                    show_second_image: section.settings.show_second_image
+                  %}
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+
+        {%- comment -%} Estilos del carousel {%- endcomment -%}
+        <style>
+          #splide-{{ section.id }} .splide__arrow {
+            background: white;
+            opacity: 1;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            transition: all 0.2s;
+          }
+          #splide-{{ section.id }} .splide__arrow:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+          }
+          #splide-{{ section.id }} .splide__arrow svg {
+            fill: currentColor;
+            width: 1.25rem;
+            height: 1.25rem;
+          }
+          #splide-{{ section.id }} .splide__pagination {
+            bottom: -2rem;
+          }
+          #splide-{{ section.id }} .splide__pagination__page {
+            width: 0.5rem;
+            height: 0.5rem;
+            background: var(--color-foreground, #333);
+            opacity: 0.3;
+            transition: all 0.2s;
+          }
+          #splide-{{ section.id }} .splide__pagination__page.is-active {
+            background: var(--color-accent, #000);
+            opacity: 1;
+            transform: scale(1.2);
+          }
+        </style>
+
+      {% else %}
+        {%- comment -%} Grid estático {%- endcomment -%}
+        <div class="tw-grid tw-grid-cols-2 md:tw-grid-cols-3 lg:tw-grid-cols-{{ section.settings.columns }} tw-gap-4 md:tw-gap-6 lg:tw-gap-8">
+          {% for product in collection.products limit: products_to_show %}
+            {% render 'product-card',
+              product: product,
+              show_vendor: section.settings.show_vendor,
+              show_quick_view: section.settings.show_quick_view,
+              show_swatches: section.settings.show_swatches,
+              show_second_image: section.settings.show_second_image
+            %}
+          {% endfor %}
+        </div>
+      {% endif %}
 
       {%- comment -%} Botón ver colección {%- endcomment -%}
       {% if section.settings.show_view_all and collection.products.size > products_to_show %}
-        <div class="tw-mt-10 tw-text-center">
+        <div class="tw-mt-10 tw-text-center {% if is_carousel %}tw-mt-16{% endif %}">
           {% render 'button',
             label: section.settings.button_text | default: 'Ver colección',
             href: collection.url,
@@ -97,6 +181,20 @@
       "label": "Colección"
     },
     {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Estilo de visualización",
+      "options": [
+        { "value": "grid", "label": "Grid" },
+        { "value": "carousel", "label": "Carousel" }
+      ],
+      "default": "grid"
+    },
+    {
       "type": "range",
       "id": "products_to_show",
       "min": 2,
@@ -112,7 +210,45 @@
       "max": 5,
       "step": 1,
       "default": 4,
-      "label": "Columnas (desktop)"
+      "label": "Columnas / productos visibles"
+    },
+    {
+      "type": "header",
+      "content": "Carousel settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Mostrar flechas de navegación",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dots",
+      "label": "Mostrar indicadores",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "carousel_autoplay",
+      "label": "Autoplay",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "carousel_speed",
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "label": "Velocidad de autoplay",
+      "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "carousel_loop",
+      "label": "Loop infinito",
+      "default": false
     },
     {
       "type": "header",

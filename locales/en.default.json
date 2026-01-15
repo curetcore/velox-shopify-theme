@@ -125,7 +125,8 @@
       "free_shipping_remaining_html": "You're <strong>{{ remaining }}</strong> away from free shipping",
       "free_shipping_achieved": "You have free shipping!",
       "items_count": "{{ count }} items",
-      "items_count_one": "1 item"
+      "items_count_one": "1 item",
+      "upsells_heading": "You might also like"
     },
     "checkout": "Checkout",
     "title": "Cart",

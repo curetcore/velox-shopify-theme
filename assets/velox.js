@@ -15,6 +15,8 @@
     initCartDrawer();
     initAccordions();
     initStickyHeader();
+    initSectionAnimations();
+    initSplideCarousels();
   }
 
   /**
@@ -178,6 +180,8 @@
       drawer.classList.remove('tw-translate-x-full');
       overlay.classList.remove('tw-opacity-0', 'tw-invisible');
       document.body.style.overflow = 'hidden';
+      // Load upsells when cart opens
+      loadCartUpsells();
     }
 
     function closeCart() {
@@ -258,13 +262,7 @@
       if (!response.ok) throw new Error('Update failed');
       const cart = await response.json();
 
-      // Si carrito vacio, recargar para mostrar empty state
-      if (cart.item_count === 0) {
-        window.location.reload();
-        return;
-      }
-
-      // Si item fue eliminado (quantity 0), remover del DOM
+      // Si item fue eliminado (quantity 0), remover del DOM con animación
       if (quantity === 0 && item) {
         item.classList.add('tw-scale-95', 'tw-opacity-0');
         setTimeout(() => item.remove(), 200);
@@ -272,13 +270,19 @@
         item.classList.remove('tw-opacity-50', 'tw-pointer-events-none');
       }
 
-      // Actualizar UI sin recargar
+      // Actualizar UI completamente sin recargar
       updateCartDrawerUI(cart);
       updateHeaderCartCount(cart.item_count);
+
+      // Si carrito vacío, mostrar empty state dinámicamente
+      if (cart.item_count === 0) {
+        renderEmptyCartState();
+      }
     } catch (error) {
       console.error('Cart update error:', error);
       if (item) item.classList.remove('tw-opacity-50', 'tw-pointer-events-none');
-      window.location.reload(); // Fallback
+      // Mostrar error toast en lugar de reload
+      showCartError('Error actualizando el carrito. Por favor intenta de nuevo.');
     }
   }
 
@@ -329,14 +333,166 @@
     const progressBar = bar.querySelector('[data-shipping-progress]');
     const message = bar.querySelector('[data-shipping-message]');
 
-    if (progressBar) progressBar.style.width = `${progress}%`;
+    if (progressBar) {
+      progressBar.style.width = `${progress}%`;
+      // Agregar clase de celebración cuando se alcanza envío gratis
+      if (progress >= 100) {
+        progressBar.classList.add('tw-bg-green-500');
+        progressBar.classList.remove('tw-bg-accent');
+      } else {
+        progressBar.classList.remove('tw-bg-green-500');
+        progressBar.classList.add('tw-bg-accent');
+      }
+    }
     if (message) {
       if (remaining === 0) {
-        message.textContent = bar.dataset.freeShippingSuccess || 'Free shipping!';
+        message.innerHTML = `<span class="tw-text-green-700 tw-font-medium">🎉 ${bar.dataset.freeShippingSuccess || '¡Tienes envío gratis!'}</span>`;
       } else {
         const formattedRemaining = formatMoney(remaining);
-        message.textContent = (bar.dataset.freeShippingRemaining || 'Add {amount} for free shipping').replace('{amount}', formattedRemaining);
+        message.innerHTML = `<span class="tw-text-velox-700">${(bar.dataset.freeShippingRemaining || 'Te faltan {amount} para envío gratis').replace('{amount}', formattedRemaining)}</span>`;
       }
+    }
+  }
+
+  /**
+   * Render empty cart state dynamically
+   */
+  function renderEmptyCartState() {
+    const cartItems = document.querySelector('[data-cart-items]');
+    const cartFooter = document.querySelector('[data-cart-footer]');
+    const shippingBar = document.querySelector('[data-free-shipping-bar]');
+    const upsellsSection = document.querySelector('[data-cart-upsells]');
+
+    // Ocultar elementos que no aplican para carrito vacío
+    if (cartFooter) cartFooter.style.display = 'none';
+    if (shippingBar) shippingBar.style.display = 'none';
+    if (upsellsSection) upsellsSection.style.display = 'none';
+
+    // Mostrar empty state
+    if (cartItems) {
+      cartItems.innerHTML = `
+        <div class="tw-flex tw-flex-col tw-items-center tw-justify-center tw-py-12 tw-text-center" data-cart-empty>
+          <svg class="tw-w-16 tw-h-16 tw-text-velox-200 tw-mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+          </svg>
+          <p class="tw-text-velox-500 tw-mb-4">Tu carrito está vacío</p>
+          <button type="button" class="tw-btn tw-btn-primary" data-cart-close>Seguir comprando</button>
+        </div>
+      `;
+      // Re-attach close event
+      const closeBtn = cartItems.querySelector('[data-cart-close]');
+      closeBtn?.addEventListener('click', () => {
+        const drawer = document.querySelector('[data-cart-drawer]');
+        const overlay = document.querySelector('[data-cart-overlay]');
+        drawer?.classList.add('tw-translate-x-full');
+        overlay?.classList.add('tw-opacity-0', 'tw-invisible');
+        document.body.style.overflow = '';
+      });
+    }
+  }
+
+  /**
+   * Show cart error toast
+   */
+  function showCartError(message) {
+    // Crear toast si no existe
+    let toast = document.querySelector('[data-cart-error-toast]');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.setAttribute('data-cart-error-toast', '');
+      toast.className = 'tw-fixed tw-bottom-4 tw-right-4 tw-bg-red-500 tw-text-white tw-px-4 tw-py-3 tw-rounded-lg tw-shadow-lg tw-z-50 tw-transform tw-translate-y-full tw-opacity-0 tw-transition-all tw-duration-300';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    
+    // Mostrar con animación
+    requestAnimationFrame(() => {
+      toast.classList.remove('tw-translate-y-full', 'tw-opacity-0');
+    });
+    
+    // Ocultar después de 3 segundos
+    setTimeout(() => {
+      toast.classList.add('tw-translate-y-full', 'tw-opacity-0');
+    }, 3000);
+  }
+
+  /**
+   * Cart Upsells
+   * Load product recommendations based on cart items
+   */
+  let upsellsLoaded = false;
+
+  async function loadCartUpsells() {
+    if (upsellsLoaded) return;
+
+    const container = document.querySelector('[data-upsells-container]');
+    const loadingEl = document.querySelector('[data-upsells-loading]');
+    const productsEl = document.querySelector('[data-upsells-products]');
+
+    if (!container || !productsEl) return;
+
+    // Get first product ID from cart for recommendations
+    const cartItems = document.querySelectorAll('[data-cart-item]');
+    if (!cartItems.length) return;
+
+    // Get product IDs from cart to exclude and use for recommendations
+    const cartProductIds = [];
+    cartItems.forEach(item => {
+      const link = item.querySelector('a[href*="/products/"]');
+      if (link) {
+        const match = link.href.match(/\/products\/([^?\/]+)/);
+        if (match) cartProductIds.push(match[1]);
+      }
+    });
+
+    if (!cartProductIds.length) return;
+
+    try {
+      // Fetch recommendations for first cart product
+      const response = await fetch(`${window.Shopify.routes.root}recommendations/products.json?product_id=${cartProductIds[0]}&limit=6`);
+      const data = await response.json();
+
+      if (!data.products || !data.products.length) {
+        container.closest('[data-cart-upsells]')?.classList.add('tw-hidden');
+        return;
+      }
+
+      // Filter out products already in cart
+      const recommendations = data.products.filter(p =>
+        !cartProductIds.includes(p.handle)
+      ).slice(0, 4);
+
+      if (!recommendations.length) {
+        container.closest('[data-cart-upsells]')?.classList.add('tw-hidden');
+        return;
+      }
+
+      // Render upsell products
+      productsEl.innerHTML = recommendations.map(product => `
+        <a href="${product.url}" class="tw-flex-shrink-0 tw-w-24 tw-group">
+          <div class="tw-w-24 tw-h-24 tw-bg-velox-100 tw-rounded-md tw-overflow-hidden tw-mb-2">
+            ${product.featured_image ? `
+              <img
+                src="${product.featured_image.replace(/(\.[^.]+)$/, '_200x200$1')}"
+                alt="${product.title}"
+                class="tw-w-full tw-h-full tw-object-cover group-hover:tw-scale-105 tw-transition-transform"
+                loading="lazy"
+              >
+            ` : ''}
+          </div>
+          <p class="tw-text-xs tw-text-velox-900 tw-line-clamp-2 group-hover:tw-underline">${product.title}</p>
+          <p class="tw-text-xs tw-font-medium tw-text-velox-600">${formatMoney(product.price)}</p>
+        </a>
+      `).join('');
+
+      // Show products, hide loading
+      loadingEl?.classList.add('tw-hidden');
+      productsEl.classList.remove('tw-hidden');
+      upsellsLoaded = true;
+
+    } catch (error) {
+      console.error('Upsells error:', error);
+      container.closest('[data-cart-upsells]')?.classList.add('tw-hidden');
     }
   }
 
@@ -390,6 +546,65 @@
   }
 
   /**
+   * Section Animations
+   * Animate sections on scroll using IntersectionObserver
+   */
+  function initSectionAnimations() {
+    const animatedElements = document.querySelectorAll('[data-animate]');
+    if (!animatedElements.length) return;
+
+    // Check if animations are disabled via CSS (reduced motion)
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      // Make all elements visible immediately
+      animatedElements.forEach(el => el.classList.add('is-visible'));
+      return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    });
+
+    animatedElements.forEach(el => observer.observe(el));
+  }
+
+  /**
+   * Splide Carousels
+   * Initialize all Splide carousel instances on the page
+   */
+  function initSplideCarousels() {
+    // Check if Splide is loaded
+    if (typeof Splide === 'undefined') {
+      // Retry after a short delay (Splide loads with defer)
+      setTimeout(initSplideCarousels, 100);
+      return;
+    }
+
+    const carousels = document.querySelectorAll('.splide');
+    if (!carousels.length) return;
+
+    carousels.forEach(carousel => {
+      // Skip if already mounted
+      if (carousel.classList.contains('is-initialized')) return;
+
+      try {
+        const splide = new Splide(carousel);
+        splide.mount();
+      } catch (error) {
+        console.error('Splide initialization error:', error);
+      }
+    });
+  }
+
+  /**
    * Format money (basic implementation)
    */
   function formatMoney(cents) {
@@ -406,7 +621,8 @@
     initMobileMenu,
     initSearchModal,
     initCartDrawer,
-    initAccordions
+    initAccordions,
+    initSplideCarousels
   };
 
 })();

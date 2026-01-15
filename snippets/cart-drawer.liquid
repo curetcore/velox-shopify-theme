@@ -41,20 +41,20 @@
     </button>
   </div>
 
-  {%- comment -%} Free shipping progress {%- endcomment -%}
+  {%- comment -%} Free shipping progress with checkpoints {%- endcomment -%}
   {% assign free_shipping_threshold = settings.free_shipping_threshold | default: 2000 | times: 100 %}
   {% assign show_free_shipping = settings.show_free_shipping_bar | default: true %}
 
   {% if show_free_shipping and free_shipping_threshold > 0 %}
     {% assign amount_remaining = free_shipping_threshold | minus: cart.total_price %}
-    {% assign progress_percentage = cart.total_price | times: 100 | divided_by: free_shipping_threshold %}
+    {% assign progress_percentage = cart.total_price | times: 100.0 | divided_by: free_shipping_threshold %}
     {% if progress_percentage > 100 %}{% assign progress_percentage = 100 %}{% endif %}
 
     <div
       class="tw-px-4 tw-py-3 tw-bg-velox-50 tw-border-b tw-border-velox-100"
       data-free-shipping-bar
       data-free-shipping-threshold="{{ free_shipping_threshold }}"
-      data-free-shipping-success="{{ 'cart.general.free_shipping_achieved' | t | default: '¡Tienes envío gratis!' }}"
+      data-free-shipping-success="{{ 'cart.general.free_shipping_achieved' | t | default: '¡Envío gratis desbloqueado!' }}"
       data-free-shipping-remaining="{{ 'cart.general.free_shipping_remaining' | t | default: 'Te faltan {amount} para envío gratis' }}"
     >
       <p class="tw-text-sm tw-mb-2" data-shipping-message>
@@ -64,20 +64,38 @@
           </span>
         {% else %}
           <span class="tw-text-green-700 tw-font-medium">
-            {% render 'icon', name: 'check', class: 'tw-w-4 tw-h-4 tw-inline tw-mr-1' %}
-            {{ 'cart.general.free_shipping_achieved' | t | default: '¡Tienes envío gratis!' }}
+            🎉 {{ 'cart.general.free_shipping_achieved' | t | default: '¡Envío gratis desbloqueado!' }}
           </span>
         {% endif %}
       </p>
-      <div class="tw-w-full tw-h-1.5 tw-bg-velox-200 tw-rounded-full tw-overflow-hidden">
-        <div
-          class="tw-h-full tw-bg-accent tw-rounded-full tw-transition-all tw-duration-300"
-          style="width: {{ progress_percentage }}%;"
-          data-shipping-progress
-        ></div>
+      {%- comment -%} Progress bar with visual checkpoints {%- endcomment -%}
+      <div class="tw-relative">
+        <div class="tw-w-full tw-h-2 tw-bg-velox-200 tw-rounded-full tw-overflow-hidden">
+          <div
+            class="tw-h-full {% if progress_percentage >= 100 %}tw-bg-green-500{% else %}tw-bg-accent{% endif %} tw-rounded-full tw-transition-all tw-duration-500 tw-ease-out"
+            style="width: {{ progress_percentage }}%;"
+            data-shipping-progress
+          ></div>
+        </div>
+        {%- comment -%} Checkpoints at 25%, 50%, 75%, 100% {%- endcomment -%}
+        <div class="tw-absolute tw-inset-0 tw-flex tw-justify-between tw-items-center tw-pointer-events-none">
+          {% for i in (1..4) %}
+            {% assign checkpoint_percentage = i | times: 25 %}
+            {% assign checkpoint_value = free_shipping_threshold | times: checkpoint_percentage | divided_by: 100 %}
+            {% assign is_reached = false %}
+            {% if cart.total_price >= checkpoint_value %}{% assign is_reached = true %}{% endif %}
+            <div class="tw-flex tw-flex-col tw-items-center" style="position: absolute; left: {{ checkpoint_percentage }}%; transform: translateX(-50%);">
+              <div class="tw-w-3 tw-h-3 tw-rounded-full tw-border-2 {% if is_reached %}tw-bg-green-500 tw-border-green-500{% else %}tw-bg-white tw-border-velox-300{% endif %} tw-transition-colors tw-duration-300"></div>
+              {% if i == 4 %}
+                <span class="tw-text-[10px] tw-text-velox-500 tw-mt-1">🚚</span>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
       </div>
     </div>
   {% endif %}
+
 
   {%- comment -%} Cart items {%- endcomment -%}
   <div class="tw-flex-1 tw-overflow-y-auto tw-px-4 tw-py-4" data-cart-items>
@@ -182,6 +200,30 @@
       </div>
     {% endif %}
   </div>
+
+  {%- comment -%} Cart Upsells {%- endcomment -%}
+  {% assign show_upsells = settings.show_cart_upsells | default: true %}
+  {% if show_upsells and cart.item_count > 0 %}
+    <div class="tw-px-4 tw-py-4 tw-border-t tw-border-velox-100" data-cart-upsells>
+      <h3 class="tw-text-sm tw-font-semibold tw-text-velox-900 tw-mb-3">
+        {{ settings.cart_upsells_heading | default: 'You might also like' }}
+      </h3>
+      <div class="tw-flex tw-gap-3 tw-overflow-x-auto tw-pb-2 tw-scrollbar-hide" data-upsells-container>
+        {%- comment -%} Loading skeleton {%- endcomment -%}
+        <div class="tw-flex tw-gap-3" data-upsells-loading>
+          {% for i in (1..4) %}
+            <div class="tw-flex-shrink-0 tw-w-24 tw-animate-pulse">
+              <div class="tw-w-24 tw-h-24 tw-bg-velox-100 tw-rounded-md tw-mb-2"></div>
+              <div class="tw-h-3 tw-bg-velox-100 tw-rounded tw-mb-1"></div>
+              <div class="tw-h-3 tw-bg-velox-100 tw-rounded tw-w-2/3"></div>
+            </div>
+          {% endfor %}
+        </div>
+        {%- comment -%} Products will be loaded via JS {%- endcomment -%}
+        <div class="tw-hidden tw-flex tw-gap-3" data-upsells-products></div>
+      </div>
+    </div>
+  {% endif %}
 
   {%- comment -%} Footer con totales y checkout {%- endcomment -%}
   {% if cart.item_count > 0 %}

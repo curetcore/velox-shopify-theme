@@ -848,6 +848,7 @@
       });
     }
 
+
     // Quantity buttons
     const quantityInput = productForm.querySelector('[data-quantity-input]');
     const minusBtn = productForm.querySelector('[data-quantity-minus]');
@@ -866,8 +867,100 @@
         quantityInput.value = val + 1;
       });
     }
+
+    // AJAX Add to Cart - Interceptar submit y abrir drawer automáticamente
+    productForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const submitBtn = this.querySelector('[data-add-to-cart]');
+      const submitText = this.querySelector('[data-add-to-cart-text]');
+      const originalText = submitText?.textContent;
+      const variantId = this.querySelector('[data-variant-id]')?.value;
+      const quantity = parseInt(quantityInput?.value) || 1;
+      
+      if (!variantId) return;
+      
+      // Estado de loading
+      submitBtn?.setAttribute('disabled', 'disabled');
+      if (submitText) submitText.textContent = 'Agregando...';
+      submitBtn?.querySelector('.tw-w-5')?.classList.add('tw-animate-spin');
+      
+      try {
+        const response = await fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id: variantId,
+            quantity: quantity
+          })
+        });
+        
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.description || 'Error al agregar al carrito');
+        }
+        
+        // Éxito - Obtener cart actualizado
+        const cartResponse = await fetch('/cart.js');
+        const cart = await cartResponse.json();
+        
+        // Actualizar header cart count
+        document.querySelectorAll('[data-cart-count]').forEach(el => {
+          el.textContent = cart.item_count;
+          el.style.display = cart.item_count > 0 ? '' : 'none';
+        });
+        
+        // Abrir cart drawer automáticamente
+        const drawer = document.querySelector('[data-cart-drawer]');
+        const overlay = document.querySelector('[data-cart-overlay]');
+        if (drawer && overlay) {
+          drawer.classList.remove('tw-translate-x-full');
+          overlay.classList.remove('tw-opacity-0', 'tw-invisible');
+          document.body.style.overflow = 'hidden';
+          
+          // Refrescar contenido del drawer via Shopify section rendering
+          try {
+            const sectionResponse = await fetch('/?sections=cart-drawer');
+            const sections = await sectionResponse.json();
+            if (sections['cart-drawer']) {
+              const tempDiv = document.createElement('div');
+              tempDiv.innerHTML = sections['cart-drawer'];
+              const newDrawer = tempDiv.querySelector('[data-cart-drawer]');
+              if (newDrawer) {
+                drawer.innerHTML = newDrawer.innerHTML;
+                // Re-inicializar event listeners del drawer
+                if (window.Velox?.initCartDrawer) {
+                  window.Velox.initCartDrawer();
+                }
+              }
+            }
+          } catch (sectionError) {
+            // Fallback: reload la página si section rendering falla
+            console.warn('Section rendering failed, using fallback', sectionError);
+          }
+        }
+        
+        // Mostrar éxito brevemente
+        if (submitText) submitText.textContent = '✓ Agregado';
+        setTimeout(() => {
+          if (submitText) submitText.textContent = originalText;
+        }, 2000);
+        
+      } catch (error) {
+        console.error('Add to cart error:', error);
+        // Mostrar error
+        if (submitText) submitText.textContent = error.message || 'Error';
+        setTimeout(() => {
+          if (submitText) submitText.textContent = originalText;
+        }, 3000);
+      } finally {
+        submitBtn?.removeAttribute('disabled');
+        submitBtn?.querySelector('.tw-w-5')?.classList.remove('tw-animate-spin');
+      }
+    });
   });
 </script>
+
 
 {% schema %}
 {

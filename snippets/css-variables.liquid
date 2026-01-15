@@ -17,7 +17,7 @@
   {% endif %}
 
   :root {
-    {% comment %} Typography {% endcomment %}
+    {% comment %} Typography - Fonts {% endcomment %}
     --font-primary--family: {{ settings.type_primary_font.family }}, {{ settings.type_primary_font.fallback_families }};
     --font-primary--style: {{ settings.type_primary_font.style }};
     --font-primary--weight: {{ settings.type_primary_font.weight }};
@@ -26,6 +26,13 @@
       --font-secondary--style: {{ settings.type_secondary_font.style }};
       --font-secondary--weight: {{ settings.type_secondary_font.weight }};
     {% endif %}
+
+    {% comment %} Typography - Advanced {% endcomment %}
+    --heading-line-height: {{ settings.heading_line_height | default: 1.2 }};
+    --heading-letter-spacing: {{ settings.heading_letter_spacing | default: -0.02 }}em;
+    --heading-text-transform: {{ settings.heading_text_transform | default: 'none' }};
+    --body-line-height: {{ settings.body_line_height | default: 1.6 }};
+    --body-letter-spacing: {{ settings.body_letter_spacing | default: 0 }}em;
 
     {% comment %} Layout {% endcomment %}
     --page-width: {{ settings.max_page_width }};
@@ -41,21 +48,116 @@
     --color-accent: {{ settings.accent_color | default: '#000000' }};
     --color-accent-foreground: {{ settings.accent_foreground | default: '#FFFFFF' }};
 
+    {% comment %} Buttons {% endcomment %}
+    --button-border-radius: {{ settings.button_corner_radius | default: 4 }}px;
+    --button-font-weight: {{ settings.button_font_weight | default: 500 }};
+    --button-text-transform: {{ settings.button_text_transform | default: 'none' }};
+
+    {% comment %} Animations {% endcomment %}
+    --animation-duration: {{ settings.animation_duration | default: 500 }}ms;
+    --animation-delay: {{ settings.animation_delay | default: 100 }}ms;
+
     {% comment %} Cart settings - exposed for JS {% endcomment %}
     --free-shipping-threshold: {{ settings.free_shipping_threshold | default: 2000 }};
   }
 
   {% comment %}
-    Custom utility classes that use CSS variables
-    These work with Tailwind's arbitrary value syntax: bg-[var(--color-accent)]
+    Typography styles
   {% endcomment %}
+  h1, h2, h3, h4, h5, h6,
+  .tw-heading {
+    line-height: var(--heading-line-height);
+    letter-spacing: var(--heading-letter-spacing);
+    text-transform: var(--heading-text-transform);
+  }
+
+  body {
+    line-height: var(--body-line-height);
+    letter-spacing: var(--body-letter-spacing);
+  }
+
+  {% comment %}
+    Button styles with hover effects
+  {% endcomment %}
+  .tw-btn,
+  .tw-btn-accent,
+  .tw-btn-primary,
+  .tw-btn-secondary {
+    border-radius: var(--button-border-radius);
+    font-weight: var(--button-font-weight);
+    text-transform: var(--button-text-transform);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
   .tw-btn-accent {
     background-color: var(--color-accent);
     color: var(--color-accent-foreground);
   }
-  .tw-btn-accent:hover {
-    opacity: 0.9;
-  }
+
+  {% comment %} Button hover effects {% endcomment %}
+  {% case settings.button_hover_effect %}
+    {% when 'darken' %}
+      .tw-btn-accent:hover {
+        filter: brightness(0.9);
+      }
+    {% when 'glow' %}
+      .tw-btn-accent:hover {
+        box-shadow: 0 0 20px var(--color-accent);
+      }
+    {% when 'slide-left' %}
+      .tw-btn-accent::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: rgba(255,255,255,0.2);
+        transition: left 0.3s ease;
+      }
+      .tw-btn-accent:hover::before {
+        left: 100%;
+      }
+    {% when 'slide-up' %}
+      .tw-btn-accent::before {
+        content: '';
+        position: absolute;
+        bottom: -100%;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255,255,255,0.2);
+        transition: bottom 0.3s ease;
+      }
+      .tw-btn-accent:hover::before {
+        bottom: 100%;
+      }
+    {% when 'arrow' %}
+      .tw-btn-accent::after {
+        content: '→';
+        position: absolute;
+        right: -20px;
+        opacity: 0;
+        transition: all 0.3s ease;
+      }
+      .tw-btn-accent:hover {
+        padding-right: 2rem;
+      }
+      .tw-btn-accent:hover::after {
+        right: 1rem;
+        opacity: 1;
+      }
+    {% else %}
+      .tw-btn-accent:hover {
+        opacity: 0.9;
+      }
+  {% endcase %}
+
+  {% comment %}
+    Color utility classes
+  {% endcomment %}
   .tw-bg-accent {
     background-color: var(--color-accent);
   }
@@ -64,5 +166,63 @@
   }
   .tw-border-accent {
     border-color: var(--color-accent);
+  }
+
+  {% comment %}
+    Section animations
+  {% endcomment %}
+  {% if settings.enable_section_animations %}
+    [data-animate] {
+      opacity: 0;
+      transition: opacity var(--animation-duration) ease,
+                  transform var(--animation-duration) ease;
+    }
+
+    {% case settings.animation_style %}
+      {% when 'fade' %}
+        [data-animate] { opacity: 0; }
+        [data-animate].is-visible { opacity: 1; }
+      {% when 'fade-up' %}
+        [data-animate] { opacity: 0; transform: translateY(30px); }
+        [data-animate].is-visible { opacity: 1; transform: translateY(0); }
+      {% when 'fade-down' %}
+        [data-animate] { opacity: 0; transform: translateY(-30px); }
+        [data-animate].is-visible { opacity: 1; transform: translateY(0); }
+      {% when 'zoom-in' %}
+        [data-animate] { opacity: 0; transform: scale(0.95); }
+        [data-animate].is-visible { opacity: 1; transform: scale(1); }
+    {% endcase %}
+
+    {% comment %} Stagger delay for child elements {% endcomment %}
+    [data-animate-child]:nth-child(1) { transition-delay: calc(var(--animation-delay) * 1); }
+    [data-animate-child]:nth-child(2) { transition-delay: calc(var(--animation-delay) * 2); }
+    [data-animate-child]:nth-child(3) { transition-delay: calc(var(--animation-delay) * 3); }
+    [data-animate-child]:nth-child(4) { transition-delay: calc(var(--animation-delay) * 4); }
+    [data-animate-child]:nth-child(5) { transition-delay: calc(var(--animation-delay) * 5); }
+    [data-animate-child]:nth-child(6) { transition-delay: calc(var(--animation-delay) * 6); }
+  {% endif %}
+
+  {% comment %} Respect reduced motion preference {% endcomment %}
+  {% if settings.respect_reduced_motion %}
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      [data-animate] {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
+  {% endif %}
+
+  {% comment %} Hide scrollbar for horizontal scroll areas {% endcomment %}
+  .tw-scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .tw-scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
 {% endstyle %}

@@ -125,7 +125,8 @@
       "free_shipping_remaining_html": "Te faltan <strong>{{ remaining }}</strong> para envío gratis",
       "free_shipping_achieved": "¡Tienes envío gratis!",
       "items_count": "{{ count }} artículos",
-      "items_count_one": "1 artículo"
+      "items_count_one": "1 artículo",
+      "upsells_heading": "También te puede interesar"
     },
     "checkout": "Finalizar compra",
     "title": "Carrito",

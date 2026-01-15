@@ -34,6 +34,10 @@
     {% # Velox Theme - Tailwind CSS %}
     {{ 'velox.css' | asset_url | stylesheet_tag }}
 
+    {% # Splide.js - Lightweight slider library %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide-core.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js" defer></script>
+
     {% # Social, title, etc. %}
     {% render 'meta-tags' %}
 
@@ -73,8 +77,8 @@
     {% # Quick View Modal %}
     {% render 'quick-view' %}
 
-    {% # Cart Drawer %}
-    {% render 'cart-drawer' %}
+    {% # Cart Drawer - As section for dynamic updates %}
+    {% section 'cart-drawer' %}
 
     {% # Newsletter Popup %}
     {% section 'newsletter-popup' %}
