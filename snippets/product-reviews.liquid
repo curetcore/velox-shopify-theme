@@ -56,9 +56,9 @@
   {%- comment -%} No Reviews Yet State {%- endcomment -%}
   {% if reviews_count == 0 and block.settings.show_no_reviews %}
     <div class="tw-text-center tw-py-6 tw-text-velox-500">
-      <p class="tw-mb-2">{{ block.settings.no_reviews_text | default: 'No reviews yet' }}</p>
+      <p class="tw-mb-2">{{ block.settings.no_reviews_text | default: 'products.product.no_reviews_yet' | t }}</p>
       {% if block.settings.show_write_review %}
-        <p class="tw-text-sm">Be the first to review this product!</p>
+        <p class="tw-text-sm">{{ 'products.product.be_first_to_review' | t }}</p>
       {% endif %}
     </div>
   {% endif %}

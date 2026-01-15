@@ -17,11 +17,19 @@
                         "text": "Free Shipping on Orders $100+",
                         "icon": "truck"
                     }
+                },
+                "announcement_3": {
+                    "type": "announcement",
+                    "settings": {
+                        "text": "100% Authentic Guaranteed",
+                        "icon": "none"
+                    }
                 }
             },
             "block_order": [
                 "announcement_1",
-                "announcement_2"
+                "announcement_2",
+                "announcement_3"
             ],
             "settings": {
                 "background_color": "#111111",
@@ -43,6 +51,7 @@
                         "button_link": "shopify://collections/new-arrivals",
                         "button_label_2": "Explore All",
                         "button_link_2": "shopify://collections/all",
+                        "text_color": "light",
                         "overlay_opacity": 30
                     }
                 },
@@ -54,6 +63,7 @@
                         "text": "Classic silhouettes reimagined for the modern sneakerhead.",
                         "button_label": "Shop Retro",
                         "button_link": "shopify://collections/retro",
+                        "text_color": "light",
                         "overlay_opacity": 40
                     }
                 },
@@ -65,6 +75,7 @@
                         "text": "End of season sale. Limited time only.",
                         "button_label": "Shop Sale",
                         "button_link": "shopify://collections/sale",
+                        "text_color": "light",
                         "overlay_opacity": 50
                     }
                 }
@@ -82,6 +93,15 @@
                 "slide_height": "large"
             }
         },
+        "horizontal_ticker": {
+            "type": "horizontal-ticker",
+            "settings": {
+                "text": "FREE SHIPPING • EASY RETURNS • 100% AUTHENTIC • FREE SHIPPING • EASY RETURNS • 100% AUTHENTIC",
+                "speed": "medium",
+                "background_color": "#000000",
+                "text_color": "#ffffff"
+            }
+        },
         "featured_collection": {
             "type": "featured-collection",
             "settings": {
@@ -96,7 +116,8 @@
                 "show_quick_view": true,
                 "show_view_all": true,
                 "button_text": "View All",
-                "button_style": "primary"
+                "button_style": "primary",
+                "background_color": "default"
             }
         },
         "collection_list": {
@@ -139,7 +160,18 @@
                 "columns": 4,
                 "image_ratio": "portrait",
                 "show_view_all": true,
-                "button_text": "All Collections"
+                "button_text": "All Collections",
+                "background_color": "secondary"
+            }
+        },
+        "comparison_slider": {
+            "type": "comparison-slider",
+            "settings": {
+                "heading": "Real vs Fake",
+                "caption": "Learn to spot the difference. We only sell 100% authenticated sneakers.",
+                "label_before": "Fake",
+                "label_after": "Authentic",
+                "max_width": 800
             }
         },
         "image_with_text": {
@@ -149,10 +181,23 @@
                 "image_ratio": "square",
                 "eyebrow": "Our Promise",
                 "title": "100% Authentic Guaranteed",
-                "text": "<p>Every pair goes through our rigorous authentication process. Shop with confidence knowing you're getting the real deal.</p>",
+                "text": "<p>Every pair goes through our rigorous authentication process. Our team of experts inspects each sneaker using industry-leading verification methods.</p><p>✓ Expert verification<br>✓ Money-back guarantee<br>✓ Secure packaging</p>",
                 "button_text": "Learn More",
                 "button_url": "shopify://pages/authenticity",
-                "button_style": "secondary"
+                "button_style": "secondary",
+                "background_color": "default"
+            }
+        },
+        "featured_product": {
+            "type": "featured-product",
+            "settings": {
+                "title_override": "Editor's Pick",
+                "description_override": "This week's must-have sneaker",
+                "image_position": "left",
+                "show_vendor": true,
+                "show_thumbnails": true,
+                "show_payment_icons": true,
+                "background_color": "secondary"
             }
         },
         "testimonials": {
@@ -164,7 +209,7 @@
                         "name": "James K.",
                         "title": "Verified Buyer",
                         "rating": 5,
-                        "text": "Best sneaker store I've found. Shipping was crazy fast and the shoes are 100% legit."
+                        "text": "Best sneaker store I've found. Shipping was crazy fast and the shoes are 100% legit. Already planning my next purchase!"
                     }
                 },
                 "testimonial_2": {
@@ -173,23 +218,154 @@
                         "name": "Sarah M.",
                         "title": "Verified Buyer",
                         "rating": 5,
-                        "text": "Finally found a trustworthy source for limited releases. The authentication gives me peace of mind."
+                        "text": "Finally found a trustworthy source for limited releases. The authentication gives me peace of mind every time."
+                    }
+                },
+                "testimonial_3": {
+                    "type": "testimonial",
+                    "settings": {
+                        "name": "Mike T.",
+                        "title": "Verified Buyer",
+                        "rating": 5,
+                        "text": "Customer service went above and beyond. They helped me find a rare pair I'd been hunting for months."
                     }
                 }
             },
             "block_order": [
                 "testimonial_1",
-                "testimonial_2"
+                "testimonial_2",
+                "testimonial_3"
             ],
             "settings": {
                 "heading": "What Sneakerheads Say",
-                "subheading": "Customer Reviews"
+                "subheading": "Thousands of satisfied customers",
+                "background_color": "default"
+            }
+        },
+        "countdown": {
+            "type": "countdown",
+            "settings": {
+                "eyebrow": "Dropping Soon",
+                "title": "Air Jordan 1 Retro High OG",
+                "description": "Be ready. These won't last long. Sign up to get notified when they drop.",
+                "button_text": "Get Notified",
+                "button_url": "shopify://pages/releases",
+                "show_days": true,
+                "show_hours": true,
+                "show_minutes": true,
+                "show_seconds": true,
+                "background_color": "accent"
+            }
+        },
+        "logo_list": {
+            "type": "logo-list",
+            "blocks": {
+                "logo_1": {
+                    "type": "logo",
+                    "settings": {
+                        "title": "Nike"
+                    }
+                },
+                "logo_2": {
+                    "type": "logo",
+                    "settings": {
+                        "title": "Jordan"
+                    }
+                },
+                "logo_3": {
+                    "type": "logo",
+                    "settings": {
+                        "title": "Adidas"
+                    }
+                },
+                "logo_4": {
+                    "type": "logo",
+                    "settings": {
+                        "title": "New Balance"
+                    }
+                },
+                "logo_5": {
+                    "type": "logo",
+                    "settings": {
+                        "title": "Yeezy"
+                    }
+                },
+                "logo_6": {
+                    "type": "logo",
+                    "settings": {
+                        "title": "Puma"
+                    }
+                }
+            },
+            "block_order": [
+                "logo_1",
+                "logo_2",
+                "logo_3",
+                "logo_4",
+                "logo_5",
+                "logo_6"
+            ],
+            "settings": {
+                "title": "Brands We Carry",
+                "show_title": true,
+                "logos_per_row": 6,
+                "logo_height": 60,
+                "background_color": "secondary"
+            }
+        },
+        "trust_badges": {
+            "type": "trust-badges",
+            "blocks": {
+                "badge_1": {
+                    "type": "badge",
+                    "settings": {
+                        "icon": "shield-check",
+                        "title": "100% Authentic",
+                        "text": "Every pair verified"
+                    }
+                },
+                "badge_2": {
+                    "type": "badge",
+                    "settings": {
+                        "icon": "truck",
+                        "title": "Free Shipping",
+                        "text": "On orders $100+"
+                    }
+                },
+                "badge_3": {
+                    "type": "badge",
+                    "settings": {
+                        "icon": "arrow-path",
+                        "title": "Easy Returns",
+                        "text": "14 day policy"
+                    }
+                },
+                "badge_4": {
+                    "type": "badge",
+                    "settings": {
+                        "icon": "lock-closed",
+                        "title": "Secure Checkout",
+                        "text": "SSL encrypted"
+                    }
+                }
+            },
+            "block_order": [
+                "badge_1",
+                "badge_2",
+                "badge_3",
+                "badge_4"
+            ],
+            "settings": {
+                "layout": "horizontal",
+                "icon_style": "circle",
+                "background_color": "default"
             }
         },
         "recently_viewed": {
             "type": "recently-viewed",
             "settings": {
                 "heading": "Recently Viewed",
+                "empty_text": "Start browsing to see your recently viewed items",
                 "products_to_show": 4,
                 "columns": 4
             }
@@ -197,7 +373,7 @@
         "newsletter": {
             "type": "rich-text",
             "settings": {
-                "background_color": "secondary",
+                "background_color": "accent",
                 "text_alignment": "center",
                 "narrow_content": true,
                 "eyebrow": "Stay in the Loop",
@@ -210,10 +386,16 @@
     "order": [
         "announcement_bar",
         "slideshow",
+        "horizontal_ticker",
         "featured_collection",
         "collection_list",
+        "comparison_slider",
         "image_with_text",
+        "featured_product",
         "testimonials",
+        "countdown",
+        "logo_list",
+        "trust_badges",
         "recently_viewed",
         "newsletter"
     ]
