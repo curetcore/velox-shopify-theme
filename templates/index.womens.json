@@ -36,39 +36,36 @@
                 "slide_1": {
                     "type": "slide",
                     "settings": {
-                        "eyebrow": "New Season",
-                        "title": "Spring Awakening",
-                        "subtitle": "Light, airy, and effortlessly chic. Discover pieces that transition seamlessly from day to night.",
-                        "button_1_text": "Shop Spring",
-                        "button_1_url": "shopify://collections/spring",
-                        "button_2_text": "View Lookbook",
-                        "button_2_url": "shopify://pages/lookbook",
-                        "text_position": "center",
-                        "overlay_opacity": 25
+                        "subheading": "New Season",
+                        "heading": "Spring Awakening",
+                        "text": "Light, airy, and effortlessly chic. Discover pieces that transition seamlessly from day to night.",
+                        "button_label": "Shop Spring",
+                        "button_link": "shopify://collections/spring",
+                        "button_label_2": "View Lookbook",
+                        "button_link_2": "shopify://pages/lookbook",
+                        "overlay_opacity": 20
                     }
                 },
                 "slide_2": {
                     "type": "slide",
                     "settings": {
-                        "eyebrow": "Bestsellers",
-                        "title": "The Essentials",
-                        "subtitle": "Timeless pieces that belong in every wardrobe.",
-                        "button_1_text": "Shop Essentials",
-                        "button_1_url": "shopify://collections/essentials",
-                        "text_position": "left",
+                        "subheading": "Bestsellers",
+                        "heading": "The Essentials",
+                        "text": "Timeless pieces that belong in every wardrobe.",
+                        "button_label": "Shop Essentials",
+                        "button_link": "shopify://collections/essentials",
                         "overlay_opacity": 30
                     }
                 },
                 "slide_3": {
                     "type": "slide",
                     "settings": {
-                        "eyebrow": "Limited Time",
-                        "title": "Up to 30% Off",
-                        "subtitle": "End of season sale on selected styles.",
-                        "button_1_text": "Shop Sale",
-                        "button_1_url": "shopify://collections/sale",
-                        "text_position": "right",
-                        "overlay_opacity": 35
+                        "subheading": "Limited Time",
+                        "heading": "Up to 30% Off",
+                        "text": "End of season sale on selected styles.",
+                        "button_label": "Shop Sale",
+                        "button_link": "shopify://collections/sale",
+                        "overlay_opacity": 30
                     }
                 }
             },
@@ -82,8 +79,7 @@
                 "autoplay_speed": 6,
                 "show_arrows": true,
                 "show_dots": true,
-                "full_height": true,
-                "show_scroll_indicator": true
+                "slide_height": "large"
             }
         },
         "featured_collection": {
@@ -98,9 +94,6 @@
                 "show_swatches": true,
                 "show_second_image": true,
                 "show_quick_view": true,
-                "carousel_autoplay": false,
-                "show_arrows": true,
-                "show_dots": true,
                 "show_view_all": true,
                 "button_text": "Shop All New",
                 "button_style": "primary"
@@ -146,8 +139,7 @@
                 "columns": 4,
                 "image_ratio": "portrait",
                 "show_view_all": true,
-                "button_text": "All Collections",
-                "background_color": "default"
+                "button_text": "All Collections"
             }
         },
         "image_with_text_1": {
@@ -164,55 +156,6 @@
                 "background_color": "secondary"
             }
         },
-        "featured_product": {
-            "type": "featured-product",
-            "settings": {
-                "title_override": "Editor's Pick",
-                "description_override": "Our most-loved piece this season",
-                "image_position": "right",
-                "show_vendor": false,
-                "show_thumbnails": true,
-                "show_payment_icons": true,
-                "background_color": "default"
-            }
-        },
-        "multicolumn": {
-            "type": "multicolumn",
-            "blocks": {
-                "column_1": {
-                    "type": "column",
-                    "settings": {
-                        "title": "Sustainable Materials",
-                        "text": "We use organic cotton, recycled fabrics, and eco-friendly dyes."
-                    }
-                },
-                "column_2": {
-                    "type": "column",
-                    "settings": {
-                        "title": "Ethical Production",
-                        "text": "Fair wages and safe working conditions for all our makers."
-                    }
-                },
-                "column_3": {
-                    "type": "column",
-                    "settings": {
-                        "title": "Carbon Neutral",
-                        "text": "We offset 100% of our shipping emissions."
-                    }
-                }
-            },
-            "block_order": [
-                "column_1",
-                "column_2",
-                "column_3"
-            ],
-            "settings": {
-                "title": "Our Commitment",
-                "description": "Fashion that feels good—inside and out",
-                "columns": 3,
-                "background_color": "secondary"
-            }
-        },
         "testimonials": {
             "type": "testimonials",
             "blocks": {
@@ -222,7 +165,7 @@
                         "name": "Emma L.",
                         "title": "Verified Buyer",
                         "rating": 5,
-                        "text": "The quality is amazing and the fit is perfect! Already ordered three more pieces. Love supporting a sustainable brand."
+                        "text": "The quality is amazing and the fit is perfect! Already ordered three more pieces."
                     }
                 },
                 "testimonial_2": {
@@ -233,43 +176,15 @@
                         "rating": 5,
                         "text": "Finally a brand that understands what women actually want—style, comfort, and sustainability. ❤️"
                     }
-                },
-                "testimonial_3": {
-                    "type": "testimonial",
-                    "settings": {
-                        "name": "Olivia M.",
-                        "title": "Verified Buyer",
-                        "rating": 5,
-                        "text": "The linen dress is my new summer essential. Flows beautifully and gets compliments everywhere I go!"
-                    }
                 }
             },
             "block_order": [
                 "testimonial_1",
-                "testimonial_2",
-                "testimonial_3"
+                "testimonial_2"
             ],
             "settings": {
                 "heading": "Customer Love",
-                "subheading": "What Our Community Says",
-                "carousel_type": "loop",
-                "per_page": 3,
-                "show_arrows": true,
-                "show_pagination": true
-            }
-        },
-        "blog_preview": {
-            "type": "blog-posts-preview",
-            "settings": {
-                "title": "From the Journal",
-                "description": "Style inspiration, tips, and behind the scenes",
-                "posts_to_show": 3,
-                "columns": 3,
-                "show_author": true,
-                "show_date": true,
-                "show_excerpt": true,
-                "show_view_all": true,
-                "button_text": "Read More"
+                "subheading": "What Our Community Says"
             }
         },
         "recently_viewed": {
@@ -299,10 +214,7 @@
         "featured_collection",
         "collection_list",
         "image_with_text_1",
-        "featured_product",
-        "multicolumn",
         "testimonials",
-        "blog_preview",
         "recently_viewed",
         "newsletter"
     ]

@@ -36,39 +36,36 @@
                 "slide_1": {
                     "type": "slide",
                     "settings": {
-                        "eyebrow": "SS25 Drop",
-                        "title": "Break the Rules",
-                        "subtitle": "Bold designs for those who don't follow trends—they set them.",
-                        "button_1_text": "Shop Now",
-                        "button_1_url": "shopify://collections/new-arrivals",
-                        "button_2_text": "Lookbook",
-                        "button_2_url": "shopify://pages/lookbook",
-                        "text_position": "left",
-                        "overlay_opacity": 45
+                        "subheading": "SS25 Drop",
+                        "heading": "Break the Rules",
+                        "text": "Bold designs for those who don't follow trends—they set them.",
+                        "button_label": "Shop Now",
+                        "button_link": "shopify://collections/new-arrivals",
+                        "button_label_2": "Lookbook",
+                        "button_link_2": "shopify://pages/lookbook",
+                        "overlay_opacity": 40
                     }
                 },
                 "slide_2": {
                     "type": "slide",
                     "settings": {
-                        "eyebrow": "Collab Alert",
-                        "title": "Artist Series",
-                        "subtitle": "Limited edition designs by underground artists.",
-                        "button_1_text": "View Collab",
-                        "button_1_url": "shopify://collections/collaborations",
-                        "text_position": "center",
+                        "subheading": "Collab Alert",
+                        "heading": "Artist Series",
+                        "text": "Limited edition designs by underground artists.",
+                        "button_label": "View Collab",
+                        "button_link": "shopify://collections/collaborations",
                         "overlay_opacity": 50
                     }
                 },
                 "slide_3": {
                     "type": "slide",
                     "settings": {
-                        "eyebrow": "Member Only",
-                        "title": "Early Access",
-                        "subtitle": "Sign up for exclusive drops before anyone else.",
-                        "button_1_text": "Join Crew",
-                        "button_1_url": "shopify://pages/membership",
-                        "text_position": "right",
-                        "overlay_opacity": 55
+                        "subheading": "Member Only",
+                        "heading": "Early Access",
+                        "text": "Sign up for exclusive drops before anyone else.",
+                        "button_label": "Join Crew",
+                        "button_link": "shopify://pages/membership",
+                        "overlay_opacity": 50
                     }
                 }
             },
@@ -82,17 +79,7 @@
                 "autoplay_speed": 4,
                 "show_arrows": true,
                 "show_dots": true,
-                "full_height": true,
-                "show_scroll_indicator": true
-            }
-        },
-        "horizontal_ticker": {
-            "type": "horizontal-ticker",
-            "settings": {
-                "text": "FREE WORLDWIDE SHIPPING ★ NO RESTOCKS ★ LIMITED DROPS ★ FREE WORLDWIDE SHIPPING ★ NO RESTOCKS ★ LIMITED DROPS",
-                "speed": "fast",
-                "background_color": "#00ff00",
-                "text_color": "#000000"
+                "slide_height": "large"
             }
         },
         "featured_collection": {
@@ -107,9 +94,6 @@
                 "show_swatches": true,
                 "show_second_image": true,
                 "show_quick_view": true,
-                "carousel_autoplay": false,
-                "show_arrows": true,
-                "show_dots": true,
                 "show_view_all": true,
                 "button_text": "See All",
                 "button_style": "primary"
@@ -151,19 +135,10 @@
             ],
             "settings": {
                 "title": "Categories",
-                "description": "",
                 "columns": 4,
                 "image_ratio": "square",
                 "show_view_all": true,
                 "button_text": "All Categories"
-            }
-        },
-        "shoppable_image": {
-            "type": "shoppable-image",
-            "settings": {
-                "heading": "Shop the Look",
-                "subheading": "Click to shop",
-                "image_position": "center"
             }
         },
         "image_with_text": {
@@ -173,26 +148,11 @@
                 "image_ratio": "portrait",
                 "eyebrow": "Our Vibe",
                 "title": "Not For Everyone",
-                "text": "<p>We don't do mass production. Every piece is designed in-house and made in limited runs. When it's gone, it's gone.</p><p>No restocks. No second chances.</p>",
+                "text": "<p>We don't do mass production. Every piece is designed in-house and made in limited runs. When it's gone, it's gone.</p>",
                 "button_text": "About Us",
                 "button_url": "shopify://pages/about",
                 "button_style": "secondary",
                 "background_color": "secondary"
-            }
-        },
-        "countdown": {
-            "type": "countdown",
-            "settings": {
-                "eyebrow": "Coming Soon",
-                "title": "Capsule Collection 003",
-                "description": "The most anticipated drop of the year.",
-                "button_text": "Get Notified",
-                "button_url": "shopify://pages/notify",
-                "show_days": true,
-                "show_hours": true,
-                "show_minutes": true,
-                "show_seconds": true,
-                "background_color": "accent"
             }
         },
         "testimonials": {
@@ -215,36 +175,15 @@
                         "rating": 5,
                         "text": "Finally a brand that gets it. Unique pieces that nobody else has."
                     }
-                },
-                "testimonial_3": {
-                    "type": "testimonial",
-                    "settings": {
-                        "name": "@urban_fit_jay",
-                        "title": "Instagram",
-                        "rating": 5,
-                        "text": "The hoodie quality is next level. Fits perfect and feels premium af"
-                    }
                 }
             },
             "block_order": [
                 "testimonial_1",
-                "testimonial_2",
-                "testimonial_3"
+                "testimonial_2"
             ],
             "settings": {
                 "heading": "The Crew Says",
-                "subheading": "@streetwear",
-                "carousel_type": "loop",
-                "per_page": 3,
-                "show_arrows": true,
-                "show_pagination": true
-            }
-        },
-        "insta_feed": {
-            "type": "insta-stories",
-            "settings": {
-                "heading": "Follow @yourbrand",
-                "subheading": "Join the movement"
+                "subheading": "@streetwear"
             }
         },
         "recently_viewed": {
@@ -271,14 +210,10 @@
     "order": [
         "announcement_bar",
         "slideshow",
-        "horizontal_ticker",
         "featured_collection",
         "collection_list",
-        "shoppable_image",
         "image_with_text",
-        "countdown",
         "testimonials",
-        "insta_feed",
         "recently_viewed",
         "newsletter"
     ]

@@ -6,102 +6,102 @@
                 "eyebrow": "Help Center",
                 "title": "Frequently Asked Questions",
                 "text": "Find answers to common questions about orders, shipping, and more.",
-                "button_text": "",
                 "text_position": "center"
             }
         },
         "faq_shipping": {
             "type": "faq",
             "blocks": {
-                "faq_1": {
-                    "type": "faq",
+                "q1": {
+                    "type": "question",
                     "settings": {
                         "question": "How long does shipping take?",
-                        "answer": "Standard shipping takes 3-7 business days within the US. International orders typically arrive in 7-14 business days."
+                        "answer": "<p>Standard shipping takes 3-7 business days within the US. International orders typically arrive in 7-14 business days.</p>",
+                        "open_by_default": true
                     }
                 },
-                "faq_2": {
-                    "type": "faq",
+                "q2": {
+                    "type": "question",
                     "settings": {
                         "question": "Do you offer free shipping?",
-                        "answer": "Yes! We offer free standard shipping on all orders over $100. Express shipping is available at an additional cost."
+                        "answer": "<p>Yes! We offer free standard shipping on all orders over $100. Express shipping is available at an additional cost.</p>"
                     }
                 },
-                "faq_3": {
-                    "type": "faq",
+                "q3": {
+                    "type": "question",
                     "settings": {
                         "question": "How can I track my order?",
-                        "answer": "Once your order ships, you'll receive an email with tracking information. You can also check your order status in your account."
+                        "answer": "<p>Once your order ships, you'll receive an email with tracking information. You can also check your order status in your account.</p>"
                     }
                 }
             },
             "block_order": [
-                "faq_1",
-                "faq_2",
-                "faq_3"
+                "q1",
+                "q2",
+                "q3"
             ],
             "settings": {
-                "title": "Shipping & Delivery"
+                "heading": "Shipping & Delivery"
             }
         },
         "faq_returns": {
             "type": "faq",
             "blocks": {
-                "faq_1": {
-                    "type": "faq",
+                "q1": {
+                    "type": "question",
                     "settings": {
                         "question": "What is your return policy?",
-                        "answer": "We accept returns within 30 days of delivery. Items must be unworn, unwashed, and with original tags attached."
+                        "answer": "<p>We accept returns within 30 days of delivery. Items must be unworn, unwashed, and with original tags attached.</p>"
                     }
                 },
-                "faq_2": {
-                    "type": "faq",
+                "q2": {
+                    "type": "question",
                     "settings": {
                         "question": "How do I start a return?",
-                        "answer": "Log into your account and navigate to your order history. Select the order and click 'Start Return' to print your prepaid label."
+                        "answer": "<p>Log into your account and navigate to your order history. Select the order and click 'Start Return' to print your prepaid label.</p>"
                     }
                 },
-                "faq_3": {
-                    "type": "faq",
+                "q3": {
+                    "type": "question",
                     "settings": {
                         "question": "When will I receive my refund?",
-                        "answer": "Refunds are processed within 5-7 business days after we receive your return. It may take an additional 3-5 days to appear on your statement."
+                        "answer": "<p>Refunds are processed within 5-7 business days after we receive your return. It may take an additional 3-5 days to appear on your statement.</p>"
                     }
                 }
             },
             "block_order": [
-                "faq_1",
-                "faq_2",
-                "faq_3"
+                "q1",
+                "q2",
+                "q3"
             ],
             "settings": {
-                "title": "Returns & Exchanges"
+                "heading": "Returns & Exchanges"
             }
         },
         "faq_products": {
             "type": "faq",
             "blocks": {
-                "faq_1": {
-                    "type": "faq",
+                "q1": {
+                    "type": "question",
                     "settings": {
                         "question": "How do I find my size?",
-                        "answer": "Check our size guide on each product page. We recommend measuring yourself and comparing to our size chart for the best fit."
+                        "answer": "<p>Check our size guide on each product page. We recommend measuring yourself and comparing to our size chart for the best fit.</p>"
                     }
                 },
-                "faq_2": {
-                    "type": "faq",
+                "q2": {
+                    "type": "question",
                     "settings": {
                         "question": "Are your products authentic?",
-                        "answer": "Absolutely. We only sell 100% authentic products. Every item goes through a verification process before shipping."
+                        "answer": "<p>Absolutely. We only sell 100% authentic products. Every item goes through a verification process before shipping.</p>"
                     }
                 }
             },
             "block_order": [
-                "faq_1",
-                "faq_2"
+                "q1",
+                "q2"
             ],
             "settings": {
-                "title": "Products & Sizing"
+                "heading": "Products & Sizing"
             }
         },
         "contact_cta": {

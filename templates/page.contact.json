@@ -6,7 +6,6 @@
                 "eyebrow": "Get in Touch",
                 "title": "Contact Us",
                 "text": "We'd love to hear from you. Our team is here to help.",
-                "button_text": "",
                 "text_position": "center"
             }
         },
@@ -14,9 +13,7 @@
             "type": "contact-form",
             "settings": {
                 "heading": "Send us a Message",
-                "description": "Fill out the form below and we'll get back to you within 24 hours.",
-                "show_phone_field": true,
-                "button_text": "Send Message"
+                "subheading": "Fill out the form below and we'll get back to you within 24 hours."
             }
         },
         "multicolumn": {
@@ -59,24 +56,24 @@
             "type": "faq",
             "blocks": {
                 "faq_1": {
-                    "type": "faq",
+                    "type": "question",
                     "settings": {
                         "question": "How long does shipping take?",
-                        "answer": "Standard shipping takes 3-7 business days. Express shipping is available at checkout."
+                        "answer": "<p>Standard shipping takes 3-7 business days. Express shipping is available at checkout.</p>"
                     }
                 },
                 "faq_2": {
-                    "type": "faq",
+                    "type": "question",
                     "settings": {
                         "question": "What is your return policy?",
-                        "answer": "We offer free returns within 30 days of purchase. Items must be unworn with tags attached."
+                        "answer": "<p>We offer free returns within 30 days of purchase. Items must be unworn with tags attached.</p>"
                     }
                 },
                 "faq_3": {
-                    "type": "faq",
+                    "type": "question",
                     "settings": {
                         "question": "Do you ship internationally?",
-                        "answer": "Yes! We ship worldwide. International shipping typically takes 7-14 business days."
+                        "answer": "<p>Yes! We ship worldwide. International shipping typically takes 7-14 business days.</p>"
                     }
                 }
             },
@@ -86,7 +83,7 @@
                 "faq_3"
             ],
             "settings": {
-                "title": "Frequently Asked Questions"
+                "heading": "Frequently Asked Questions"
             }
         }
     },

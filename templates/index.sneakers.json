@@ -36,38 +36,35 @@
                 "slide_1": {
                     "type": "slide",
                     "settings": {
-                        "eyebrow": "Just Dropped",
-                        "title": "Step Into Style",
-                        "subtitle": "Discover the latest sneaker releases. Premium comfort meets street-ready design.",
-                        "button_1_text": "Shop New Arrivals",
-                        "button_1_url": "shopify://collections/new-arrivals",
-                        "button_2_text": "Explore All",
-                        "button_2_url": "shopify://collections/all",
-                        "text_position": "center",
-                        "overlay_opacity": 35
+                        "subheading": "Just Dropped",
+                        "heading": "Step Into Style",
+                        "text": "Discover the latest sneaker releases. Premium comfort meets street-ready design.",
+                        "button_label": "Shop New Arrivals",
+                        "button_link": "shopify://collections/new-arrivals",
+                        "button_label_2": "Explore All",
+                        "button_link_2": "shopify://collections/all",
+                        "overlay_opacity": 30
                     }
                 },
                 "slide_2": {
                     "type": "slide",
                     "settings": {
-                        "eyebrow": "Limited Edition",
-                        "title": "Retro Revival",
-                        "subtitle": "Classic silhouettes reimagined for the modern sneakerhead.",
-                        "button_1_text": "Shop Retro",
-                        "button_1_url": "shopify://collections/retro",
-                        "text_position": "left",
-                        "overlay_opacity": 45
+                        "subheading": "Limited Edition",
+                        "heading": "Retro Revival",
+                        "text": "Classic silhouettes reimagined for the modern sneakerhead.",
+                        "button_label": "Shop Retro",
+                        "button_link": "shopify://collections/retro",
+                        "overlay_opacity": 40
                     }
                 },
                 "slide_3": {
                     "type": "slide",
                     "settings": {
-                        "eyebrow": "Member Exclusive",
-                        "title": "Up to 40% Off",
-                        "subtitle": "End of season sale. Limited time only.",
-                        "button_1_text": "Shop Sale",
-                        "button_1_url": "shopify://collections/sale",
-                        "text_position": "right",
+                        "subheading": "Member Exclusive",
+                        "heading": "Up to 40% Off",
+                        "text": "End of season sale. Limited time only.",
+                        "button_label": "Shop Sale",
+                        "button_link": "shopify://collections/sale",
                         "overlay_opacity": 50
                     }
                 }
@@ -82,17 +79,7 @@
                 "autoplay_speed": 5,
                 "show_arrows": true,
                 "show_dots": true,
-                "full_height": true,
-                "show_scroll_indicator": true
-            }
-        },
-        "horizontal_ticker": {
-            "type": "horizontal-ticker",
-            "settings": {
-                "text": "FREE SHIPPING • EASY RETURNS • AUTHENTIC GUARANTEED • FREE SHIPPING • EASY RETURNS • AUTHENTIC GUARANTEED",
-                "speed": "medium",
-                "background_color": "#000000",
-                "text_color": "#ffffff"
+                "slide_height": "large"
             }
         },
         "featured_collection": {
@@ -107,9 +94,6 @@
                 "show_swatches": true,
                 "show_second_image": true,
                 "show_quick_view": true,
-                "carousel_autoplay": false,
-                "show_arrows": true,
-                "show_dots": true,
                 "show_view_all": true,
                 "button_text": "View All",
                 "button_style": "primary"
@@ -158,16 +142,6 @@
                 "button_text": "All Collections"
             }
         },
-        "comparison_slider": {
-            "type": "comparison-slider",
-            "settings": {
-                "heading": "Real vs Fake",
-                "caption": "Learn to spot the difference. We only sell 100% authentic.",
-                "label_before": "Fake",
-                "label_after": "Authentic",
-                "max_width": 800
-            }
-        },
         "image_with_text": {
             "type": "image-with-text",
             "settings": {
@@ -175,22 +149,10 @@
                 "image_ratio": "square",
                 "eyebrow": "Our Promise",
                 "title": "100% Authentic Guaranteed",
-                "text": "<p>Every pair goes through our rigorous authentication process. Shop with confidence knowing you're getting the real deal.</p><p>✓ Expert verification<br>✓ Money-back guarantee<br>✓ Secure packaging</p>",
+                "text": "<p>Every pair goes through our rigorous authentication process. Shop with confidence knowing you're getting the real deal.</p>",
                 "button_text": "Learn More",
                 "button_url": "shopify://pages/authenticity",
                 "button_style": "secondary"
-            }
-        },
-        "featured_product": {
-            "type": "featured-product",
-            "settings": {
-                "title_override": "Editor's Pick",
-                "description_override": "This week's must-have sneaker",
-                "image_position": "left",
-                "show_vendor": true,
-                "show_thumbnails": true,
-                "show_payment_icons": true,
-                "background_color": "secondary"
             }
         },
         "testimonials": {
@@ -202,7 +164,7 @@
                         "name": "James K.",
                         "title": "Verified Buyer",
                         "rating": 5,
-                        "text": "Best sneaker store I've found. Shipping was crazy fast and the shoes are 100% legit. Already planning my next purchase!"
+                        "text": "Best sneaker store I've found. Shipping was crazy fast and the shoes are 100% legit."
                     }
                 },
                 "testimonial_2": {
@@ -211,54 +173,23 @@
                         "name": "Sarah M.",
                         "title": "Verified Buyer",
                         "rating": 5,
-                        "text": "Finally found a trustworthy source for limited releases. The authentication gives me peace of mind every time."
-                    }
-                },
-                "testimonial_3": {
-                    "type": "testimonial",
-                    "settings": {
-                        "name": "Mike T.",
-                        "title": "Verified Buyer",
-                        "rating": 5,
-                        "text": "Customer service went above and beyond. They helped me find a rare pair I'd been hunting for months."
+                        "text": "Finally found a trustworthy source for limited releases. The authentication gives me peace of mind."
                     }
                 }
             },
             "block_order": [
                 "testimonial_1",
-                "testimonial_2",
-                "testimonial_3"
+                "testimonial_2"
             ],
             "settings": {
                 "heading": "What Sneakerheads Say",
-                "subheading": "Customer Reviews",
-                "carousel_type": "loop",
-                "per_page": 3,
-                "show_arrows": true,
-                "show_pagination": true,
-                "autoplay": false
-            }
-        },
-        "countdown": {
-            "type": "countdown",
-            "settings": {
-                "eyebrow": "Dropping Soon",
-                "title": "Air Jordan 1 Retro High OG",
-                "description": "Be ready. These won't last long.",
-                "button_text": "Get Notified",
-                "button_url": "shopify://pages/releases",
-                "show_days": true,
-                "show_hours": true,
-                "show_minutes": true,
-                "show_seconds": true,
-                "background_color": "accent"
+                "subheading": "Customer Reviews"
             }
         },
         "recently_viewed": {
             "type": "recently-viewed",
             "settings": {
                 "heading": "Recently Viewed",
-                "empty_text": "Start browsing to see your recently viewed items",
                 "products_to_show": 4,
                 "columns": 4
             }
@@ -279,14 +210,10 @@
     "order": [
         "announcement_bar",
         "slideshow",
-        "horizontal_ticker",
         "featured_collection",
         "collection_list",
-        "comparison_slider",
         "image_with_text",
-        "featured_product",
         "testimonials",
-        "countdown",
         "recently_viewed",
         "newsletter"
     ]
