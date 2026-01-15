@@ -123,6 +123,7 @@
       "remove_item": "Eliminar {{ title }} del carrito",
       "note": "Añadir nota al pedido",
       "note_placeholder": "Instrucciones especiales...",
+      "free_shipping_remaining": "{{ remaining }} para envío gratis",
       "free_shipping_remaining_html": "Te faltan <strong>{{ remaining }}</strong> para envío gratis",
       "free_shipping_achieved": "¡Tienes envío gratis!",
       "items_count": "{{ count }} artículos",
@@ -163,7 +164,11 @@
       "share": "Compartir",
       "reviews_count": "{{ count }} reseñas",
       "view_details": "Ver todos los detalles",
-      "added_to_cart": "Agregado al carrito"
+      "added_to_cart": "Agregado al carrito",
+      "notify_me": "Notificarme",
+      "notify_when_available": "Notificarme cuando esté disponible",
+      "notify_success": "Te notificaremos cuando este producto esté disponible",
+      "notify_error": "Algo salió mal. Por favor intenta de nuevo."
     },
     "stock": {
       "low_stock": "Pocas unidades",

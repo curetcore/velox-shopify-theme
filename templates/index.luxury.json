@@ -1,0 +1,297 @@
+{
+    "sections": {
+        "slideshow": {
+            "type": "slideshow",
+            "blocks": {
+                "slide_1": {
+                    "type": "slide",
+                    "settings": {
+                        "eyebrow": "Autumn/Winter 2025",
+                        "title": "Timeless Elegance",
+                        "subtitle": "Handcrafted luxury footwear made from the finest Italian leather.",
+                        "button_1_text": "Shop Collection",
+                        "button_1_url": "shopify://collections/new-arrivals",
+                        "button_2_text": "Our Heritage",
+                        "button_2_url": "shopify://pages/about",
+                        "text_position": "center",
+                        "overlay_opacity": 30
+                    }
+                },
+                "slide_2": {
+                    "type": "slide",
+                    "settings": {
+                        "eyebrow": "Artisan Craftsmanship",
+                        "title": "Made in Italy",
+                        "subtitle": "Three generations of shoemaking excellence. Every stitch tells a story.",
+                        "button_1_text": "Discover",
+                        "button_1_url": "shopify://collections/handmade",
+                        "text_position": "left",
+                        "overlay_opacity": 40
+                    }
+                },
+                "slide_3": {
+                    "type": "slide",
+                    "settings": {
+                        "eyebrow": "Exclusive Collection",
+                        "title": "The Oxford Edit",
+                        "subtitle": "Refined classics for the modern gentleman.",
+                        "button_1_text": "Shop Oxfords",
+                        "button_1_url": "shopify://collections/oxfords",
+                        "text_position": "right",
+                        "overlay_opacity": 35
+                    }
+                }
+            },
+            "block_order": [
+                "slide_1",
+                "slide_2",
+                "slide_3"
+            ],
+            "settings": {
+                "autoplay": true,
+                "autoplay_speed": 6,
+                "show_arrows": true,
+                "show_dots": true,
+                "full_height": true,
+                "show_scroll_indicator": true
+            }
+        },
+        "rich_text_banner": {
+            "type": "rich-text",
+            "settings": {
+                "background_color": "accent",
+                "text_alignment": "center",
+                "narrow_content": false,
+                "text": "<p>Complimentary Shipping & Returns on All Orders</p>"
+            }
+        },
+        "featured_collection": {
+            "type": "featured-collection",
+            "settings": {
+                "title": "New Arrivals",
+                "description": "The latest additions to our collection",
+                "layout": "grid",
+                "products_to_show": 8,
+                "columns": 4,
+                "show_vendor": false,
+                "show_swatches": true,
+                "show_second_image": true,
+                "show_quick_view": true,
+                "show_view_all": true,
+                "button_text": "View All",
+                "button_style": "secondary"
+            }
+        },
+        "collection_list": {
+            "type": "collection-list",
+            "blocks": {
+                "collection_1": {
+                    "type": "collection",
+                    "settings": {
+                        "title": "Oxfords"
+                    }
+                },
+                "collection_2": {
+                    "type": "collection",
+                    "settings": {
+                        "title": "Derbies"
+                    }
+                },
+                "collection_3": {
+                    "type": "collection",
+                    "settings": {
+                        "title": "Loafers"
+                    }
+                },
+                "collection_4": {
+                    "type": "collection",
+                    "settings": {
+                        "title": "Boots"
+                    }
+                }
+            },
+            "block_order": [
+                "collection_1",
+                "collection_2",
+                "collection_3",
+                "collection_4"
+            ],
+            "settings": {
+                "title": "Collections",
+                "description": "Discover our signature styles",
+                "columns": 4,
+                "image_ratio": "portrait",
+                "show_view_all": true,
+                "button_text": "All Collections",
+                "background_color": "default"
+            }
+        },
+        "image_with_text_1": {
+            "type": "image-with-text",
+            "settings": {
+                "image_position": "left",
+                "image_ratio": "square",
+                "eyebrow": "Our Heritage",
+                "title": "Three Generations of Excellence",
+                "text": "<p>Since 1952, our family has dedicated itself to the art of shoemaking. Each pair is handcrafted in our atelier in Florence, using techniques passed down through generations.</p><p>We source only the finest leathers from Tuscany, ensuring every shoe meets our exacting standards.</p>",
+                "button_text": "Our Story",
+                "button_url": "shopify://pages/about",
+                "button_style": "secondary",
+                "background_color": "secondary"
+            }
+        },
+        "featured_product": {
+            "type": "featured-product",
+            "settings": {
+                "title_override": "Signature Piece",
+                "description_override": "Our most sought-after design",
+                "image_position": "right",
+                "show_vendor": false,
+                "show_thumbnails": true,
+                "show_payment_icons": true,
+                "background_color": "default"
+            }
+        },
+        "image_with_text_2": {
+            "type": "image-with-text",
+            "settings": {
+                "image_position": "right",
+                "image_ratio": "landscape",
+                "eyebrow": "Craftsmanship",
+                "title": "Made by Hand",
+                "text": "<p>Over 200 individual steps go into creating each pair. From cutting the leather to the final polish, our artisans take pride in every detail.</p>",
+                "button_text": "The Process",
+                "button_url": "shopify://pages/craftsmanship",
+                "button_style": "secondary"
+            }
+        },
+        "testimonials": {
+            "type": "testimonials",
+            "blocks": {
+                "testimonial_1": {
+                    "type": "testimonial",
+                    "settings": {
+                        "name": "William H.",
+                        "title": "London, UK",
+                        "rating": 5,
+                        "text": "Exceptional quality. I've tried many luxury brands, but the craftsmanship here is truly outstanding. Worth every penny."
+                    }
+                },
+                "testimonial_2": {
+                    "type": "testimonial",
+                    "settings": {
+                        "name": "Alessandro M.",
+                        "title": "Milan, Italy",
+                        "rating": 5,
+                        "text": "As an Italian, I appreciate fine leather goods. These shoes rival the best from Florence. Bellissimo!"
+                    }
+                },
+                "testimonial_3": {
+                    "type": "testimonial",
+                    "settings": {
+                        "name": "David C.",
+                        "title": "New York, USA",
+                        "rating": 5,
+                        "text": "Finally found shoes that match my standards. The fit is perfect and they've aged beautifully over time."
+                    }
+                }
+            },
+            "block_order": [
+                "testimonial_1",
+                "testimonial_2",
+                "testimonial_3"
+            ],
+            "settings": {
+                "heading": "Client Testimonials",
+                "subheading": "What Our Clients Say",
+                "carousel_type": "loop",
+                "per_page": 3,
+                "show_arrows": true,
+                "show_pagination": true,
+                "background": "secondary"
+            }
+        },
+        "logo_list": {
+            "type": "logo-list",
+            "blocks": {
+                "logo_1": {
+                    "type": "logo",
+                    "settings": {
+                        "title": "Vogue"
+                    }
+                },
+                "logo_2": {
+                    "type": "logo",
+                    "settings": {
+                        "title": "GQ"
+                    }
+                },
+                "logo_3": {
+                    "type": "logo",
+                    "settings": {
+                        "title": "Esquire"
+                    }
+                },
+                "logo_4": {
+                    "type": "logo",
+                    "settings": {
+                        "title": "Forbes"
+                    }
+                },
+                "logo_5": {
+                    "type": "logo",
+                    "settings": {
+                        "title": "Robb Report"
+                    }
+                }
+            },
+            "block_order": [
+                "logo_1",
+                "logo_2",
+                "logo_3",
+                "logo_4",
+                "logo_5"
+            ],
+            "settings": {
+                "title": "As Seen In",
+                "show_title": true,
+                "logos_per_row": 5,
+                "logo_height": 50
+            }
+        },
+        "recently_viewed": {
+            "type": "recently-viewed",
+            "settings": {
+                "heading": "Recently Viewed",
+                "products_to_show": 4,
+                "columns": 4,
+                "background": "secondary"
+            }
+        },
+        "newsletter": {
+            "type": "rich-text",
+            "settings": {
+                "background_color": "accent",
+                "text_alignment": "center",
+                "narrow_content": true,
+                "eyebrow": "Be the First to Know",
+                "title": "Join Our Private List",
+                "text": "<p>Receive exclusive previews of new collections, private events, and personalized recommendations.</p>",
+                "show_newsletter": true
+            }
+        }
+    },
+    "order": [
+        "slideshow",
+        "rich_text_banner",
+        "featured_collection",
+        "collection_list",
+        "image_with_text_1",
+        "featured_product",
+        "image_with_text_2",
+        "testimonials",
+        "logo_list",
+        "recently_viewed",
+        "newsletter"
+    ]
+}

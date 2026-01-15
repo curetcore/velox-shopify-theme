@@ -123,6 +123,7 @@
       "remove_item": "Remove {{ title }} from cart",
       "note": "Add a note to your order",
       "note_placeholder": "Special instructions...",
+      "free_shipping_remaining": "{{ remaining }} away from free shipping",
       "free_shipping_remaining_html": "You're <strong>{{ remaining }}</strong> away from free shipping",
       "free_shipping_achieved": "You have free shipping!",
       "items_count": "{{ count }} items",
@@ -163,7 +164,11 @@
       "size_guide": "Size guide",
       "share": "Share",
       "view_details": "View full details",
-      "added_to_cart": "Added to cart"
+      "added_to_cart": "Added to cart",
+      "notify_me": "Notify me",
+      "notify_when_available": "Notify me when available",
+      "notify_success": "We'll notify you when this product is back in stock",
+      "notify_error": "Something went wrong. Please try again."
     },
     "stock": {
       "low_stock": "Low stock",
