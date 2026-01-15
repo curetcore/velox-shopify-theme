@@ -431,8 +431,8 @@
             {% endcase %}
 
           {% else %}
-            <div class="velox-gallery-main tw-flex tw-items-center tw-justify-center tw-bg-velox-100">
-              {% render 'icon', name: 'photo', class: 'tw-w-16 tw-h-16 tw-text-velox-300' %}
+            <div class="velox-gallery-main tw-bg-velox-100 tw-overflow-hidden">
+              {{ 'product-1' | placeholder_svg_tag: 'tw-w-full tw-h-full tw-object-cover tw-text-velox-300' }}
             </div>
           {% endif %}
 

@@ -22,8 +22,8 @@
             }}
           </div>
         {% else %}
-          <div class="tw-bg-velox-100 tw-rounded-lg {% if section.settings.image_ratio == 'square' %}tw-aspect-square{% elsif section.settings.image_ratio == 'portrait' %}tw-aspect-[3/4]{% else %}tw-aspect-[4/3]{% endif %} tw-flex tw-items-center tw-justify-center">
-            {% render 'icon', name: 'photo', class: 'tw-w-20 tw-h-20 tw-text-velox-300' %}
+          <div class="tw-bg-velox-100 tw-rounded-lg {% if section.settings.image_ratio == 'square' %}tw-aspect-square{% elsif section.settings.image_ratio == 'portrait' %}tw-aspect-[3/4]{% else %}tw-aspect-[4/3]{% endif %} tw-overflow-hidden">
+            {{ 'lifestyle-2' | placeholder_svg_tag: 'tw-w-full tw-h-full tw-object-cover tw-text-velox-300' }}
           </div>
         {% endif %}
       </div>

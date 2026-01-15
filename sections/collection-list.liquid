@@ -46,8 +46,8 @@
                 widths: '400, 600, 800'
               }}
             {% else %}
-              <div class="tw-absolute tw-inset-0 tw-bg-velox-100 tw-flex tw-items-center tw-justify-center">
-                {% render 'icon', name: 'rectangle-group', class: 'tw-w-16 tw-h-16 tw-text-velox-300' %}
+              <div class="tw-absolute tw-inset-0 tw-bg-velox-100">
+                {{ 'collection-1' | placeholder_svg_tag: 'tw-w-full tw-h-full tw-object-cover tw-text-velox-300' }}
               </div>
             {% endif %}
 
@@ -80,8 +80,8 @@
       {%- comment -%} Placeholder {%- endcomment -%}
       <div class="tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 lg:tw-grid-cols-3 tw-gap-4 md:tw-gap-6">
         {% for i in (1..3) %}
-          <div class="tw-relative tw-overflow-hidden tw-rounded-lg tw-aspect-[4/5] tw-bg-velox-100 tw-flex tw-items-center tw-justify-center">
-            {% render 'icon', name: 'rectangle-group', class: 'tw-w-16 tw-h-16 tw-text-velox-300' %}
+          <div class="tw-relative tw-overflow-hidden tw-rounded-lg tw-aspect-[4/5] tw-bg-velox-100">
+            {{ 'collection-' | append: i | placeholder_svg_tag: 'tw-w-full tw-h-full tw-object-cover tw-text-velox-300' }}
           </div>
         {% endfor %}
       </div>

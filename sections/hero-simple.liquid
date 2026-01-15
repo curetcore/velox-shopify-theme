@@ -21,7 +21,9 @@
       }}
     </div>
   {% else %}
-    <div class="tw-absolute tw-inset-0 tw-bg-velox-900"></div>
+    <div class="tw-absolute tw-inset-0 tw-bg-velox-100">
+      {{ 'lifestyle-1' | placeholder_svg_tag: 'tw-w-full tw-h-full tw-object-cover tw-text-velox-300' }}
+    </div>
   {% endif %}
 
   {%- comment -%} Overlay {%- endcomment -%}

@@ -143,8 +143,8 @@
       <div class="tw-grid tw-grid-cols-2 md:tw-grid-cols-3 lg:tw-grid-cols-4 tw-gap-4 md:tw-gap-6 lg:tw-gap-8">
         {% for i in (1..4) %}
           <div class="tw-group tw-relative">
-            <div class="tw-aspect-product tw-w-full tw-bg-velox-100 tw-rounded-lg tw-flex tw-items-center tw-justify-center">
-              {% render 'icon', name: 'eye', class: 'tw-w-12 tw-h-12 tw-text-velox-300' %}
+            <div class="tw-aspect-product tw-w-full tw-bg-velox-100 tw-rounded-lg tw-overflow-hidden">
+              {{ 'product-' | append: i | placeholder_svg_tag: 'tw-w-full tw-h-full tw-object-cover tw-text-velox-300' }}
             </div>
             <div class="tw-mt-4 tw-space-y-2">
               <div class="tw-h-4 tw-bg-velox-100 tw-rounded tw-w-3/4"></div>
