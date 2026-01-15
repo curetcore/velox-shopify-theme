@@ -253,6 +253,22 @@ velox-shopify-theme/
   - Proporciones: 1:1, 4:3, 16:9, 21:9
   - Etiquetas configurables
   - Accessible con input range
+- `section-divider.liquid` - Separadores SVG decorativos
+  - 14 formas: wave, diagonal, curve, triangle, zigzag, drops, arrow, book, tilt
+  - Altura configurable (40-200px)
+  - Colores: white, light, primary, accent, dark, custom
+  - Transformaciones: flip horizontal/vertical
+- `shoppable-image.liquid` - Imagen con hotspots
+  - Hotspots clickeables con popup de producto
+  - Posicionamiento preciso (X/Y por porcentaje)
+  - Estilos: primary, accent, white
+  - Animación pulse en hotspots
+- `insta-stories.liquid` - UI tipo Instagram Stories
+  - Avatares circulares con borde gradiente
+  - Modal fullscreen con navegación
+  - Auto-avance configurable (3-15s)
+  - Soporte video e imágenes
+  - Caption y CTA por story
 
 ### Complementarias (Fase C)
 - `promo-banners.liquid` - Banners promocionales

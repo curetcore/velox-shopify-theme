@@ -50,12 +50,14 @@
     {% assign progress_percentage = cart.total_price | times: 100.0 | divided_by: free_shipping_threshold %}
     {% if progress_percentage > 100 %}{% assign progress_percentage = 100 %}{% endif %}
 
+    {%- capture free_shipping_success_msg -%}{{ 'cart.general.free_shipping_achieved' | t | default: '¡Envío gratis desbloqueado!' }}{%- endcapture -%}
+    {%- capture free_shipping_remaining_msg -%}{{ 'cart.general.free_shipping_remaining' | t | default: 'Te faltan {amount} para envío gratis' }}{%- endcapture -%}
     <div
       class="tw-px-4 tw-py-3 tw-bg-velox-50 tw-border-b tw-border-velox-100"
       data-free-shipping-bar
       data-free-shipping-threshold="{{ free_shipping_threshold }}"
-      data-free-shipping-success="{{ 'cart.general.free_shipping_achieved' | t | default: '¡Envío gratis desbloqueado!' }}"
-      data-free-shipping-remaining="{{ 'cart.general.free_shipping_remaining' | t | default: 'Te faltan {amount} para envío gratis' }}"
+      data-free-shipping-success="{{ free_shipping_success_msg | escape }}"
+      data-free-shipping-remaining="{{ free_shipping_remaining_msg | escape }}"
     >
       <p class="tw-text-sm tw-mb-2" data-shipping-message>
         {% if amount_remaining > 0 %}
