@@ -7,7 +7,7 @@
           "type": "slide",
           "settings": {
             "eyebrow": "Nueva temporada 2025",
-            "title": "Estilo que define",
+            "title": "t:templates.index.hero.slide_1_title",
             "subtitle": "Descubre nuestra colección de calzado premium diseñado para quienes buscan confort y elegancia.",
             "button_1_text": "Comprar ahora",
             "button_1_url": "shopify://collections/all",
@@ -21,7 +21,7 @@
           "type": "slide",
           "settings": {
             "eyebrow": "Edición limitada",
-            "title": "Colección urbana",
+            "title": "t:templates.index.hero.slide_2_title",
             "subtitle": "Sneakers premium para el día a día. Comodidad sin comprometer el estilo.",
             "button_1_text": "Explorar colección",
             "button_1_url": "shopify://collections/sneakers",
@@ -33,7 +33,7 @@
           "type": "slide",
           "settings": {
             "eyebrow": "Ofertas especiales",
-            "title": "Hasta 40% OFF",
+            "title": "t:templates.index.hero.slide_3_title",
             "subtitle": "Aprovecha nuestras ofertas de temporada en productos seleccionados.",
             "button_1_text": "Ver ofertas",
             "button_1_url": "shopify://collections/sale",
@@ -59,13 +59,13 @@
         "text_alignment": "center",
         "narrow_content": false,
         "title": "",
-        "text": "<p>Envío gratis en compras mayores a $2,000 MXN | Devoluciones gratuitas por 30 días</p>"
+        "text": "t:templates.index.announcement.text"
       }
     },
     "featured_collection": {
       "type": "featured-collection",
       "settings": {
-        "title": "Lo más vendido",
+        "title": "t:templates.index.featured_collection.title",
         "description": "Los favoritos de nuestros clientes",
         "products_to_show": 8,
         "columns": 4,
@@ -85,31 +85,31 @@
         "collection_1": {
           "type": "collection",
           "settings": {
-            "title": "Sneakers"
+            "title": "t:templates.index.collection_list.sneakers"
           }
         },
         "collection_2": {
           "type": "collection",
           "settings": {
-            "title": "Botas"
+            "title": "t:templates.index.collection_list.boots"
           }
         },
         "collection_3": {
           "type": "collection",
           "settings": {
-            "title": "Sandalias"
+            "title": "t:templates.index.collection_list.sandals"
           }
         },
         "collection_4": {
           "type": "collection",
           "settings": {
-            "title": "Formal"
+            "title": "t:templates.index.collection_list.formal"
           }
         }
       },
       "block_order": ["collection_1", "collection_2", "collection_3", "collection_4"],
       "settings": {
-        "title": "Explora por categoría",
+        "title": "t:templates.index.collection_list.title",
         "description": "Encuentra el calzado perfecto para cada ocasión",
         "columns": 4,
         "image_ratio": "square",
@@ -124,8 +124,8 @@
         "image_position": "left",
         "image_ratio": "landscape",
         "eyebrow": "Nuestra historia",
-        "title": "Calidad artesanal desde 2015",
-        "text": "<p>Cada par de zapatos que creamos representa nuestra pasión por la excelencia. Utilizamos los mejores materiales y técnicas tradicionales combinadas con innovación moderna para ofrecerte calzado que dura.</p><p>Nuestro compromiso con la sostenibilidad nos impulsa a crear productos responsables sin sacrificar estilo ni comodidad.</p>",
+        "title": "t:templates.index.image_with_text.title",
+        "text": "t:templates.index.image_with_text.text",
         "button_text": "Conoce nuestra historia",
         "button_url": "shopify://pages/about",
         "button_style": "secondary",
@@ -178,7 +178,7 @@
       },
       "block_order": ["testimonial_1", "testimonial_2", "testimonial_3"],
       "settings": {
-        "title": "Lo que dicen nuestros clientes",
+        "title": "t:templates.index.testimonials.title",
         "description": "Miles de clientes satisfechos nos respaldan",
         "layout": "carousel",
         "show_rating": true,
@@ -189,7 +189,7 @@
       "type": "countdown",
       "settings": {
         "eyebrow": "Oferta por tiempo limitado",
-        "title": "Venta flash de fin de semana",
+        "title": "t:templates.index.countdown.title",
         "description": "Hasta 50% de descuento en productos seleccionados. ¡No te lo pierdas!",
         "button_text": "Comprar ahora",
         "button_url": "shopify://collections/sale",
@@ -243,7 +243,7 @@
       },
       "block_order": ["logo_1", "logo_2", "logo_3", "logo_4", "logo_5", "logo_6"],
       "settings": {
-        "title": "Marcas que trabajamos",
+        "title": "t:templates.index.logo_list.title",
         "show_title": true,
         "logos_per_row": 6,
         "logo_height": 60,
@@ -253,7 +253,7 @@
     "blog_preview": {
       "type": "blog-posts-preview",
       "settings": {
-        "title": "Del blog",
+        "title": "t:templates.index.blog_preview.title",
         "description": "Inspiración, tendencias y consejos de estilo",
         "posts_to_show": 3,
         "columns": 3,
@@ -272,8 +272,8 @@
         "text_alignment": "center",
         "narrow_content": true,
         "eyebrow": "Únete a la comunidad",
-        "title": "Suscríbete y obtén 10% OFF",
-        "text": "<p>Recibe las últimas novedades, ofertas exclusivas y consejos de estilo directamente en tu bandeja de entrada.</p>",
+        "title": "t:templates.index.newsletter.title",
+        "text": "t:templates.index.newsletter.text",
         "show_newsletter": true
       }
     },
@@ -284,32 +284,32 @@
           "type": "badge",
           "settings": {
             "icon": "shield-check",
-            "title": "Compra segura",
-            "text": "Transacciones 100% protegidas"
+            "title": "t:templates.index.trust_badges.secure_title",
+            "text": "t:templates.index.trust_badges.secure_text"
           }
         },
         "badge_2": {
           "type": "badge",
           "settings": {
             "icon": "truck",
-            "title": "Envío gratis",
-            "text": "En compras mayores a $2,000"
+            "title": "t:templates.index.trust_badges.shipping_title",
+            "text": "t:templates.index.trust_badges.shipping_text"
           }
         },
         "badge_3": {
           "type": "badge",
           "settings": {
             "icon": "arrow-path",
-            "title": "Devoluciones",
-            "text": "30 días para cambios"
+            "title": "t:templates.index.trust_badges.returns_title",
+            "text": "t:templates.index.trust_badges.returns_text"
           }
         },
         "badge_4": {
           "type": "badge",
           "settings": {
             "icon": "chat-bubble-left-right",
-            "title": "Soporte 24/7",
-            "text": "Estamos para ayudarte"
+            "title": "t:templates.index.trust_badges.support_title",
+            "text": "t:templates.index.trust_badges.support_text"
           }
         }
       },

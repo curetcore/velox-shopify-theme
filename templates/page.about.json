@@ -5,7 +5,7 @@
             "settings": {
                 "eyebrow": "Our Story",
                 "title": "About Us",
-                "text": "Passionate about fashion since day one.",
+                "text": "t:templates.page_about.header.text",
                 "button_text": "",
                 "text_position": "center"
             }
@@ -21,7 +21,7 @@
                 "image_ratio": "portrait",
                 "eyebrow": "Our Mission",
                 "title": "Style Without Compromise",
-                "text": "<p>We believe everyone deserves access to quality fashion. Our team works directly with manufacturers to bring you the best pieces at fair prices.</p><p>From design to delivery, every step is handled with care and attention to detail.</p>",
+                "text": "t:templates.page_about.image_with_text.text",
                 "button_text": "Shop Now",
                 "button_url": "shopify://collections/all",
                 "button_style": "primary"
@@ -33,22 +33,22 @@
                 "column_1": {
                     "type": "column",
                     "settings": {
-                        "title": "Quality First",
-                        "text": "We source only the best materials and work with trusted manufacturers."
+                        "title": "t:templates.page_about.multicolumn.column_1_title",
+                        "text": "t:templates.page_about.multicolumn.column_1_text"
                     }
                 },
                 "column_2": {
                     "type": "column",
                     "settings": {
-                        "title": "Customer Focused",
-                        "text": "Your satisfaction is our priority. We're here to help 24/7."
+                        "title": "t:templates.page_about.multicolumn.column_2_title",
+                        "text": "t:templates.page_about.multicolumn.column_2_text"
                     }
                 },
                 "column_3": {
                     "type": "column",
                     "settings": {
-                        "title": "Fast Shipping",
-                        "text": "Swift processing and reliable delivery worldwide."
+                        "title": "t:templates.page_about.multicolumn.column_3_title",
+                        "text": "t:templates.page_about.multicolumn.column_3_text"
                     }
                 }
             },
@@ -72,7 +72,7 @@
                         "name": "Customer Name",
                         "title": "Verified Buyer",
                         "rating": 5,
-                        "text": "Amazing quality and fast shipping. Will definitely order again!"
+                        "text": "t:templates.page_about.testimonials.testimonial_1"
                     }
                 }
             },
@@ -80,7 +80,7 @@
                 "testimonial_1"
             ],
             "settings": {
-                "heading": "What Our Customers Say",
+                "heading": "t:templates.page_about.testimonials.heading",
                 "per_page": 1
             }
         },
@@ -91,7 +91,7 @@
                 "text_alignment": "center",
                 "narrow_content": true,
                 "title": "Join Our Community",
-                "text": "<p>Get exclusive offers and be the first to know about new arrivals.</p>",
+                "text": "t:templates.page_about.newsletter.text",
                 "show_newsletter": true
             }
         }

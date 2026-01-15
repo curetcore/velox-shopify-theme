@@ -6,7 +6,7 @@
                 "announcement_1": {
                     "type": "announcement",
                     "settings": {
-                        "text": "New Drop: Air Max Collection",
+                        "text": "t:templates.index_sneakers.ticker.drop",
                         "link": "shopify://collections/new-arrivals",
                         "icon": "star"
                     }
@@ -14,14 +14,14 @@
                 "announcement_2": {
                     "type": "announcement",
                     "settings": {
-                        "text": "Free Shipping on Orders $100+",
+                        "text": "t:templates.index_sneakers.ticker.shipping",
                         "icon": "truck"
                     }
                 },
                 "announcement_3": {
                     "type": "announcement",
                     "settings": {
-                        "text": "100% Authentic Guaranteed",
+                        "text": "t:templates.index_sneakers.ticker.authentic",
                         "icon": "none"
                     }
                 }
@@ -45,8 +45,8 @@
                     "type": "slide",
                     "settings": {
                         "subheading": "Just Dropped",
-                        "heading": "Step Into Style",
-                        "text": "Discover the latest sneaker releases. Premium comfort meets street-ready design.",
+                        "heading": "t:templates.index_sneakers.hero.slide_1_heading",
+                        "text": "t:templates.index_sneakers.hero.slide_1_text",
                         "button_label": "Shop New Arrivals",
                         "button_link": "shopify://collections/new-arrivals",
                         "button_label_2": "Explore All",
@@ -59,8 +59,8 @@
                     "type": "slide",
                     "settings": {
                         "subheading": "Limited Edition",
-                        "heading": "Retro Revival",
-                        "text": "Classic silhouettes reimagined for the modern sneakerhead.",
+                        "heading": "t:templates.index_sneakers.hero.slide_2_heading",
+                        "text": "t:templates.index_sneakers.hero.slide_2_text",
                         "button_label": "Shop Retro",
                         "button_link": "shopify://collections/retro",
                         "text_color": "light",
@@ -71,8 +71,8 @@
                     "type": "slide",
                     "settings": {
                         "subheading": "Member Exclusive",
-                        "heading": "Up to 40% Off",
-                        "text": "End of season sale. Limited time only.",
+                        "heading": "t:templates.index_sneakers.hero.slide_3_heading",
+                        "text": "t:templates.index_sneakers.hero.slide_3_text",
                         "button_label": "Shop Sale",
                         "button_link": "shopify://collections/sale",
                         "text_color": "light",
@@ -96,7 +96,7 @@
         "horizontal_ticker": {
             "type": "horizontal-ticker",
             "settings": {
-                "text": "FREE SHIPPING • EASY RETURNS • 100% AUTHENTIC • FREE SHIPPING • EASY RETURNS • 100% AUTHENTIC",
+                "text": "t:templates.index_sneakers.ticker.marquee",
                 "speed": 30,
                 "background_color": "#000000",
                 "text_color": "#ffffff"
@@ -167,7 +167,7 @@
         "comparison_slider": {
             "type": "comparison-slider",
             "settings": {
-                "heading": "Real vs Fake",
+                "heading": "t:templates.index_sneakers.image_with_text.heading",
                 "caption": "Learn to spot the difference. We only sell 100% authenticated sneakers.",
                 "label_before": "Fake",
                 "label_after": "Authentic",
@@ -181,7 +181,7 @@
                 "image_ratio": "square",
                 "eyebrow": "Our Promise",
                 "title": "100% Authentic Guaranteed",
-                "text": "<p>Every pair goes through our rigorous authentication process. Our team of experts inspects each sneaker using industry-leading verification methods.</p><p>✓ Expert verification<br>✓ Money-back guarantee<br>✓ Secure packaging</p>",
+                "text": "t:templates.index_sneakers.image_with_text.text",
                 "button_text": "Learn More",
                 "button_url": "shopify://pages/authenticity",
                 "button_style": "secondary",
@@ -209,7 +209,7 @@
                         "name": "James K.",
                         "title": "Verified Buyer",
                         "rating": 5,
-                        "text": "Best sneaker store I've found. Shipping was crazy fast and the shoes are 100% legit. Already planning my next purchase!"
+                        "text": "t:templates.index_sneakers.testimonials.testimonial_1"
                     }
                 },
                 "testimonial_2": {
@@ -218,7 +218,7 @@
                         "name": "Sarah M.",
                         "title": "Verified Buyer",
                         "rating": 5,
-                        "text": "Finally found a trustworthy source for limited releases. The authentication gives me peace of mind every time."
+                        "text": "t:templates.index_sneakers.testimonials.testimonial_2"
                     }
                 },
                 "testimonial_3": {
@@ -227,7 +227,7 @@
                         "name": "Mike T.",
                         "title": "Verified Buyer",
                         "rating": 5,
-                        "text": "Customer service went above and beyond. They helped me find a rare pair I'd been hunting for months."
+                        "text": "t:templates.index_sneakers.testimonials.testimonial_3"
                     }
                 }
             },
@@ -237,7 +237,7 @@
                 "testimonial_3"
             ],
             "settings": {
-                "heading": "What Sneakerheads Say",
+                "heading": "t:templates.index_sneakers.testimonials.heading",
                 "subheading": "Thousands of satisfied customers",
                 "background_color": "default"
             }
@@ -320,32 +320,32 @@
                     "type": "badge",
                     "settings": {
                         "icon": "shield-check",
-                        "title": "100% Authentic",
-                        "text": "Every pair verified"
+                        "title": "t:templates.index_sneakers.trust_badges.authentic_title",
+                        "text": "t:templates.index_sneakers.trust_badges.authentic_text"
                     }
                 },
                 "badge_2": {
                     "type": "badge",
                     "settings": {
                         "icon": "truck",
-                        "title": "Free Shipping",
-                        "text": "On orders $100+"
+                        "title": "t:templates.index_sneakers.trust_badges.shipping_title",
+                        "text": "t:templates.index_sneakers.trust_badges.shipping_text"
                     }
                 },
                 "badge_3": {
                     "type": "badge",
                     "settings": {
                         "icon": "arrow-path",
-                        "title": "Easy Returns",
-                        "text": "14 day policy"
+                        "title": "t:templates.index_sneakers.trust_badges.returns_title",
+                        "text": "t:templates.index_sneakers.trust_badges.returns_text"
                     }
                 },
                 "badge_4": {
                     "type": "badge",
                     "settings": {
                         "icon": "lock-closed",
-                        "title": "Secure Checkout",
-                        "text": "SSL encrypted"
+                        "title": "t:templates.index_sneakers.trust_badges.secure_title",
+                        "text": "t:templates.index_sneakers.trust_badges.secure_text"
                     }
                 }
             },
@@ -364,7 +364,7 @@
         "recently_viewed": {
             "type": "recently-viewed",
             "settings": {
-                "heading": "Recently Viewed",
+                "heading": "t:templates.common.recently_viewed",
                 "empty_text": "Start browsing to see your recently viewed items",
                 "products_to_show": 4,
                 "columns": 4
@@ -378,7 +378,7 @@
                 "narrow_content": true,
                 "eyebrow": "Stay in the Loop",
                 "title": "Join the Club",
-                "text": "<p>Get early access to releases, exclusive deals, and sneaker news. Plus 10% off your first order.</p>",
+                "text": "t:templates.index_sneakers.newsletter.text",
                 "show_newsletter": true
             }
         }

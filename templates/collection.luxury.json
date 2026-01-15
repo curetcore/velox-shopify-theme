@@ -23,7 +23,7 @@
                 "image_ratio": "square",
                 "eyebrow": "Artisanal Excellence",
                 "title": "Crafted in Italy",
-                "text": "<p>Each piece in this collection represents generations of shoemaking expertise. Premium leathers, hand-stitched details, and timeless design.</p>",
+                "text": "t:templates.collection_luxury.image_with_text.text",
                 "button_text": "Our Heritage",
                 "button_url": "shopify://pages/about",
                 "button_style": "secondary",

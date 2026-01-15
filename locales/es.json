@@ -495,5 +495,355 @@
     "added": "Agregado a favoritos",
     "removed": "Quitado de favoritos",
     "view_wishlist": "Ver favoritos"
+  },
+  "templates": {
+    "index": {
+      "hero": {
+        "slide_1_title": "Estilo que define",
+        "slide_2_title": "Colección urbana",
+        "slide_3_title": "Hasta 40% OFF"
+      },
+      "announcement": {
+        "text": "<p>Envío gratis en compras mayores a $2,000 MXN | Devoluciones gratuitas por 30 días</p>"
+      },
+      "featured_collection": {
+        "title": "Lo más vendido"
+      },
+      "collection_list": {
+        "title": "Explora por categoría",
+        "sneakers": "Sneakers",
+        "boots": "Botas",
+        "sandals": "Sandalias",
+        "formal": "Formal"
+      },
+      "image_with_text": {
+        "title": "Calidad artesanal desde 2015",
+        "text": "<p>Cada par de zapatos que creamos representa nuestra pasión por la excelencia. Utilizamos los mejores materiales y técnicas tradicionales combinadas con innovación moderna para ofrecerte calzado que dura.</p><p>Nuestro compromiso con la sostenibilidad nos impulsa a crear productos responsables sin sacrificar estilo ni comodidad.</p>"
+      },
+      "testimonials": {
+        "title": "Lo que dicen nuestros clientes"
+      },
+      "countdown": {
+        "title": "Venta flash de fin de semana"
+      },
+      "logo_list": {
+        "title": "Marcas que trabajamos"
+      },
+      "blog_preview": {
+        "title": "Del blog"
+      },
+      "newsletter": {
+        "title": "Suscríbete y obtén 10% OFF",
+        "text": "<p>Recibe las últimas novedades, ofertas exclusivas y consejos de estilo directamente en tu bandeja de entrada.</p>"
+      },
+      "trust_badges": {
+        "secure_title": "Compra segura",
+        "secure_text": "Transacciones 100% protegidas",
+        "shipping_title": "Envío gratis",
+        "shipping_text": "En compras mayores a $2,000",
+        "returns_title": "Devoluciones",
+        "returns_text": "30 días para cambios",
+        "support_title": "Soporte 24/7",
+        "support_text": "Estamos para ayudarte"
+      }
+    },
+    "index_luxury": {
+      "hero": {
+        "slide_1_heading": "Elegancia atemporal",
+        "slide_1_text": "Calzado de lujo hecho a mano con el mejor cuero italiano. Cada par representa generaciones de experiencia artesanal.",
+        "slide_2_heading": "Hecho en Italia",
+        "slide_2_text": "Tres generaciones de excelencia en zapatería. Cada puntada cuenta una historia de dedicación y maestría.",
+        "slide_3_heading": "Edición Oxford",
+        "slide_3_text": "Clásicos refinados para el caballero moderno. Sofisticación y estilo contemporáneo."
+      },
+      "announcement": {
+        "text": "<p>Envío y devoluciones gratis en todos los pedidos • Hecho a mano en Florencia desde 1952</p>"
+      },
+      "featured_collection": {
+        "title": "Nuevos ingresos"
+      },
+      "collection_list": {
+        "title": "Nuestras colecciones",
+        "oxfords": "Oxfords",
+        "derbies": "Derbies",
+        "loafers": "Mocasines",
+        "boots": "Botas"
+      },
+      "image_with_text_1": {
+        "title": "Tres generaciones de excelencia",
+        "text": "<p>Desde 1952, nuestra familia se ha dedicado al arte de la zapatería. Cada par es hecho a mano en nuestro atelier en Florencia, usando técnicas transmitidas de generación en generación.</p><p>Obtenemos solo los mejores cueros de la Toscana, asegurando que cada zapato cumpla con nuestros exigentes estándares de calidad y elegancia.</p>"
+      },
+      "image_with_text_2": {
+        "title": "Hecho a mano",
+        "text": "<p>Más de 200 pasos individuales se requieren para crear cada par. Desde cortar el cuero hasta el pulido final, nuestros artesanos se enorgullecen de cada detalle.</p><p>Esta dedicación al oficio es lo que distingue nuestros zapatos y asegura que duren toda una vida.</p>"
+      },
+      "testimonials": {
+        "heading": "Testimonios de clientes",
+        "testimonial_1_title": "Londres, UK",
+        "testimonial_1_text": "Calidad excepcional. He probado muchas marcas de lujo, pero la artesanía aquí es verdaderamente sobresaliente. Vale cada peso invertido.",
+        "testimonial_2_title": "Milán, Italia",
+        "testimonial_2_text": "Como italiano, aprecio los artículos de cuero fino. Estos zapatos rivalizan con los mejores de Florencia. ¡Bellissimo! Una obra maestra absoluta.",
+        "testimonial_3_title": "Nueva York, USA",
+        "testimonial_3_text": "Finalmente encontré zapatos que igualan mis estándares. El ajuste es perfecto y han envejecido bellamente con el tiempo. Una verdadera pieza de inversión."
+      },
+      "logo_list": {
+        "title": "Como se ve en"
+      },
+      "trust_badges": {
+        "crafted_title": "Hecho a mano",
+        "crafted_text": "Florencia, desde 1952",
+        "packaging_title": "Empaque de lujo",
+        "packaging_text": "Presentación lista para regalo",
+        "shipping_title": "Envío gratis",
+        "shipping_text": "Entrega de cortesía",
+        "quality_title": "Calidad de por vida",
+        "quality_text": "Calidad garantizada"
+      },
+      "newsletter": {
+        "text": "<p>Recibe avances exclusivos de nuevas colecciones, eventos privados y recomendaciones personalizadas adaptadas a tu gusto.</p>"
+      }
+    },
+    "index_sneakers": {
+      "ticker": {
+        "drop": "Nuevo lanzamiento: Colección Air Max",
+        "shipping": "Envío gratis en pedidos de $100+",
+        "authentic": "100% auténtico garantizado",
+        "marquee": "ENVÍO GRATIS • DEVOLUCIONES FÁCILES • 100% AUTÉNTICO • ENVÍO GRATIS • DEVOLUCIONES FÁCILES • 100% AUTÉNTICO"
+      },
+      "hero": {
+        "slide_1_heading": "Entra con estilo",
+        "slide_1_text": "Descubre los últimos lanzamientos de sneakers. Comodidad premium con diseño urbano.",
+        "slide_2_heading": "Retro revival",
+        "slide_2_text": "Siluetas clásicas reimaginadas para el sneakerhead moderno.",
+        "slide_3_heading": "Hasta 40% de descuento",
+        "slide_3_text": "Venta de fin de temporada. Tiempo limitado."
+      },
+      "image_with_text": {
+        "heading": "Real vs falso",
+        "text": "<p>Cada par pasa por nuestro riguroso proceso de autenticación. Nuestro equipo de expertos inspecciona cada sneaker usando métodos de verificación líderes en la industria.</p><p>✓ Verificación experta<br>✓ Garantía de devolución<br>✓ Empaque seguro</p>"
+      },
+      "testimonials": {
+        "heading": "Lo que dicen los sneakerheads",
+        "testimonial_1": "La mejor tienda de sneakers que he encontrado. El envío fue súper rápido y los zapatos son 100% legítimos. ¡Ya estoy planeando mi próxima compra!",
+        "testimonial_2": "Por fin encontré una fuente confiable para lanzamientos limitados. La autenticación me da tranquilidad cada vez.",
+        "testimonial_3": "El servicio al cliente fue más allá. Me ayudaron a encontrar un par raro que llevaba meses buscando."
+      },
+      "trust_badges": {
+        "authentic_title": "Autenticado",
+        "authentic_text": "Cada par verificado",
+        "shipping_title": "Envío gratis",
+        "shipping_text": "En pedidos de $100+",
+        "returns_title": "Devoluciones fáciles",
+        "returns_text": "Política de 14 días",
+        "secure_title": "Pago seguro",
+        "secure_text": "Encriptado SSL"
+      },
+      "newsletter": {
+        "text": "<p>Obtén acceso anticipado a lanzamientos, ofertas exclusivas y noticias de sneakers. Además, 10% de descuento en tu primer pedido.</p>"
+      }
+    },
+    "index_streetwear": {
+      "ticker": {
+        "stickers": "Stickers gratis con cada pedido",
+        "collab": "Nueva colaboración disponible"
+      },
+      "hero": {
+        "slide_1_heading": "Rompe las reglas",
+        "slide_1_text": "Diseños atrevidos para quienes no siguen tendencias—las crean.",
+        "slide_2_heading": "Serie de artistas",
+        "slide_2_text": "Diseños de edición limitada por artistas underground.",
+        "slide_3_heading": "Acceso anticipado",
+        "slide_3_text": "Regístrate para drops exclusivos antes que nadie."
+      },
+      "image_with_text": {
+        "text": "<p>No hacemos producción masiva. Cada pieza es diseñada internamente y producida en tirajes limitados. Cuando se acaba, se acaba.</p>"
+      },
+      "testimonials": {
+        "heading": "La crew dice",
+        "testimonial_1": "Compré el último drop y no paran los cumplidos. ¡La calidad es una locura!",
+        "testimonial_2": "Por fin una marca que lo entiende. Piezas únicas que nadie más tiene."
+      },
+      "newsletter": {
+        "text": "<p>Sé el primero en saber sobre drops. Obtén 15% de descuento en tu primer pedido.</p>"
+      }
+    },
+    "index_womens": {
+      "ticker": {
+        "spring": "Nueva colección de primavera disponible",
+        "shipping": "Envío gratis en pedidos de $75+"
+      },
+      "hero": {
+        "slide_1_heading": "Despertar de primavera",
+        "slide_1_text": "Ligero, aireado y elegante sin esfuerzo. Descubre piezas que transicionan perfectamente del día a la noche.",
+        "slide_2_heading": "Los esenciales",
+        "slide_2_text": "Piezas atemporales que pertenecen a todo guardarropa.",
+        "slide_3_heading": "Hasta 30% de descuento",
+        "slide_3_text": "Venta de fin de temporada en estilos seleccionados."
+      },
+      "image_with_text": {
+        "text": "<p>Nuestro último editorial captura la esencia del verano mediterráneo. Telas fluidas, tonos besados por el sol y elegancia sin esfuerzo.</p>"
+      },
+      "testimonials": {
+        "heading": "Amor de clientes",
+        "testimonial_1": "¡La calidad es increíble y el ajuste es perfecto! Ya pedí tres piezas más.",
+        "testimonial_2": "Por fin una marca que entiende lo que las mujeres realmente quieren—estilo, comodidad y sostenibilidad."
+      },
+      "newsletter": {
+        "text": "<p>Sé la primera en conocer nuevos ingresos, ofertas exclusivas y consejos de estilo. Además, obtén 10% de descuento en tu primer pedido.</p>"
+      }
+    },
+    "collection_luxury": {
+      "image_with_text": {
+        "title": "Hecho en Italia",
+        "text": "<p>Cada pieza de esta colección representa generaciones de experiencia en zapatería. Cueros premium, detalles cosidos a mano y diseño atemporal.</p>"
+      }
+    },
+    "collection_sneakers": {
+      "trust_badges": {
+        "authenticated_title": "Autenticado",
+        "authenticated_text": "Cada par verificado",
+        "shipping_title": "Envío gratis",
+        "shipping_text": "Pedidos $100+",
+        "returns_title": "Devoluciones fáciles",
+        "returns_text": "Política de 14 días"
+      },
+      "image_with_text": {
+        "heading": "Real vs falso"
+      }
+    },
+    "collection_streetwear": {
+      "countdown": {
+        "title": "Esta colección termina pronto"
+      },
+      "newsletter": {
+        "title": "Obtén acceso anticipado",
+        "text": "<p>Regístrate para drops exclusivos y acceso anticipado a lanzamientos limitados.</p>"
+      }
+    },
+    "collection_womens": {
+      "testimonials": {
+        "heading": "Amor de clientes",
+        "testimonial_1_title": "Comprador verificado",
+        "testimonial_1_text": "¡La calidad superó mis expectativas. Ya estoy planeando mi próxima compra!",
+        "testimonial_2_title": "Comprador verificado",
+        "testimonial_2_text": "Ajuste perfecto, tela hermosa, y me encanta que sea sostenible."
+      }
+    },
+    "product_luxury": {
+      "rich_text": {
+        "text": "<p>Cada par toma más de 8 horas en crearse. Nuestros artesanos usan técnicas tradicionales transmitidas de generación en generación.</p>"
+      },
+      "related": {
+        "heading": "También te puede gustar"
+      }
+    },
+    "product_sneakers": {
+      "image_with_text": {
+        "heading": "Auténtico vs falso"
+      },
+      "related": {
+        "heading": "Completa tu colección"
+      }
+    },
+    "product_streetwear": {
+      "related": {
+        "heading": "Combina con"
+      }
+    },
+    "product_womens": {
+      "multicolumn": {
+        "sustainable_title": "Sostenible",
+        "sustainable_text": "Hecho con algodón orgánico y materiales sostenibles.",
+        "flattering_title": "Ajuste favorecedor",
+        "flattering_text": "Diseñado por mujeres, para mujeres. Favorece todo tipo de cuerpo.",
+        "easy_care_title": "Fácil cuidado",
+        "easy_care_text": "Lavable a máquina. Resistente a arrugas. Lista para usar."
+      },
+      "related": {
+        "heading": "Completa el look"
+      }
+    },
+    "page_about": {
+      "header": {
+        "text": "Apasionados por la moda desde el día uno."
+      },
+      "rich_text": {
+        "text": "<p>Creemos que todos merecen acceso a moda de calidad. Nuestro equipo trabaja directamente con fabricantes para traerte las mejores piezas a precios justos.</p><p>Desde el diseño hasta la entrega, cada paso se maneja con cuidado y atención al detalle.</p>"
+      },
+      "multicolumn": {
+        "quality_title": "Calidad primero",
+        "quality_text": "Obtenemos solo los mejores materiales y trabajamos con fabricantes de confianza.",
+        "customer_title": "Enfoque al cliente",
+        "customer_text": "Tu satisfacción es nuestra prioridad. Estamos aquí para ayudarte 24/7.",
+        "shipping_title": "Envío rápido",
+        "shipping_text": "Procesamiento veloz y entrega confiable en todo el mundo."
+      },
+      "testimonials": {
+        "heading": "Lo que dicen nuestros clientes",
+        "testimonial_1": "¡Calidad increíble y envío rápido. Definitivamente volveré a ordenar!"
+      },
+      "newsletter": {
+        "text": "<p>Obtén ofertas exclusivas y sé el primero en conocer los nuevos ingresos.</p>"
+      }
+    },
+    "page_contact": {
+      "header": {
+        "text": "Nos encantaría saber de ti. Nuestro equipo está aquí para ayudarte."
+      },
+      "form": {
+        "heading": "Envíanos un mensaje"
+      },
+      "info": {
+        "email": "soporte@tutienda.com",
+        "phone": "+52 (55) 1234-5678",
+        "hours": "Lun-Vie: 9am-6pm"
+      },
+      "faq": {
+        "heading": "Preguntas frecuentes",
+        "shipping_question": "¿Cuánto tarda el envío?",
+        "shipping_answer": "<p>El envío estándar toma 3-7 días hábiles. El envío express está disponible al momento del pago.</p>",
+        "returns_question": "¿Cuál es su política de devoluciones?",
+        "returns_answer": "<p>Ofrecemos devoluciones gratuitas dentro de 30 días de la compra. Los artículos deben estar sin usar con etiquetas adjuntas.</p>",
+        "international_question": "¿Hacen envíos internacionales?",
+        "international_answer": "<p>¡Sí! Enviamos a todo el mundo. El envío internacional generalmente toma 7-14 días hábiles.</p>"
+      }
+    },
+    "page_faq": {
+      "header": {
+        "text": "Encuentra respuestas a preguntas comunes sobre pedidos, envíos y más."
+      },
+      "shipping": {
+        "heading": "Envío y entrega",
+        "time_question": "¿Cuánto tarda el envío?",
+        "time_answer": "<p>El envío estándar toma 3-7 días hábiles dentro de México. Los pedidos internacionales generalmente llegan en 7-14 días hábiles.</p>",
+        "free_question": "¿Ofrecen envío gratis?",
+        "free_answer": "<p>¡Sí! Ofrecemos envío estándar gratis en todos los pedidos mayores a $2,000. El envío express está disponible con costo adicional.</p>",
+        "tracking_question": "¿Cómo puedo rastrear mi pedido?",
+        "tracking_answer": "<p>Una vez que tu pedido se envíe, recibirás un correo con información de rastreo. También puedes verificar el estado de tu pedido en tu cuenta.</p>"
+      },
+      "returns": {
+        "heading": "Devoluciones y cambios",
+        "policy_question": "¿Cuál es su política de devoluciones?",
+        "policy_answer": "<p>Aceptamos devoluciones dentro de 30 días de la entrega. Los artículos deben estar sin usar, sin lavar y con las etiquetas originales adjuntas.</p>",
+        "start_question": "¿Cómo inicio una devolución?",
+        "start_answer": "<p>Inicia sesión en tu cuenta y navega a tu historial de pedidos. Selecciona el pedido y haz clic en 'Iniciar devolución' para imprimir tu etiqueta prepagada.</p>",
+        "refund_question": "¿Cuándo recibiré mi reembolso?",
+        "refund_answer": "<p>Los reembolsos se procesan dentro de 5-7 días hábiles después de recibir tu devolución. Puede tomar 3-5 días adicionales para aparecer en tu estado de cuenta.</p>"
+      },
+      "products": {
+        "heading": "Productos y tallas",
+        "size_question": "¿Cómo encuentro mi talla?",
+        "size_answer": "<p>Revisa nuestra guía de tallas en cada página de producto. Recomendamos medirte y comparar con nuestra tabla de tallas para el mejor ajuste.</p>",
+        "authentic_question": "¿Sus productos son auténticos?",
+        "authentic_answer": "<p>Absolutamente. Solo vendemos productos 100% auténticos. Cada artículo pasa por un proceso de verificación antes del envío.</p>"
+      },
+      "footer": {
+        "text": "<p>Nuestro equipo de soporte está aquí para ayudarte. Contáctanos en cualquier momento.</p>"
+      }
+    },
+    "common": {
+      "recently_viewed": "Visto recientemente",
+      "checked_out": "También vieron"
+    }
   }
 }

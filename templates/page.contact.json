@@ -5,7 +5,7 @@
             "settings": {
                 "eyebrow": "Get in Touch",
                 "title": "Contact Us",
-                "text": "We'd love to hear from you. Our team is here to help.",
+                "text": "t:templates.page_contact.header.text",
                 "text_position": "center"
             }
         },
@@ -13,7 +13,7 @@
             "type": "contact-form",
             "settings": {
                 "heading": "Send us a Message",
-                "subheading": "Fill out the form below and we'll get back to you within 24 hours."
+                "subheading": "t:templates.page_contact.form.subheading"
             }
         },
         "multicolumn": {
@@ -58,22 +58,22 @@
                 "faq_1": {
                     "type": "question",
                     "settings": {
-                        "question": "How long does shipping take?",
-                        "answer": "<p>Standard shipping takes 3-7 business days. Express shipping is available at checkout.</p>"
+                        "question": "t:templates.page_contact.faq.shipping_question",
+                        "answer": "t:templates.page_contact.faq.shipping_answer"
                     }
                 },
                 "faq_2": {
                     "type": "question",
                     "settings": {
-                        "question": "What is your return policy?",
-                        "answer": "<p>We offer free returns within 30 days of purchase. Items must be unworn with tags attached.</p>"
+                        "question": "t:templates.page_contact.faq.returns_question",
+                        "answer": "t:templates.page_contact.faq.returns_answer"
                     }
                 },
                 "faq_3": {
                     "type": "question",
                     "settings": {
-                        "question": "Do you ship internationally?",
-                        "answer": "<p>Yes! We ship worldwide. International shipping typically takes 7-14 business days.</p>"
+                        "question": "t:templates.page_contact.faq.international_question",
+                        "answer": "t:templates.page_contact.faq.international_answer"
                     }
                 }
             },

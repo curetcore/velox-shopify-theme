@@ -25,7 +25,7 @@
                         "name": "Emma L.",
                         "title": "Verified Buyer",
                         "rating": 5,
-                        "text": "The quality exceeded my expectations. Already planning my next purchase!"
+                        "text": "t:templates.collection_womens.testimonials.testimonial_1"
                     }
                 },
                 "testimonial_2": {
@@ -34,7 +34,7 @@
                         "name": "Sofia R.",
                         "title": "Verified Buyer",
                         "rating": 5,
-                        "text": "Perfect fit, beautiful fabric, and I love that it's sustainable."
+                        "text": "t:templates.collection_womens.testimonials.testimonial_2"
                     }
                 }
             },
@@ -43,7 +43,7 @@
                 "testimonial_2"
             ],
             "settings": {
-                "heading": "Customer Love",
+                "heading": "t:templates.collection_womens.testimonials.heading",
                 "carousel_type": "loop",
                 "per_page": 2,
                 "show_arrows": true
@@ -52,7 +52,7 @@
         "recently_viewed": {
             "type": "recently-viewed",
             "settings": {
-                "heading": "Recently Viewed",
+                "heading": "t:templates.common.recently_viewed",
                 "products_to_show": 4,
                 "columns": 4
             }

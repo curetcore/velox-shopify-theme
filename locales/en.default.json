@@ -495,5 +495,355 @@
     "added": "Added to wishlist",
     "removed": "Removed from wishlist",
     "view_wishlist": "View wishlist"
+  },
+  "templates": {
+    "index": {
+      "hero": {
+        "slide_1_title": "Style that defines",
+        "slide_2_title": "Urban collection",
+        "slide_3_title": "Up to 40% OFF"
+      },
+      "announcement": {
+        "text": "<p>Free shipping on orders over $100 | Free returns for 30 days</p>"
+      },
+      "featured_collection": {
+        "title": "Best sellers"
+      },
+      "collection_list": {
+        "title": "Explore by category",
+        "sneakers": "Sneakers",
+        "boots": "Boots",
+        "sandals": "Sandals",
+        "formal": "Formal"
+      },
+      "image_with_text": {
+        "title": "Artisan quality since 2015",
+        "text": "<p>Every pair of shoes we create represents our passion for excellence. We use the finest materials and traditional techniques combined with modern innovation to bring you footwear that lasts.</p><p>Our commitment to sustainability drives us to create responsible products without sacrificing style or comfort.</p>"
+      },
+      "testimonials": {
+        "title": "What our customers say"
+      },
+      "countdown": {
+        "title": "Weekend flash sale"
+      },
+      "logo_list": {
+        "title": "Brands we carry"
+      },
+      "blog_preview": {
+        "title": "From the blog"
+      },
+      "newsletter": {
+        "title": "Subscribe and get 10% OFF",
+        "text": "<p>Receive the latest news, exclusive offers, and style tips directly in your inbox.</p>"
+      },
+      "trust_badges": {
+        "secure_title": "Secure shopping",
+        "secure_text": "100% protected transactions",
+        "shipping_title": "Free shipping",
+        "shipping_text": "On orders over $100",
+        "returns_title": "Returns",
+        "returns_text": "30 days for exchanges",
+        "support_title": "24/7 Support",
+        "support_text": "We're here to help"
+      }
+    },
+    "index_luxury": {
+      "hero": {
+        "slide_1_heading": "Timeless Elegance",
+        "slide_1_text": "Handcrafted luxury footwear made from the finest Italian leather. Each pair represents generations of artisan expertise.",
+        "slide_2_heading": "Made in Italy",
+        "slide_2_text": "Three generations of shoemaking excellence. Every stitch tells a story of dedication and mastery.",
+        "slide_3_heading": "The Oxford Edit",
+        "slide_3_text": "Refined classics for the modern gentleman. Sophistication meets contemporary style."
+      },
+      "announcement": {
+        "text": "<p>Complimentary Shipping & Returns on All Orders • Handmade in Florence Since 1952</p>"
+      },
+      "featured_collection": {
+        "title": "New Arrivals"
+      },
+      "collection_list": {
+        "title": "Our Collections",
+        "oxfords": "Oxfords",
+        "derbies": "Derbies",
+        "loafers": "Loafers",
+        "boots": "Boots"
+      },
+      "image_with_text_1": {
+        "title": "Three Generations of Excellence",
+        "text": "<p>Since 1952, our family has dedicated itself to the art of shoemaking. Each pair is handcrafted in our atelier in Florence, using techniques passed down through generations.</p><p>We source only the finest leathers from Tuscany, ensuring every shoe meets our exacting standards of quality and elegance.</p>"
+      },
+      "image_with_text_2": {
+        "title": "Made by Hand",
+        "text": "<p>Over 200 individual steps go into creating each pair. From cutting the leather to the final polish, our artisans take pride in every detail.</p><p>This dedication to craft is what sets our shoes apart and ensures they last a lifetime.</p>"
+      },
+      "testimonials": {
+        "heading": "Client Testimonials",
+        "testimonial_1_title": "London, UK",
+        "testimonial_1_text": "Exceptional quality. I've tried many luxury brands, but the craftsmanship here is truly outstanding. Worth every penny invested.",
+        "testimonial_2_title": "Milan, Italy",
+        "testimonial_2_text": "As an Italian, I appreciate fine leather goods. These shoes rival the best from Florence. Bellissimo! An absolute masterpiece.",
+        "testimonial_3_title": "New York, USA",
+        "testimonial_3_text": "Finally found shoes that match my standards. The fit is perfect and they've aged beautifully over time. A true investment piece."
+      },
+      "logo_list": {
+        "title": "As Seen In"
+      },
+      "trust_badges": {
+        "crafted_title": "Handcrafted",
+        "crafted_text": "Florence, since 1952",
+        "packaging_title": "Luxury Packaging",
+        "packaging_text": "Gift-ready presentation",
+        "shipping_title": "Free Shipping",
+        "shipping_text": "Complimentary delivery",
+        "quality_title": "Lifetime Quality",
+        "quality_text": "Quality guaranteed"
+      },
+      "newsletter": {
+        "text": "<p>Receive exclusive previews of new collections, private events, and personalized recommendations tailored to your taste.</p>"
+      }
+    },
+    "index_sneakers": {
+      "ticker": {
+        "drop": "New Drop: Air Max Collection",
+        "shipping": "Free Shipping on Orders $100+",
+        "authentic": "100% Authentic Guaranteed",
+        "marquee": "FREE SHIPPING • EASY RETURNS • 100% AUTHENTIC • FREE SHIPPING • EASY RETURNS • 100% AUTHENTIC"
+      },
+      "hero": {
+        "slide_1_heading": "Step Into Style",
+        "slide_1_text": "Discover the latest sneaker releases. Premium comfort meets street-ready design.",
+        "slide_2_heading": "Retro Revival",
+        "slide_2_text": "Classic silhouettes reimagined for the modern sneakerhead.",
+        "slide_3_heading": "Up to 40% Off",
+        "slide_3_text": "End of season sale. Limited time only."
+      },
+      "image_with_text": {
+        "heading": "Real vs Fake",
+        "text": "<p>Every pair goes through our rigorous authentication process. Our team of experts inspects each sneaker using industry-leading verification methods.</p><p>✓ Expert verification<br>✓ Money-back guarantee<br>✓ Secure packaging</p>"
+      },
+      "testimonials": {
+        "heading": "What Sneakerheads Say",
+        "testimonial_1": "Best sneaker store I've found. Shipping was crazy fast and the shoes are 100% legit. Already planning my next purchase!",
+        "testimonial_2": "Finally found a trustworthy source for limited releases. The authentication gives me peace of mind every time.",
+        "testimonial_3": "Customer service went above and beyond. They helped me find a rare pair I'd been hunting for months."
+      },
+      "trust_badges": {
+        "authentic_title": "Authenticated",
+        "authentic_text": "Every pair verified",
+        "shipping_title": "Free Shipping",
+        "shipping_text": "On orders $100+",
+        "returns_title": "Easy Returns",
+        "returns_text": "14 day policy",
+        "secure_title": "Secure Checkout",
+        "secure_text": "SSL encrypted"
+      },
+      "newsletter": {
+        "text": "<p>Get early access to releases, exclusive deals, and sneaker news. Plus 10% off your first order.</p>"
+      }
+    },
+    "index_streetwear": {
+      "ticker": {
+        "stickers": "Free Stickers with Every Order",
+        "collab": "New Collab Just Dropped"
+      },
+      "hero": {
+        "slide_1_heading": "Break the Rules",
+        "slide_1_text": "Bold designs for those who don't follow trends—they set them.",
+        "slide_2_heading": "Artist Series",
+        "slide_2_text": "Limited edition designs by underground artists.",
+        "slide_3_heading": "Early Access",
+        "slide_3_text": "Sign up for exclusive drops before anyone else."
+      },
+      "image_with_text": {
+        "text": "<p>We don't do mass production. Every piece is designed in-house and made in limited runs. When it's gone, it's gone.</p>"
+      },
+      "testimonials": {
+        "heading": "The Crew Says",
+        "testimonial_1": "Copped the last drop and been getting compliments non-stop. Quality is insane!",
+        "testimonial_2": "Finally a brand that gets it. Unique pieces that nobody else has."
+      },
+      "newsletter": {
+        "text": "<p>Be first to know about drops. Get 15% off your first order.</p>"
+      }
+    },
+    "index_womens": {
+      "ticker": {
+        "spring": "New Spring Collection Now Live",
+        "shipping": "Free Shipping on Orders $75+"
+      },
+      "hero": {
+        "slide_1_heading": "Spring Awakening",
+        "slide_1_text": "Light, airy, and effortlessly chic. Discover pieces that transition seamlessly from day to night.",
+        "slide_2_heading": "The Essentials",
+        "slide_2_text": "Timeless pieces that belong in every wardrobe.",
+        "slide_3_heading": "Up to 30% Off",
+        "slide_3_text": "End of season sale on selected styles."
+      },
+      "image_with_text": {
+        "text": "<p>Our latest editorial captures the essence of Mediterranean summer. Flowy fabrics, sun-kissed hues, and effortless elegance.</p>"
+      },
+      "testimonials": {
+        "heading": "Customer Love",
+        "testimonial_1": "The quality is amazing and the fit is perfect! Already ordered three more pieces.",
+        "testimonial_2": "Finally a brand that understands what women actually want—style, comfort, and sustainability."
+      },
+      "newsletter": {
+        "text": "<p>Be the first to know about new arrivals, exclusive offers, and styling tips. Plus, get 10% off your first order.</p>"
+      }
+    },
+    "collection_luxury": {
+      "image_with_text": {
+        "title": "Crafted in Italy",
+        "text": "<p>Each piece in this collection represents generations of shoemaking expertise. Premium leathers, hand-stitched details, and timeless design.</p>"
+      }
+    },
+    "collection_sneakers": {
+      "trust_badges": {
+        "authenticated_title": "Authenticated",
+        "authenticated_text": "Every pair verified",
+        "shipping_title": "Free Shipping",
+        "shipping_text": "Orders $100+",
+        "returns_title": "Easy Returns",
+        "returns_text": "14 day policy"
+      },
+      "image_with_text": {
+        "heading": "Real vs Fake"
+      }
+    },
+    "collection_streetwear": {
+      "countdown": {
+        "title": "This Collection Ends Soon"
+      },
+      "newsletter": {
+        "title": "Get Early Access",
+        "text": "<p>Signup for exclusive drops and early access to limited releases.</p>"
+      }
+    },
+    "collection_womens": {
+      "testimonials": {
+        "heading": "Customer Love",
+        "testimonial_1_title": "Verified Buyer",
+        "testimonial_1_text": "The quality exceeded my expectations. Already planning my next purchase!",
+        "testimonial_2_title": "Verified Buyer",
+        "testimonial_2_text": "Perfect fit, beautiful fabric, and I love that it's sustainable."
+      }
+    },
+    "product_luxury": {
+      "rich_text": {
+        "text": "<p>Each pair takes over 8 hours to craft. Our artisans use traditional techniques passed down through generations.</p>"
+      },
+      "related": {
+        "heading": "You May Also Like"
+      }
+    },
+    "product_sneakers": {
+      "image_with_text": {
+        "heading": "Authentic vs Fake"
+      },
+      "related": {
+        "heading": "Complete Your Collection"
+      }
+    },
+    "product_streetwear": {
+      "related": {
+        "heading": "Match With"
+      }
+    },
+    "product_womens": {
+      "multicolumn": {
+        "sustainable_title": "Sustainable",
+        "sustainable_text": "Made from organic cotton and sustainable materials.",
+        "flattering_title": "Flattering Fit",
+        "flattering_text": "Designed by women, for women. Flattering every body type.",
+        "easy_care_title": "Easy Care",
+        "easy_care_text": "Machine washable. Wrinkle-resistant. Ready to wear."
+      },
+      "related": {
+        "heading": "Complete the Look"
+      }
+    },
+    "page_about": {
+      "header": {
+        "text": "Passionate about fashion since day one."
+      },
+      "rich_text": {
+        "text": "<p>We believe everyone deserves access to quality fashion. Our team works directly with manufacturers to bring you the best pieces at fair prices.</p><p>From design to delivery, every step is handled with care and attention to detail.</p>"
+      },
+      "multicolumn": {
+        "quality_title": "Quality First",
+        "quality_text": "We source only the best materials and work with trusted manufacturers.",
+        "customer_title": "Customer Focus",
+        "customer_text": "Your satisfaction is our priority. We're here to help 24/7.",
+        "shipping_title": "Fast Shipping",
+        "shipping_text": "Swift processing and reliable delivery worldwide."
+      },
+      "testimonials": {
+        "heading": "What Our Customers Say",
+        "testimonial_1": "Amazing quality and fast shipping. Will definitely order again!"
+      },
+      "newsletter": {
+        "text": "<p>Get exclusive offers and be the first to know about new arrivals.</p>"
+      }
+    },
+    "page_contact": {
+      "header": {
+        "text": "We'd love to hear from you. Our team is here to help."
+      },
+      "form": {
+        "heading": "Send us a Message"
+      },
+      "info": {
+        "email": "support@yourstore.com",
+        "phone": "+1 (555) 123-4567",
+        "hours": "Mon-Fri: 9am-6pm EST"
+      },
+      "faq": {
+        "heading": "Frequently Asked Questions",
+        "shipping_question": "How long does shipping take?",
+        "shipping_answer": "<p>Standard shipping takes 3-7 business days. Express shipping is available at checkout.</p>",
+        "returns_question": "What is your return policy?",
+        "returns_answer": "<p>We offer free returns within 30 days of purchase. Items must be unworn with tags attached.</p>",
+        "international_question": "Do you ship internationally?",
+        "international_answer": "<p>Yes! We ship worldwide. International shipping typically takes 7-14 business days.</p>"
+      }
+    },
+    "page_faq": {
+      "header": {
+        "text": "Find answers to common questions about orders, shipping, and more."
+      },
+      "shipping": {
+        "heading": "Shipping & Delivery",
+        "time_question": "How long does shipping take?",
+        "time_answer": "<p>Standard shipping takes 3-7 business days within the US. International orders typically arrive in 7-14 business days.</p>",
+        "free_question": "Do you offer free shipping?",
+        "free_answer": "<p>Yes! We offer free standard shipping on all orders over $100. Express shipping is available at an additional cost.</p>",
+        "tracking_question": "How can I track my order?",
+        "tracking_answer": "<p>Once your order ships, you'll receive an email with tracking information. You can also check your order status in your account.</p>"
+      },
+      "returns": {
+        "heading": "Returns & Exchanges",
+        "policy_question": "What is your return policy?",
+        "policy_answer": "<p>We accept returns within 30 days of delivery. Items must be unworn, unwashed, and with original tags attached.</p>",
+        "start_question": "How do I start a return?",
+        "start_answer": "<p>Log into your account and navigate to your order history. Select the order and click 'Start Return' to print your prepaid label.</p>",
+        "refund_question": "When will I receive my refund?",
+        "refund_answer": "<p>Refunds are processed within 5-7 business days after we receive your return. It may take an additional 3-5 days to appear on your statement.</p>"
+      },
+      "products": {
+        "heading": "Products & Sizing",
+        "size_question": "How do I find my size?",
+        "size_answer": "<p>Check our size guide on each product page. We recommend measuring yourself and comparing to our size chart for the best fit.</p>",
+        "authentic_question": "Are your products authentic?",
+        "authentic_answer": "<p>Absolutely. We only sell 100% authentic products. Every item goes through a verification process before shipping.</p>"
+      },
+      "footer": {
+        "text": "<p>Our support team is here to help. Reach out anytime.</p>"
+      }
+    },
+    "common": {
+      "recently_viewed": "Recently Viewed",
+      "checked_out": "Checked Out"
+    }
   }
 }

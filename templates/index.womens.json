@@ -6,7 +6,7 @@
                 "announcement_1": {
                     "type": "announcement",
                     "settings": {
-                        "text": "New Spring Collection Now Live",
+                        "text": "t:templates.index_womens.ticker.spring",
                         "link": "shopify://collections/spring",
                         "icon": "star"
                     }
@@ -14,7 +14,7 @@
                 "announcement_2": {
                     "type": "announcement",
                     "settings": {
-                        "text": "Free Shipping on Orders $75+",
+                        "text": "t:templates.index_womens.ticker.shipping",
                         "icon": "truck"
                     }
                 }
@@ -37,8 +37,8 @@
                     "type": "slide",
                     "settings": {
                         "subheading": "New Season",
-                        "heading": "Spring Awakening",
-                        "text": "Light, airy, and effortlessly chic. Discover pieces that transition seamlessly from day to night.",
+                        "heading": "t:templates.index_womens.hero.slide_1_heading",
+                        "text": "t:templates.index_womens.hero.slide_1_text",
                         "button_label": "Shop Spring",
                         "button_link": "shopify://collections/spring",
                         "button_label_2": "View Lookbook",
@@ -50,8 +50,8 @@
                     "type": "slide",
                     "settings": {
                         "subheading": "Bestsellers",
-                        "heading": "The Essentials",
-                        "text": "Timeless pieces that belong in every wardrobe.",
+                        "heading": "t:templates.index_womens.hero.slide_2_heading",
+                        "text": "t:templates.index_womens.hero.slide_2_text",
                         "button_label": "Shop Essentials",
                         "button_link": "shopify://collections/essentials",
                         "overlay_opacity": 30
@@ -61,8 +61,8 @@
                     "type": "slide",
                     "settings": {
                         "subheading": "Limited Time",
-                        "heading": "Up to 30% Off",
-                        "text": "End of season sale on selected styles.",
+                        "heading": "t:templates.index_womens.hero.slide_3_heading",
+                        "text": "t:templates.index_womens.hero.slide_3_text",
                         "button_label": "Shop Sale",
                         "button_link": "shopify://collections/sale",
                         "overlay_opacity": 30
@@ -149,7 +149,7 @@
                 "image_ratio": "portrait",
                 "eyebrow": "Editorial",
                 "title": "Sunset in Santorini",
-                "text": "<p>Our latest editorial captures the essence of Mediterranean summer. Flowy fabrics, sun-kissed hues, and effortless elegance.</p>",
+                "text": "t:templates.index_womens.image_with_text.text",
                 "button_text": "View Lookbook",
                 "button_url": "shopify://pages/lookbook",
                 "button_style": "secondary",
@@ -165,7 +165,7 @@
                         "name": "Emma L.",
                         "title": "Verified Buyer",
                         "rating": 5,
-                        "text": "The quality is amazing and the fit is perfect! Already ordered three more pieces."
+                        "text": "t:templates.index_womens.testimonials.testimonial_1"
                     }
                 },
                 "testimonial_2": {
@@ -174,7 +174,7 @@
                         "name": "Sofia R.",
                         "title": "Verified Buyer",
                         "rating": 5,
-                        "text": "Finally a brand that understands what women actually want—style, comfort, and sustainability."
+                        "text": "t:templates.index_womens.testimonials.testimonial_2"
                     }
                 }
             },
@@ -183,14 +183,14 @@
                 "testimonial_2"
             ],
             "settings": {
-                "heading": "Customer Love",
+                "heading": "t:templates.index_womens.testimonials.heading",
                 "subheading": "What Our Community Says"
             }
         },
         "recently_viewed": {
             "type": "recently-viewed",
             "settings": {
-                "heading": "Recently Viewed",
+                "heading": "t:templates.common.recently_viewed",
                 "products_to_show": 4,
                 "columns": 4
             }
@@ -203,7 +203,7 @@
                 "narrow_content": true,
                 "eyebrow": "Stay Connected",
                 "title": "Join Our Community",
-                "text": "<p>Be the first to know about new arrivals, exclusive offers, and styling tips. Plus, get 10% off your first order.</p>",
+                "text": "t:templates.index_womens.newsletter.text",
                 "show_newsletter": true
             }
         }

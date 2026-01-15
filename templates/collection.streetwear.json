@@ -20,8 +20,8 @@
             "type": "countdown",
             "settings": {
                 "eyebrow": "Limited Drop",
-                "title": "This Collection Ends Soon",
-                "description": "No restocks. When it's gone, it's gone.",
+                "title": "t:templates.collection_streetwear.countdown.title",
+                "description": "t:templates.collection_streetwear.countdown.description",
                 "button_text": "",
                 "background_color": "accent"
             }
@@ -34,7 +34,7 @@
                 "narrow_content": true,
                 "eyebrow": "Don't Miss Out",
                 "title": "Get Early Access",
-                "text": "<p>Signup for exclusive drops and early access to limited releases.</p>",
+                "text": "t:templates.collection_streetwear.newsletter.text",
                 "show_newsletter": true
             }
         }

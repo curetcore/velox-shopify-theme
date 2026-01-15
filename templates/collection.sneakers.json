@@ -19,8 +19,8 @@
         "comparison": {
             "type": "comparison-slider",
             "settings": {
-                "heading": "Real vs Fake",
-                "caption": "Every pair we sell is 100% authenticated",
+                "heading": "t:templates.collection_sneakers.comparison.heading",
+                "caption": "t:templates.collection_sneakers.comparison.caption",
                 "label_before": "Fake",
                 "label_after": "Authentic",
                 "max_width": 600
@@ -33,24 +33,24 @@
                     "type": "badge",
                     "settings": {
                         "icon": "shield-check",
-                        "title": "Authenticated",
-                        "text": "Every pair verified"
+                        "title": "t:templates.collection_sneakers.trust_badges.authenticated_title",
+                        "text": "t:templates.collection_sneakers.trust_badges.authenticated_text"
                     }
                 },
                 "badge_2": {
                     "type": "badge",
                     "settings": {
                         "icon": "truck",
-                        "title": "Free Shipping",
-                        "text": "Orders $100+"
+                        "title": "t:templates.collection_sneakers.trust_badges.shipping_title",
+                        "text": "t:templates.collection_sneakers.trust_badges.shipping_text"
                     }
                 },
                 "badge_3": {
                     "type": "badge",
                     "settings": {
                         "icon": "arrow-path",
-                        "title": "Easy Returns",
-                        "text": "14 day policy"
+                        "title": "t:templates.collection_sneakers.trust_badges.returns_title",
+                        "text": "t:templates.collection_sneakers.trust_badges.returns_text"
                     }
                 }
             },

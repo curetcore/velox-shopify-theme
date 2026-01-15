@@ -5,7 +5,7 @@
             "settings": {
                 "eyebrow": "Help Center",
                 "title": "Frequently Asked Questions",
-                "text": "Find answers to common questions about orders, shipping, and more.",
+                "text": "t:templates.page_faq.header.text",
                 "text_position": "center"
             }
         },
@@ -15,23 +15,23 @@
                 "q1": {
                     "type": "question",
                     "settings": {
-                        "question": "How long does shipping take?",
-                        "answer": "<p>Standard shipping takes 3-7 business days within the US. International orders typically arrive in 7-14 business days.</p>",
+                        "question": "t:templates.page_faq.shipping.time_question",
+                        "answer": "t:templates.page_faq.shipping.time_answer",
                         "open_by_default": true
                     }
                 },
                 "q2": {
                     "type": "question",
                     "settings": {
-                        "question": "Do you offer free shipping?",
-                        "answer": "<p>Yes! We offer free standard shipping on all orders over $100. Express shipping is available at an additional cost.</p>"
+                        "question": "t:templates.page_faq.shipping.free_question",
+                        "answer": "t:templates.page_faq.shipping.free_answer"
                     }
                 },
                 "q3": {
                     "type": "question",
                     "settings": {
-                        "question": "How can I track my order?",
-                        "answer": "<p>Once your order ships, you'll receive an email with tracking information. You can also check your order status in your account.</p>"
+                        "question": "t:templates.page_faq.shipping.tracking_question",
+                        "answer": "t:templates.page_faq.shipping.tracking_answer"
                     }
                 }
             },
@@ -41,7 +41,7 @@
                 "q3"
             ],
             "settings": {
-                "heading": "Shipping & Delivery"
+                "heading": "t:templates.page_faq.shipping.heading"
             }
         },
         "faq_returns": {
@@ -50,22 +50,22 @@
                 "q1": {
                     "type": "question",
                     "settings": {
-                        "question": "What is your return policy?",
-                        "answer": "<p>We accept returns within 30 days of delivery. Items must be unworn, unwashed, and with original tags attached.</p>"
+                        "question": "t:templates.page_faq.returns.policy_question",
+                        "answer": "t:templates.page_faq.returns.policy_answer"
                     }
                 },
                 "q2": {
                     "type": "question",
                     "settings": {
-                        "question": "How do I start a return?",
-                        "answer": "<p>Log into your account and navigate to your order history. Select the order and click 'Start Return' to print your prepaid label.</p>"
+                        "question": "t:templates.page_faq.returns.start_question",
+                        "answer": "t:templates.page_faq.returns.start_answer"
                     }
                 },
                 "q3": {
                     "type": "question",
                     "settings": {
-                        "question": "When will I receive my refund?",
-                        "answer": "<p>Refunds are processed within 5-7 business days after we receive your return. It may take an additional 3-5 days to appear on your statement.</p>"
+                        "question": "t:templates.page_faq.returns.refund_question",
+                        "answer": "t:templates.page_faq.returns.refund_answer"
                     }
                 }
             },
@@ -75,7 +75,7 @@
                 "q3"
             ],
             "settings": {
-                "heading": "Returns & Exchanges"
+                "heading": "t:templates.page_faq.returns.heading"
             }
         },
         "faq_products": {
@@ -84,15 +84,15 @@
                 "q1": {
                     "type": "question",
                     "settings": {
-                        "question": "How do I find my size?",
-                        "answer": "<p>Check our size guide on each product page. We recommend measuring yourself and comparing to our size chart for the best fit.</p>"
+                        "question": "t:templates.page_faq.products.size_question",
+                        "answer": "t:templates.page_faq.products.size_answer"
                     }
                 },
                 "q2": {
                     "type": "question",
                     "settings": {
-                        "question": "Are your products authentic?",
-                        "answer": "<p>Absolutely. We only sell 100% authentic products. Every item goes through a verification process before shipping.</p>"
+                        "question": "t:templates.page_faq.products.authentic_question",
+                        "answer": "t:templates.page_faq.products.authentic_answer"
                     }
                 }
             },
@@ -101,7 +101,7 @@
                 "q2"
             ],
             "settings": {
-                "heading": "Products & Sizing"
+                "heading": "t:templates.page_faq.products.heading"
             }
         },
         "contact_cta": {
@@ -111,7 +111,7 @@
                 "text_alignment": "center",
                 "narrow_content": true,
                 "title": "Still Have Questions?",
-                "text": "<p>Our support team is here to help. Reach out anytime.</p>",
+                "text": "t:templates.page_faq.footer.text",
                 "button_text": "Contact Us",
                 "button_url": "shopify://pages/contact",
                 "button_style": "primary"
